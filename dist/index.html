@@ -286,7 +286,7 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
     <ol id="timeline" class="timeline" aria-label="Chapter progress"></ol>
   </aside>
   <button type="button" id="interact" class="interact"><kbd>E</kbd><span>Sit at the computer</span></button>
-  <div class="walk-hints"><kbd>WASD</kbd> Walk <span></span> <kbd>← →</kbd> Look <button type="button" id="move-toggle" aria-controls="movement-pad" aria-expanded="false">Controls</button></div>
+  <div class="walk-hints"><kbd>WASD</kbd> Walk <span></span> <kbd>Mouse</kbd> Look <button type="button" id="move-toggle" aria-controls="movement-pad" aria-expanded="false">Controls</button></div>
   <div class="touch-move" id="movement-pad" aria-label="Touch movement">
     <button type="button" data-move="ArrowLeft" aria-label="Look left">↶</button><button type="button" data-move="w" aria-label="Walk forward">↑</button><button type="button" data-move="ArrowRight" aria-label="Look right">↷</button>
     <button type="button" data-move="a" aria-label="Step left">←</button><button type="button" data-move="s" aria-label="Walk backward">↓</button><button type="button" data-move="d" aria-label="Step right">→</button>
@@ -5463,6 +5463,7 @@ async function dictate(id, control) {
   } finally { control.disabled = false; }
 }
 function modal(label, title, html) {
+  mousePosition = null;
   byId('overlay-label').textContent = label;
   byId('overlay-body').innerHTML = '<h2 class="title" id="overlay-title" tabindex="-1">' + title + '</h2>' + html;
   if (!dialog.open) dialog.showModal();
@@ -5539,7 +5540,7 @@ dialog.addEventListener('close',() => {
 });
 byId('show-guide').addEventListener('click', () => {
   stopMovement();
-  modal('Shop guide', 'How to play', '<p><b>Explore.</b> Use WASD to walk, arrows or mouse drag to look, and E to use the desk or door. You can walk around the office and out onto the grounds.</p><p><b>Read.</b> Find the pickup day, quantity, and other details in the customer’s email.</p>' +
+  modal('Shop guide', 'How to play', '<p><b>Explore.</b> Use WASD to walk, move your mouse or use the arrow keys to look, and E to use the desk or door. You can walk around the office and out onto the grounds.</p><p><b>Read.</b> Find the pickup day, quantity, and other details in the customer’s email.</p>' +
     '<p><b>Reply.</b> Write to the person in your own words. They’ll ask a follow-up if they need more information.</p>' +
     '<p><b>Meet your visitors.</b> Open the office door when a customer or supplier arrives.</p>' +
     '<p><b>Grow the shop.</b> Sit at the computer to see reports and live feeds from the entrance, pickup lot, and road. The stand changes the playable grounds.</p>' +
@@ -5641,7 +5642,8 @@ const moveKeys = new Set();
 const movementKeys = ['w','a','s','d','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
 let moveFrame = 0;
 let lastMove = 0;
-let dragging = null;
+let mousePosition = null;
+let touchLook = null;
 function isWalking() {
   return !terminal.open && !dialog.open && !document.hidden;
 }
@@ -5650,7 +5652,8 @@ function stopMovement() {
   if (moveFrame) cancelAnimationFrame(moveFrame);
   moveFrame = 0;
   lastMove = 0;
-  dragging = null;
+  mousePosition = null;
+  touchLook = null;
 }
 function stepMovement(time) {
   moveFrame = 0;
@@ -5714,20 +5717,40 @@ for (const control of document.querySelectorAll('[data-move]')) {
   });
 }
 
+function turnCamera(dx,dy) {
+  if (!dx && !dy) return;
+  player.yaw -= dx*.005;
+  player.pitch = Math.max(-1.12,Math.min(.96,player.pitch-dy*.0046));
+  drawScene();
+}
 world.addEventListener('pointerdown',event => {
-  if (event.target.id!=='landscape' || !isWalking() || event.button!==0) return;
+  if (event.pointerType==='mouse' || event.target.id!=='landscape' || !isWalking() || touchLook) return;
   world.setPointerCapture(event.pointerId);
-  dragging = { x:event.clientX,y:event.clientY };
+  touchLook = { id:event.pointerId, x:event.clientX, y:event.clientY };
 });
 world.addEventListener('pointermove',event => {
-  if (!dragging || !isWalking()) return;
-  player.yaw -= (event.clientX-dragging.x)*.005;
-  player.pitch = Math.max(-1.12,Math.min(.96,player.pitch-(event.clientY-dragging.y)*.0046));
-  dragging = { x:event.clientX,y:event.clientY };
-  drawScene();
+  if (event.pointerType==='mouse') {
+    if (!isWalking() || event.target.id!=='landscape') {
+      mousePosition = null;
+      return;
+    }
+    const previous=mousePosition;
+    mousePosition={x:event.clientX,y:event.clientY};
+    const dx=previous ? event.clientX-previous.x : (event.movementX || 0);
+    const dy=previous ? event.clientY-previous.y : (event.movementY || 0);
+    turnCamera(dx,dy);
+    return;
+  }
+  if (!isWalking() || touchLook?.id!==event.pointerId) return;
+  turnCamera(event.clientX-touchLook.x,event.clientY-touchLook.y);
+  touchLook.x=event.clientX;
+  touchLook.y=event.clientY;
 });
+world.addEventListener('pointerleave',() => { mousePosition = null; });
 for(const type of ['pointerup','pointercancel','lostpointercapture']) {
-  world.addEventListener(type,() => { dragging = null; });
+  world.addEventListener(type,event => {
+    if(touchLook?.id===event.pointerId)touchLook=null;
+  });
 }
 
 render();
