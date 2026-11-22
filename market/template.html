@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#21382c">
+<meta name="description" content="Start a little shop in a jungle office. Read customer emails, sell garden kits, and build your first pickup stand.">
+<title>Jungle Miner · Market Office</title>
+<style>/* GAME STYLES */</style>
+</head>
+<body>
+<svg aria-hidden="true" class="symbols" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="plant" viewBox="0 0 24 24"><path d="M5 21h14M12 21v-8M12 14C5 14 3 9 3 5c6 0 9 3 9 9Zm0-2c0-5 3-8 9-9 0 5-3 8-9 9Z"/></symbol>
+  <symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></symbol>
+  <symbol id="orders" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></symbol>
+  <symbol id="box" viewBox="0 0 24 24"><path d="m12 3 9 5v8l-9 5-9-5V8l9-5Zm-9 5 9 5 9-5m-9 5v8m-4-16 9 5"/></symbol>
+  <symbol id="book" viewBox="0 0 24 24"><path d="M5 4h13a1 1 0 0 1 1 1v15H6a2 2 0 0 1-2-2V6a2 2 0 0 1 1-2Zm-1 12h15M8 8h7M8 11h5"/></symbol>
+  <symbol id="door-icon" viewBox="0 0 24 24"><path d="M5 21h14m-2 0V3H7v18m6-9h1"/></symbol>
+  <symbol id="map-icon" viewBox="0 0 24 24"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Zm6-3v15m6-12v15"/></symbol>
+  <symbol id="coin-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8m-2-7h3a1.5 1.5 0 1 1 0 3h-2a1.5 1.5 0 0 0 0 3h3"/></symbol>
+  <symbol id="sound-icon" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Zm12 0a4 4 0 0 1 0 6m2-8a7 7 0 0 1 0 10"/></symbol>
+  <symbol id="mic-icon" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M6 11v1a6 6 0 0 0 12 0v-1m-6 7v3m-3 0h6"/></symbol>
+  <symbol id="window-icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16M12 4v16"/></symbol>
+  <symbol id="chart-icon" viewBox="0 0 24 24"><path d="M4 4v16h16M8 15l4-5 3 2 5-6"/></symbol>
+  <symbol id="cctv-icon" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="11" rx="2"/><path d="m16 10 5-3v9l-5-3M7 20h5"/></symbol>
+  <symbol id="help-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M10 10a2 2 0 1 1 3.4 1.4c-.7.7-1.4.8-1.4 2m0 2.8h.01"/></symbol>
+  <symbol id="check-icon" viewBox="0 0 24 24"><path d="m5 12 5 5L19 7"/></symbol>
+</svg>
+<main class="walk-world" id="view" aria-label="First-person shop and grounds">
+  <canvas id="landscape" aria-label="First-person view" tabindex="0"></canvas>
+  <div class="world-vignette" aria-hidden="true"></div>
+  <header class="masthead walk-head">
+    <div class="brand">
+      <span class="brand-mark"><svg aria-hidden="true"><use href="#plant"></use></svg></span>
+      <div><h1>Jungle Miner</h1><p>Market Office</p></div>
+    </div>
+    <div class="top-date" id="top-date"></div>
+    <button class="top-icon" id="show-guide" type="button" title="How to play" aria-label="How to play"><svg aria-hidden="true"><use href="#help-icon"></use></svg></button>
+  </header>
+  <div class="place-marker"><i></i><span id="world-location">Shop office</span></div>
+  <span class="aim" aria-hidden="true"></span>
+  <aside class="quest" aria-label="Current objective">
+    <div class="quest-meta"><span id="scene-detail">Level 1</span><span id="step-number">1 of 7</span></div>
+    <h2>My First Customers</h2>
+    <p id="objective" aria-live="polite"></p>
+    <ol id="timeline" class="timeline" aria-label="Chapter progress"></ol>
+  </aside>
+  <button type="button" id="interact" class="interact"><kbd>E</kbd><span>Sit at the computer</span></button>
+  <div class="walk-hints"><kbd>WASD</kbd> Walk <span></span> <kbd>← →</kbd> Look <button type="button" id="move-toggle" aria-controls="movement-pad" aria-expanded="false">Controls</button></div>
+  <div class="touch-move" id="movement-pad" aria-label="Touch movement">
+    <button type="button" data-move="ArrowLeft" aria-label="Look left">↶</button><button type="button" data-move="w" aria-label="Walk forward">↑</button><button type="button" data-move="ArrowRight" aria-label="Look right">↷</button>
+    <button type="button" data-move="a" aria-label="Step left">←</button><button type="button" data-move="s" aria-label="Walk backward">↓</button><button type="button" data-move="d" aria-label="Step right">→</button>
+  </div>
+</main>
+<dialog id="terminal" class="terminal" aria-labelledby="terminal-title">
+  <section class="terminal-screen">
+    <header class="terminal-head">
+      <div class="terminal-brand"><span class="brand-mark"><svg aria-hidden="true"><use href="#plant"></use></svg></span><h2 id="terminal-title">Market Office Computer</h2></div>
+      <div class="dashboard">
+    <div class="stat" aria-label="Wallet"><svg aria-hidden="true"><use href="#coin-icon"></use></svg><div><span>Wallet</span><b id="coins">20 coins</b></div></div>
+    <div class="stat" aria-label="Shop stock"><svg aria-hidden="true"><use href="#box"></use></svg><div><span>On the shelf</span><b id="stock">8 kits</b></div></div>
+        <button class="button stand-up" type="button" id="stand-up">Stand up</button>
+      </div>
+    </header>
+    <nav class="tabs" id="tabs" aria-label="Shop computer">
+      <button type="button" data-tab="inbox" aria-current="page"><svg aria-hidden="true"><use href="#mail"></use></svg><span>Inbox</span><small id="inbox-count">1</small></button>
+      <button type="button" data-tab="orders"><svg aria-hidden="true"><use href="#orders"></use></svg><span>Orders</span></button>
+      <button type="button" data-tab="inventory"><svg aria-hidden="true"><use href="#box"></use></svg><span>Inventory</span></button>
+      <button type="button" data-tab="words"><svg aria-hidden="true"><use href="#book"></use></svg><span>Wordbook</span></button>
+      <button type="button" data-tab="reports"><svg aria-hidden="true"><use href="#chart-icon"></use></svg><span>Reports</span></button>
+      <button type="button" data-tab="cameras"><svg aria-hidden="true"><use href="#cctv-icon"></use></svg><span>Cameras</span></button>
+    </nav>
+    <div id="content" class="content"></div>
+  </section>
+</dialog>
+<dialog id="overlay" aria-labelledby="overlay-title">
+  <header class="modal-head"><span id="overlay-label"></span><button type="button" id="close-overlay" aria-label="Close window">×</button></header>
+  <div class="modal-body" id="overlay-body"></div>
+</dialog>
+<div id="notice" class="toast" role="status" aria-live="polite"></div>
+<script>/* GAME ENGINE */</script>
+<script>/* GAME CODE */</script>
+</body>
+</html>
+
