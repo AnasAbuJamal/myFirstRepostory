@@ -11,16 +11,20 @@ export async function POST(request:Request){
  if(size>4096)return NextResponse.json({error:'Request too large'},{status:413,headers:cors});
  let payload:unknown;
  try{payload=await request.json();}catch{return NextResponse.json({error:'Invalid request'},{status:400,headers:cors});}
- const code=String((payload as {code?:unknown})?.code||'').trim();
+ const fields=payload as {code?:unknown;studentCode?:unknown};
+ const code=String(fields?.code||'').trim();
+ const studentCode=String(fields?.studentCode||'').trim();
+ if(studentCode.length<3||studentCode.length>40)return NextResponse.json({error:'Invalid classroom code'},{status:400,headers:cors});
  if(!/^[A-Za-z0-9_-]{20,48}$/.test(code))
   return NextResponse.json({error:'Invalid or already redeemed code'},{status:400,headers:cors});
  try{
   const sql=database();
   // Single-use redemption is atomic; the token is issued by a verified teacher.
-  const result=await sql`UPDATE quran_recitation_reviews
-   SET redeemed_at=now()
-   WHERE redeem_code=${code} AND approved=true AND redeemed_at IS NULL
-   RETURNING course_id,reward_coins,course_complete`;
+  const result=await sql`UPDATE quran_recitation_reviews AS r
+   SET redeemed_at=now() FROM class_enrollments AS e
+   WHERE r.enrollment_id=e.id AND e.student_code=${studentCode}
+    AND r.redeem_code=${code} AND r.approved=true AND r.redeemed_at IS NULL
+   RETURNING r.course_id,r.reward_coins,r.course_complete`;
   if(!result.length)return NextResponse.json({error:'Invalid or already redeemed code'},{status:404,headers:cors});
   const row=result[0];
   return NextResponse.json({verified:true,courseId:row.course_id,
