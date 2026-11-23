@@ -5116,7 +5116,7 @@ function districtInteract(target){
   return;
  }
  switch(target.key){
- case 'school':campusSchool();break;
+ case 'school':pathwayHome();break;
  case 'careers':jobPanel();break;
  case 'research':jobResearchList();break;
  case 'browse':cityBookList();break;
@@ -6685,8 +6685,8 @@ function campusSchool(){
    '<span class="wave-course-icon">'+sub.icon+'</span><strong>'+sub.name+'</strong>'+
    '<span>'+(campusState.enrolled.includes(sub.id)?'Enrolled · '+info.complete.length+'/3 lessons': 'Not enrolled · Click to choose')+' · '+(last==null?'No exam yet':campusGrade(last).letter+' '+last+'%')+'</span></button>';
  }).join("");
- cityPanel("LumenVale Academy","Your School & Curriculum",
- '<p>Choose classes and study at your own pace. Complete all three units in a subject, then take its exam. Your GPA uses the most recent exam in each subject.</p>'+
+ cityPanel("LumenVale Academy / Practice","Foundations Practice Classes",
+ '<p>Optional game-only foundation exercises. These scores remain separate from the teacher-controlled Academic Pathways transcript. Some existing game jobs still use these practice results.</p>'+
  '<div class="wave-school-stats"><div><small>Current GPA</small><b>'+(grade?grade.gpa.toFixed(2):"—")+'</b></div>'+
  '<div><small>Graded courses</small><b>'+(grade?.classes||0)+'/4</b></div>'+
  '<div><small>Learning XP</small><b>'+cityState.xp+'</b></div></div>'+
@@ -7498,7 +7498,7 @@ function pathwayHome(){
  '<h3>Choose a future specialization</h3><div class="pathway-goals">'+programs+'</div>'+
  '<div class="city-actions"><button class="button primary" data-pathways="transcript">Academic Transcript</button>'+
  '<button class="button" data-pathways="import">Import Teacher JSON</button>'+
- '<button class="button" data-pathways="quran">Qur’an Memorization</button></div>'+groups+
+ '<button class="button" data-pathways="quran">Qur’an Memorization</button><button class="button" data-pathways="foundation-practice">Optional Practice Classes</button></div>'+groups+
  '<p class="city-sub">Middle and high school progression requires teacher-verified Qur’an recitation. A private one-time teacher approval code can synchronize the verified result and game points; ordinary grades remain local practice records.</p>');
 }
 function pathwayCoursePanel(id){
@@ -7750,6 +7750,7 @@ function pathwayInit(){
   const item=event.target.closest('[data-pathways]');if(!item)return;
   const action=item.dataset.pathways,id=item.dataset.id,unit=item.dataset.unit;
   if(action==='home')pathwayHome();
+  if(action==='foundation-practice')campusSchool();
   if(action==='goal'&&LV_DEFAULT_ACADEMICS.programs.some(x=>x.id===id)){pathwayState.goal=id;pathwaySave();pathwayHome();}
   if(action==='course')pathwayCoursePanel(id);
   if(action==='enroll')pathwayEnroll(id);
@@ -9586,7 +9587,7 @@ function phoneSync(){
 }
 function phoneInit(){
  const apps={property:cityPortfolio,production:()=>systemsPanel('warehouse'),garage:()=>systemsPanel('garage'),map:campusMap,mail:systemsMailBox,
-  architect:campusArchitect,library:cityBookList,school:campusSchool,pathways:pathwayHome,transcript:pathwayTranscript,careers:campusCareer,jobs:jobPanel,words:campusVocabulary,
+  architect:campusArchitect,library:cityBookList,school:pathwayHome,pathways:pathwayHome,transcript:pathwayTranscript,careers:campusCareer,jobs:jobPanel,words:campusVocabulary,
   journal:academyProfile,guide:cityGuide,fullscreen:()=>{dialog.close();cityEnterFullscreen();}};
  byId('open-phone').addEventListener('click',phoneOpen);
  byId('phone-back').addEventListener('click',phoneOpen);
