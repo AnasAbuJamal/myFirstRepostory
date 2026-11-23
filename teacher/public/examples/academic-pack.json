@@ -1,0 +1,107 @@
+{
+  "kind": "lumenvale.academic-pack",
+  "version": 1,
+  "courseId": "SCI-M1",
+  "title": "General Science — Starter Unit",
+  "author": "LumenVale sample content — teacher review required",
+  "source": "Original sample content for local practice, not accredited.",
+  "gradePolicy": {
+    "passPercent": 70
+  },
+  "lessons": [
+    {
+      "id": "science-method",
+      "title": "How Scientific Investigations Work",
+      "objectives": [
+        "Identify a question and hypothesis",
+        "Recognize controlled variables"
+      ],
+      "reading": "Scientists study the natural world by asking questions and collecting evidence. A hypothesis is a possible explanation that can be investigated. In a fair experiment, researchers change one variable while trying to keep other conditions consistent. They record observations, compare results, and consider possible sources of error. A strong conclusion describes what the evidence supports and what remains uncertain. For example, a student could compare plant growth under different lighting conditions while keeping water and soil similar. Repeated measurements can help determine whether the observed changes are consistent.",
+      "flashcards": [
+        {
+          "front": "Hypothesis",
+          "back": "A testable possible explanation."
+        },
+        {
+          "front": "Controlled variable",
+          "back": "A condition kept similar between groups in a fair investigation."
+        },
+        {
+          "front": "Evidence",
+          "back": "Observations or measurements supporting a conclusion."
+        }
+      ],
+      "practice": [
+        {
+          "prompt": "What is a hypothesis?",
+          "choices": [
+            "A testable explanation",
+            "A final guaranteed answer",
+            "A type of microscope"
+          ],
+          "correctIndex": 0
+        }
+      ]
+    },
+    {
+      "id": "cells-energy",
+      "title": "Living Cells and Energy",
+      "objectives": [
+        "Describe cells as building blocks of life",
+        "Identify the importance of energy"
+      ],
+      "reading": "Living organisms are made of cells. Some organisms consist of a single cell, while others contain many specialized cells working together. Cells use energy to grow, repair structures, transport materials, and carry out everyday processes. In many plants, chloroplasts use light to help produce sugars during photosynthesis. Animal and plant cells both have structures that carry out important tasks. Scientists use microscopes to examine small cell structures. When comparing different kinds of cells, students should note similarities, differences, and the limitations of the equipment they are using.",
+      "flashcards": [
+        {
+          "front": "Cell",
+          "back": "The basic structural and functional unit of living organisms."
+        },
+        {
+          "front": "Photosynthesis",
+          "back": "The process by which plants and certain other organisms use light to make sugars."
+        }
+      ]
+    }
+  ],
+  "exam": {
+    "title": "General Science Foundations Final",
+    "questions": [
+      {
+        "prompt": "Why do scientists keep some variables consistent?",
+        "choices": [
+          "To make comparisons fairer",
+          "To prevent collecting data",
+          "To make every result identical"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "prompt": "Which tool helps scientists observe many tiny cells?",
+        "choices": [
+          "Microscope",
+          "Compass",
+          "Calculator only"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "prompt": "What is an evidence-based conclusion?",
+        "choices": [
+          "A conclusion supported by observations",
+          "A conclusion chosen before testing",
+          "A statement without measurements"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "prompt": "What does a hypothesis represent?",
+        "choices": [
+          "A testable possible explanation",
+          "An automatic fact",
+          "A type of laboratory"
+        ],
+        "correctIndex": 0
+      }
+    ]
+  }
+}
