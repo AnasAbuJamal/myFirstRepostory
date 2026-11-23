@@ -1,0 +1,21 @@
+{
+  "kind": "lumenvale.flashcard-pack",
+  "version": 1,
+  "courseId": "SCI-M1",
+  "lessonId": "science-method",
+  "title": "Scientific Method Vocabulary",
+  "flashcards": [
+    {
+      "front": "Variable",
+      "back": "A factor that can change in an investigation."
+    },
+    {
+      "front": "Controlled variable",
+      "back": "A condition kept consistent to make comparisons fair."
+    },
+    {
+      "front": "Evidence",
+      "back": "Observations or measurements that support conclusions."
+    }
+  ]
+}
