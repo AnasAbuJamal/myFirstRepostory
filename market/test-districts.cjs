@@ -13,7 +13,7 @@ var cityState={sites:{mill:{built:true}}}, campusState={plots:{mill:{rotation:1}
 var CITY_SITES=[{name:"Mill",title:"Mill",kind:"factory",id:"mill",x:-26,z:9}];
 var notice=()=>{},stopMovement=()=>{},refreshPosition=()=>{},drawScene=()=>{};
 var action=null,cityBookList=()=>action="library", campusSchool=()=>action="practice", pathwayHome=()=>action="school";
-var jobPanel=()=>action="careers",pathwayQuran=()=>action="quran",schoolQuizPanel=()=>action="quiz",schoolGuide=()=>action="guide";
+var lmsHome=()=>action="learning",jobPanel=()=>action="careers",pathwayQuran=()=>action="quran",schoolQuizPanel=()=>action="quiz",schoolGuide=()=>action="guide";
 var campusFactoryMachine=()=>action="factory", systemsPanel=tab=>action=tab;
 `,sandbox);
  return code=>vm.runInContext(code,sandbox);
@@ -56,7 +56,7 @@ test('school, library and relocated factory interiors invoke existing systems',(
  districtInteract({key:'exit'});
  [schoolAction,libraryAction,ok,campusInterior===null]
  `);
- assert.equal(JSON.stringify(result),JSON.stringify(['school','library',true,true]));
+ assert.equal(JSON.stringify(result),JSON.stringify(['learning','library',true,true]));
 });
 
 test('every school workstation is on walkable floor and invokes its own activity',()=>{
@@ -72,5 +72,5 @@ test('every school workstation is on walkable floor and invokes its own activity
   })
  `);
  assert.equal(JSON.stringify(result.map(row=>row[0]&&row[1])),JSON.stringify(Array(7).fill(true)));
- assert.equal(JSON.stringify(result.map(row=>row[2])),JSON.stringify(['school','careers','quran','quiz','library','practice','guide']));
+ assert.equal(JSON.stringify(result.map(row=>row[2])),JSON.stringify(['learning','careers','quran','quiz','library','learning','learning']));
 });
