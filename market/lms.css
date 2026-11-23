@@ -1,0 +1,107 @@
+/* LumenVale Learning Hub: Canvas-inspired teaching and learning UI, original design. */
+.lms-banner{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:.1rem 0 .8rem;padding:1.15rem 1.35rem;border-radius:17px;background:linear-gradient(120deg,#1c4438,#356a5a 65%,#547c69);color:#fffdf2;box-shadow:0 9px 22px #16342b26}
+.lms-eyebrow{display:block;letter-spacing:.13em;font-size:.63rem;font-weight:800;color:#d1e7bd;margin-bottom:.45rem}
+.lms-banner h2{margin:0;font:700 clamp(1.4rem,3vw,1.98rem)/1.2 Georgia,serif;color:#fff8e8}
+.lms-banner p{font-size:.82rem;line-height:1.5;color:#d7e6d8;margin:.48rem 0 .1rem}
+.lms-banner-icon{font:700 2.5rem Georgia,serif;border:1px solid #ffffff40;border-radius:50%;height:65px;width:65px;flex:none;display:grid;place-items:center;color:#e5d298}
+.lms-nav,.lms-actions{display:flex;gap:.48rem;align-items:center;flex-wrap:wrap;margin:.8rem 0 1.2rem}
+.lms-button,.lms-nav button,.lms-tabs button{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;border:1px solid #c2d4c4;color:#315546;background:#fffcf4;padding:.58rem .83rem;min-height:37px;border-radius:9px;font:700 .8rem system-ui,sans-serif;text-align:center;cursor:pointer;text-decoration:none;transition:background .17s,border-color .17s,transform .17s}
+.lms-button:hover,.lms-nav button:hover,.lms-tabs button:hover{background:#edf5e9;border-color:#6e9c79;transform:translateY(-1px)}
+.lms-button:focus-visible,.lms-nav button:focus-visible,.lms-tabs button:focus-visible,.lms-choice:focus-visible,.lms-course-card:focus-visible{outline:3px solid #e0ae55;outline-offset:2px}
+.lms-button.primary{background:#376b54;border-color:#376b54;color:#fffdf3}
+.lms-button.primary:hover{background:#285a44}
+.lms-nav .active,.lms-tabs .active{background:#e2efe5;border-color:#5e936c;color:#205d42}
+.lms-disclaimer{font-size:.73rem;line-height:1.6;color:#758676;margin:1.2rem 0 .1rem}
+.lms-profile{display:flex;align-items:end;gap:.8rem;flex-wrap:wrap;padding:.7rem .9rem;background:#f2f5ec;border:1px solid #d7e4d8;border-radius:11px}
+.lms-profile label,.lms-form label{display:grid;gap:.35rem;color:#3d624e;font-size:.79rem;font-weight:750}
+.lms-profile select,.lms-form input,.lms-form textarea,.lms-form select,.lms-prompt{border:1px solid #b9cbbc;background:#fffef9;border-radius:9px;padding:.7rem .8rem;color:#243f32;font:400 .9rem/1.5 system-ui,sans-serif;max-width:100%;width:100%}
+.lms-profile select{min-width:175px}
+.lms-form textarea{resize:vertical;min-height:110px}
+.lms-form{display:grid;gap:.9rem;margin:1rem 0;max-width:850px}
+.lms-form button[type=submit],.lms-form button:not([type]){justify-self:start}
+.lms-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+.lms-stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin:1rem 0 1.5rem}
+.lms-stat-grid>div{background:#f2f6ed;border:1px solid #dbe6d4;padding:.88rem 1rem;border-radius:12px;display:grid;gap:.25rem}
+.lms-stat-grid b{font:700 1.65rem Georgia,serif;color:#315e49}
+.lms-stat-grid small{font-size:.72rem;color:#697f70}
+.lms-section-title{display:flex;align-items:center;justify-content:space-between;gap:.7rem;border-bottom:1px solid #d9e3d6;padding-bottom:.5rem;margin:1.35rem 0 .85rem}
+.lms-section-title h3{margin:0;color:#2a5341;font:700 1.18rem Georgia,serif}
+.lms-section-title span{font-size:.74rem;color:#6c826e}
+.lms-course-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:.7rem 0 1.2rem}
+.lms-course-card{display:flex;flex-direction:column;gap:.65rem;align-items:stretch;padding:1.1rem;border:1px solid #d0ddcf;border-radius:13px;background:#fffef9;min-height:196px;text-align:left;box-shadow:0 5px 17px #2d50321a;cursor:pointer;transition:transform .16s,box-shadow .16s,border-color .16s}
+.lms-course-card:hover{border-color:#78a186;transform:translateY(-3px);box-shadow:0 10px 22px #2d503229}
+.lms-course-card strong{font:700 1.1rem/1.35 Georgia,serif;color:#294b39}
+.lms-course-tag{display:inline-flex;align-self:flex-start;font-size:.67rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#42775e;background:#e5f0e3;border:1px solid #cbdcc8;border-radius:999px;padding:.24rem .55rem}
+.lms-muted{color:#708572;font-size:.81rem;line-height:1.5}
+.lms-course-card .lms-muted{flex:1}
+.lms-progress{width:100%;height:7px;background:#e1eadd;border-radius:99px;overflow:hidden;display:block}
+.lms-progress i{height:100%;display:block;background:linear-gradient(90deg,#56a07c,#a5bc79);border-radius:99px}
+.lms-course-meta{font-size:.72rem;font-weight:750;color:#50765a;display:flex;justify-content:space-between}
+.lms-course-meta b{font-size:1rem}
+.lms-course-overview{padding:1rem 1.1rem;background:#f3f7f1;border:1px solid #d4e3d6;border-radius:13px;display:grid;gap:.75rem}
+.lms-course-overview p{margin:0;color:#3e604b}
+.lms-course-overview small{color:#607a68;font-size:.77rem}
+.lms-completed{color:#447b59;font-size:.75rem;font-weight:800}
+.lms-tabs{display:flex;gap:.4rem;overflow-x:auto;padding:.2rem 0;margin:1.1rem 0}
+.lms-tabs button{border-radius:7px;flex:none}
+.lms-module-list,.lms-announcements,.lms-teacher-courses{display:grid;gap:.7rem}
+.lms-module{display:flex;align-items:center;gap:.9rem;padding:1rem;background:#fffcf7;border:1px solid #d5dfd0;border-radius:12px}
+.lms-module-num{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;background:#e7f0e5;color:#4d765a;font-weight:850;flex:none}
+.lms-module-body{display:grid;gap:.3rem;flex:1;min-width:0}
+.lms-module-body strong,.lms-assignment strong{color:#2b4b3a;font-size:.93rem}
+.lms-module-body small,.lms-assignment small,.lms-teacher-course small{display:block;color:#78907b;font-size:.71rem;line-height:1.55}
+.lms-module-actions{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.4rem}
+.lms-module-actions button{border:1px solid #c8d9ca;color:#3d7357;background:#f4f9ef;border-radius:7px;padding:.35rem .6rem;font-size:.73rem;cursor:pointer}
+.lms-module-actions button:hover{background:#e1f1dd}
+.lms-check{color:#5d9470;font-size:1.25rem}
+.lms-lesson{display:grid;gap:1rem}
+.lms-objectives{padding:.9rem 1.2rem;border-radius:11px;background:#eef3e8;border:1px solid #d8e4d1;color:#335442}
+.lms-objectives ul{margin:.55rem 0 .1rem;padding-left:1.25rem;line-height:1.7;font-size:.87rem}
+.lms-lesson article{white-space:pre-wrap;padding:1.4rem 1.55rem;border:1px solid #e3d9c3;background:#fffaf0;border-radius:12px;color:#394b3c;font:1.07rem/1.95 Georgia,serif}
+.lms-assignment{display:grid;gap:.65rem;border-radius:11px;border:1px solid #d9e2d7;padding:1rem;background:#fffdf8;margin:.55rem 0}
+.lms-assignment p{color:#496451;font-size:.83rem;line-height:1.65;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.lms-assignment .lms-button{justify-self:start}
+.lms-pill{justify-self:start;font-size:.73rem;color:#446b4c;background:#e8f0e4;border-radius:999px;padding:.32rem .68rem}
+.lms-announcements article{border:1px solid #d9e2d7;border-radius:11px;background:#fffdf7;padding:1rem;display:grid;gap:.4rem}
+.lms-announcements article strong{color:#2a513b}
+.lms-announcements article small{color:#829083}
+.lms-announcements article p{font-size:.84rem;line-height:1.6;margin:0;color:#496451}
+.lms-table-scroll{overflow:auto;border:1px solid #d9e3d8;border-radius:11px}
+.lms-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.lms-table th,.lms-table td{text-align:left;padding:.82rem;border-bottom:1px solid #e3eadf}
+.lms-table th{color:#346144;background:#edf4ea}
+.lms-question{display:grid;gap:.65rem;margin:1rem 0}
+.lms-question h3{font:700 1.17rem/1.55 Georgia,serif;color:#2b4837;margin:.2rem 0 .6rem}
+.lms-question small{font-size:.75rem;color:#69826e}
+.lms-choice{display:flex;gap:.85rem;align-items:center;text-align:left;background:#fffdfa;border:1px solid #c8d7c6;padding:.8rem;border-radius:9px;color:#2c5140;cursor:pointer;font:600 .87rem/1.5 system-ui,sans-serif}
+.lms-choice b{display:grid;place-items:center;border-radius:7px;background:#e7eee5;color:#345b42;width:30px;height:30px;flex:none}
+.lms-choice:hover:not(:disabled){border-color:#6da67d;background:#eef7e9}
+.lms-choice.correct{border-color:#67a77c;background:#e4f4e3}
+.lms-choice:disabled{cursor:default}
+.lms-flashcard{min-height:250px;width:100%;border:1px solid #b8d0be;border-radius:16px;background:linear-gradient(140deg,#e8f1e7,#fff9e8);display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:1.3rem;gap:1rem;text-align:center;cursor:pointer;color:#2d5542;box-shadow:0 12px 26px #264b3020}
+.lms-flashcard small,.lms-flashcard span{font-size:.76rem;color:#567b63}
+.lms-flashcard strong{font:700 1.35rem/1.5 Georgia,serif;max-width:540px}
+.lms-feedback{padding:1rem;border:1px solid #b4d6bc;background:#eaf5e9;color:#2c6142;border-radius:11px;margin:.8rem 0}
+.lms-feedback p{font-size:.88rem;line-height:1.6}
+.lms-exam-top{display:flex;justify-content:space-between;gap:.8rem;flex-wrap:wrap;background:#eaf0e7;border:1px solid #cbd9ca;padding:.8rem 1rem;border-radius:10px;color:#3c624a;font-size:.8rem;font-weight:750}
+.lms-result{display:flex;flex-direction:column;align-items:center;gap:.4rem;margin:1.2rem 0;padding:1.5rem;border-radius:13px;background:linear-gradient(120deg,#e5f1e4,#fff8e9)}
+.lms-result strong{font:700 3.4rem Georgia,serif;color:#286247}
+.lms-result span{font-size:.87rem;color:#53735e}
+.lms-warning{background:#fff7e7;border:1px solid #e1cfa9;padding:1.05rem;border-radius:12px;color:#67573a;font-size:.84rem;line-height:1.6}
+.lms-warning p{margin:.35rem 0 .9rem}
+.lms-teacher-course{display:flex;align-items:center;justify-content:space-between;gap:.8rem;background:#fffdfa;border:1px solid #d6dfd1;padding:.85rem;border-radius:11px;flex-wrap:wrap}
+.lms-teacher-course b{color:#294e3b;font-size:.9rem}
+.lms-teacher-course .lms-actions{margin:0}
+.lms-prompt{min-height:175px;resize:vertical;white-space:pre-wrap}
+.lms-form label:has(input[type="file"]){background:#eff4e8;padding:1rem;border:1px dashed #a1b99f;border-radius:10px}
+@media(max-width:680px){
+ .lms-course-grid,.lms-stat-grid{grid-template-columns:1fr}
+ .lms-two{grid-template-columns:1fr}
+ .lms-banner-icon{display:none}
+ .lms-banner{padding:1rem}
+ .lms-module{padding:.75rem;gap:.6rem}
+ .lms-module-num{width:33px;height:33px}
+ .lms-module-actions button{padding:.35rem}
+}
+@media(prefers-reduced-motion:reduce){.lms-button,.lms-course-card{transition:none}}
+
