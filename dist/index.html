@@ -5898,7 +5898,7 @@ const CAMPUS_DECOR=[
  {id:"house",name:"Small house",price:90,color:"#c7a586"},
  {id:"lamp",name:"Streetlight",price:25,color:"#cfbd85"}
 ];
-function campusEmpty(){return {version:2,subjects:{},career:null,careerLevel:0,words:[],decor:[],plots:{},lastExam:null};}
+function campusEmpty(){return {version:2,subjects:{},career:null,careerLevel:0,words:[],decor:[],plots:{},enrolled:[],lastExam:null};}
 function campusSanitize(input){
  const save=campusEmpty();
  if(!input||typeof input!=="object")return save;
@@ -5909,6 +5909,7 @@ function campusSanitize(input){
    exams:Array.isArray(info.exams)?info.exams.filter(n=>Number.isFinite(n)&&n>=0&&n<=100).slice(-12):[]
   };
  }
+ save.enrolled=Array.isArray(input.enrolled)?[...new Set(input.enrolled.filter(x=>CAMPUS_SUBJECTS.some(s=>s.id===x)))]:CAMPUS_SUBJECTS.filter(x=>input.subjects?.[x.id]?.complete?.length||input.subjects?.[x.id]?.exams?.length).map(x=>x.id);
  if(CAMPUS_CAREERS.some(x=>x.id===input.career))save.career=input.career;
  save.careerLevel=Math.max(0,Math.min(99,Number(input.careerLevel)||0));
  save.words=Array.isArray(input.words)?input.words.filter(x=>x&&typeof x.word==="string"&&x.word.length<=80).slice(0,500):[];
@@ -5983,7 +5984,7 @@ function campusSchool(){
   const info=campusSubjectStatus(sub.id),last=info.exams.at(-1);
   return '<button type="button" class="wave-course" data-wave="class" data-id="'+sub.id+'">'+
    '<span class="wave-course-icon">'+sub.icon+'</span><strong>'+sub.name+'</strong>'+
-   '<span>'+info.complete.length+'/3 lessons · '+(last==null?'No exam yet':campusGrade(last).letter+' · '+last+'%')+'</span></button>';
+   '<span>'+(campusState.enrolled.includes(sub.id)?'Enrolled · '+info.complete.length+'/3 lessons': 'Not enrolled · Click to choose')+' · '+(last==null?'No exam yet':campusGrade(last).letter+' '+last+'%')+'</span></button>';
  }).join("");
  cityPanel("LumenVale Academy","Your School & Curriculum",
  '<p>Choose classes and study at your own pace. Complete all three units in a subject, then take its exam. Your GPA uses the most recent exam in each subject.</p>'+
@@ -5995,6 +5996,12 @@ function campusSchool(){
 }
 function campusClass(id){
  const sub=CAMPUS_SUBJECTS.find(x=>x.id===id);if(!sub)return;
+ if(!campusState.enrolled.includes(id)){
+  cityPanel("Academy / "+sub.name,sub.name+" Enrollment",
+  '<p>Choose this subject for your timetable. You can take multiple classes; only final exams appear in your GPA.</p>'+
+  '<button class="button primary" data-wave="enroll" data-id="'+sub.id+'">Enroll in '+sub.name+'</button>'+
+  '<button class="button" data-wave="school">Back to school</button>');return;
+ }
  const info=campusSubjectStatus(id);
  const units=sub.units.map((unit,i)=>'<div class="wave-unit"><span>'+
   (info.complete.includes(i)?'✓':'◯')+' '+unit.name+'</span>'+
@@ -6009,6 +6016,11 @@ function campusClass(id){
  '<button type="button" class="button primary" data-wave="exam" data-id="'+id+'" '+
  (!allowed?'disabled':'')+'>Take final exam</button>'+
  '<button class="button" data-wave="school">Back to School</button>');
+}
+function campusEnroll(id){
+ if(!CAMPUS_SUBJECTS.some(s=>s.id===id))return;
+ if(!campusState.enrolled.includes(id))campusState.enrolled.push(id);
+ campusSave();campusClass(id);notice("Enrolled in your chosen class.");
 }
 function campusUnit(id,index){
  const sub=CAMPUS_SUBJECTS.find(x=>x.id===id),unit=sub?.units[index];if(!unit)return;
@@ -6131,8 +6143,8 @@ function campusArchitect(){
  let body='<p>Select a construction item, then click an open square on the city grid. Each new road, park, tree or house costs coins. To relocate an owned plot, select it first, then click the new location.</p>';
  body+='<div class="wave-builder-tools">'+CAMPUS_DECOR.map(d=>'<button type="button" class="'+(campusArchitectChoice===d.id&&!campusMoveChoice?'selected':'')+
  '" data-wave="build-choice" data-id="'+d.id+'">'+d.name+' · '+d.price+' coins</button>').join("")+'</div>';
- body+='<div class="wave-builder-tools">'+plots.map(site=>'<button type="button" class="'+(campusMoveChoice===site.id?'selected':'')+
- '" data-wave="move-choice" data-id="'+site.id+'">Move '+esc(site.title)+'</button>').join('')+'</div>';
+ body+='<div class="wave-builder-tools">'+plots.map(site=>'<span class="wave-plot-tools"><button type="button" class="'+(campusMoveChoice===site.id?'selected':'')+
+ '" data-wave="move-choice" data-id="'+site.id+'">Move '+esc(site.title)+'</button><button type="button" data-wave="rotate" data-id="'+site.id+'">↻ Rotate</button></span>').join('')+'</div>';
  body+='<p class="city-sub">Move a purchased plot for 20 coins. Decorative roads are visual paths; full road-navigation AI is a future upgrade.</p>';
  const markers=CITY_SITES.map(site=>'<span class="wave-grid-plot" style="left:'+((site.x+45)/90*100)+'%;top:'+((site.z+18)/54*100)+'%" title="'+
  esc(site.title)+'"></span>').join('');
@@ -6140,6 +6152,13 @@ function campusArchitect(){
  body+='<div class="wave-builder-footer">Selection: <b>'+esc(campusMoveChoice?CITY_SITES.find(x=>x.id===campusMoveChoice)?.title||'Plot':
  CAMPUS_DECOR.find(x=>x.id===campusArchitectChoice)?.name||'Tree')+'</b><span>Coins: '+cityState.coins.toLocaleString()+'</span></div>';
  cityPanel("City Architect","Build Your Own City",body);
+}
+function campusRotate(id){
+ const site=CITY_SITES.find(x=>x.id===id);
+ if(!site||!cityState.sites[id]?.owned)return false;
+ const prev=campusState.plots[id]||{x:site.x,z:site.z,rotation:0};
+ campusState.plots[id]={x:site.x,z:site.z,rotation:((prev.rotation||0)+1)%4};
+ campusSave();campusArchitect();drawScene();return true;
 }
 function campusPlace(x,z){
  x=Math.round(x/2)*2;z=Math.round(z/2)*2;
@@ -6220,6 +6239,7 @@ function campusInit(){
   const act=el.dataset.wave,id=el.dataset.id,index=Number(el.dataset.unit);
   if(act==="school")campusSchool();
   if(act==="class")campusClass(id);
+  if(act==="enroll")campusEnroll(id);
   if(act==="unit")campusUnit(id,index);
   if(act==="unit-answer")campusUnitAnswer(id,index,el.dataset.answer);
   if(act==="exam")campusExam(id);
@@ -6235,6 +6255,7 @@ function campusInit(){
   if(act==="architect")campusArchitect();
   if(act==="build-choice"){campusArchitectChoice=id;campusMoveChoice=null;campusArchitect();}
   if(act==="move-choice"){campusMoveChoice=id;campusArchitect();}
+  if(act==="rotate")campusRotate(id);
   if(act==="factory-help"&&campusInterior){cityManual(campusInterior.id);campusFactoryMachine();}
   if(act==="factory-upgrade"&&campusInterior){cityUpgrade(campusInterior.id);campusFactoryMachine();}
   if(act==="factory-hire"&&campusInterior){cityHire(campusInterior.id);campusFactoryStaff();}
