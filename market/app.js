@@ -605,3 +605,4 @@ phoneInit();
 jobInit();
 pathwayInit();
 schoolActivitiesInit();
+lmsInit();
