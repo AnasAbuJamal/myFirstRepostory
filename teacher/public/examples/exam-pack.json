@@ -1,0 +1,41 @@
+{
+  "kind": "lumenvale.exam-pack",
+  "version": 1,
+  "courseId": "SCI-M1",
+  "title": "Scientific Reasoning Exam",
+  "gradePolicy": {
+    "passPercent": 70
+  },
+  "exam": {
+    "title": "Scientific Reasoning — Final Assessment",
+    "questions": [
+      {
+        "prompt": "What makes an experiment fair?",
+        "choices": [
+          "Keeping most conditions the same",
+          "Changing every condition",
+          "Ignoring measurements"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "prompt": "Why do scientists repeat measurements?",
+        "choices": [
+          "To identify patterns and variation",
+          "To make data meaningless",
+          "To avoid writing results"
+        ],
+        "correctIndex": 0
+      },
+      {
+        "prompt": "Which item is an observation?",
+        "choices": [
+          "A measured plant height of 12 cm",
+          "The plant is probably lucky",
+          "The experiment is perfect"
+        ],
+        "correctIndex": 0
+      }
+    ]
+  }
+}
