@@ -87,6 +87,7 @@ test('City Phone categories keep student, city and teacher actions discoverable'
  vm.runInContext('phoneOpen("learning")',c);
  assert.match(calls.panels.at(-1).html,/YOUR NEXT STEP/);
  assert.match(calls.panels.at(-1).html,/data-phone-app="continue"/);
+ assert.match(calls.panels.at(-1).html,/data-phone-app="teacher-content"/);
  assert.match(calls.panels.at(-1).html,/data-phone-category="city"/);
  vm.runInContext('phoneResumeLearning()',c);
  assert.equal(calls.lesson.length,1);
