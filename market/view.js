@@ -318,7 +318,7 @@ function createOfficeView() {
   stand.visible = false;
   exterior.add(stand);
   const cityRenderer=createCityWorld({T,exterior,box,piece,renderer,visuals});
-  const lumenRenderer=createLumenWorld({T,exterior,box,piece,renderer});
+  const lumenRenderer=createLumenWorld({T,exterior,box,piece,renderer,visuals});
   const campusRenderer=createCampusWorld({T,exterior,box,piece,renderer,visuals});
   const districtRenderer=createDistrictWorld({T,scene,exterior,renderer,visuals});
   office.traverse(mesh=>{
