@@ -101,10 +101,20 @@ async function main(){
   console.log('School hall and stations:',hall.reached.join(', '),'cells:',hall.reachableCells);
 
   // Real keyboard input, not only model-level walkStep.
+  // Allow shadow/material shader compilation to settle before timed keyboard
+  // movement; check the actual app input state to diagnose any regression.
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   const previous=await page.evaluate(()=>player.z);
-  await page.keyboard.down('w');await page.waitForTimeout(900);await page.keyboard.up('w');
+  await page.keyboard.down('w');
+  const held=await page.evaluate(()=>({
+   walking:isWalking(),key:moveKeys.has('w'),z:player.z,
+   ahead:canWalk(player.x,player.z-.35,{doorOpen:false,stand:false})
+  }));
+  await page.waitForTimeout(1900);
+  await page.keyboard.up('w');
   const moved=await page.evaluate(()=>player.z);
-  assert.ok(moved<previous-.15,'W key did not move player forward in school: '+previous+' -> '+moved);
+  assert.ok(held.walking&&held.key&&held.ahead,'School cannot accept keyboard walking: '+JSON.stringify(held));
+  assert.ok(moved<previous-.15,'W key did not move in school: '+previous+' -> '+moved+' held='+JSON.stringify(held));
   await page.screenshot({path:'lumenvale-school-smoke.png'});
   // A second perspective checks that the reading library is part of school.
   const libraryView=await page.evaluate(()=>{

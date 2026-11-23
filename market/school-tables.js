@@ -148,7 +148,8 @@ function createSchoolFurnitureTable(T,variant='classroom',low=false){
   }
   instanced.computeBoundingSphere();
   instanced.name='LumenVale table '+variant+' '+type;
-  instanced.receiveShadow=true;instanced.castShadow=!low;
+  // Fine bolts and foot details do not need expensive shadow-map passes.
+  instanced.receiveShadow=true;instanced.castShadow=!low&&['walnut','deep','steel'].includes(type);
   root.add(instanced);
  }
  root.name='LumenVale '+variant+' 3D walnut/steel table';
