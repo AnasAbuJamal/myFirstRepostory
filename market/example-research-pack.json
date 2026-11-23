@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "projects": [
+    {
+      "id": "town-plants-investigation",
+      "title": "Investigating Plant Growth Around Town",
+      "field": "Biology",
+      "summary": "A teacher-created sample project about observation, controlled measurements, and scientific conclusions.",
+      "text": "A community science team wants to investigate why plants near the town library are growing differently from plants near the market. The researchers first record where the plants grow, how much sunlight each location receives, and whether the soil is regularly watered. They select similar plants and compare their heights over several weeks. To make the investigation fair, they plan to measure height at the same time each week and use the same measurement tool. They also describe possible alternative explanations, including differences in soil nutrients. The team concludes that repeated observations and careful measurement are more useful than a guess. Their report should distinguish observations from opinions, show the collected data, and explain why a small study cannot prove that sunlight alone caused every difference.",
+      "questions": [
+        {
+          "prompt": "Which measurements are collected repeatedly during the investigation?",
+          "choices": [
+            "Plant heights",
+            "Street prices",
+            "Library attendance"
+          ],
+          "correctIndex": 0
+        },
+        {
+          "prompt": "Why is it helpful to use the same measuring tool?",
+          "choices": [
+            "It makes measurements more consistent",
+            "It removes the need for data",
+            "It guarantees the hypothesis is correct"
+          ],
+          "correctIndex": 0
+        },
+        {
+          "prompt": "What is an important limitation of the study?",
+          "choices": [
+            "More than one environmental factor may explain differences",
+            "Plants never need water",
+            "Data should be ignored"
+          ],
+          "correctIndex": 0
+        }
+      ],
+      "reward": 110,
+      "teacher": "Example Research Teacher"
+    }
+  ]
+}
