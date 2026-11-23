@@ -1,0 +1,59 @@
+/* Campus school, exam cards, vocabulary, first-person architect and city map */
+.wave-nav{font-size:.73rem;min-width:0;padding:.42rem .48rem}
+.wave-school-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin:1rem 0}
+.wave-school-stats>div{display:flex;flex-direction:column;gap:.3rem;border:1px solid #c7d8ca;background:#eaf2e9;border-radius:10px;padding:.85rem}
+.wave-school-stats small{color:#667e6e;font-size:.8rem}
+.wave-school-stats b{font-size:1.35rem;color:#214d3d}
+.wave-course-grid,.wave-career-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:1rem 0}
+.wave-course{display:flex;flex-direction:column;gap:.45rem;text-align:left;padding:1rem;border:1px solid #c8d9c9;border-radius:12px;background:#fffdfa;min-height:135px;transition:transform .16s,box-shadow .16s}
+.wave-course:hover{transform:translateY(-2px);box-shadow:0 8px 18px #23463224}
+.wave-course-icon{font-size:1.9rem}
+.wave-course strong{font:700 1.12rem Georgia,serif;color:#294c3b}
+.wave-course>span:last-child{font-size:.8rem;color:#6a826d}
+.wave-unit{display:flex;align-items:center;justify-content:space-between;gap:.7rem;border-bottom:1px solid #d6e4d4;padding:.68rem .2rem}
+.wave-units{margin:1rem 0}
+.wave-lesson{padding:1rem;border:1px solid #d8ddce;background:#faf9ed;border-radius:10px}
+.wave-lesson>p{font:1.14rem/1.85 Georgia,serif;color:#414b38}
+.wave-lesson>h3{margin-top:1.7rem}
+.wave-lesson .city-answer{margin:.45rem 0}
+.wave-exam-result{text-align:center;margin:1.2rem 0;padding:2rem;border-radius:13px;background:#e8f1e8}
+.wave-exam-result b{display:block;font-size:3.6rem;color:#2d6347;line-height:1.1}
+.wave-exam-result span{display:block;margin-top:.55rem;font-weight:700;color:#577354}
+.wave-career{display:grid;align-content:start;gap:.62rem;padding:1.1rem;border:1px solid #c9d9c9;border-radius:12px;background:#fffdf5}
+.wave-career>span{font-size:2rem;color:#647e74}
+.wave-career h3{margin:0;color:#315844}
+.wave-career p{font-size:.9rem;margin:0;color:#5d755f}
+.wave-career small{color:#a07843}
+.wave-career button{margin-top:1rem}
+.wave-vocab-form{display:grid;grid-template-columns:1fr 1.5fr auto;gap:.5rem;margin:1.2rem 0}
+.wave-vocab-form input{border:1px solid #b9cdbc;padding:.7rem;border-radius:8px;background:#fff}
+.wave-word-list{display:grid;gap:.48rem}
+.wave-word-list article{display:flex;justify-content:space-between;align-items:center;gap:.8rem;padding:.75rem .9rem;border:1px solid #d3dfce;border-radius:9px;background:#f7f9f2}
+.wave-word-list article>div{display:grid;gap:.2rem}
+.wave-word-list strong{font-size:1.04rem;color:#2d593c}
+.wave-word-list small{font-size:.78rem;color:#687d70}
+.wave-builder-tools{display:flex;flex-wrap:wrap;gap:.45rem;margin:.75rem 0}
+.wave-builder-tools button{padding:.56rem .74rem;border:1px solid #c2d5bf;border-radius:8px;background:#f2f6ef;color:#325844;font-size:.8rem;font-weight:700}
+.wave-builder-tools button.selected{background:#315e49;color:#fff5d8;border-color:#315e49}
+.wave-map-area{margin:1rem 0;max-width:100%;overflow:auto;border:1px solid #a9bfa5;border-radius:12px;padding:.55rem;background:#edf3e8}
+.wave-map,.wave-builder-map{width:100%;min-height:260px;height:clamp(260px,40vw,400px);position:relative;background:
+ linear-gradient(90deg,transparent 48.8%,#c9c3a6 49%,#c9c3a6 51%,transparent 51.2%),
+ linear-gradient(0deg,transparent 48.7%,#c9c3a6 49%,#c9c3a6 51%,transparent 51.3%),
+ repeating-linear-gradient(0deg,#ecf3e7 0 24px,#dcead8 25px 26px),
+ repeating-linear-gradient(90deg,#ecf3e7 0 24px,#dcead8 25px 26px);
+ border-radius:8px;overflow:hidden}
+.wave-builder-map{cursor:crosshair}
+.wave-grid-plot{position:absolute;width:14px;height:14px;border:2px solid #e1bd72;background:#5c7e66;transform:translate(-50%,-50%);border-radius:4px;pointer-events:none}
+.wave-map-pin{position:absolute;transform:translate(-50%,-50%);display:grid;justify-items:center;pointer-events:none;text-align:center}
+.wave-map-pin>span{color:#315b46;font-size:1.4rem;line-height:1}
+.wave-map-pin small{background:#274a3ded;border-radius:5px;padding:.15rem .28rem;color:white;font-size:.58rem;max-width:95px}
+.wave-builder-footer{display:flex;justify-content:space-between;gap:1rem;color:#365a44;font-size:.85rem}
+.wave-staff-roster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin:.8rem 0}
+.wave-staff-roster>div{background:#eaf2e7;border-radius:9px;padding:.85rem;color:#375d46}
+@media(max-width:740px){
+ .wave-course-grid,.wave-career-grid{grid-template-columns:1fr}
+ .wave-vocab-form{grid-template-columns:1fr}
+ .wave-school-stats>div{padding:.55rem}
+ .wave-nav{font-size:.58rem}
+}
+@media(prefers-reduced-motion:reduce){.wave-course{transition:none}}
