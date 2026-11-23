@@ -172,3 +172,20 @@ reports, and live security cameras.
 `district-world.js` builds shared instanced streets, facade details, and
 interiors. WebGL uses a cached local directional shadow map. The Canvas
 fallback renders the same geometry with simpler lighting.
+
+## Vehicle Design Garage — November 2026
+
+The vehicle art has been rebuilt as an original, modular **Three.js** system in `market/vehicles.js`. Rather than using generic box-shaped cars, it now generates **seven individual silhouettes**: Juniper Hatch (compact), Vale Executive (sedan), Riviera Sport (coupe), Evergreen SUV, Foundry Pickup, Vale Courier (delivery van), and Learning Express (school bus).
+
+Each model includes shaped front and rear body sections, separate windshield and side windows, B-pillars, door handles, rear-view mirrors, grille slats, headlights, rear/brake lights, trim, interior seats, and four animated wheels with tires, rims and detailed spokes. Different types receive distinctive rooflines, van cargo panels, SUV roof rails, pickup beds, sport spoilers, or school-bus windows and lettering. Vehicle solid, glass, and lighting panels are batched into a few vertex-coloured meshes to help rendering performance; models use no external assets.
+
+### Vehicle collection and controls
+
+- **Moving city traffic:** Six different original models travel on existing Market, Foundry and Park avenues, oriented to their travel direction, with rotating wheels.
+- **Parked cars:** Parking bays use 3D sedan, SUV and coupe models instead of flat cuboids. Static pedestrian collision areas are enlarged accordingly.
+- **Personal garage:** Open the City Phone **Garage** app or select **Garage** in City Hall. First buy the Delivery Van from the City Upgrades menu. The garage lets you purchase additional cars with earned coins, switch between purchased models for free, and repaint the selected vehicle for 25 coins. Garage ownership and paint are saved in the current version-1 city systems save key, with older saves migrated automatically.
+- **Driving:** Approach your vehicle at the Eastbank Warehouse and press E or V. The car follows player heading, has an approximate driver-seat camera, and rotates its visible wheels while moving. Press E or V to exit.
+
+The school bus appears as city traffic but is not for sale in the current player garage. The vehicles are procedural stylized game assets and not high-polygon automotive CAD models. Traffic currently uses bounded straight road segments and reappears at the opposite end; realistic traffic rules, turning intersections, suspension physics, and detailed car collisions remain future improvements.
+
+The vehicle model tests are at `market/test-vehicles.cjs` (run `node --test market/test-vehicles.cjs`). The game source stays in `market/`, and `market/build.py` still compiles one offline HTML file.
