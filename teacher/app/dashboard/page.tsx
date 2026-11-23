@@ -1,5 +1,6 @@
 import {requireTeacher} from '@/lib/roles';
 import {createClassroom,createCourse,importBook,createAssignment,addStudent,recordGrade} from './actions';
+import {createResearch,importResearchPack,toggleResearch} from './research-actions';
 import Link from 'next/link';
 export const dynamic='force-dynamic';
 export default async function Dashboard(){
@@ -9,10 +10,11 @@ export default async function Dashboard(){
  const lessons=await sql`SELECT l.id,l.title,l.genre,l.word_count,c.title AS course FROM lessons l JOIN courses c ON c.id=l.course_id WHERE l.teacher_user_id=${user.id} ORDER BY l.created_at DESC`;
  const assignments=await sql`SELECT a.id,a.classroom_id,a.points,a.due_date,l.title AS lesson,cl.title AS classroom FROM assignments a JOIN lessons l ON l.id=a.lesson_id JOIN classrooms cl ON cl.id=a.classroom_id WHERE a.teacher_user_id=${user.id} ORDER BY a.created_at DESC`;
  const learners=await sql`SELECT e.id,e.display_name,e.student_code,e.classroom_id,cl.title AS classroom FROM class_enrollments e JOIN classrooms cl ON cl.id=e.classroom_id WHERE cl.teacher_user_id=${user.id} ORDER BY e.display_name`;
+ const research=await sql`SELECT id,title,field,publish_code,published,reward,created_at FROM research_projects WHERE teacher_user_id=${user.id} ORDER BY created_at DESC`;
  const grades=await sql`SELECT e.display_name,cl.title AS classroom,l.title AS lesson,a.points,ge.points_earned FROM grade_entries ge JOIN assignments a ON a.id=ge.assignment_id JOIN class_enrollments e ON e.id=ge.enrollment_id JOIN classrooms cl ON cl.id=a.classroom_id JOIN lessons l ON l.id=a.lesson_id WHERE a.teacher_user_id=${user.id} ORDER BY ge.graded_at DESC LIMIT 30`;
  return <div className="dashboard">
   <aside className="sidebar"><Link className="logo" href="/">✦ <span>LumenVale<small>TEACHER STUDIO</small></span></Link>
-   <nav><a href="#overview">Overview</a><a href="#classes">Classrooms</a><a href="#courses">Curriculum</a><a href="#books">Lesson Library</a><a href="#assignments">Assignments</a><a href="#grades">Gradebook</a></nav>
+   <nav><a href="#overview">Overview</a><a href="#classes">Classrooms</a><a href="#courses">Curriculum</a><a href="#books">Lesson Library</a><a href="#assignments">Assignments</a><a href="#grades">Gradebook</a><a href="#research">Research Studio</a></nav>
    <div className="sidebar-foot"><small>Authenticated role</small><strong>{role.toUpperCase()}</strong><span>{user.email}</span></div>
   </aside>
   <main className="workspace">
@@ -42,6 +44,31 @@ export default async function Dashboard(){
     <div className="panel wide" id="grades"><div className="section-head"><h2>Gradebook</h2><span>Assignments and percentages</span></div>
      <form action={recordGrade} className="inline-form"><select name="assignmentId" required defaultValue=""><option value="" disabled>Assignment</option>{assignments.map(a=><option key={String(a.id)} value={String(a.id)}>{a.classroom} · {a.lesson}</option>)}</select><select name="enrollmentId" required defaultValue=""><option value="" disabled>Student</option>{learners.map(l=><option key={String(l.id)} value={String(l.id)}>{l.display_name} · {l.classroom}</option>)}</select><input type="number" name="pointsEarned" min="0" max="1000" step=".5" placeholder="Points earned" required/><button className="button primary">Record grade</button></form>
      <table className="grade-table"><thead><tr><th>Student</th><th>Class</th><th>Lesson</th><th>Score</th><th>Grade</th></tr></thead><tbody>{grades.map((g,i)=>{const percentage=Math.min(100,100*Number(g.points_earned)/Number(g.points)),letter=percentage>=90?'A':percentage>=80?'B':percentage>=70?'C':percentage>=60?'D':'F';return <tr key={i}><td>{g.display_name}</td><td>{g.classroom}</td><td>{g.lesson}</td><td>{g.points_earned}/{g.points}</td><td><span className="grade-pill">{letter} · {percentage.toFixed(0)}%</span></td></tr>})}{!grades.length&&<tr><td colSpan={5}>No grades recorded yet.</td></tr>}</tbody></table>
+    </div>
+    <div className="panel wide" id="research"><div className="section-head"><h2>Research Studio</h2><span>{research.length} projects</span></div>
+     <p>Create original research readings with reviewed questions. Approved teachers can publish a code for students to enter in the Research Scientist job. Students cannot edit teacher projects through the game.</p>
+     <form action={createResearch} className="stack-form research-form">
+      <div className="research-form-row"><label>Research title<input name="title" placeholder="Investigating Water Quality" required minLength={4} maxLength={130}/></label>
+       <label>Research field<input name="field" placeholder="Biology, Chemistry, Engineering…" required maxLength={70}/></label>
+       <label>Reward (coins)<input type="number" name="reward" min={50} max={220} defaultValue={110} required/></label></div>
+      <label>Research summary<textarea name="summary" minLength={20} maxLength={1200} required placeholder="Describe the main research question and why it matters."/></label>
+      <label>Full reading passage<textarea name="readingText" rows={8} minLength={100} maxLength={12000} required placeholder="Write the research article or investigation, including evidence, methods and findings. Students must read this before taking the assessment."/></label>
+      <div className="research-questions">{[1,2,3].map(i=><fieldset key={i}><legend>Question {i}{i===3?' (optional)':''}</legend>
+       <input name={'prompt'+i} placeholder="Write your multiple-choice question" required={i<3} minLength={i<3?10:undefined}/>
+       <div className="research-form-row"><input name={'q'+i+'a'} placeholder="Answer A" required={i<3}/><input name={'q'+i+'b'} placeholder="Answer B" required={i<3}/><input name={'q'+i+'c'} placeholder="Answer C (optional)"/></div>
+       <label>Correct answer<select name={'correct'+i} defaultValue="0"><option value="0">A</option><option value="1">B</option><option value="2">C</option></select></label>
+      </fieldset>)}</div>
+      <button className="button primary">Publish research project</button>
+     </form>
+     <div className="research-import"><h3>Import a research JSON pack</h3><p>For teachers who prefer creating questions in a file first.</p>
+      <form action={importResearchPack} className="inline-form"><input type="file" name="file" accept=".json,application/json" required/>
+       <button className="button secondary">Import and publish</button></form></div>
+     <div className="records">{research.map(p=><article className="research-entry" key={String(p.id)}>
+       <div><strong>{String(p.title)}</strong><small>{String(p.field)} · {p.reward} coins · {p.published?'Published':'Unpublished'}</small>
+       <span>Share code: <code>{String(p.publish_code)}</code></span></div>
+       <div className="research-entry-actions"><a className="button secondary" href={'/api/research/'+p.publish_code+'?download=1'}>Export JSON</a>
+        <form action={toggleResearch}><input type="hidden" name="id" value={String(p.id)}/><button className="button">{p.published?'Unpublish':'Publish'}</button></form></div>
+      </article>)}{!research.length&&<p className="empty">Your research projects will appear here.</p>}</div>
     </div>
    </section>
    <footer className="footnote">Classroom records are protected by the teacher's server-side user ID. Student data does not automatically sync from the 3D game yet.</footer>
