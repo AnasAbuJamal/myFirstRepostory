@@ -120,6 +120,25 @@ function createLumenWorld({T,exterior,box,renderer}){
   for(const x of [-.30,.30])b(chest,x,.49,-.29,.07,.20,.02,'#cdb274');
   root.add(chest);return {cache,chest};
  });
+ const home=upgrades.get('home');
+ const homeDecor=new Map();
+ const flowers=new T.Group();
+ for(const x of [-2.45,-1.75,1.75,2.45]){
+  b(flowers,x,.34,-2.78,.4,.45,.40,'#b8896b');
+  sphere(flowers,x,.74,-2.78,.32,x<0?'#f1b4ac':'#e2d17f');
+ }home.add(flowers);homeDecor.set('flowers',flowers);
+ const patio=new T.Group();
+ b(patio,0,.16,-3.9,3.7,.26,2.9,'#b59a7b');
+ b(patio,-1.3,.7,-3.9,.23,1.1,.90,'#7e624b');
+ b(patio,1.3,.7,-3.9,.23,1.1,.9,'#7e624b');
+ b(patio,0,.82,-3.9,2.2,.16,1.25,'#9d8263');
+ home.add(patio);homeDecor.set('patio',patio);
+ const solar=new T.Group();
+ for(const x of [-1.6,0,1.6]){
+  const panel=b(solar,x,3.45,.15,1.4,.08,1.8,'#547e99');panel.rotation.x=-.23;
+  b(solar,x,3.52,.11,1.27,.03,.13,'#a2c4c9');
+ }
+ home.add(solar);homeDecor.set('solar',solar);
  const pedestrians=[];
  function figure(x,z,coat){
   const rig=new T.Group();rig.position.set(x,0,z);root.add(rig);
@@ -139,6 +158,7 @@ function createLumenWorld({T,exterior,box,renderer}){
    car.rotation.y=i===1?Math.PI:0;
   }
   for(const [id,group] of upgrades)group.visible=Boolean(systemsState.upgrades[id]);
+  for(const [id,group] of homeDecor)group.visible=Boolean(systemsState.homeDecor?.[id]);
   for(const item of hiddenChests){
    item.chest.visible=cityCompleted()>=item.cache.unlock&&!systemsState.treasures.includes(item.cache.id);
    if(item.chest.visible)item.chest.rotation.y=Math.sin(phase*.55)*.09;
