@@ -26,7 +26,7 @@ function createSchoolMaterialLibrary(T){
    ctx.strokeStyle='rgba(116,133,120,.32)';ctx.lineWidth=2;
    for(let q=0;q<=256;q+=64){ctx.beginPath();ctx.moveTo(q,0);ctx.lineTo(q,256);ctx.stroke();
     ctx.beginPath();ctx.moveTo(0,q);ctx.lineTo(256,q);ctx.stroke();}
-   for(let i=0;i<kind==='terrazzo'?1450:420;i++){
+   for(let i=0;i<(kind==='terrazzo'?1450:420);i++){
     const a=rnd()*256,b=rnd()*256,s=.5+rnd()*2.5;
     ctx.fillStyle=i%4===0?'rgba(88,105,101,.25)':'rgba(255,255,255,.28)';
     ctx.fillRect(a,b,s,s);
