@@ -1,0 +1,324 @@
+{
+  "kind": "lumenvale.catalog",
+  "version": 1,
+  "title": "LumenVale Academic Pathways",
+  "note": "Illustrative game progression only; not accredited courses or certificates.",
+  "stages": [
+    {
+      "id": "middle",
+      "name": "Middle School",
+      "minimumAge": 10,
+      "required": [
+        "ENG-M1",
+        "MAT-M1",
+        "SCI-M1",
+        "BIO-M1",
+        "QUR-M1"
+      ]
+    },
+    {
+      "id": "high",
+      "name": "High School",
+      "minimumAge": 14,
+      "required": [
+        "ENG-H1",
+        "MAT-H1",
+        "BIO-H1",
+        "CHM-H1",
+        "PHY-H1",
+        "QUR-H1"
+      ]
+    },
+    {
+      "id": "university",
+      "name": "University Foundation and Specialization",
+      "minimumAge": 16,
+      "required": []
+    }
+  ],
+  "programs": [
+    {
+      "id": "biology",
+      "name": "Biology",
+      "description": "Living systems, genetics, laboratory methods, and scientific research.",
+      "required": [
+        "BIO-U1",
+        "CHM-U1",
+        "MAT-U1",
+        "MBIO-U1",
+        "RES-U1"
+      ],
+      "inspiredBy": "University of Maine Biology",
+      "source": "https://sbe.umaine.edu/undergraduate/biology/biology-requirements/"
+    },
+    {
+      "id": "biochemistry",
+      "name": "Biochemistry",
+      "description": "Chemistry of living things, proteins, metabolism, and molecular research.",
+      "required": [
+        "BIO-U1",
+        "CHM-U1",
+        "MAT-U1",
+        "OCH-U1",
+        "BCH-U1",
+        "RES-U1"
+      ],
+      "inspiredBy": "University of Maine Biochemistry",
+      "source": "https://umaine.edu/biomed/undergraduate-programs/biochemistry/"
+    },
+    {
+      "id": "biomedical-engineering",
+      "name": "Biomedical Engineering",
+      "description": "Mathematics, physics, life sciences, engineering design, and research.",
+      "required": [
+        "BIO-U1",
+        "CHM-U1",
+        "MAT-U1",
+        "PHY-U1",
+        "BEN-U1",
+        "RES-U1"
+      ],
+      "inspiredBy": "University of Maine Biomedical Engineering",
+      "source": "https://umaine.edu/academics/biomedical-engineering-b-s/"
+    }
+  ],
+  "courses": [
+    {
+      "id": "ENG-M1",
+      "title": "English Foundations",
+      "stage": "middle",
+      "subject": "English",
+      "credits": 2,
+      "prerequisites": [],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "MAT-M1",
+      "title": "Mathematics Foundations",
+      "stage": "middle",
+      "subject": "Mathematics",
+      "credits": 2,
+      "prerequisites": [],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "SCI-M1",
+      "title": "General Science",
+      "stage": "middle",
+      "subject": "Science",
+      "credits": 2,
+      "prerequisites": [],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "BIO-M1",
+      "title": "Introduction to Biology",
+      "stage": "middle",
+      "subject": "Biology",
+      "credits": 2,
+      "prerequisites": [
+        "SCI-M1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "QUR-M1",
+      "title": "Qur'an Memorization I",
+      "stage": "middle",
+      "subject": "Qur'an",
+      "credits": 1,
+      "prerequisites": [],
+      "kind": "teacher-recitation",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "ENG-H1",
+      "title": "English Composition and Analysis",
+      "stage": "high",
+      "subject": "English",
+      "credits": 3,
+      "prerequisites": [
+        "ENG-M1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "MAT-H1",
+      "title": "Algebra and Geometry",
+      "stage": "high",
+      "subject": "Mathematics",
+      "credits": 3,
+      "prerequisites": [
+        "MAT-M1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "BIO-H1",
+      "title": "High School Biology",
+      "stage": "high",
+      "subject": "Biology",
+      "credits": 3,
+      "prerequisites": [
+        "BIO-M1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "CHM-H1",
+      "title": "High School Chemistry",
+      "stage": "high",
+      "subject": "Chemistry",
+      "credits": 3,
+      "prerequisites": [
+        "SCI-M1",
+        "MAT-M1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "PHY-H1",
+      "title": "Introduction to Physics",
+      "stage": "high",
+      "subject": "Physics",
+      "credits": 3,
+      "prerequisites": [
+        "MAT-M1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "QUR-H1",
+      "title": "Qur'an Memorization II",
+      "stage": "high",
+      "subject": "Qur'an",
+      "credits": 1,
+      "prerequisites": [
+        "QUR-M1"
+      ],
+      "kind": "teacher-recitation",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "BIO-U1",
+      "title": "General Biology with Laboratory",
+      "stage": "university",
+      "subject": "Biology",
+      "credits": 4,
+      "prerequisites": [
+        "BIO-H1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "CHM-U1",
+      "title": "General Chemistry with Laboratory",
+      "stage": "university",
+      "subject": "Chemistry",
+      "credits": 4,
+      "prerequisites": [
+        "CHM-H1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "MAT-U1",
+      "title": "Calculus I",
+      "stage": "university",
+      "subject": "Mathematics",
+      "credits": 4,
+      "prerequisites": [
+        "MAT-H1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "PHY-U1",
+      "title": "Physics for Scientists and Engineers",
+      "stage": "university",
+      "subject": "Physics",
+      "credits": 4,
+      "prerequisites": [
+        "PHY-H1",
+        "MAT-H1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "OCH-U1",
+      "title": "Organic Chemistry",
+      "stage": "university",
+      "subject": "Chemistry",
+      "credits": 4,
+      "prerequisites": [
+        "CHM-U1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "MBIO-U1",
+      "title": "Molecular and Cell Biology",
+      "stage": "university",
+      "subject": "Biology",
+      "credits": 4,
+      "prerequisites": [
+        "BIO-U1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "BCH-U1",
+      "title": "Principles of Biochemistry",
+      "stage": "university",
+      "subject": "Biochemistry",
+      "credits": 4,
+      "prerequisites": [
+        "OCH-U1",
+        "BIO-U1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "BEN-U1",
+      "title": "Introduction to Biomedical Engineering",
+      "stage": "university",
+      "subject": "Engineering",
+      "credits": 4,
+      "prerequisites": [
+        "MAT-U1",
+        "PHY-U1",
+        "BIO-U1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    },
+    {
+      "id": "RES-U1",
+      "title": "Research Methods and Project",
+      "stage": "university",
+      "subject": "Research",
+      "credits": 3,
+      "prerequisites": [
+        "BIO-U1"
+      ],
+      "kind": "academic",
+      "contentStatus": "awaiting-teacher-content"
+    }
+  ]
+}
