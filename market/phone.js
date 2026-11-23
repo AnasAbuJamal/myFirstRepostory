@@ -84,7 +84,7 @@ function phoneSync(){
 }
 function phoneInit(){
  const apps={
-  continue:phoneResumeLearning,school:lmsHome,'teacher-content':pathwayImportPanel,pathways:pathwayHome,
+  continue:phoneResumeLearning,school:lmsHome,'teacher-content':lmsImportPanel,pathways:pathwayHome,
   transcript:pathwayTranscript,library:cityBookList,words:campusVocabulary,
   journal:academyProfile,map:campusMap,property:cityPortfolio,
   production:()=>systemsPanel('warehouse'),architect:campusArchitect,

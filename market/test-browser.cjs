@@ -48,7 +48,7 @@ async function main(){
   console.log('PASS: textured sky and '+textures.surfaces+' school surface overlays');
 
   // Capture the school's street elevation before entering.
-  await page.evaluate(()=>{player={...player,x:-37,z:14,yaw:0,pitch:0};refreshPosition();drawScene();});
+  await page.evaluate(()=>{player={...player,x:-37,z:22,yaw:0,pitch:0};refreshPosition();drawScene();});
   await page.screenshot({path:'lumenvale-school-exterior.png'});
   // Walk into the school using the actual enter interaction.
   const entering=await page.evaluate(()=>{
@@ -148,6 +148,9 @@ async function main(){
   assert.match(await page.locator('#overlay').innerText(),/YOUR NEXT STEP/);
   assert.equal(await page.locator('#overlay [data-phone-category]').count(),4);
   assert.equal(await page.locator('#overlay [data-phone-app="teacher-content"]').count(),1);
+  await page.locator('#overlay [data-phone-app="teacher-content"]').click();
+  assert.match(await page.locator('#overlay').innerText(),/Teacher publication code/);
+  await page.evaluate(()=>phoneOpen('learning'));
   await page.locator('#overlay [data-phone-category="city"]').click();
   assert.equal(await page.locator('#overlay [data-phone-category="city"]').getAttribute('aria-pressed'),'true');
   await page.locator('#overlay [data-phone-category="tools"]').click();

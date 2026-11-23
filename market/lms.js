@@ -403,7 +403,7 @@ function lmsAcademicPack(c){
 }
 function lmsImportPanel(){
  lmsRender('Import teacher content','Load a teacher-created Learning Hub JSON pack or approved academic course code.',
- '<div class="lms-warning"><b>Import is local.</b><p>JSON is checked and saved in this browser. Approved teacher publication codes use the separate Academic Pathways importer.</p></div>'+
+ '<div class="lms-warning"><b>Import is local.</b><p>The teacher-created JSON is validated and saved in this browser. Publication codes fetch reviewed course content from the Teacher Studio; grades and submissions remain local practice records.</p></div>'+
  '<div class="lms-form"><label>Learning Hub JSON file (.json, up to 1 MB)<input id="lms-file" type="file" accept=".json,application/json"></label></div>'+
  '<div class="lms-form"><label>Teacher publication code<input id="lms-share-code" maxlength="45" autocomplete="off" placeholder="Paste a teacher-provided code"></label></div>'+
  '<div class="lms-actions">'+lmsC('import-code','Import from Teacher Studio','primary')+lmsC('template','Download JSON example')+

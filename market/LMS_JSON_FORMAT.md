@@ -1,46 +1,31 @@
-# LumenVale Learning Hub — School LMS
+# LumenVale Teacher-Created School — JSON Course Format
 
-The City Phone **School LMS** application and the physical school desks open a Canvas-inspired local teaching/learning workflow.
+## Empty school at startup
 
-## Student functions
+Students see **no preinstalled courses, exams, lessons, careers or laboratory subjects**. All official-looking curriculum must originate from a teacher JSON upload or a published share code. `lms-demo.json` is an optional downloadable test example and is never automatically installed. Existing unchanged demo seeds are migrated out of old browser learning saves.
 
-- Select a local student demo profile and enroll in published courses.
-- Read teacher lessons and mark modules complete.
-- Review flashcards and answer ungraded practice questions.
-- Take timed module exams with attempt limits and automatic scores.
-- Read announcements, submit written assignments, and view teacher feedback and grades.
-- Use City Phone → Pathways for the separate academic progression and teacher-published content.
+The Reading Library building is no longer separate. Its 3D study area, bookshelves and interactive book station are inside LumenVale School.
 
-## Teacher functions
+## Teacher workflow
 
-- Open City Phone → Teacher to use the LOCAL preview. This is **not** an authenticated educator identity.
-- Create courses with subject, teacher name, description, and publish toggle.
-- Add modules containing lessons, objectives, flashcards, practice questions, and timed exams.
-- Create written assignments and announcements; review student answers and record feedback.
-- Import/export versioned JSON to transfer content between browsers.
-- Export compatible Academic Pathways JSON from eligible courses, then publish it through the approved, separate Teacher Studio.
-- Approved teacher portal: https://lumenvale-teachers.vercel.app/dashboard/academics
+1. Visit the authenticated Teacher Studio at `/dashboard/courses` and open **AI Course + Chapter Prompt Builder**.
+2. Enter any original class name, code, subject and chapter count (1–24). Copy the generated prompt to your preferred AI assistant.
+3. Review all generated readings, flashcards and answers; upload the strict JSON file. The server validates required structure and unique chapter IDs.
+4. The Teacher Studio publishes reviewed curriculum and provides a share code. Students can import it through School > Import Chapters, or import a course JSON file offline.
+5. To revise the course, update the course JSON and republish. Student reimport replaces that matching course ID in their browser without automatically deleting recorded local grades.
 
-## Important privacy and security limits
+## JSON schema
 
-Local teacher preview has NO access controls. Anyone at the same browser can use it. All students, grades, submissions, and scores here are LOCAL DEMO data, stored in localStorage, not a real shared school gradebook. Do not enter actual student records, confidential personal information, or high-stakes test results. Local exams are not secure/proctored. Content JSON can be exported and imported, but student submissions and teacher feedback do not sync across devices. A real school backend requires authenticated student identities, server-checked permissions, data retention policies, and consent appropriate to minors.
+Single course: `{"kind":"lumenvale.lms-course","version":1,"id":"MY-COURSE","title":"...","subject":"...","teacher":"...","description":"...","published":true,"modules":[...],"assignments":[],"announcements":[]}`
 
-Academic Pathways is separate: approved educators can publish academic packs through the authenticated Teacher Studio with publication codes. Students can fetch such published content in-game via Pathways → Teacher JSON Import. Qur'an recitation still requires teacher assessment and one-time server verification. None of the game scores represent accredited education.
+- Every chapter is an item in `modules`, with a unique lowercase ID, title, objectives[], lesson:{title,content}, flashcards:[{front,back}], practice questions, and exam.
+- Questions use `{prompt,choices,correctIndex,explanation}` with 2–5 choices and a numeric zero-based correctIndex.
+- Exams support timeLimitMinutes (1–90) and attemptLimit (1–5).
+- Assignments support id, title, moduleId, prompt, points and optional YYYY-MM-DD dueDate.
+- Up to 24 chapters, 80 assignments, 40 exam questions per chapter, and a 1 MB upload limit.
 
-## LMS JSON contract
+**Important security limitation:** The student LMS is local/offline. Scores, assignments and student identities are not synchronized into the authenticated Teacher Studio database. Do not treat browser-local scores as verified records or upload private student information into public course JSON. The teacher portal requires the `teacher_course_packs` table in the database.
 
-- Single course: kind = lumenvale.lms-course, version = 1.
-- Bundle: kind = lumenvale.lms-bundle, version = 1, courses = array of course objects.
-- Course: id, title, subject, teacher, description, published, modules, assignments, announcements.
-- Module: id, title, objectives[], lesson:{title,content}, flashcards:[{front,back}], practice:[{prompt,choices,correctIndex,explanation}], exam:{title,questions,timeLimitMinutes,attemptLimit}.
-- Assignment: {id,title,moduleId,prompt,points,dueDate}.
-- Announcement: {id,title,body,date}.
-- Question correctIndex is zero-based, and choices must contain 2–5 answers.
-- Teacher form flashcard shorthand: one per line, Term | Definition.
-- Teacher form question shorthand: one per line, Question | Choice A | Choice B | ... | zero-based-correct-index.
-- Full downloadable starter examples are available in market/lms-demo.json.
-- Import file limit: 1 MB. Course and question content is validated before replacing local content.
+## Tests
 
-## Build and test
-
-Run python3 market/build.py --output dist/index.html, then node --test market/test-academics.cjs market/test-districts.cjs market/test-school.cjs market/test-lms.cjs. The CI workflow also runs a real Chromium browser test of school walking, lesson completion, timed exams, assignment submission, teacher grading, and the local gradebook.
+Rebuild the game with `python3 market/build.py --output dist/index.html` and run the GitHub Actions academic workflow. It validates source logic, browser interactions, school room reachability and uploads exterior/interior/library screenshots for review. The Teacher Studio typecheck runs separately.

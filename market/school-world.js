@@ -24,8 +24,10 @@ function decorateSchoolExterior(T,place,kit,sign,outside){
  k.box(x,3.70,front+f*1.45,6.25,.15,1.02,'#425e57');
  for(const q of [-2.35,2.35])k.light(x+q,3.48,front+f*1.56,.31,.19,.31,'#ffe2a6');
  // Put the school name on the entrance canopy, away from window bays.
- sign(g,'LUMENVALE SCHOOL',x,3.59,front+f*1.635,4.40,.45,f,'#315e52');
- sign(g,'LEARN · CREATE · GROW',x,3.12,front+f*1.635,3.92,.22,f,'#315e52');
+ // Signs are projected in front of the portico fascia, outside its
+ // shadow/occlusion and fully above the entrance door.
+ sign(g,'LUMENVALE SCHOOL',x,3.90,front+f*1.86,4.92,.54,f,'#315e52');
+ sign(g,'LEARN · CREATE · GROW',x,3.52,front+f*1.86,4.08,.20,f,'#315e52');
  const dial=new T.Mesh(new T.CylinderGeometry(.43,.43,.035,28),new T.MeshBasicMaterial({color:'#f8edda',side:T.DoubleSide}));
  dial.position.set(x,h+1.97,front+f*.605);dial.rotation.x=Math.PI/2;if(f<0)dial.rotation.y=Math.PI;g.add(dial);
  for(let n=0;n<12;n++){const a=n*Math.PI/6;k.box(x+Math.sin(a)*.34,h+1.97+Math.cos(a)*.34,front+f*.622,.032,.053,.012,'#3f605b');}
