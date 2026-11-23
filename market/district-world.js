@@ -344,7 +344,20 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    table(k,-4.65,3.9,2.67,1.26);
    planting(k,4.79,4.4,1.20,1.08);
    entryLabel(g,'City services',0,-4.15);entryLabel(g,'City Architect',-5,1.5,3.5);
-  }else if(kind==='warehouse'){
+  }else if(kind==='research'){
+    table(k,0,-5.1,6.8,1.65,'#91aaa1',1.16);
+    table(k,-6.1,1.95,4.05,1.5,'#9aada6',1.12);
+    table(k,6.1,1.95,4.05,1.5,'#9aada6',1.12);
+    for(const x of [-8,8])for(const z of [-4.1,-.8,2.9])shelves(k,x,z,2.7,2.55,.76,true,true);
+    for(const x of [-4,-1,2,5]){
+     k.box(x,1.30,-5.20,.44,.11,.45,'#5c747b');
+     k.put('trunk',x,1.62,-5.25,.095,.55,.095,'#b7c7bc');
+     k.box(x,1.75,-5.25,.31,.07,.30,'#b6d5cc');
+    }
+    k.box(0,2.18,-8.22,4.3,1.45,.12,'#426c69');
+    entryLabel(g,'Research study desk',0,-4.47,5.3);
+    entryLabel(g,'Research careers',-6,2.07,4.4);
+   }else if(kind==='warehouse'){
    for(const x of [-9.8,9.8])for(const z of [-5.5,-1.55,2.40])shelves(k,x,z,3.8,4.0,2.0,false,true);
    for(const x of [-2.25,0,2.25])k.box(x,.58,-6.75,1.92,1.13,2.6,'#b0936d');
    for(const x of [-5,6])table(k,x,-4.18+(x>0?8.3:0),2.6,1,'#7d7661');
