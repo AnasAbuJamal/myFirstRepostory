@@ -190,7 +190,7 @@ function pathwayHome(){
  '<h3>Choose a future specialization</h3><div class="pathway-goals">'+programs+'</div>'+
  '<div class="city-actions"><button class="button primary" data-pathways="transcript">Academic Transcript</button>'+
  '<button class="button" data-pathways="import">Import Teacher JSON</button>'+
- '<button class="button" data-pathways="quran">Qur’an Memorization</button></div>'+groups+
+ '<button class="button" data-pathways="quran">Qur’an Memorization</button><button class="button" data-pathways="foundation-practice">Optional Practice Classes</button></div>'+groups+
  '<p class="city-sub">Middle and high school progression requires teacher-verified Qur’an recitation. A private one-time teacher approval code can synchronize the verified result and game points; ordinary grades remain local practice records.</p>');
 }
 function pathwayCoursePanel(id){
@@ -442,6 +442,7 @@ function pathwayInit(){
   const item=event.target.closest('[data-pathways]');if(!item)return;
   const action=item.dataset.pathways,id=item.dataset.id,unit=item.dataset.unit;
   if(action==='home')pathwayHome();
+  if(action==='foundation-practice')campusSchool();
   if(action==='goal'&&LV_DEFAULT_ACADEMICS.programs.some(x=>x.id===id)){pathwayState.goal=id;pathwaySave();pathwayHome();}
   if(action==='course')pathwayCoursePanel(id);
   if(action==='enroll')pathwayEnroll(id);
