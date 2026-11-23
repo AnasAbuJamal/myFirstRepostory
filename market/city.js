@@ -54,7 +54,10 @@ function cityClean(input){
  if(!input || input.version!==1)return v;
  const number=(n,max)=>Number.isFinite(n)?Math.max(0,Math.min(max,Math.floor(n))):0;
  v.coins=number(input.coins,1e12);v.xp=number(input.xp,1e9);v.lifetime=number(input.lifetime,1e12);
- for(const book of CITY_BOOKS){const info=input.books?.[book.id];if(info)v.books[book.id]={count:number(info.count,1e5),last:number(info.last,1e15)};}
+ for(const [id,info] of Object.entries(input.books||{})){
+ if(/^[a-z0-9-]{1,90}$/.test(id)&&info&&typeof info==='object')
+  v.books[id]={count:number(info.count,1e5),last:number(info.last,1e15)};
+}
  for(const site of CITY_SITES){
   const info=input.sites?.[site.id];
   // Preserve existing city saves: previously constructed buildings already own their land.
@@ -128,6 +131,7 @@ function cityPanel(label,title,body){
  modal(label,title,body);
 }
 function cityBookList(){
+ if(typeof academyLibrary==='function')return academyLibrary();
  const completed=cityCompleted();
  const cards=CITY_BOOKS.map(book=>{
   const count=cityState.books[book.id]?.count||0;
@@ -142,7 +146,7 @@ function cityBookList(){
 function cityOpenBook(id){
  const book=CITY_BOOKS.find(b=>b.id===id);
  if(!book)return;
- cityBookSession={id:book.id,page:0,started:performance.now(),ready:false};
+ cityBookSession={id:book.id,page:0,started:performance.now(),openedAt:performance.now(),quizIndex:0,mistakes:0,ready:false};
  cityBookPage();
 }
 function cityBookPage(){
@@ -151,9 +155,9 @@ function cityBookPage(){
  const page=session.page;
  const last=page===book.pages.length-1;
  const pageText=book.pages[page];
- cityPanel('Library · '+book.shelf,book.title,
+ cityPanel('Library · '+esc(book.genre||book.shelf),esc(book.title),
  '<div class="city-book-open"><div class="city-page-count">PAGE '+(page+1)+' OF '+book.pages.length+'</div>'+
- '<p>'+pageText+'</p><div class="city-book-footer"><span>Read carefully to unlock the next page.</span>'+
+ '<p>'+esc(pageText)+'</p><div class="city-book-footer"><span>Read carefully to unlock the next page.</span>'+
  '<button type="button" class="button primary" data-city-action="page">'+(last?'Answer question':'Next page')+'</button></div></div>'+
  '<div class="city-reading-meter"><span class="city-reading-fill" id="city-reading-fill"></span></div>'+
  '<p class="city-sub" id="city-reading-hint">Read for a few seconds before continuing.</p>');
@@ -173,29 +177,40 @@ function cityNextPage(){
 }
 function cityQuiz(error=''){
  const book=CITY_BOOKS.find(b=>b.id===cityBookSession?.id);if(!book)return;
- cityPanel('Reading challenge',book.title,
- '<div class="city-quiz"><p class="city-sub">Check what you understood.</p><h3>'+book.question+'</h3>'+
- book.answers.map((answer,i)=>'<button type="button" class="city-answer" data-city-action="answer" data-index="'+i+'">'+
- '<span>'+String.fromCharCode(65+i)+'</span>'+answer+'</button>').join('')+
- (error?'<p class="city-wrong">'+error+'</p>':'')+'</div>');
+ const questions=typeof academyQuestions==='function'?academyQuestions(book):
+  [{prompt:book.question,choices:book.answers,correctIndex:book.correct}];
+ const index=Math.max(0,cityBookSession.quizIndex||0),q=questions[index];if(!q)return;
+ cityPanel('Reading challenge',esc(book.title),
+ '<div class="city-quiz"><p class="city-sub">Question '+(index+1)+' of '+questions.length+
+ ' · '+(book.wordCount||book.pages.join(' ').split(/\s+/).length)+' words</p><h3>'+esc(q.prompt)+'</h3>'+
+ q.choices.map((answer,i)=>'<button type="button" class="city-answer" data-city-action="answer" data-index="'+i+'">'+
+ '<span>'+String.fromCharCode(65+i)+'</span>'+esc(answer)+'</button>').join('')+
+ (error?'<p class="city-wrong">'+esc(error)+'</p>':'')+'</div>');
 }
 function cityAnswer(index){
  const book=CITY_BOOKS.find(b=>b.id===cityBookSession?.id);if(!book)return;
- if(Number(index)!==book.correct){cityQuiz('Not quite. Return to the passage in your mind and try another answer.');return;}
- const old=cityState.books[book.id]||{count:0,last:0};
- const first=old.count===0;
- const now=Date.now();
- if(!first && now-old.last<120000){
+ const session=cityBookSession,qs=typeof academyQuestions==='function'?academyQuestions(book):
+  [{prompt:book.question,choices:book.answers,correctIndex:book.correct}];
+ const question=qs[session.quizIndex||0];if(!question)return;
+ if(Number(index)!==question.correctIndex){
+  session.mistakes=(session.mistakes||0)+1;
+  cityQuiz('Not quite. Return to the passage and try again.');return;
+ }
+ if((session.quizIndex||0)<qs.length-1){session.quizIndex=(session.quizIndex||0)+1;cityQuiz();return;}
+ const old=cityState.books[book.id]||{count:0,last:0},first=old.count===0,now=Date.now();
+ if(!first&&now-old.last<120000){
   cityPanel('Library','Already practiced','<p>You finished this book recently. Choose another book, or try this one again in two minutes.</p>'+
    '<button class="button primary" type="button" data-city-action="library">Back to shelf</button>');
   return;
  }
  const earned=first?book.reward:Math.max(5,Math.floor(book.reward*.12));
  cityState.books[book.id]={count:old.count+1,last:now};
+ if(typeof academyRecord==='function')academyRecord(book,session);
  cityBookSession=null;
  cityEarn(earned,first?book.xp:5);
  cityPanel('Reading complete','+'+earned+' coins!',
- '<div class="city-success-medal">★</div><p>Correct! You earned <b>'+earned+' coins</b> and learning XP.</p>'+
+ '<div class="city-success-medal">★</div><p>Correct! You finished <b>'+qs.length+
+ ' questions</b> and earned <b>'+earned+' coins</b> and learning XP.</p>'+
  '<p>You have completed <b>'+cityCompleted()+'</b> different books. Reading unlocks new factories and buildings.</p>'+
  '<div class="city-duo"><button type="button" class="button primary" data-city-action="library">Read another book</button>'+
  '<button type="button" class="button" data-city-action="close">Explore the city</button></div>');
@@ -383,7 +398,7 @@ function cityInit(){
  prompt.id='city-mouse-prompt';
  prompt.className='city-mouse-prompt';
  prompt.innerHTML='<div class="city-resume-card"><div class="city-crosshair-symbol" aria-hidden="true">✛</div>'+
-  '<h2>Jungle Miner</h2><p>Move the mouse to look around. No holding or dragging needed.</p>'+
+  '<h2>LUMENVALE</h2><p>Read. Build. Thrive. Look freely with the mouse—no holding or dragging.</p>'+
   '<button type="button" id="city-resume-button">▶ Click to Play</button>'+
   '<small>WASD move · E interact · Esc releases mouse · F fullscreen</small></div>';
  byId('view').append(prompt);
