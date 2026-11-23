@@ -22,6 +22,7 @@ async function main(){
   }));
   assert.ok(startup.hasCanvas&&startup.hasPhone&&startup.hasEngine,'3D view or UI failed');
   assert.equal(startup.catalogCount,20,'Catalog not embedded');
+  console.log('Startup renderer:',startup.renderer,'warnings:',warnings.join(' | '));
   assert.notEqual(startup.renderer,'illustrated','3D scene crashed into flat illustrated fallback');
   console.log('Renderer:',startup.renderer,'at',startup.initialPosition);
 
