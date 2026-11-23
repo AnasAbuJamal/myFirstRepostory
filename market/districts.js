@@ -26,12 +26,12 @@ const TOWN_DISTRICTS=[
 // World geometry, collision access and interaction prompts share one station map.
 // Keep each desk's approach point on walkable floor, not inside its furniture collision.
 const SCHOOL_STATIONS=Object.freeze([
- {x:-7,z:-6.42,interactZ:-4.20,r:2.15,key:'school',label:'Open your school courses',sign:'ACADEMIC STUDIES',tint:'#77b4a4',kind:'pathways'},
- {x:7,z:-6.42,interactZ:-4.20,r:2.15,key:'careers',label:'Explore careers and jobs',sign:'CAREERS & JOBS',tint:'#78a6bd',kind:'careers'},
- {x:-7,z:-1.20,interactZ:.85,r:2,key:'quran',label:'Open Qur’an learning',sign:'QURAN STUDIO',tint:'#9bbd83',kind:'quran'},
- {x:7,z:-1.20,interactZ:.85,r:2,key:'school-quiz',label:'Try the Science Knowledge Quest',sign:'SCIENCE QUEST',tint:'#88c5c0',kind:'science'},
- {x:-7,z:5.03,interactZ:3.20,r:2,key:'browse',label:'Browse reading lessons',sign:'READING CORNER',tint:'#d9bc8a',kind:'library'},
- {x:7,z:5.03,interactZ:3.20,r:2,key:'school-practice',label:'Open assignments and exams',sign:'PRACTICE EXAMS',tint:'#b1bfdf',kind:'exam'}
+ {x:-7,z:-6.42,interactZ:-4.20,r:2.15,key:'school',label:'Open teacher-published classes',sign:'MY CLASSES',tint:'#77b4a4',kind:'study'},
+ {x:7,z:-6.42,interactZ:-4.20,r:2.15,key:'school-guide',label:'View school course directory',sign:'COURSE DIRECTORY',tint:'#78a6bd',kind:'catalog'},
+ {x:-7,z:-1.20,interactZ:.85,r:2,key:'import-course',label:'Import a teacher-created class',sign:'IMPORT CHAPTERS',tint:'#9bbd83',kind:'import'},
+ {x:7,z:-1.20,interactZ:.85,r:2,key:'school-practice',label:'See exams from your classes',sign:'ASSESSMENT ROOM',tint:'#88c5c0',kind:'assessment'},
+ {x:-7,z:5.03,interactZ:3.20,r:2,key:'browse',label:'Browse the school library',sign:'SCHOOL LIBRARY',tint:'#d9bc8a',kind:'library'},
+ {x:7,z:5.03,interactZ:3.20,r:2,key:'words',label:'Open your reading word journal',sign:'READING JOURNAL',tint:'#b1bfdf',kind:'journal'}
 ]);
 const TOWN_PLACES=[
  {id:'school',name:'LumenVale School',kind:'school',x:-37,z:-4.6,w:17,d:11,h:7.8,face:1,room:[13,12],brick:'#e8dfce',trim:'#f9f2e1',
@@ -39,8 +39,6 @@ const TOWN_PLACES=[
    ...SCHOOL_STATIONS.map(({x,interactZ,r,key,label})=>({x,z:interactZ,r,key,label})),
    {x:0,z:-8.10,r:2.1,key:'school-guide',label:'Open the Learning Hub'}
   ]},
- {id:'library',name:'Reading Library',kind:'library',x:16,z:10.2,w:13,d:10,h:7.1,face:-1,room:[11,11],brick:'#e2ded4',trim:'#faf6ed',
-  desks:[{x:0,z:-2.0,r:2.0,key:'browse',label:'Browse library books'},{x:-6,z:1.8,r:2,key:'words',label:'Open My Words'}]},
  {id:'city-hall',name:'City Hall',kind:'hall',x:-.65,z:10.9,w:10.5,d:8.8,h:7.8,face:-1,room:[10,9],brick:'#e8dfce',trim:'#f9f1db',
   desks:[{x:0,z:-2.2,r:2,key:'civic',label:'Open City Hall services'},{x:-5,z:1.5,r:2,key:'build',label:'Open City Architect'}]},
  {id:'warehouse',name:'Eastbank Warehouse',kind:'warehouse',x:25.8,z:.25,w:12.1,d:9.1,h:6.2,face:1,entry:3.25,room:[13,10],brick:'#bac8c1',trim:'#e7ebe1',
@@ -253,6 +251,7 @@ function districtInteract(target){
  switch(target.key){
  case 'school':lmsHome();break;
  case 'school-guide':lmsHome();break;
+ case 'import-course':lmsImportPanel();break;
  case 'school-practice':lmsHome();break;
  case 'school-quiz':schoolQuizPanel();break;
  case 'quran':pathwayQuran();break;
