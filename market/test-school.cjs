@@ -57,5 +57,5 @@ test('school table models are bundled and replace only six generic worktables',(
  assert.doesNotMatch(school,/k\.box\(side\*10\.0,\.77,center\+1\.42,2\.42/);
  assert.match(furniture,/new T\.InstancedMesh/);
  assert.match(furniture,/new T\.CanvasTexture/);
- assert.match(furniture,/new T\.MeshStandardMaterial/);
+ assert.match(furniture,/T\.MeshStandardMaterial\|\|T\.MeshLambertMaterial/);
 });
