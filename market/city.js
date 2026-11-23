@@ -47,7 +47,7 @@ const CITY_SITES=[
  {id:'greenhouse',title:'Greenhouse',kind:'factory',x:19,z:31,land:210,build:460,hire:140,rate:25,unlock:4,color:'#67a28b'},
  {id:'assembly',title:'Assembly Plant',kind:'factory',x:28,z:12.65,land:350,build:820,hire:240,rate:43,unlock:5,color:'#879eaf'}
 ];
-const CITY_LIBRARY={x:14,z:8};
+// The physical reading library is inside LumenVale School, not a roadside trigger.
 function cityBlank(){return {version:1,coins:0,xp:0,lifetime:0,books:{},sites:{},lastTick:Date.now(),manual:{}};}
 function cityClean(input){
  const v=cityBlank();
@@ -117,7 +117,6 @@ function cityTick(now=Date.now()){
 }
 function cityNearby(p){
  if(!p)return null;
- if(Math.hypot(p.x-CITY_LIBRARY.x,p.z-CITY_LIBRARY.z)<4.3)return {id:'library',city:true,label:'Browse the library books'};
  for(const site of CITY_SITES){
   if(Math.hypot(p.x-site.x,p.z-(site.z-3.6))<3.1){
    const unit=cityState.sites[site.id];
