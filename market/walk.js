@@ -20,6 +20,7 @@ const OFFICE_COLLIDERS = [
   [-1.24, 1.64, -.40, .68], [-3.43, -1.74, -3.02, -2.38],
 ];
 function canWalk(x,z,{doorOpen,stand}) {
+  if(typeof campusInterior!=='undefined'&&campusInterior)return x>-7.7&&x<7.7&&z>-80.4&&z< -65.3;
   if(typeof cityCanWalk==='function' && !cityCanWalk(x,z))return false;
   if (x < WALK_LIMITS.left || x > WALK_LIMITS.right || z < WALK_LIMITS.north || z > WALK_LIMITS.south) return false;
   const radius = .20;
