@@ -94,7 +94,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    }
   }
   k.flush(outside);
-  addStreetSurfaceTextures({T,outside,streets:STREET_PLAN,low:renderer.isSoftware});
+  addStreetSurfaceTextures({T,outside,streets:STREET_PLAN,low:renderer.isSoftware||renderer.lvBalanced});
  }
  function tree(k,x,z,s=1,tall=false){
   k.put('trunk',x,1.12*s,z,.22*s,2.24*s,.21*s,'#796451');
@@ -333,7 +333,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    entryLabel(g,'My Words',-6,1.63,2.9);
   }else if(kind==='school'){
    decorateSchoolInterior(T,k,g,sign,place);
-   applySchoolInteriorTextures({T,group:g,place,low:renderer.isSoftware});
+   applySchoolInteriorTextures({T,group:g,place,low:renderer.isSoftware||renderer.lvBalanced});
   }else if(kind==='hall'){
    table(k,0,-4.9,7.1,1.64,'#7d6851');
    for(const x of [-7.2,7.2])for(const z of [-2.0,1.8])shelves(k,x,z,2.8,2.46,.95,false,true);

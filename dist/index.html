@@ -424,6 +424,28 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
 .lv-roster{display:flex;flex-wrap:wrap;gap:.38rem;margin:.55rem 0}
 .lv-roster span{padding:.38rem .53rem;background:#ecf1e8;color:#3a6550;border:1px solid #d6e1d0;border-radius:7px;font-size:.75rem}
 
+
+/* LumenVale Vehicle Design Garage */
+.lv-garage-intro{margin:.4rem 0 1rem;padding:1.05rem 1.2rem;border-radius:12px;background:linear-gradient(120deg,#254d45,#426d60);color:#f0f1e5}
+.lv-garage-intro h3{color:#f8e4af!important;margin:0 0 .45rem!important;font:700 1.35rem Georgia,serif}
+.lv-garage-intro p{margin:.36rem 0;color:#e1e9e0;font-size:.88rem;line-height:1.6}
+.lv-garage-intro b{color:#f3d08c}
+.lv-garage-cars{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.68rem;margin:.85rem 0 1.5rem}
+.lv-garage-car{display:grid;align-content:start;gap:.58rem;padding:1rem;border:1px solid #d5d9ca;background:#fffef9;border-radius:11px;min-width:0;box-shadow:0 4px 10px #3149340c;transition:border-color .18s,transform .18s}
+.lv-garage-car:hover{border-color:#6e987a;transform:translateY(-2px)}
+.lv-car-mark{display:flex;align-items:center;gap:.64rem;border-bottom:1px solid #e7e7d9;padding-bottom:.58rem;font-size:1.25rem;color:#b8995f}
+.lv-car-mark span{font:700 1.03rem Georgia,serif;color:#30543e}
+.lv-garage-car p{margin:0;color:#5f7667;line-height:1.5;font-size:.81rem}
+.lv-garage-car small{color:#a27b40;font-size:.73rem;font-weight:800}
+.lv-garage-car .button{justify-self:start;margin-top:auto;font-size:.78rem}
+.lv-garage-colors{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.lv-paint-chip{display:flex;align-items:center;gap:.5rem;padding:.45rem .65rem;border:1px solid #c5d4c2;background:#fffefa;border-radius:9px;font-weight:700;font-size:.78rem;color:#365543;cursor:pointer}
+.lv-paint-chip span{width:21px;height:21px;display:block;border:1px solid #71847c;border-radius:6px;box-shadow:inset 0 2px 4px #ffffff80}
+.lv-paint-chip:hover:not(:disabled),.lv-paint-chip.active{border-color:#4a8162;background:#e8f2e7;box-shadow:0 0 0 1px #619e73}
+.lv-paint-chip:disabled{opacity:.62;cursor:default}
+@media(max-width:660px){.lv-garage-cars{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.lv-garage-car{transition:none}}
+
 /* Campus school, exam cards, vocabulary, first-person architect and city map */
 .wave-nav{font-size:.73rem;min-width:0;padding:.42rem .48rem}
 .wave-school-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin:1rem 0}
@@ -541,27 +563,37 @@ dialog[data-surface="phone"] .title{font:730 1.35rem/1.2 var(--sans);letter-spac
  dialog[data-surface="phone"]{inset:auto 8px 8px auto;width:min(386px,calc(100vw - 16px));max-height:calc(100dvh - 16px)}
 }
 
-/* LumenVale Vehicle Design Garage */
-.lv-garage-intro{margin:.4rem 0 1rem;padding:1.05rem 1.2rem;border-radius:12px;background:linear-gradient(120deg,#254d45,#426d60);color:#f0f1e5}
-.lv-garage-intro h3{color:#f8e4af!important;margin:0 0 .45rem!important;font:700 1.35rem Georgia,serif}
-.lv-garage-intro p{margin:.36rem 0;color:#e1e9e0;font-size:.88rem;line-height:1.6}
-.lv-garage-intro b{color:#f3d08c}
-.lv-garage-cars{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.68rem;margin:.85rem 0 1.5rem}
-.lv-garage-car{display:grid;align-content:start;gap:.58rem;padding:1rem;border:1px solid #d5d9ca;background:#fffef9;border-radius:11px;min-width:0;box-shadow:0 4px 10px #3149340c;transition:border-color .18s,transform .18s}
-.lv-garage-car:hover{border-color:#6e987a;transform:translateY(-2px)}
-.lv-car-mark{display:flex;align-items:center;gap:.64rem;border-bottom:1px solid #e7e7d9;padding-bottom:.58rem;font-size:1.25rem;color:#b8995f}
-.lv-car-mark span{font:700 1.03rem Georgia,serif;color:#30543e}
-.lv-garage-car p{margin:0;color:#5f7667;line-height:1.5;font-size:.81rem}
-.lv-garage-car small{color:#a27b40;font-size:.73rem;font-weight:800}
-.lv-garage-car .button{justify-self:start;margin-top:auto;font-size:.78rem}
-.lv-garage-colors{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
-.lv-paint-chip{display:flex;align-items:center;gap:.5rem;padding:.45rem .65rem;border:1px solid #c5d4c2;background:#fffefa;border-radius:9px;font-weight:700;font-size:.78rem;color:#365543;cursor:pointer}
-.lv-paint-chip span{width:21px;height:21px;display:block;border:1px solid #71847c;border-radius:6px;box-shadow:inset 0 2px 4px #ffffff80}
-.lv-paint-chip:hover:not(:disabled),.lv-paint-chip.active{border-color:#4a8162;background:#e8f2e7;box-shadow:0 0 0 1px #619e73}
-.lv-paint-chip:disabled{opacity:.62;cursor:default}
-@media(max-width:660px){.lv-garage-cars{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){.lv-garage-car{transition:none}}
 
+/* Cohesive phone information architecture — thumb-friendly, clear focus and safe areas. */
+.phone-context-head{display:grid;gap:.2rem;margin:.2rem 0 .72rem}
+.phone-context-head b{font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:#37604d}
+.phone-context-head small{color:#607768;font-size:.78rem;line-height:1.45}
+.phone-categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.3rem;margin:0 0 .9rem;border-bottom:1px solid #d7e2d4;padding-bottom:.56rem}
+.phone-categories button{font:700 .8rem var(--sans);background:#edf2e9;color:#486555;border:1px solid #d3dfd0;border-radius:10px;min-height:40px;padding:.5rem .2rem}
+.phone-categories button[aria-pressed="true"]{background:#2c5945;color:#fff9e8;border-color:#2c5945}
+.phone-categories button:hover{background:#d4e6d7;color:#264e39}
+.phone-categories button[aria-pressed="true"]:hover{background:#224835;color:#fff}
+.phone-categories button:focus-visible,.phone-apps button:focus-visible{outline:3px solid #ac7229;outline-offset:2px}
+.phone-learning-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.36rem}
+.phone-learning-overview div{display:grid;align-content:start;gap:.12rem;min-width:0;padding:.55rem .35rem;background:#fffdfa;border:1px solid #d5e2d3;border-radius:10px;text-align:center}
+.phone-learning-overview b{font-size:1.13rem;color:#2c5c47;font-variant-numeric:tabular-nums}
+.phone-learning-overview small{font-size:.68rem;color:#597468;line-height:1.3}
+.phone-next-task{display:grid;gap:.1rem;border-left:3px solid #80a688;background:#e8f1e5;padding:.55rem .72rem;border-radius:0 9px 9px 0;margin:.62rem 0 .9rem;line-height:1.35}
+.phone-next-task>span{font-size:.65rem;font-weight:800;letter-spacing:.12em;color:#50765e}
+.phone-next-task strong{font-size:.82rem;color:#274d3b}
+.phone-next-task small{font-size:.72rem;color:#607869}
+.phone-apps button{min-height:75px;align-content:center;gap:.31rem;padding:.55rem .18rem .45rem;border:1px solid transparent;line-height:1.3;overflow-wrap:anywhere}
+.phone-apps button:hover{border-color:#c4d9c9}
+.phone-apps button>span:last-child{max-width:100%;font-size:.74rem}
+.phone-app-icon{height:38px;width:42px;border-radius:12px}
+.phone-backup-actions{display:grid;gap:1rem;margin:1rem 0}
+.phone-backup-actions label{display:grid;gap:.45rem;font-size:.82rem;font-weight:750;color:#2c5641}
+.phone-backup-actions input{max-width:100%;padding:.63rem;background:#fff;border:1px solid #c6d7c8;border-radius:9px}
+.phone-backup-warning{border-left:3px solid #ad8a52;background:#f8f1e4;padding:.75rem;font-size:.82rem;line-height:1.5}
+@media(max-width:500px){
+ dialog[data-surface="phone"]{bottom:max(8px,env(safe-area-inset-bottom));right:max(8px,env(safe-area-inset-right))}
+ .phone-learning-overview small{font-size:.63rem}
+}
 
 /* Jobs & Research — role-focused learning and meaningful paid employment. */
 .job-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin:1.25rem 0}
@@ -605,7 +637,6 @@ dialog[data-surface="phone"] .title{font:730 1.35rem/1.2 var(--sans);letter-spac
 .job-file-field{display:grid;gap:.3rem;margin:1.1rem 0 0;color:#365943;font-size:.83rem;font-weight:800}
 .job-file-field input{max-width:100%}
 @media(max-width:690px){.job-role-grid{grid-template-columns:1fr}.job-stats{gap:.4rem}.job-stats>div{padding:.65rem}.job-stats b{font-size:1.15rem}}
-
 
 /* Formal Academic Pathways — separate from open Library exploration */
 .pathway-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin:1.1rem 0}
@@ -759,6 +790,7 @@ dialog[data-surface="phone"] .title{font:730 1.35rem/1.2 var(--sans);letter-spac
  .lms-module-actions button{padding:.35rem}
 }
 @media(prefers-reduced-motion:reduce){.lms-button,.lms-course-card{transition:none}}
+
 </style>
 </head>
 <body>
@@ -4682,7 +4714,11 @@ void main() {
 
 }`,Ro=class{constructor(){this.texture=null,this.mesh=null,this.depthNear=0,this.depthFar=0}init(t,e){if(this.texture===null){let n=new es(t.texture);(t.depthNear!==e.depthNear||t.depthFar!==e.depthFar)&&(this.depthNear=t.depthNear,this.depthFar=t.depthFar),this.texture=n}}getMesh(t){if(this.texture!==null&&this.mesh===null){let e=t.cameras[0].viewport,n=new Ue({vertexShader:Gp,fragmentShader:Wp,uniforms:{depthColor:{value:this.texture},depthWidth:{value:e.z},depthHeight:{value:e.w}}});this.mesh=new xe(new Gn(20,20),n)}return this.mesh}reset(){this.texture=null,this.mesh=null}getDepthTexture(){return this.texture}},Io=class extends un{constructor(t,e){super();let n=this,s=null,r=1,a=null,o="local-floor",c=1,l=null,u=null,d=null,f=null,m=null,_=null,y=typeof XRWebGLBinding<"u",p=new Ro,h={},T=e.getContextAttributes(),E=null,S=null,C=[],A=[],R=new zt,L=null,M=new Ae;M.viewport=new re;let v=new Ae;v.viewport=new re;let I=[M,v],F=new pr,V=null,G=null;this.cameraAutoUpdate=!0,this.enabled=!1,this.isPresenting=!1,this.getController=function(Y){let $=C[Y];return $===void 0&&($=new _i,C[Y]=$),$.getTargetRaySpace()},this.getControllerGrip=function(Y){let $=C[Y];return $===void 0&&($=new _i,C[Y]=$),$.getGripSpace()},this.getHand=function(Y){let $=C[Y];return $===void 0&&($=new _i,C[Y]=$),$.getHandSpace()};function q(Y){let $=A.indexOf(Y.inputSource);if($===-1)return;let dt=C[$];dt!==void 0&&(dt.update(Y.inputSource,Y.frame,l||a),dt.dispatchEvent({type:Y.type,data:Y.inputSource}))}function W(){s.removeEventListener("select",q),s.removeEventListener("selectstart",q),s.removeEventListener("selectend",q),s.removeEventListener("squeeze",q),s.removeEventListener("squeezestart",q),s.removeEventListener("squeezeend",q),s.removeEventListener("end",W),s.removeEventListener("inputsourceschange",et);for(let Y=0;Y<C.length;Y++){let $=A[Y];$!==null&&(A[Y]=null,C[Y].disconnect($))}V=null,G=null,p.reset();for(let Y in h)delete h[Y];t.setRenderTarget(E),m=null,f=null,d=null,s=null,S=null,Wt.stop(),n.isPresenting=!1,t.setPixelRatio(L),t.setSize(R.width,R.height,!1),n.dispatchEvent({type:"sessionend"})}this.setFramebufferScaleFactor=function(Y){r=Y,n.isPresenting===!0&&console.warn("THREE.WebXRManager: Cannot change framebuffer scale while presenting.")},this.setReferenceSpaceType=function(Y){o=Y,n.isPresenting===!0&&console.warn("THREE.WebXRManager: Cannot change reference space type while presenting.")},this.getReferenceSpace=function(){return l||a},this.setReferenceSpace=function(Y){l=Y},this.getBaseLayer=function(){return f!==null?f:m},this.getBinding=function(){return d===null&&y&&(d=new XRWebGLBinding(s,e)),d},this.getFrame=function(){return _},this.getSession=function(){return s},this.setSession=async function(Y){if(s=Y,s!==null){if(E=t.getRenderTarget(),s.addEventListener("select",q),s.addEventListener("selectstart",q),s.addEventListener("selectend",q),s.addEventListener("squeeze",q),s.addEventListener("squeezestart",q),s.addEventListener("squeezeend",q),s.addEventListener("end",W),s.addEventListener("inputsourceschange",et),T.xrCompatible!==!0&&await e.makeXRCompatible(),L=t.getPixelRatio(),t.getSize(R),y&&"createProjectionLayer"in XRWebGLBinding.prototype){let dt=null,Rt=null,Mt=null;T.depth&&(Mt=T.stencil?e.DEPTH24_STENCIL8:e.DEPTH_COMPONENT24,dt=T.stencil?Ei:pi,Rt=T.stencil?bi:Pn);let Ht={colorFormat:e.RGBA8,depthFormat:Mt,scaleFactor:r};d=this.getBinding(),f=d.createProjectionLayer(Ht),s.updateRenderState({layers:[f]}),t.setPixelRatio(1),t.setSize(f.textureWidth,f.textureHeight,!1),S=new Ke(f.textureWidth,f.textureHeight,{format:Ve,type:Ye,depthTexture:new ts(f.textureWidth,f.textureHeight,Rt,void 0,void 0,void 0,void 0,void 0,void 0,dt),stencilBuffer:T.stencil,colorSpace:t.outputColorSpace,samples:T.antialias?4:0,resolveDepthBuffer:f.ignoreDepthValues===!1,resolveStencilBuffer:f.ignoreDepthValues===!1})}else{let dt={antialias:T.antialias,alpha:!0,depth:T.depth,stencil:T.stencil,framebufferScaleFactor:r};m=new XRWebGLLayer(s,e,dt),s.updateRenderState({baseLayer:m}),t.setPixelRatio(1),t.setSize(m.framebufferWidth,m.framebufferHeight,!1),S=new Ke(m.framebufferWidth,m.framebufferHeight,{format:Ve,type:Ye,colorSpace:t.outputColorSpace,stencilBuffer:T.stencil,resolveDepthBuffer:m.ignoreDepthValues===!1,resolveStencilBuffer:m.ignoreDepthValues===!1})}S.isXRRenderTarget=!0,this.setFoveation(c),l=null,a=await s.requestReferenceSpace(o),Wt.setContext(s),Wt.start(),n.isPresenting=!0,n.dispatchEvent({type:"sessionstart"})}},this.getEnvironmentBlendMode=function(){if(s!==null)return s.environmentBlendMode},this.getDepthTexture=function(){return p.getDepthTexture()};function et(Y){for(let $=0;$<Y.removed.length;$++){let dt=Y.removed[$],Rt=A.indexOf(dt);Rt>=0&&(A[Rt]=null,C[Rt].disconnect(dt))}for(let $=0;$<Y.added.length;$++){let dt=Y.added[$],Rt=A.indexOf(dt);if(Rt===-1){for(let Ht=0;Ht<C.length;Ht++)if(Ht>=A.length){A.push(dt),Rt=Ht;break}else if(A[Ht]===null){A[Ht]=dt,Rt=Ht;break}if(Rt===-1)break}let Mt=C[Rt];Mt&&Mt.connect(dt)}}let k=new N,rt=new N;function ct(Y,$,dt){k.setFromMatrixPosition($.matrixWorld),rt.setFromMatrixPosition(dt.matrixWorld);let Rt=k.distanceTo(rt),Mt=$.projectionMatrix.elements,Ht=dt.projectionMatrix.elements,me=Mt[14]/(Mt[10]-1),w=Mt[14]/(Mt[10]+1),ee=(Mt[9]+1)/Mt[5],Pt=(Mt[9]-1)/Mt[5],wt=(Mt[8]-1)/Mt[0],mt=(Ht[8]+1)/Ht[0],ne=me*wt,gt=me*mt,Ut=Rt/(-wt+mt),fe=Ut*-wt;if($.matrixWorld.decompose(Y.position,Y.quaternion,Y.scale),Y.translateX(fe),Y.translateZ(Ut),Y.matrixWorld.compose(Y.position,Y.quaternion,Y.scale),Y.matrixWorldInverse.copy(Y.matrixWorld).invert(),Mt[10]===-1)Y.projectionMatrix.copy($.projectionMatrix),Y.projectionMatrixInverse.copy($.projectionMatrixInverse);else{let oe=me+Ut,b=w+Ut,g=ne-fe,O=gt+(Rt-fe),X=ee*w/b*oe,J=Pt*w/b*oe;Y.projectionMatrix.makePerspective(g,O,X,J,oe,b),Y.projectionMatrixInverse.copy(Y.projectionMatrix).invert()}}function St(Y,$){$===null?Y.matrixWorld.copy(Y.matrix):Y.matrixWorld.multiplyMatrices($.matrixWorld,Y.matrix),Y.matrixWorldInverse.copy(Y.matrixWorld).invert()}this.updateCamera=function(Y){if(s===null)return;let $=Y.near,dt=Y.far;p.texture!==null&&(p.depthNear>0&&($=p.depthNear),p.depthFar>0&&(dt=p.depthFar)),F.near=v.near=M.near=$,F.far=v.far=M.far=dt,(V!==F.near||G!==F.far)&&(s.updateRenderState({depthNear:F.near,depthFar:F.far}),V=F.near,G=F.far),F.layers.mask=Y.layers.mask|6,M.layers.mask=F.layers.mask&3,v.layers.mask=F.layers.mask&5;let Rt=Y.parent,Mt=F.cameras;St(F,Rt);for(let Ht=0;Ht<Mt.length;Ht++)St(Mt[Ht],Rt);Mt.length===2?ct(F,M,v):F.projectionMatrix.copy(M.projectionMatrix),Ot(Y,F,Rt)};function Ot(Y,$,dt){dt===null?Y.matrix.copy($.matrixWorld):(Y.matrix.copy(dt.matrixWorld),Y.matrix.invert(),Y.matrix.multiply($.matrixWorld)),Y.matrix.decompose(Y.position,Y.quaternion,Y.scale),Y.updateMatrixWorld(!0),Y.projectionMatrix.copy($.projectionMatrix),Y.projectionMatrixInverse.copy($.projectionMatrixInverse),Y.isPerspectiveCamera&&(Y.fov=qs*2*Math.atan(1/Y.projectionMatrix.elements[5]),Y.zoom=1)}this.getCamera=function(){return F},this.getFoveation=function(){if(!(f===null&&m===null))return c},this.setFoveation=function(Y){c=Y,f!==null&&(f.fixedFoveation=Y),m!==null&&m.fixedFoveation!==void 0&&(m.fixedFoveation=Y)},this.hasDepthSensing=function(){return p.texture!==null},this.getDepthSensingMesh=function(){return p.getMesh(F)},this.getCameraTexture=function(Y){return h[Y]};let Jt=null;function te(Y,$){if(u=$.getViewerPose(l||a),_=$,u!==null){let dt=u.views;m!==null&&(t.setRenderTargetFramebuffer(S,m.framebuffer),t.setRenderTarget(S));let Rt=!1;dt.length!==F.cameras.length&&(F.cameras.length=0,Rt=!0);for(let w=0;w<dt.length;w++){let ee=dt[w],Pt=null;if(m!==null)Pt=m.getViewport(ee);else{let mt=d.getViewSubImage(f,ee);Pt=mt.viewport,w===0&&(t.setRenderTargetTextures(S,mt.colorTexture,mt.depthStencilTexture),t.setRenderTarget(S))}let wt=I[w];wt===void 0&&(wt=new Ae,wt.layers.enable(w),wt.viewport=new re,I[w]=wt),wt.matrix.fromArray(ee.transform.matrix),wt.matrix.decompose(wt.position,wt.quaternion,wt.scale),wt.projectionMatrix.fromArray(ee.projectionMatrix),wt.projectionMatrixInverse.copy(wt.projectionMatrix).invert(),wt.viewport.set(Pt.x,Pt.y,Pt.width,Pt.height),w===0&&(F.matrix.copy(wt.matrix),F.matrix.decompose(F.position,F.quaternion,F.scale)),Rt===!0&&F.cameras.push(wt)}let Mt=s.enabledFeatures;if(Mt&&Mt.includes("depth-sensing")&&s.depthUsage=="gpu-optimized"&&y){d=n.getBinding();let w=d.getDepthInformation(dt[0]);w&&w.isValid&&w.texture&&p.init(w,s.renderState)}if(Mt&&Mt.includes("camera-access")&&y){t.state.unbindTexture(),d=n.getBinding();for(let w=0;w<dt.length;w++){let ee=dt[w].camera;if(ee){let Pt=h[ee];Pt||(Pt=new es,h[ee]=Pt);let wt=d.getCameraImage(ee);Pt.sourceTexture=wt}}}}for(let dt=0;dt<C.length;dt++){let Rt=A[dt],Mt=C[dt];Rt!==null&&Mt!==void 0&&Mt.update(Rt,$,l||a)}Jt&&Jt(Y,$),$.detectedPlanes&&n.dispatchEvent({type:"planesdetected",data:$}),_=null}let Wt=new Sc;Wt.setAnimationLoop(te),this.setAnimationLoop=function(Y){Jt=Y},this.dispose=function(){}}},$n=new qe,Xp=new jt;function qp(i,t){function e(p,h){p.matrixAutoUpdate===!0&&p.updateMatrix(),h.value.copy(p.matrix)}function n(p,h){h.color.getRGB(p.fogColor.value,fo(i)),h.isFog?(p.fogNear.value=h.near,p.fogFar.value=h.far):h.isFogExp2&&(p.fogDensity.value=h.density)}function s(p,h,T,E,S){h.isMeshBasicMaterial||h.isMeshLambertMaterial?r(p,h):h.isMeshToonMaterial?(r(p,h),d(p,h)):h.isMeshPhongMaterial?(r(p,h),u(p,h)):h.isMeshStandardMaterial?(r(p,h),f(p,h),h.isMeshPhysicalMaterial&&m(p,h,S)):h.isMeshMatcapMaterial?(r(p,h),_(p,h)):h.isMeshDepthMaterial?r(p,h):h.isMeshDistanceMaterial?(r(p,h),y(p,h)):h.isMeshNormalMaterial?r(p,h):h.isLineBasicMaterial?(a(p,h),h.isLineDashedMaterial&&o(p,h)):h.isPointsMaterial?c(p,h,T,E):h.isSpriteMaterial?l(p,h):h.isShadowMaterial?(p.color.value.copy(h.color),p.opacity.value=h.opacity):h.isShaderMaterial&&(h.uniformsNeedUpdate=!1)}function r(p,h){p.opacity.value=h.opacity,h.color&&p.diffuse.value.copy(h.color),h.emissive&&p.emissive.value.copy(h.emissive).multiplyScalar(h.emissiveIntensity),h.map&&(p.map.value=h.map,e(h.map,p.mapTransform)),h.alphaMap&&(p.alphaMap.value=h.alphaMap,e(h.alphaMap,p.alphaMapTransform)),h.bumpMap&&(p.bumpMap.value=h.bumpMap,e(h.bumpMap,p.bumpMapTransform),p.bumpScale.value=h.bumpScale,h.side===be&&(p.bumpScale.value*=-1)),h.normalMap&&(p.normalMap.value=h.normalMap,e(h.normalMap,p.normalMapTransform),p.normalScale.value.copy(h.normalScale),h.side===be&&p.normalScale.value.negate()),h.displacementMap&&(p.displacementMap.value=h.displacementMap,e(h.displacementMap,p.displacementMapTransform),p.displacementScale.value=h.displacementScale,p.displacementBias.value=h.displacementBias),h.emissiveMap&&(p.emissiveMap.value=h.emissiveMap,e(h.emissiveMap,p.emissiveMapTransform)),h.specularMap&&(p.specularMap.value=h.specularMap,e(h.specularMap,p.specularMapTransform)),h.alphaTest>0&&(p.alphaTest.value=h.alphaTest);let T=t.get(h),E=T.envMap,S=T.envMapRotation;E&&(p.envMap.value=E,$n.copy(S),$n.x*=-1,$n.y*=-1,$n.z*=-1,E.isCubeTexture&&E.isRenderTargetTexture===!1&&($n.y*=-1,$n.z*=-1),p.envMapRotation.value.setFromMatrix4(Xp.makeRotationFromEuler($n)),p.flipEnvMap.value=E.isCubeTexture&&E.isRenderTargetTexture===!1?-1:1,p.reflectivity.value=h.reflectivity,p.ior.value=h.ior,p.refractionRatio.value=h.refractionRatio),h.lightMap&&(p.lightMap.value=h.lightMap,p.lightMapIntensity.value=h.lightMapIntensity,e(h.lightMap,p.lightMapTransform)),h.aoMap&&(p.aoMap.value=h.aoMap,p.aoMapIntensity.value=h.aoMapIntensity,e(h.aoMap,p.aoMapTransform))}function a(p,h){p.diffuse.value.copy(h.color),p.opacity.value=h.opacity,h.map&&(p.map.value=h.map,e(h.map,p.mapTransform))}function o(p,h){p.dashSize.value=h.dashSize,p.totalSize.value=h.dashSize+h.gapSize,p.scale.value=h.scale}function c(p,h,T,E){p.diffuse.value.copy(h.color),p.opacity.value=h.opacity,p.size.value=h.size*T,p.scale.value=E*.5,h.map&&(p.map.value=h.map,e(h.map,p.uvTransform)),h.alphaMap&&(p.alphaMap.value=h.alphaMap,e(h.alphaMap,p.alphaMapTransform)),h.alphaTest>0&&(p.alphaTest.value=h.alphaTest)}function l(p,h){p.diffuse.value.copy(h.color),p.opacity.value=h.opacity,p.rotation.value=h.rotation,h.map&&(p.map.value=h.map,e(h.map,p.mapTransform)),h.alphaMap&&(p.alphaMap.value=h.alphaMap,e(h.alphaMap,p.alphaMapTransform)),h.alphaTest>0&&(p.alphaTest.value=h.alphaTest)}function u(p,h){p.specular.value.copy(h.specular),p.shininess.value=Math.max(h.shininess,1e-4)}function d(p,h){h.gradientMap&&(p.gradientMap.value=h.gradientMap)}function f(p,h){p.metalness.value=h.metalness,h.metalnessMap&&(p.metalnessMap.value=h.metalnessMap,e(h.metalnessMap,p.metalnessMapTransform)),p.roughness.value=h.roughness,h.roughnessMap&&(p.roughnessMap.value=h.roughnessMap,e(h.roughnessMap,p.roughnessMapTransform)),h.envMap&&(p.envMapIntensity.value=h.envMapIntensity)}function m(p,h,T){p.ior.value=h.ior,h.sheen>0&&(p.sheenColor.value.copy(h.sheenColor).multiplyScalar(h.sheen),p.sheenRoughness.value=h.sheenRoughness,h.sheenColorMap&&(p.sheenColorMap.value=h.sheenColorMap,e(h.sheenColorMap,p.sheenColorMapTransform)),h.sheenRoughnessMap&&(p.sheenRoughnessMap.value=h.sheenRoughnessMap,e(h.sheenRoughnessMap,p.sheenRoughnessMapTransform))),h.clearcoat>0&&(p.clearcoat.value=h.clearcoat,p.clearcoatRoughness.value=h.clearcoatRoughness,h.clearcoatMap&&(p.clearcoatMap.value=h.clearcoatMap,e(h.clearcoatMap,p.clearcoatMapTransform)),h.clearcoatRoughnessMap&&(p.clearcoatRoughnessMap.value=h.clearcoatRoughnessMap,e(h.clearcoatRoughnessMap,p.clearcoatRoughnessMapTransform)),h.clearcoatNormalMap&&(p.clearcoatNormalMap.value=h.clearcoatNormalMap,e(h.clearcoatNormalMap,p.clearcoatNormalMapTransform),p.clearcoatNormalScale.value.copy(h.clearcoatNormalScale),h.side===be&&p.clearcoatNormalScale.value.negate())),h.dispersion>0&&(p.dispersion.value=h.dispersion),h.iridescence>0&&(p.iridescence.value=h.iridescence,p.iridescenceIOR.value=h.iridescenceIOR,p.iridescenceThicknessMinimum.value=h.iridescenceThicknessRange[0],p.iridescenceThicknessMaximum.value=h.iridescenceThicknessRange[1],h.iridescenceMap&&(p.iridescenceMap.value=h.iridescenceMap,e(h.iridescenceMap,p.iridescenceMapTransform)),h.iridescenceThicknessMap&&(p.iridescenceThicknessMap.value=h.iridescenceThicknessMap,e(h.iridescenceThicknessMap,p.iridescenceThicknessMapTransform))),h.transmission>0&&(p.transmission.value=h.transmission,p.transmissionSamplerMap.value=T.texture,p.transmissionSamplerSize.value.set(T.width,T.height),h.transmissionMap&&(p.transmissionMap.value=h.transmissionMap,e(h.transmissionMap,p.transmissionMapTransform)),p.thickness.value=h.thickness,h.thicknessMap&&(p.thicknessMap.value=h.thicknessMap,e(h.thicknessMap,p.thicknessMapTransform)),p.attenuationDistance.value=h.attenuationDistance,p.attenuationColor.value.copy(h.attenuationColor)),h.anisotropy>0&&(p.anisotropyVector.value.set(h.anisotropy*Math.cos(h.anisotropyRotation),h.anisotropy*Math.sin(h.anisotropyRotation)),h.anisotropyMap&&(p.anisotropyMap.value=h.anisotropyMap,e(h.anisotropyMap,p.anisotropyMapTransform))),p.specularIntensity.value=h.specularIntensity,p.specularColor.value.copy(h.specularColor),h.specularColorMap&&(p.specularColorMap.value=h.specularColorMap,e(h.specularColorMap,p.specularColorMapTransform)),h.specularIntensityMap&&(p.specularIntensityMap.value=h.specularIntensityMap,e(h.specularIntensityMap,p.specularIntensityMapTransform))}function _(p,h){h.matcap&&(p.matcap.value=h.matcap)}function y(p,h){let T=t.get(h).light;p.referencePosition.value.setFromMatrixPosition(T.matrixWorld),p.nearDistance.value=T.shadow.camera.near,p.farDistance.value=T.shadow.camera.far}return{refreshFogUniforms:n,refreshMaterialUniforms:s}}function Yp(i,t,e,n){let s={},r={},a=[],o=i.getParameter(i.MAX_UNIFORM_BUFFER_BINDINGS);function c(T,E){let S=E.program;n.uniformBlockBinding(T,S)}function l(T,E){let S=s[T.id];S===void 0&&(_(T),S=u(T),s[T.id]=S,T.addEventListener("dispose",p));let C=E.program;n.updateUBOMapping(T,C);let A=t.render.frame;r[T.id]!==A&&(f(T),r[T.id]=A)}function u(T){let E=d();T.__bindingPointIndex=E;let S=i.createBuffer(),C=T.__size,A=T.usage;return i.bindBuffer(i.UNIFORM_BUFFER,S),i.bufferData(i.UNIFORM_BUFFER,C,A),i.bindBuffer(i.UNIFORM_BUFFER,null),i.bindBufferBase(i.UNIFORM_BUFFER,E,S),S}function d(){for(let T=0;T<o;T++)if(a.indexOf(T)===-1)return a.push(T),T;return console.error("THREE.WebGLRenderer: Maximum number of simultaneously usable uniforms groups reached."),0}function f(T){let E=s[T.id],S=T.uniforms,C=T.__cache;i.bindBuffer(i.UNIFORM_BUFFER,E);for(let A=0,R=S.length;A<R;A++){let L=Array.isArray(S[A])?S[A]:[S[A]];for(let M=0,v=L.length;M<v;M++){let I=L[M];if(m(I,A,M,C)===!0){let F=I.__offset,V=Array.isArray(I.value)?I.value:[I.value],G=0;for(let q=0;q<V.length;q++){let W=V[q],et=y(W);typeof W=="number"||typeof W=="boolean"?(I.__data[0]=W,i.bufferSubData(i.UNIFORM_BUFFER,F+G,I.__data)):W.isMatrix3?(I.__data[0]=W.elements[0],I.__data[1]=W.elements[1],I.__data[2]=W.elements[2],I.__data[3]=0,I.__data[4]=W.elements[3],I.__data[5]=W.elements[4],I.__data[6]=W.elements[5],I.__data[7]=0,I.__data[8]=W.elements[6],I.__data[9]=W.elements[7],I.__data[10]=W.elements[8],I.__data[11]=0):(W.toArray(I.__data,G),G+=et.storage/Float32Array.BYTES_PER_ELEMENT)}i.bufferSubData(i.UNIFORM_BUFFER,F,I.__data)}}}i.bindBuffer(i.UNIFORM_BUFFER,null)}function m(T,E,S,C){let A=T.value,R=E+"_"+S;if(C[R]===void 0)return typeof A=="number"||typeof A=="boolean"?C[R]=A:C[R]=A.clone(),!0;{let L=C[R];if(typeof A=="number"||typeof A=="boolean"){if(L!==A)return C[R]=A,!0}else if(L.equals(A)===!1)return L.copy(A),!0}return!1}function _(T){let E=T.uniforms,S=0,C=16;for(let R=0,L=E.length;R<L;R++){let M=Array.isArray(E[R])?E[R]:[E[R]];for(let v=0,I=M.length;v<I;v++){let F=M[v],V=Array.isArray(F.value)?F.value:[F.value];for(let G=0,q=V.length;G<q;G++){let W=V[G],et=y(W),k=S%C,rt=k%et.boundary,ct=k+rt;S+=rt,ct!==0&&C-ct<et.storage&&(S+=C-ct),F.__data=new Float32Array(et.storage/Float32Array.BYTES_PER_ELEMENT),F.__offset=S,S+=et.storage}}}let A=S%C;return A>0&&(S+=C-A),T.__size=S,T.__cache={},this}function y(T){let E={boundary:0,storage:0};return typeof T=="number"||typeof T=="boolean"?(E.boundary=4,E.storage=4):T.isVector2?(E.boundary=8,E.storage=8):T.isVector3||T.isColor?(E.boundary=16,E.storage=12):T.isVector4?(E.boundary=16,E.storage=16):T.isMatrix3?(E.boundary=48,E.storage=48):T.isMatrix4?(E.boundary=64,E.storage=64):T.isTexture?console.warn("THREE.WebGLRenderer: Texture samplers can not be part of an uniforms group."):console.warn("THREE.WebGLRenderer: Unsupported uniform value type.",T),E}function p(T){let E=T.target;E.removeEventListener("dispose",p);let S=a.indexOf(E.__bindingPointIndex);a.splice(S,1),i.deleteBuffer(s[E.id]),delete s[E.id],delete r[E.id]}function h(){for(let T in s)i.deleteBuffer(s[T]);a=[],s={},r={}}return{bind:c,update:l,dispose:h}}var ua=class{constructor(t={}){let{canvas:e=Zl(),context:n=null,depth:s=!0,stencil:r=!1,alpha:a=!1,antialias:o=!1,premultipliedAlpha:c=!0,preserveDrawingBuffer:l=!1,powerPreference:u="default",failIfMajorPerformanceCaveat:d=!1,reversedDepthBuffer:f=!1}=t;this.isWebGLRenderer=!0;let m;if(n!==null){if(typeof WebGLRenderingContext<"u"&&n instanceof WebGLRenderingContext)throw new Error("THREE.WebGLRenderer: WebGL 1 is not supported since r163.");m=n.getContextAttributes().alpha}else m=a;let _=new Uint32Array(4),y=new Int32Array(4),p=null,h=null,T=[],E=[];this.domElement=e,this.debug={checkShaderErrors:!0,onShaderError:null},this.autoClear=!0,this.autoClearColor=!0,this.autoClearDepth=!0,this.autoClearStencil=!0,this.sortObjects=!0,this.clippingPlanes=[],this.localClippingEnabled=!1,this.toneMapping=gn,this.toneMappingExposure=1,this.transmissionResolutionScale=1;let S=this,C=!1;this._outputColorSpace=Me;let A=0,R=0,L=null,M=-1,v=null,I=new re,F=new re,V=null,G=new Ft(0),q=0,W=e.width,et=e.height,k=1,rt=null,ct=null,St=new re(0,0,W,et),Ot=new re(0,0,W,et),Jt=!1,te=new xi,Wt=!1,Y=!1,$=new jt,dt=new N,Rt=new re,Mt={background:null,fog:null,environment:null,overrideMaterial:null,isScene:!0},Ht=!1;function me(){return L===null?k:1}let w=n;function ee(x,D){return e.getContext(x,D)}try{let x={alpha:!0,depth:s,stencil:r,antialias:o,premultipliedAlpha:c,preserveDrawingBuffer:l,powerPreference:u,failIfMajorPerformanceCaveat:d};if("setAttribute"in e&&e.setAttribute("data-engine",`three.js r${"180"}`),e.addEventListener("webglcontextlost",it,!1),e.addEventListener("webglcontextrestored",ut,!1),e.addEventListener("webglcontextcreationerror",K,!1),w===null){let D="webgl2";if(w=ee(D,x),w===null)throw ee(D)?new Error("Error creating WebGL context with your selected attributes."):new Error("Error creating WebGL context.")}}catch(x){throw console.error("THREE.WebGLRenderer: "+x.message),x}let Pt,wt,mt,ne,gt,Ut,fe,oe,b,g,O,X,J,H,yt,nt,_t,xt,j,lt,At,vt,at,Dt;function P(){Pt=new uf(w),Pt.init(),vt=new Hp(w,Pt),wt=new sf(w,Pt,t,vt),mt=new Vp(w,Pt),wt.reversedDepthBuffer&&f&&mt.buffers.depth.setReversed(!0),ne=new pf(w),gt=new wp,Ut=new kp(w,Pt,mt,gt,wt,vt,ne),fe=new af(S),oe=new hf(S),b=new vh(w),at=new ef(w,b),g=new df(w,b,ne,at),O=new gf(w,g,b,ne),j=new mf(w,wt,Ut),nt=new rf(gt),X=new Ap(S,fe,oe,Pt,wt,at,nt),J=new qp(S,gt),H=new Rp,yt=new Np(Pt),xt=new tf(S,fe,oe,mt,O,m,c),_t=new Bp(S,O,wt),Dt=new Yp(w,ne,wt,mt),lt=new nf(w,Pt,ne),At=new ff(w,Pt,ne),ne.programs=X.programs,S.capabilities=wt,S.extensions=Pt,S.properties=gt,S.renderLists=H,S.shadowMap=_t,S.state=mt,S.info=ne}P();let tt=new Io(S,w);this.xr=tt,this.getContext=function(){return w},this.getContextAttributes=function(){return w.getContextAttributes()},this.forceContextLoss=function(){let x=Pt.get("WEBGL_lose_context");x&&x.loseContext()},this.forceContextRestore=function(){let x=Pt.get("WEBGL_lose_context");x&&x.restoreContext()},this.getPixelRatio=function(){return k},this.setPixelRatio=function(x){x!==void 0&&(k=x,this.setSize(W,et,!1))},this.getSize=function(x){return x.set(W,et)},this.setSize=function(x,D,B=!0){if(tt.isPresenting){console.warn("THREE.WebGLRenderer: Can't change size while VR device is presenting.");return}W=x,et=D,e.width=Math.floor(x*k),e.height=Math.floor(D*k),B===!0&&(e.style.width=x+"px",e.style.height=D+"px"),this.setViewport(0,0,x,D)},this.getDrawingBufferSize=function(x){return x.set(W*k,et*k).floor()},this.setDrawingBufferSize=function(x,D,B){W=x,et=D,k=B,e.width=Math.floor(x*B),e.height=Math.floor(D*B),this.setViewport(0,0,x,D)},this.getCurrentViewport=function(x){return x.copy(I)},this.getViewport=function(x){return x.copy(St)},this.setViewport=function(x,D,B,z){x.isVector4?St.set(x.x,x.y,x.z,x.w):St.set(x,D,B,z),mt.viewport(I.copy(St).multiplyScalar(k).round())},this.getScissor=function(x){return x.copy(Ot)},this.setScissor=function(x,D,B,z){x.isVector4?Ot.set(x.x,x.y,x.z,x.w):Ot.set(x,D,B,z),mt.scissor(F.copy(Ot).multiplyScalar(k).round())},this.getScissorTest=function(){return Jt},this.setScissorTest=function(x){mt.setScissorTest(Jt=x)},this.setOpaqueSort=function(x){rt=x},this.setTransparentSort=function(x){ct=x},this.getClearColor=function(x){return x.copy(xt.getClearColor())},this.setClearColor=function(){xt.setClearColor(...arguments)},this.getClearAlpha=function(){return xt.getClearAlpha()},this.setClearAlpha=function(){xt.setClearAlpha(...arguments)},this.clear=function(x=!0,D=!0,B=!0){let z=0;if(x){let U=!1;if(L!==null){let Q=L.texture.format;U=Q===Lr||Q===Pr||Q===Ir}if(U){let Q=L.texture.type,ot=Q===Ye||Q===Pn||Q===Mi||Q===bi||Q===wr||Q===Cr,ft=xt.getClearColor(),ht=xt.getClearAlpha(),Tt=ft.r,Ct=ft.g,bt=ft.b;ot?(_[0]=Tt,_[1]=Ct,_[2]=bt,_[3]=ht,w.clearBufferuiv(w.COLOR,0,_)):(y[0]=Tt,y[1]=Ct,y[2]=bt,y[3]=ht,w.clearBufferiv(w.COLOR,0,y))}else z|=w.COLOR_BUFFER_BIT}D&&(z|=w.DEPTH_BUFFER_BIT),B&&(z|=w.STENCIL_BUFFER_BIT,this.state.buffers.stencil.setMask(4294967295)),w.clear(z)},this.clearColor=function(){this.clear(!0,!1,!1)},this.clearDepth=function(){this.clear(!1,!0,!1)},this.clearStencil=function(){this.clear(!1,!1,!0)},this.dispose=function(){e.removeEventListener("webglcontextlost",it,!1),e.removeEventListener("webglcontextrestored",ut,!1),e.removeEventListener("webglcontextcreationerror",K,!1),xt.dispose(),H.dispose(),yt.dispose(),gt.dispose(),fe.dispose(),oe.dispose(),O.dispose(),at.dispose(),Dt.dispose(),X.dispose(),tt.dispose(),tt.removeEventListener("sessionstart",Je),tt.removeEventListener("sessionend",Lo),Ln.stop()};function it(x){x.preventDefault(),console.log("THREE.WebGLRenderer: Context Lost."),C=!0}function ut(){console.log("THREE.WebGLRenderer: Context Restored."),C=!1;let x=ne.autoReset,D=_t.enabled,B=_t.autoUpdate,z=_t.needsUpdate,U=_t.type;P(),ne.autoReset=x,_t.enabled=D,_t.autoUpdate=B,_t.needsUpdate=z,_t.type=U}function K(x){console.error("THREE.WebGLRenderer: A WebGL context could not be created. Reason: ",x.statusMessage)}function Z(x){let D=x.target;D.removeEventListener("dispose",Z),pt(D)}function pt(x){It(x),gt.remove(x)}function It(x){let D=gt.get(x).programs;D!==void 0&&(D.forEach(function(B){X.releaseProgram(B)}),x.isShaderMaterial&&X.releaseShaderCache(x))}this.renderBufferDirect=function(x,D,B,z,U,Q){D===null&&(D=Mt);let ot=U.isMesh&&U.matrixWorld.determinant()<0,ft=wc(x,D,B,z,U);mt.setMaterial(z,ot);let ht=B.index,Tt=1;if(z.wireframe===!0){if(ht=g.getWireframeAttribute(B),ht===void 0)return;Tt=2}let Ct=B.drawRange,bt=B.attributes.position,Bt=Ct.start*Tt,Yt=(Ct.start+Ct.count)*Tt;Q!==null&&(Bt=Math.max(Bt,Q.start*Tt),Yt=Math.min(Yt,(Q.start+Q.count)*Tt)),ht!==null?(Bt=Math.max(Bt,0),Yt=Math.min(Yt,ht.count)):bt!=null&&(Bt=Math.max(Bt,0),Yt=Math.min(Yt,bt.count));let ae=Yt-Bt;if(ae<0||ae===1/0)return;at.setup(U,z,ft,B,ht);let Kt,Zt=lt;if(ht!==null&&(Kt=b.get(ht),Zt=At,Zt.setIndex(Kt)),U.isMesh)z.wireframe===!0?(mt.setLineWidth(z.wireframeLinewidth*me()),Zt.setMode(w.LINES)):Zt.setMode(w.TRIANGLES);else if(U.isLine){let Et=z.linewidth;Et===void 0&&(Et=1),mt.setLineWidth(Et*me()),U.isLineSegments?Zt.setMode(w.LINES):U.isLineLoop?Zt.setMode(w.LINE_LOOP):Zt.setMode(w.LINE_STRIP)}else U.isPoints?Zt.setMode(w.POINTS):U.isSprite&&Zt.setMode(w.TRIANGLES);if(U.isBatchedMesh)if(U._multiDrawInstances!==null)mi("THREE.WebGLRenderer: renderMultiDrawInstances has been deprecated and will be removed in r184. Append to renderMultiDraw arguments and use indirection."),Zt.renderMultiDrawInstances(U._multiDrawStarts,U._multiDrawCounts,U._multiDrawCount,U._multiDrawInstances);else if(Pt.get("WEBGL_multi_draw"))Zt.renderMultiDraw(U._multiDrawStarts,U._multiDrawCounts,U._multiDrawCount);else{let Et=U._multiDrawStarts,ie=U._multiDrawCounts,Gt=U._multiDrawCount,Re=ht?b.get(ht).bytesPerElement:1,jn=gt.get(z).currentProgram.getUniforms();for(let Ie=0;Ie<Gt;Ie++)jn.setValue(w,"_gl_DrawID",Ie),Zt.render(Et[Ie]/Re,ie[Ie])}else if(U.isInstancedMesh)Zt.renderInstances(Bt,ae,U.count);else if(B.isInstancedBufferGeometry){let Et=B._maxInstanceCount!==void 0?B._maxInstanceCount:1/0,ie=Math.min(B.instanceCount,Et);Zt.renderInstances(Bt,ae,ie)}else Zt.render(Bt,ae)};function $t(x,D,B){x.transparent===!0&&x.side===ze&&x.forceSinglePass===!1?(x.side=be,x.needsUpdate=!0,xs(x,D,B),x.side=hn,x.needsUpdate=!0,xs(x,D,B),x.side=ze):xs(x,D,B)}this.compile=function(x,D,B=null){B===null&&(B=x),h=yt.get(B),h.init(D),E.push(h),B.traverseVisible(function(U){U.isLight&&U.layers.test(D.layers)&&(h.pushLight(U),U.castShadow&&h.pushShadow(U))}),x!==B&&x.traverseVisible(function(U){U.isLight&&U.layers.test(D.layers)&&(h.pushLight(U),U.castShadow&&h.pushShadow(U))}),h.setupLights();let z=new Set;return x.traverse(function(U){if(!(U.isMesh||U.isPoints||U.isLine||U.isSprite))return;let Q=U.material;if(Q)if(Array.isArray(Q))for(let ot=0;ot<Q.length;ot++){let ft=Q[ot];$t(ft,B,U),z.add(ft)}else $t(Q,B,U),z.add(Q)}),h=E.pop(),z},this.compileAsync=function(x,D,B=null){let z=this.compile(x,D,B);return new Promise(U=>{function Q(){if(z.forEach(function(ot){gt.get(ot).currentProgram.isReady()&&z.delete(ot)}),z.size===0){U(x);return}setTimeout(Q,10)}Pt.get("KHR_parallel_shader_compile")!==null?Q():setTimeout(Q,10)})};let Xt=null;function en(x){Xt&&Xt(x)}function Je(){Ln.stop()}function Lo(){Ln.start()}let Ln=new Sc;Ln.setAnimationLoop(en),typeof self<"u"&&Ln.setContext(self),this.setAnimationLoop=function(x){Xt=x,tt.setAnimationLoop(x),x===null?Ln.stop():Ln.start()},tt.addEventListener("sessionstart",Je),tt.addEventListener("sessionend",Lo),this.render=function(x,D){if(D!==void 0&&D.isCamera!==!0){console.error("THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera.");return}if(C===!0)return;if(x.matrixWorldAutoUpdate===!0&&x.updateMatrixWorld(),D.parent===null&&D.matrixWorldAutoUpdate===!0&&D.updateMatrixWorld(),tt.enabled===!0&&tt.isPresenting===!0&&(tt.cameraAutoUpdate===!0&&tt.updateCamera(D),D=tt.getCamera()),x.isScene===!0&&x.onBeforeRender(S,x,D,L),h=yt.get(x,E.length),h.init(D),E.push(h),$.multiplyMatrices(D.projectionMatrix,D.matrixWorldInverse),te.setFromProjectionMatrix($,We,D.reversedDepth),Y=this.localClippingEnabled,Wt=nt.init(this.clippingPlanes,Y),p=H.get(x,T.length),p.init(),T.push(p),tt.enabled===!0&&tt.isPresenting===!0){let Q=S.xr.getDepthSensingMesh();Q!==null&&fa(Q,D,-1/0,S.sortObjects)}fa(x,D,0,S.sortObjects),p.finish(),S.sortObjects===!0&&p.sort(rt,ct),Ht=tt.enabled===!1||tt.isPresenting===!1||tt.hasDepthSensing()===!1,Ht&&xt.addToRenderList(p,x),this.info.render.frame++,Wt===!0&&nt.beginShadows();let B=h.state.shadowsArray;_t.render(B,x,D),Wt===!0&&nt.endShadows(),this.info.autoReset===!0&&this.info.reset();let z=p.opaque,U=p.transmissive;if(h.setupLights(),D.isArrayCamera){let Q=D.cameras;if(U.length>0)for(let ot=0,ft=Q.length;ot<ft;ot++){let ht=Q[ot];Uo(z,U,x,ht)}Ht&&xt.render(x);for(let ot=0,ft=Q.length;ot<ft;ot++){let ht=Q[ot];Do(p,x,ht,ht.viewport)}}else U.length>0&&Uo(z,U,x,D),Ht&&xt.render(x),Do(p,x,D);L!==null&&R===0&&(Ut.updateMultisampleRenderTarget(L),Ut.updateRenderTargetMipmap(L)),x.isScene===!0&&x.onAfterRender(S,x,D),at.resetDefaultState(),M=-1,v=null,E.pop(),E.length>0?(h=E[E.length-1],Wt===!0&&nt.setGlobalState(S.clippingPlanes,h.state.camera)):h=null,T.pop(),T.length>0?p=T[T.length-1]:p=null};function fa(x,D,B,z){if(x.visible===!1)return;if(x.layers.test(D.layers)){if(x.isGroup)B=x.renderOrder;else if(x.isLOD)x.autoUpdate===!0&&x.update(D);else if(x.isLight)h.pushLight(x),x.castShadow&&h.pushShadow(x);else if(x.isSprite){if(!x.frustumCulled||te.intersectsSprite(x)){z&&Rt.setFromMatrixPosition(x.matrixWorld).applyMatrix4($);let ot=O.update(x),ft=x.material;ft.visible&&p.push(x,ot,ft,B,Rt.z,null)}}else if((x.isMesh||x.isLine||x.isPoints)&&(!x.frustumCulled||te.intersectsObject(x))){let ot=O.update(x),ft=x.material;if(z&&(x.boundingSphere!==void 0?(x.boundingSphere===null&&x.computeBoundingSphere(),Rt.copy(x.boundingSphere.center)):(ot.boundingSphere===null&&ot.computeBoundingSphere(),Rt.copy(ot.boundingSphere.center)),Rt.applyMatrix4(x.matrixWorld).applyMatrix4($)),Array.isArray(ft)){let ht=ot.groups;for(let Tt=0,Ct=ht.length;Tt<Ct;Tt++){let bt=ht[Tt],Bt=ft[bt.materialIndex];Bt&&Bt.visible&&p.push(x,ot,Bt,B,Rt.z,bt)}}else ft.visible&&p.push(x,ot,ft,B,Rt.z,null)}}let Q=x.children;for(let ot=0,ft=Q.length;ot<ft;ot++)fa(Q[ot],D,B,z)}function Do(x,D,B,z){let U=x.opaque,Q=x.transmissive,ot=x.transparent;h.setupLightsView(B),Wt===!0&&nt.setGlobalState(S.clippingPlanes,B),z&&mt.viewport(I.copy(z)),U.length>0&&_s(U,D,B),Q.length>0&&_s(Q,D,B),ot.length>0&&_s(ot,D,B),mt.buffers.depth.setTest(!0),mt.buffers.depth.setMask(!0),mt.buffers.color.setMask(!0),mt.setPolygonOffset(!1)}function Uo(x,D,B,z){if((B.isScene===!0?B.overrideMaterial:null)!==null)return;h.state.transmissionRenderTarget[z.id]===void 0&&(h.state.transmissionRenderTarget[z.id]=new Ke(1,1,{generateMipmaps:!0,type:Pt.has("EXT_color_buffer_half_float")||Pt.has("EXT_color_buffer_float")?Si:Ye,minFilter:In,samples:4,stencilBuffer:r,resolveDepthBuffer:!1,resolveStencilBuffer:!1,colorSpace:Vt.workingColorSpace}));let Q=h.state.transmissionRenderTarget[z.id],ot=z.viewport||I;Q.setSize(ot.z*S.transmissionResolutionScale,ot.w*S.transmissionResolutionScale);let ft=S.getRenderTarget(),ht=S.getActiveCubeFace(),Tt=S.getActiveMipmapLevel();S.setRenderTarget(Q),S.getClearColor(G),q=S.getClearAlpha(),q<1&&S.setClearColor(16777215,.5),S.clear(),Ht&&xt.render(B);let Ct=S.toneMapping;S.toneMapping=gn;let bt=z.viewport;if(z.viewport!==void 0&&(z.viewport=void 0),h.setupLightsView(z),Wt===!0&&nt.setGlobalState(S.clippingPlanes,z),_s(x,B,z),Ut.updateMultisampleRenderTarget(Q),Ut.updateRenderTargetMipmap(Q),Pt.has("WEBGL_multisampled_render_to_texture")===!1){let Bt=!1;for(let Yt=0,ae=D.length;Yt<ae;Yt++){let Kt=D[Yt],Zt=Kt.object,Et=Kt.geometry,ie=Kt.material,Gt=Kt.group;if(ie.side===ze&&Zt.layers.test(z.layers)){let Re=ie.side;ie.side=be,ie.needsUpdate=!0,No(Zt,B,z,Et,ie,Gt),ie.side=Re,ie.needsUpdate=!0,Bt=!0}}Bt===!0&&(Ut.updateMultisampleRenderTarget(Q),Ut.updateRenderTargetMipmap(Q))}S.setRenderTarget(ft,ht,Tt),S.setClearColor(G,q),bt!==void 0&&(z.viewport=bt),S.toneMapping=Ct}function _s(x,D,B){let z=D.isScene===!0?D.overrideMaterial:null;for(let U=0,Q=x.length;U<Q;U++){let ot=x[U],ft=ot.object,ht=ot.geometry,Tt=ot.group,Ct=ot.material;Ct.allowOverride===!0&&z!==null&&(Ct=z),ft.layers.test(B.layers)&&No(ft,D,B,ht,Ct,Tt)}}function No(x,D,B,z,U,Q){x.onBeforeRender(S,D,B,z,U,Q),x.modelViewMatrix.multiplyMatrices(B.matrixWorldInverse,x.matrixWorld),x.normalMatrix.getNormalMatrix(x.modelViewMatrix),U.onBeforeRender(S,D,B,z,x,Q),U.transparent===!0&&U.side===ze&&U.forceSinglePass===!1?(U.side=be,U.needsUpdate=!0,S.renderBufferDirect(B,D,z,U,x,Q),U.side=hn,U.needsUpdate=!0,S.renderBufferDirect(B,D,z,U,x,Q),U.side=ze):S.renderBufferDirect(B,D,z,U,x,Q),x.onAfterRender(S,D,B,z,U,Q)}function xs(x,D,B){D.isScene!==!0&&(D=Mt);let z=gt.get(x),U=h.state.lights,Q=h.state.shadowsArray,ot=U.state.version,ft=X.getParameters(x,U.state,Q,D,B),ht=X.getProgramCacheKey(ft),Tt=z.programs;z.environment=x.isMeshStandardMaterial?D.environment:null,z.fog=D.fog,z.envMap=(x.isMeshStandardMaterial?oe:fe).get(x.envMap||z.environment),z.envMapRotation=z.environment!==null&&x.envMap===null?D.environmentRotation:x.envMapRotation,Tt===void 0&&(x.addEventListener("dispose",Z),Tt=new Map,z.programs=Tt);let Ct=Tt.get(ht);if(Ct!==void 0){if(z.currentProgram===Ct&&z.lightsStateVersion===ot)return Oo(x,ft),Ct}else ft.uniforms=X.getUniforms(x),x.onBeforeCompile(ft,S),Ct=X.acquireProgram(ft,ht),Tt.set(ht,Ct),z.uniforms=ft.uniforms;let bt=z.uniforms;return(!x.isShaderMaterial&&!x.isRawShaderMaterial||x.clipping===!0)&&(bt.clippingPlanes=nt.uniform),Oo(x,ft),z.needsLights=Rc(x),z.lightsStateVersion=ot,z.needsLights&&(bt.ambientLightColor.value=U.state.ambient,bt.lightProbe.value=U.state.probe,bt.directionalLights.value=U.state.directional,bt.directionalLightShadows.value=U.state.directionalShadow,bt.spotLights.value=U.state.spot,bt.spotLightShadows.value=U.state.spotShadow,bt.rectAreaLights.value=U.state.rectArea,bt.ltc_1.value=U.state.rectAreaLTC1,bt.ltc_2.value=U.state.rectAreaLTC2,bt.pointLights.value=U.state.point,bt.pointLightShadows.value=U.state.pointShadow,bt.hemisphereLights.value=U.state.hemi,bt.directionalShadowMap.value=U.state.directionalShadowMap,bt.directionalShadowMatrix.value=U.state.directionalShadowMatrix,bt.spotShadowMap.value=U.state.spotShadowMap,bt.spotLightMatrix.value=U.state.spotLightMatrix,bt.spotLightMap.value=U.state.spotLightMap,bt.pointShadowMap.value=U.state.pointShadowMap,bt.pointShadowMatrix.value=U.state.pointShadowMatrix),z.currentProgram=Ct,z.uniformsList=null,Ct}function Fo(x){if(x.uniformsList===null){let D=x.currentProgram.getUniforms();x.uniformsList=wi.seqWithValue(D.seq,x.uniforms)}return x.uniformsList}function Oo(x,D){let B=gt.get(x);B.outputColorSpace=D.outputColorSpace,B.batching=D.batching,B.batchingColor=D.batchingColor,B.instancing=D.instancing,B.instancingColor=D.instancingColor,B.instancingMorph=D.instancingMorph,B.skinning=D.skinning,B.morphTargets=D.morphTargets,B.morphNormals=D.morphNormals,B.morphColors=D.morphColors,B.morphTargetsCount=D.morphTargetsCount,B.numClippingPlanes=D.numClippingPlanes,B.numIntersection=D.numClipIntersection,B.vertexAlphas=D.vertexAlphas,B.vertexTangents=D.vertexTangents,B.toneMapping=D.toneMapping}function wc(x,D,B,z,U){D.isScene!==!0&&(D=Mt),Ut.resetTextureUnits();let Q=D.fog,ot=z.isMeshStandardMaterial?D.environment:null,ft=L===null?S.outputColorSpace:L.isXRRenderTarget===!0?L.texture.colorSpace:kn,ht=(z.isMeshStandardMaterial?oe:fe).get(z.envMap||ot),Tt=z.vertexColors===!0&&!!B.attributes.color&&B.attributes.color.itemSize===4,Ct=!!B.attributes.tangent&&(!!z.normalMap||z.anisotropy>0),bt=!!B.morphAttributes.position,Bt=!!B.morphAttributes.normal,Yt=!!B.morphAttributes.color,ae=gn;z.toneMapped&&(L===null||L.isXRRenderTarget===!0)&&(ae=S.toneMapping);let Kt=B.morphAttributes.position||B.morphAttributes.normal||B.morphAttributes.color,Zt=Kt!==void 0?Kt.length:0,Et=gt.get(z),ie=h.state.lights;if(Wt===!0&&(Y===!0||x!==v)){let ye=x===v&&z.id===M;nt.setState(z,x,ye)}let Gt=!1;z.version===Et.__version?(Et.needsLights&&Et.lightsStateVersion!==ie.state.version||Et.outputColorSpace!==ft||U.isBatchedMesh&&Et.batching===!1||!U.isBatchedMesh&&Et.batching===!0||U.isBatchedMesh&&Et.batchingColor===!0&&U.colorTexture===null||U.isBatchedMesh&&Et.batchingColor===!1&&U.colorTexture!==null||U.isInstancedMesh&&Et.instancing===!1||!U.isInstancedMesh&&Et.instancing===!0||U.isSkinnedMesh&&Et.skinning===!1||!U.isSkinnedMesh&&Et.skinning===!0||U.isInstancedMesh&&Et.instancingColor===!0&&U.instanceColor===null||U.isInstancedMesh&&Et.instancingColor===!1&&U.instanceColor!==null||U.isInstancedMesh&&Et.instancingMorph===!0&&U.morphTexture===null||U.isInstancedMesh&&Et.instancingMorph===!1&&U.morphTexture!==null||Et.envMap!==ht||z.fog===!0&&Et.fog!==Q||Et.numClippingPlanes!==void 0&&(Et.numClippingPlanes!==nt.numPlanes||Et.numIntersection!==nt.numIntersection)||Et.vertexAlphas!==Tt||Et.vertexTangents!==Ct||Et.morphTargets!==bt||Et.morphNormals!==Bt||Et.morphColors!==Yt||Et.toneMapping!==ae||Et.morphTargetsCount!==Zt)&&(Gt=!0):(Gt=!0,Et.__version=z.version);let Re=Et.currentProgram;Gt===!0&&(Re=xs(z,D,U));let jn=!1,Ie=!1,Ri=!1,se=Re.getUniforms(),Fe=Et.uniforms;if(mt.useProgram(Re.program)&&(jn=!0,Ie=!0,Ri=!0),z.id!==M&&(M=z.id,Ie=!0),jn||v!==x){mt.buffers.depth.getReversed()&&x.reversedDepth!==!0&&(x._reversedDepth=!0,x.updateProjectionMatrix()),se.setValue(w,"projectionMatrix",x.projectionMatrix),se.setValue(w,"viewMatrix",x.matrixWorldInverse);let Ee=se.map.cameraPosition;Ee!==void 0&&Ee.setValue(w,dt.setFromMatrixPosition(x.matrixWorld)),wt.logarithmicDepthBuffer&&se.setValue(w,"logDepthBufFC",2/(Math.log(x.far+1)/Math.LN2)),(z.isMeshPhongMaterial||z.isMeshToonMaterial||z.isMeshLambertMaterial||z.isMeshBasicMaterial||z.isMeshStandardMaterial||z.isShaderMaterial)&&se.setValue(w,"isOrthographic",x.isOrthographicCamera===!0),v!==x&&(v=x,Ie=!0,Ri=!0)}if(U.isSkinnedMesh){se.setOptional(w,U,"bindMatrix"),se.setOptional(w,U,"bindMatrixInverse");let ye=U.skeleton;ye&&(ye.boneTexture===null&&ye.computeBoneTexture(),se.setValue(w,"boneTexture",ye.boneTexture,Ut))}U.isBatchedMesh&&(se.setOptional(w,U,"batchingTexture"),se.setValue(w,"batchingTexture",U._matricesTexture,Ut),se.setOptional(w,U,"batchingIdTexture"),se.setValue(w,"batchingIdTexture",U._indirectTexture,Ut),se.setOptional(w,U,"batchingColorTexture"),U._colorsTexture!==null&&se.setValue(w,"batchingColorTexture",U._colorsTexture,Ut));let Oe=B.morphAttributes;if((Oe.position!==void 0||Oe.normal!==void 0||Oe.color!==void 0)&&j.update(U,B,Re),(Ie||Et.receiveShadow!==U.receiveShadow)&&(Et.receiveShadow=U.receiveShadow,se.setValue(w,"receiveShadow",U.receiveShadow)),z.isMeshGouraudMaterial&&z.envMap!==null&&(Fe.envMap.value=ht,Fe.flipEnvMap.value=ht.isCubeTexture&&ht.isRenderTargetTexture===!1?-1:1),z.isMeshStandardMaterial&&z.envMap===null&&D.environment!==null&&(Fe.envMapIntensity.value=D.environmentIntensity),Ie&&(se.setValue(w,"toneMappingExposure",S.toneMappingExposure),Et.needsLights&&Cc(Fe,Ri),Q&&z.fog===!0&&J.refreshFogUniforms(Fe,Q),J.refreshMaterialUniforms(Fe,z,k,et,h.state.transmissionRenderTarget[x.id]),wi.upload(w,Fo(Et),Fe,Ut)),z.isShaderMaterial&&z.uniformsNeedUpdate===!0&&(wi.upload(w,Fo(Et),Fe,Ut),z.uniformsNeedUpdate=!1),z.isSpriteMaterial&&se.setValue(w,"center",U.center),se.setValue(w,"modelViewMatrix",U.modelViewMatrix),se.setValue(w,"normalMatrix",U.normalMatrix),se.setValue(w,"modelMatrix",U.matrixWorld),z.isShaderMaterial||z.isRawShaderMaterial){let ye=z.uniformsGroups;for(let Ee=0,pa=ye.length;Ee<pa;Ee++){let Dn=ye[Ee];Dt.update(Dn,Re),Dt.bind(Dn,Re)}}return Re}function Cc(x,D){x.ambientLightColor.needsUpdate=D,x.lightProbe.needsUpdate=D,x.directionalLights.needsUpdate=D,x.directionalLightShadows.needsUpdate=D,x.pointLights.needsUpdate=D,x.pointLightShadows.needsUpdate=D,x.spotLights.needsUpdate=D,x.spotLightShadows.needsUpdate=D,x.rectAreaLights.needsUpdate=D,x.hemisphereLights.needsUpdate=D}function Rc(x){return x.isMeshLambertMaterial||x.isMeshToonMaterial||x.isMeshPhongMaterial||x.isMeshStandardMaterial||x.isShadowMaterial||x.isShaderMaterial&&x.lights===!0}this.getActiveCubeFace=function(){return A},this.getActiveMipmapLevel=function(){return R},this.getRenderTarget=function(){return L},this.setRenderTargetTextures=function(x,D,B){let z=gt.get(x);z.__autoAllocateDepthBuffer=x.resolveDepthBuffer===!1,z.__autoAllocateDepthBuffer===!1&&(z.__useRenderToTexture=!1),gt.get(x.texture).__webglTexture=D,gt.get(x.depthTexture).__webglTexture=z.__autoAllocateDepthBuffer?void 0:B,z.__hasExternalTextures=!0},this.setRenderTargetFramebuffer=function(x,D){let B=gt.get(x);B.__webglFramebuffer=D,B.__useDefaultFramebuffer=D===void 0};let Ic=w.createFramebuffer();this.setRenderTarget=function(x,D=0,B=0){L=x,A=D,R=B;let z=!0,U=null,Q=!1,ot=!1;if(x){let ht=gt.get(x);if(ht.__useDefaultFramebuffer!==void 0)mt.bindFramebuffer(w.FRAMEBUFFER,null),z=!1;else if(ht.__webglFramebuffer===void 0)Ut.setupRenderTarget(x);else if(ht.__hasExternalTextures)Ut.rebindTextures(x,gt.get(x.texture).__webglTexture,gt.get(x.depthTexture).__webglTexture);else if(x.depthBuffer){let bt=x.depthTexture;if(ht.__boundDepthTexture!==bt){if(bt!==null&&gt.has(bt)&&(x.width!==bt.image.width||x.height!==bt.image.height))throw new Error("WebGLRenderTarget: Attached DepthTexture is initialized to the incorrect size.");Ut.setupDepthRenderbuffer(x)}}let Tt=x.texture;(Tt.isData3DTexture||Tt.isDataArrayTexture||Tt.isCompressedArrayTexture)&&(ot=!0);let Ct=gt.get(x).__webglFramebuffer;x.isWebGLCubeRenderTarget?(Array.isArray(Ct[D])?U=Ct[D][B]:U=Ct[D],Q=!0):x.samples>0&&Ut.useMultisampledRTT(x)===!1?U=gt.get(x).__webglMultisampledFramebuffer:Array.isArray(Ct)?U=Ct[B]:U=Ct,I.copy(x.viewport),F.copy(x.scissor),V=x.scissorTest}else I.copy(St).multiplyScalar(k).floor(),F.copy(Ot).multiplyScalar(k).floor(),V=Jt;if(B!==0&&(U=Ic),mt.bindFramebuffer(w.FRAMEBUFFER,U)&&z&&mt.drawBuffers(x,U),mt.viewport(I),mt.scissor(F),mt.setScissorTest(V),Q){let ht=gt.get(x.texture);w.framebufferTexture2D(w.FRAMEBUFFER,w.COLOR_ATTACHMENT0,w.TEXTURE_CUBE_MAP_POSITIVE_X+D,ht.__webglTexture,B)}else if(ot){let ht=D;for(let Tt=0;Tt<x.textures.length;Tt++){let Ct=gt.get(x.textures[Tt]);w.framebufferTextureLayer(w.FRAMEBUFFER,w.COLOR_ATTACHMENT0+Tt,Ct.__webglTexture,B,ht)}}else if(x!==null&&B!==0){let ht=gt.get(x.texture);w.framebufferTexture2D(w.FRAMEBUFFER,w.COLOR_ATTACHMENT0,w.TEXTURE_2D,ht.__webglTexture,B)}M=-1},this.readRenderTargetPixels=function(x,D,B,z,U,Q,ot,ft=0){if(!(x&&x.isWebGLRenderTarget)){console.error("THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not THREE.WebGLRenderTarget.");return}let ht=gt.get(x).__webglFramebuffer;if(x.isWebGLCubeRenderTarget&&ot!==void 0&&(ht=ht[ot]),ht){mt.bindFramebuffer(w.FRAMEBUFFER,ht);try{let Tt=x.textures[ft],Ct=Tt.format,bt=Tt.type;if(!wt.textureFormatReadable(Ct)){console.error("THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in RGBA or implementation defined format.");return}if(!wt.textureTypeReadable(bt)){console.error("THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type.");return}D>=0&&D<=x.width-z&&B>=0&&B<=x.height-U&&(x.textures.length>1&&w.readBuffer(w.COLOR_ATTACHMENT0+ft),w.readPixels(D,B,z,U,vt.convert(Ct),vt.convert(bt),Q))}finally{let Tt=L!==null?gt.get(L).__webglFramebuffer:null;mt.bindFramebuffer(w.FRAMEBUFFER,Tt)}}},this.readRenderTargetPixelsAsync=async function(x,D,B,z,U,Q,ot,ft=0){if(!(x&&x.isWebGLRenderTarget))throw new Error("THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not THREE.WebGLRenderTarget.");let ht=gt.get(x).__webglFramebuffer;if(x.isWebGLCubeRenderTarget&&ot!==void 0&&(ht=ht[ot]),ht)if(D>=0&&D<=x.width-z&&B>=0&&B<=x.height-U){mt.bindFramebuffer(w.FRAMEBUFFER,ht);let Tt=x.textures[ft],Ct=Tt.format,bt=Tt.type;if(!wt.textureFormatReadable(Ct))throw new Error("THREE.WebGLRenderer.readRenderTargetPixelsAsync: renderTarget is not in RGBA or implementation defined format.");if(!wt.textureTypeReadable(bt))throw new Error("THREE.WebGLRenderer.readRenderTargetPixelsAsync: renderTarget is not in UnsignedByteType or implementation defined type.");let Bt=w.createBuffer();w.bindBuffer(w.PIXEL_PACK_BUFFER,Bt),w.bufferData(w.PIXEL_PACK_BUFFER,Q.byteLength,w.STREAM_READ),x.textures.length>1&&w.readBuffer(w.COLOR_ATTACHMENT0+ft),w.readPixels(D,B,z,U,vt.convert(Ct),vt.convert(bt),0);let Yt=L!==null?gt.get(L).__webglFramebuffer:null;mt.bindFramebuffer(w.FRAMEBUFFER,Yt);let ae=w.fenceSync(w.SYNC_GPU_COMMANDS_COMPLETE,0);return w.flush(),await Jl(w,ae,4),w.bindBuffer(w.PIXEL_PACK_BUFFER,Bt),w.getBufferSubData(w.PIXEL_PACK_BUFFER,0,Q),w.deleteBuffer(Bt),w.deleteSync(ae),Q}else throw new Error("THREE.WebGLRenderer.readRenderTargetPixelsAsync: requested read bounds are out of range.")},this.copyFramebufferToTexture=function(x,D=null,B=0){let z=Math.pow(2,-B),U=Math.floor(x.image.width*z),Q=Math.floor(x.image.height*z),ot=D!==null?D.x:0,ft=D!==null?D.y:0;Ut.setTexture2D(x,0),w.copyTexSubImage2D(w.TEXTURE_2D,B,0,0,ot,ft,U,Q),mt.unbindTexture()};let Pc=w.createFramebuffer(),Lc=w.createFramebuffer();this.copyTextureToTexture=function(x,D,B=null,z=null,U=0,Q=null){Q===null&&(U!==0?(mi("WebGLRenderer: copyTextureToTexture function signature has changed to support src and dst mipmap levels."),Q=U,U=0):Q=0);let ot,ft,ht,Tt,Ct,bt,Bt,Yt,ae,Kt=x.isCompressedTexture?x.mipmaps[Q]:x.image;if(B!==null)ot=B.max.x-B.min.x,ft=B.max.y-B.min.y,ht=B.isBox3?B.max.z-B.min.z:1,Tt=B.min.x,Ct=B.min.y,bt=B.isBox3?B.min.z:0;else{let Oe=Math.pow(2,-U);ot=Math.floor(Kt.width*Oe),ft=Math.floor(Kt.height*Oe),x.isDataArrayTexture?ht=Kt.depth:x.isData3DTexture?ht=Math.floor(Kt.depth*Oe):ht=1,Tt=0,Ct=0,bt=0}z!==null?(Bt=z.x,Yt=z.y,ae=z.z):(Bt=0,Yt=0,ae=0);let Zt=vt.convert(D.format),Et=vt.convert(D.type),ie;D.isData3DTexture?(Ut.setTexture3D(D,0),ie=w.TEXTURE_3D):D.isDataArrayTexture||D.isCompressedArrayTexture?(Ut.setTexture2DArray(D,0),ie=w.TEXTURE_2D_ARRAY):(Ut.setTexture2D(D,0),ie=w.TEXTURE_2D),w.pixelStorei(w.UNPACK_FLIP_Y_WEBGL,D.flipY),w.pixelStorei(w.UNPACK_PREMULTIPLY_ALPHA_WEBGL,D.premultiplyAlpha),w.pixelStorei(w.UNPACK_ALIGNMENT,D.unpackAlignment);let Gt=w.getParameter(w.UNPACK_ROW_LENGTH),Re=w.getParameter(w.UNPACK_IMAGE_HEIGHT),jn=w.getParameter(w.UNPACK_SKIP_PIXELS),Ie=w.getParameter(w.UNPACK_SKIP_ROWS),Ri=w.getParameter(w.UNPACK_SKIP_IMAGES);w.pixelStorei(w.UNPACK_ROW_LENGTH,Kt.width),w.pixelStorei(w.UNPACK_IMAGE_HEIGHT,Kt.height),w.pixelStorei(w.UNPACK_SKIP_PIXELS,Tt),w.pixelStorei(w.UNPACK_SKIP_ROWS,Ct),w.pixelStorei(w.UNPACK_SKIP_IMAGES,bt);let se=x.isDataArrayTexture||x.isData3DTexture,Fe=D.isDataArrayTexture||D.isData3DTexture;if(x.isDepthTexture){let Oe=gt.get(x),ye=gt.get(D),Ee=gt.get(Oe.__renderTarget),pa=gt.get(ye.__renderTarget);mt.bindFramebuffer(w.READ_FRAMEBUFFER,Ee.__webglFramebuffer),mt.bindFramebuffer(w.DRAW_FRAMEBUFFER,pa.__webglFramebuffer);for(let Dn=0;Dn<ht;Dn++)se&&(w.framebufferTextureLayer(w.READ_FRAMEBUFFER,w.COLOR_ATTACHMENT0,gt.get(x).__webglTexture,U,bt+Dn),w.framebufferTextureLayer(w.DRAW_FRAMEBUFFER,w.COLOR_ATTACHMENT0,gt.get(D).__webglTexture,Q,ae+Dn)),w.blitFramebuffer(Tt,Ct,ot,ft,Bt,Yt,ot,ft,w.DEPTH_BUFFER_BIT,w.NEAREST);mt.bindFramebuffer(w.READ_FRAMEBUFFER,null),mt.bindFramebuffer(w.DRAW_FRAMEBUFFER,null)}else if(U!==0||x.isRenderTargetTexture||gt.has(x)){let Oe=gt.get(x),ye=gt.get(D);mt.bindFramebuffer(w.READ_FRAMEBUFFER,Pc),mt.bindFramebuffer(w.DRAW_FRAMEBUFFER,Lc);for(let Ee=0;Ee<ht;Ee++)se?w.framebufferTextureLayer(w.READ_FRAMEBUFFER,w.COLOR_ATTACHMENT0,Oe.__webglTexture,U,bt+Ee):w.framebufferTexture2D(w.READ_FRAMEBUFFER,w.COLOR_ATTACHMENT0,w.TEXTURE_2D,Oe.__webglTexture,U),Fe?w.framebufferTextureLayer(w.DRAW_FRAMEBUFFER,w.COLOR_ATTACHMENT0,ye.__webglTexture,Q,ae+Ee):w.framebufferTexture2D(w.DRAW_FRAMEBUFFER,w.COLOR_ATTACHMENT0,w.TEXTURE_2D,ye.__webglTexture,Q),U!==0?w.blitFramebuffer(Tt,Ct,ot,ft,Bt,Yt,ot,ft,w.COLOR_BUFFER_BIT,w.NEAREST):Fe?w.copyTexSubImage3D(ie,Q,Bt,Yt,ae+Ee,Tt,Ct,ot,ft):w.copyTexSubImage2D(ie,Q,Bt,Yt,Tt,Ct,ot,ft);mt.bindFramebuffer(w.READ_FRAMEBUFFER,null),mt.bindFramebuffer(w.DRAW_FRAMEBUFFER,null)}else Fe?x.isDataTexture||x.isData3DTexture?w.texSubImage3D(ie,Q,Bt,Yt,ae,ot,ft,ht,Zt,Et,Kt.data):D.isCompressedArrayTexture?w.compressedTexSubImage3D(ie,Q,Bt,Yt,ae,ot,ft,ht,Zt,Kt.data):w.texSubImage3D(ie,Q,Bt,Yt,ae,ot,ft,ht,Zt,Et,Kt):x.isDataTexture?w.texSubImage2D(w.TEXTURE_2D,Q,Bt,Yt,ot,ft,Zt,Et,Kt.data):x.isCompressedTexture?w.compressedTexSubImage2D(w.TEXTURE_2D,Q,Bt,Yt,Kt.width,Kt.height,Zt,Kt.data):w.texSubImage2D(w.TEXTURE_2D,Q,Bt,Yt,ot,ft,Zt,Et,Kt);w.pixelStorei(w.UNPACK_ROW_LENGTH,Gt),w.pixelStorei(w.UNPACK_IMAGE_HEIGHT,Re),w.pixelStorei(w.UNPACK_SKIP_PIXELS,jn),w.pixelStorei(w.UNPACK_SKIP_ROWS,Ie),w.pixelStorei(w.UNPACK_SKIP_IMAGES,Ri),Q===0&&D.generateMipmaps&&w.generateMipmap(ie),mt.unbindTexture()},this.initRenderTarget=function(x){gt.get(x).__webglFramebuffer===void 0&&Ut.setupRenderTarget(x)},this.initTexture=function(x){x.isCubeTexture?Ut.setTextureCube(x,0):x.isData3DTexture?Ut.setTexture3D(x,0):x.isDataArrayTexture||x.isCompressedArrayTexture?Ut.setTexture2DArray(x,0):Ut.setTexture2D(x,0),mt.unbindTexture()},this.resetState=function(){A=0,R=0,L=null,mt.reset(),at.reset()},typeof __THREE_DEVTOOLS__<"u"&&__THREE_DEVTOOLS__.dispatchEvent(new CustomEvent("observe",{detail:this}))}get coordinateSystem(){return We}get outputColorSpace(){return this._outputColorSpace}set outputColorSpace(t){this._outputColorSpace=t;let e=this.getContext();e.drawingBufferColorSpace=Vt._getDrawingBufferColorSpace(t),e.unpackColorSpace=Vt._getUnpackColorSpace()}};return Bc(Zp);})();
 </script>
-<script>// Story text is also the source for the order cards and writing feedback.
+<script>const LV_DEFAULT_ACADEMICS={"kind": "lumenvale.catalog", "version": 1, "title": "LumenVale Academic Pathways", "note": "Illustrative game progression only; not accredited courses or certificates.", "stages": [{"id": "middle", "name": "Middle School", "minimumAge": 10, "required": ["ENG-M1", "MAT-M1", "SCI-M1", "BIO-M1", "QUR-M1"]}, {"id": "high", "name": "High School", "minimumAge": 14, "required": ["ENG-H1", "MAT-H1", "BIO-H1", "CHM-H1", "PHY-H1", "QUR-H1"]}, {"id": "university", "name": "University Foundation and Specialization", "minimumAge": 16, "required": []}], "programs": [{"id": "biology", "name": "Biology", "description": "Living systems, genetics, laboratory methods, and scientific research.", "required": ["BIO-U1", "CHM-U1", "MAT-U1", "MBIO-U1", "RES-U1"], "inspiredBy": "University of Maine Biology", "source": "https://sbe.umaine.edu/undergraduate/biology/biology-requirements/"}, {"id": "biochemistry", "name": "Biochemistry", "description": "Chemistry of living things, proteins, metabolism, and molecular research.", "required": ["BIO-U1", "CHM-U1", "MAT-U1", "OCH-U1", "BCH-U1", "RES-U1"], "inspiredBy": "University of Maine Biochemistry", "source": "https://umaine.edu/biomed/undergraduate-programs/biochemistry/"}, {"id": "biomedical-engineering", "name": "Biomedical Engineering", "description": "Mathematics, physics, life sciences, engineering design, and research.", "required": ["BIO-U1", "CHM-U1", "MAT-U1", "PHY-U1", "BEN-U1", "RES-U1"], "inspiredBy": "University of Maine Biomedical Engineering", "source": "https://umaine.edu/academics/biomedical-engineering-b-s/"}], "courses": [{"id": "ENG-M1", "title": "English Foundations", "stage": "middle", "subject": "English", "credits": 2, "prerequisites": [], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "MAT-M1", "title": "Mathematics Foundations", "stage": "middle", "subject": "Mathematics", "credits": 2, "prerequisites": [], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "SCI-M1", "title": "General Science", "stage": "middle", "subject": "Science", "credits": 2, "prerequisites": [], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "BIO-M1", "title": "Introduction to Biology", "stage": "middle", "subject": "Biology", "credits": 2, "prerequisites": ["SCI-M1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "QUR-M1", "title": "Qur'an Memorization I", "stage": "middle", "subject": "Qur'an", "credits": 1, "prerequisites": [], "kind": "teacher-recitation", "contentStatus": "awaiting-teacher-content"}, {"id": "ENG-H1", "title": "English Composition and Analysis", "stage": "high", "subject": "English", "credits": 3, "prerequisites": ["ENG-M1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "MAT-H1", "title": "Algebra and Geometry", "stage": "high", "subject": "Mathematics", "credits": 3, "prerequisites": ["MAT-M1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "BIO-H1", "title": "High School Biology", "stage": "high", "subject": "Biology", "credits": 3, "prerequisites": ["BIO-M1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "CHM-H1", "title": "High School Chemistry", "stage": "high", "subject": "Chemistry", "credits": 3, "prerequisites": ["SCI-M1", "MAT-M1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "PHY-H1", "title": "Introduction to Physics", "stage": "high", "subject": "Physics", "credits": 3, "prerequisites": ["MAT-M1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "QUR-H1", "title": "Qur'an Memorization II", "stage": "high", "subject": "Qur'an", "credits": 1, "prerequisites": ["QUR-M1"], "kind": "teacher-recitation", "contentStatus": "awaiting-teacher-content"}, {"id": "BIO-U1", "title": "General Biology with Laboratory", "stage": "university", "subject": "Biology", "credits": 4, "prerequisites": ["BIO-H1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "CHM-U1", "title": "General Chemistry with Laboratory", "stage": "university", "subject": "Chemistry", "credits": 4, "prerequisites": ["CHM-H1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "MAT-U1", "title": "Calculus I", "stage": "university", "subject": "Mathematics", "credits": 4, "prerequisites": ["MAT-H1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "PHY-U1", "title": "Physics for Scientists and Engineers", "stage": "university", "subject": "Physics", "credits": 4, "prerequisites": ["PHY-H1", "MAT-H1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "OCH-U1", "title": "Organic Chemistry", "stage": "university", "subject": "Chemistry", "credits": 4, "prerequisites": ["CHM-U1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "MBIO-U1", "title": "Molecular and Cell Biology", "stage": "university", "subject": "Biology", "credits": 4, "prerequisites": ["BIO-U1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "BCH-U1", "title": "Principles of Biochemistry", "stage": "university", "subject": "Biochemistry", "credits": 4, "prerequisites": ["OCH-U1", "BIO-U1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "BEN-U1", "title": "Introduction to Biomedical Engineering", "stage": "university", "subject": "Engineering", "credits": 4, "prerequisites": ["MAT-U1", "PHY-U1", "BIO-U1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}, {"id": "RES-U1", "title": "Research Methods and Project", "stage": "university", "subject": "Research", "credits": 3, "prerequisites": ["BIO-U1"], "kind": "academic", "contentStatus": "awaiting-teacher-content"}]};
+const LV_LMS_DEMO={"kind": "lumenvale.lms-bundle", "version": 1, "courses": [{"kind": "lumenvale.lms-course", "version": 1, "id": "BIO-M1", "title": "Biology Foundations", "subject": "Biology", "teacher": "LumenVale Demo Faculty", "description": "Explore cells, their parts, and how living things use energy.", "published": true, "modules": [{"id": "cell-structures", "title": "Module 1 · Cell Structure", "objectives": ["Identify cell membranes, cytoplasm, and nucleus", "Compare plant and animal cells"], "lesson": {"title": "Inside a Living Cell", "content": "A cell is the basic structural and functional unit of living organisms. The cell membrane controls what enters and leaves the cell. Cytoplasm contains structures called organelles, and the nucleus stores most of the cell's genetic information. Plant cells often contain a cell wall and chloroplasts. Animal cells do not have chloroplasts. These structures work together to help cells grow and respond to their environment."}, "flashcards": [{"front": "Cell membrane", "back": "A selectively permeable boundary that controls what moves in and out of a cell."}, {"front": "Nucleus", "back": "An organelle that contains most of a eukaryotic cell's DNA."}, {"front": "Chloroplast", "back": "An organelle where photosynthesis takes place in plants and algae."}], "practice": [{"prompt": "Which structure controls what enters and leaves a cell?", "choices": ["Cell membrane", "Ribosome", "Chromosome", "Vacuole"], "correctIndex": 0, "explanation": "The plasma membrane is selectively permeable."}], "exam": {"title": "Cell Biology Checkpoint", "timeLimitMinutes": 10, "attemptLimit": 3, "questions": [{"prompt": "What is the basic unit of life?", "choices": ["An organ", "A cell", "A tissue", "A system"], "correctIndex": 1, "explanation": "Cells are the smallest units capable of performing life's basic functions."}, {"prompt": "Which structure contains most eukaryotic DNA?", "choices": ["Nucleus", "Cell membrane", "Ribosome", "Cytoplasm"], "correctIndex": 0, "explanation": "Most eukaryotic DNA is found in the nucleus."}, {"prompt": "Which structure is usually found in plant cells but not animal cells?", "choices": ["Mitochondrion", "Cell membrane", "Chloroplast", "Cytoplasm"], "correctIndex": 2, "explanation": "Chloroplasts are responsible for photosynthesis."}]}}, {"id": "energy", "title": "Module 2 · Energy in Living Things", "objectives": ["Distinguish photosynthesis from cellular respiration", "Explain why cells need ATP"], "lesson": {"title": "How Cells Use Energy", "content": "Organisms need energy to carry out life processes. During photosynthesis, plants and algae use light energy to help form glucose from carbon dioxide and water. During cellular respiration, cells break down fuel molecules to make ATP, the molecule that transfers usable energy for many cellular activities. Mitochondria play an important role in aerobic cellular respiration. Photosynthesis and respiration are connected but are not the same process."}, "flashcards": [{"front": "ATP", "back": "A molecule that transfers usable energy for cellular work."}, {"front": "Photosynthesis", "back": "A process that uses light energy to form energy-rich organic molecules."}], "practice": [{"prompt": "Which molecule transfers usable energy for many cell activities?", "choices": ["ATP", "DNA", "RNA", "Chlorophyll"], "correctIndex": 0, "explanation": "ATP is often called the cell's energy currency."}], "exam": {"title": "Cell Energy Checkpoint", "timeLimitMinutes": 10, "attemptLimit": 3, "questions": [{"prompt": "In which organelle does much aerobic cellular respiration occur?", "choices": ["Nucleus", "Mitochondrion", "Golgi apparatus", "Cell wall"], "correctIndex": 1}, {"prompt": "Which process uses light energy to produce sugar?", "choices": ["Diffusion", "Respiration", "Photosynthesis", "Osmosis"], "correctIndex": 2}]}}], "assignments": [{"id": "compare-cells", "title": "Compare Plant and Animal Cells", "moduleId": "cell-structures", "prompt": "Write 4–6 sentences comparing the structures of plant and animal cells. Explain one structure they share and one difference.", "points": 20, "dueDate": ""}], "announcements": [{"id": "welcome-bio", "title": "Welcome to Biology", "body": "Start with Module 1. Complete the reading and flashcards before taking the checkpoint exam.", "date": "2026-11-23"}]}, {"kind": "lumenvale.lms-course", "version": 1, "id": "ENG-M1", "title": "English Reading and Writing", "subject": "English", "teacher": "LumenVale Demo Faculty", "description": "Practice finding main ideas, supporting details, and clear explanations.", "published": true, "modules": [{"id": "main-ideas", "title": "Module 1 · Main Ideas", "objectives": ["Identify the main idea in a paragraph", "Recognize supporting evidence"], "lesson": {"title": "Understanding Main Ideas", "content": "A main idea is what a paragraph or passage is mostly about. Supporting details explain or prove that main idea. To find the main idea, read the whole paragraph and ask what the author wants the reader to understand. A topic is usually just a few words, but the main idea states a complete thought about the topic. Look for repeated concepts, examples, and a concluding sentence when identifying the author's main point."}, "flashcards": [{"front": "Main idea", "back": "The central point that a passage communicates."}, {"front": "Supporting detail", "back": "A fact, example, or explanation that supports the main idea."}], "practice": [{"prompt": "What does a supporting detail do?", "choices": ["Changes the topic", "Supports the central point", "Replaces the title", "Makes all opinions facts"], "correctIndex": 1, "explanation": "A supporting detail gives evidence or explanation for the main idea."}], "exam": {"title": "Reading Checkpoint", "timeLimitMinutes": 12, "attemptLimit": 3, "questions": [{"prompt": "Which choice best describes a main idea?", "choices": ["One small example", "The central point", "A dictionary definition", "A page number"], "correctIndex": 1}, {"prompt": "Which is most likely a supporting detail?", "choices": ["A specific example", "The book's cover", "The author name", "The paragraph number"], "correctIndex": 0}]}}], "assignments": [{"id": "write-summary", "title": "Summarize a Paragraph", "moduleId": "main-ideas", "prompt": "Write a short paragraph explaining why it is important to identify a passage's main idea. Include a supporting example.", "points": 15, "dueDate": ""}], "announcements": [{"id": "welcome-eng", "title": "Reading Practice", "body": "Use the flashcards after reading, and practice describing the main idea in your own words.", "date": "2026-11-23"}]}]};
+const LV_SCHOOL_ACTIVITIES={"kind": "lumenvale.school-activity-pack", "version": 1, "title": "Learning Quarter Knowledge Quest", "note": "Optional game practice; never substitutes for teacher-approved academic or Qur’an records.", "challenges": [{"id": "reading", "subject": "English", "title": "Reading Detective", "icon": "📖", "prompt": "A passage says a school library is quiet, contains many books, and lets students borrow them. What is its main idea?", "choices": ["Libraries help students read and learn.", "All books are difficult.", "Reading is only done at home."], "correctIndex": 0, "explanation": "The main idea summarizes what the whole passage explains."}, {"id": "math", "subject": "Mathematics", "title": "Math Lab", "icon": "➗", "prompt": "A classroom has 24 students. One quarter are in the science lab. How many students are in the lab?", "choices": ["4", "6", "8", "12"], "correctIndex": 1, "explanation": "One quarter means divide by four: 24 ÷ 4 = 6."}, {"id": "science", "subject": "Biology", "title": "Science Investigator", "icon": "🔬", "prompt": "Which cell structure makes most ATP during aerobic cellular respiration?", "choices": ["Nucleus", "Golgi apparatus", "Mitochondrion", "Ribosome"], "correctIndex": 2, "explanation": "Mitochondria produce most ATP during aerobic respiration."}, {"id": "safety", "subject": "City Skills", "title": "Safe Streets", "icon": "🚦", "prompt": "When crossing a busy avenue to reach school, what should you do?", "choices": ["Cross between parked cars.", "Use a marked crossing and check for traffic.", "Run across without looking."], "correctIndex": 1, "explanation": "Use marked crossings and check approaching traffic."}]};
+
+// Story text is also the source for the order cards and writing feedback.
 const CATALOG = Object.freeze({
   kit: 7, firstOrder: 3, clubOrder: 6, pack: 4, wholesale: 16, stand: 25,
   contents: ['A small pot', 'A packet of seeds', 'A plant label'],
@@ -5029,16 +5065,21 @@ const TOWN_DISTRICTS=[
  {name:'Orchard Row',x:46,z:55,tint:'#a6b489'},
  {name:'Lumen Park',x:-5,z:51,tint:'#7b9a70'},
 ];
+// World geometry, collision access and interaction prompts share one station map.
+// Keep each desk's approach point on walkable floor, not inside its furniture collision.
+const SCHOOL_STATIONS=Object.freeze([
+ {x:-7,z:-6.42,interactZ:-4.20,r:2.15,key:'school',label:'Open your school courses',sign:'ACADEMIC STUDIES',tint:'#77b4a4',kind:'pathways'},
+ {x:7,z:-6.42,interactZ:-4.20,r:2.15,key:'careers',label:'Explore careers and jobs',sign:'CAREERS & JOBS',tint:'#78a6bd',kind:'careers'},
+ {x:-7,z:-1.20,interactZ:.85,r:2,key:'quran',label:'Open Qur’an learning',sign:'QURAN STUDIO',tint:'#9bbd83',kind:'quran'},
+ {x:7,z:-1.20,interactZ:.85,r:2,key:'school-quiz',label:'Try the Science Knowledge Quest',sign:'SCIENCE QUEST',tint:'#88c5c0',kind:'science'},
+ {x:-7,z:5.03,interactZ:3.20,r:2,key:'browse',label:'Browse reading lessons',sign:'READING CORNER',tint:'#d9bc8a',kind:'library'},
+ {x:7,z:5.03,interactZ:3.20,r:2,key:'school-practice',label:'Open assignments and exams',sign:'PRACTICE EXAMS',tint:'#b1bfdf',kind:'exam'}
+]);
 const TOWN_PLACES=[
  {id:'school',name:'LumenVale School',kind:'school',x:-37,z:-4.6,w:17,d:11,h:7.8,face:1,room:[13,12],brick:'#e8dfce',trim:'#f9f2e1',
   desks:[
-   {x:-7,z:-4.20,r:2.15,key:'school',label:'Open interactive courses and lessons'},
-   {x:7,z:-4.20,r:2.15,key:'careers',label:'Visit the career center'},
-   {x:-7,z:.85,r:2,key:'quran',label:'Open Qur’an memorization studio'},
-   {x:7,z:.85,r:2,key:'school-quiz',label:'Try the Knowledge Quest'},
-   {x:-7,z:3.20,r:2,key:'browse',label:'Browse reading lessons'},
-   {x:7,z:3.20,r:2,key:'school-practice',label:'Open classes, assignments, and exams'},
-   {x:0,z:-8.10,r:2.1,key:'school-guide',label:'Open Learning Hub and Teacher Studio'}
+   ...SCHOOL_STATIONS.map(({x,interactZ,r,key,label})=>({x,z:interactZ,r,key,label})),
+   {x:0,z:-8.10,r:2.1,key:'school-guide',label:'Open the Learning Hub'}
   ]},
  {id:'library',name:'Reading Library',kind:'library',x:16,z:10.2,w:13,d:10,h:7.1,face:-1,room:[11,11],brick:'#e2ded4',trim:'#faf6ed',
   desks:[{x:0,z:-2.0,r:2.0,key:'browse',label:'Browse library books'},{x:-6,z:1.8,r:2,key:'words',label:'Open My Words'}]},
@@ -5579,8 +5620,6 @@ function animateLumenVehicle(model,distance,steer=0){
 }
 
 
-const LV_DEFAULT_ACADEMICS={"kind":"lumenvale.catalog","version":1,"title":"LumenVale Academic Pathways","note":"Illustrative game progression only; not accredited courses or certificates.","stages":[{"id":"middle","name":"Middle School","minimumAge":10,"required":["ENG-M1","MAT-M1","SCI-M1","BIO-M1","QUR-M1"]},{"id":"high","name":"High School","minimumAge":14,"required":["ENG-H1","MAT-H1","BIO-H1","CHM-H1","PHY-H1","QUR-H1"]},{"id":"university","name":"University Foundation and Specialization","minimumAge":16,"required":[]}],"programs":[{"id":"biology","name":"Biology","description":"Living systems, genetics, laboratory methods, and scientific research.","required":["BIO-U1","CHM-U1","MAT-U1","MBIO-U1","RES-U1"],"inspiredBy":"University of Maine Biology","source":"https://sbe.umaine.edu/undergraduate/biology/biology-requirements/"},{"id":"biochemistry","name":"Biochemistry","description":"Chemistry of living things, proteins, metabolism, and molecular research.","required":["BIO-U1","CHM-U1","MAT-U1","OCH-U1","BCH-U1","RES-U1"],"inspiredBy":"University of Maine Biochemistry","source":"https://umaine.edu/biomed/undergraduate-programs/biochemistry/"},{"id":"biomedical-engineering","name":"Biomedical Engineering","description":"Mathematics, physics, life sciences, engineering design, and research.","required":["BIO-U1","CHM-U1","MAT-U1","PHY-U1","BEN-U1","RES-U1"],"inspiredBy":"University of Maine Biomedical Engineering","source":"https://umaine.edu/academics/biomedical-engineering-b-s/"}],"courses":[{"id":"ENG-M1","title":"English Foundations","stage":"middle","subject":"English","credits":2,"prerequisites":[],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"MAT-M1","title":"Mathematics Foundations","stage":"middle","subject":"Mathematics","credits":2,"prerequisites":[],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"SCI-M1","title":"General Science","stage":"middle","subject":"Science","credits":2,"prerequisites":[],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"BIO-M1","title":"Introduction to Biology","stage":"middle","subject":"Biology","credits":2,"prerequisites":["SCI-M1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"QUR-M1","title":"Qur'an Memorization I","stage":"middle","subject":"Qur'an","credits":1,"prerequisites":[],"kind":"teacher-recitation","contentStatus":"awaiting-teacher-content"},{"id":"ENG-H1","title":"English Composition and Analysis","stage":"high","subject":"English","credits":3,"prerequisites":["ENG-M1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"MAT-H1","title":"Algebra and Geometry","stage":"high","subject":"Mathematics","credits":3,"prerequisites":["MAT-M1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"BIO-H1","title":"High School Biology","stage":"high","subject":"Biology","credits":3,"prerequisites":["BIO-M1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"CHM-H1","title":"High School Chemistry","stage":"high","subject":"Chemistry","credits":3,"prerequisites":["SCI-M1","MAT-M1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"PHY-H1","title":"Introduction to Physics","stage":"high","subject":"Physics","credits":3,"prerequisites":["MAT-M1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"QUR-H1","title":"Qur'an Memorization II","stage":"high","subject":"Qur'an","credits":1,"prerequisites":["QUR-M1"],"kind":"teacher-recitation","contentStatus":"awaiting-teacher-content"},{"id":"BIO-U1","title":"General Biology with Laboratory","stage":"university","subject":"Biology","credits":4,"prerequisites":["BIO-H1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"CHM-U1","title":"General Chemistry with Laboratory","stage":"university","subject":"Chemistry","credits":4,"prerequisites":["CHM-H1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"MAT-U1","title":"Calculus I","stage":"university","subject":"Mathematics","credits":4,"prerequisites":["MAT-H1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"PHY-U1","title":"Physics for Scientists and Engineers","stage":"university","subject":"Physics","credits":4,"prerequisites":["PHY-H1","MAT-H1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"OCH-U1","title":"Organic Chemistry","stage":"university","subject":"Chemistry","credits":4,"prerequisites":["CHM-U1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"MBIO-U1","title":"Molecular and Cell Biology","stage":"university","subject":"Biology","credits":4,"prerequisites":["BIO-U1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"BCH-U1","title":"Principles of Biochemistry","stage":"university","subject":"Biochemistry","credits":4,"prerequisites":["OCH-U1","BIO-U1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"BEN-U1","title":"Introduction to Biomedical Engineering","stage":"university","subject":"Engineering","credits":4,"prerequisites":["MAT-U1","PHY-U1","BIO-U1"],"kind":"academic","contentStatus":"awaiting-teacher-content"},{"id":"RES-U1","title":"Research Methods and Project","stage":"university","subject":"Research","credits":3,"prerequisites":["BIO-U1"],"kind":"academic","contentStatus":"awaiting-teacher-content"}]};
-
 /* City Builder: persistent reading-to-production gameplay. No external services. */
 const CITY_SAVE_KEY='jungle-miner-city-v1';
 const CITY_MOUSE_PREFS_KEY='jungle-miner-mouse-v1';
@@ -5588,8 +5627,8 @@ function cityLoadMouseSettings(){
  try{
   const info=JSON.parse(localStorage.getItem(CITY_MOUSE_PREFS_KEY)||'null');
   return {sensitivity:Math.max(.002,Math.min(.01,Number(info?.sensitivity)||.005)),
-    invertY:Boolean(info?.invertY)};
- }catch{return {sensitivity:.005,invertY:false};}
+    invertY:Boolean(info?.invertY),graphics:info?.graphics==='balanced'?'balanced':'detailed'};
+ }catch{return {sensitivity:.005,invertY:false,graphics:'detailed'};}
 }
 var cityMouseSettings=cityLoadMouseSettings();
 function citySaveMouseSettings(){
@@ -5922,7 +5961,11 @@ function cityGuide(){
  '<div class="city-mouse-settings"><h3>First-person mouse settings</h3>'+
  '<label for="city-mouse-sensitivity">Mouse sensitivity: <strong id="city-sensitivity-value">'+Math.round(cityMouseSettings.sensitivity*1000)+'</strong></label>'+
  '<input id="city-mouse-sensitivity" type="range" min="2" max="10" step="1" value="'+Math.round(cityMouseSettings.sensitivity*1000)+'">'+
- '<label class="city-toggle"><input id="city-invert-y" type="checkbox" '+(cityMouseSettings.invertY?'checked':'')+'> Invert vertical look</label></div>'+
+ '<label class="city-toggle"><input id="city-invert-y" type="checkbox" '+(cityMouseSettings.invertY?'checked':'')+'> Invert vertical look</label>'+ 
+ '<label for="city-graphics-quality">Graphics quality</label>'+ 
+ '<select id="city-graphics-quality"><option value="detailed" '+(cityMouseSettings.graphics==='detailed'?'selected':'')+'>Detailed · 3D materials and shadows</option>'+ 
+ '<option value="balanced" '+(cityMouseSettings.graphics==='balanced'?'selected':'')+'>Balanced · faster rendering</option></select>'+ 
+ '<small>Changing graphics quality reloads the game. Local progress is preserved.</small></div>'+
  '<p class="city-sub">Click Mouse look to capture the mouse · Esc releases it · Shift sprints · E interacts · P opens your phone · F toggles fullscreen. Menus release the mouse for their buttons. Saves stay on this device.</p>');
 }
 function citySync(){
@@ -5977,6 +6020,11 @@ function cityInit(){
  document.addEventListener('change',event=>{
   if(event.target.id==='city-invert-y'){
    cityMouseSettings.invertY=event.target.checked;citySaveMouseSettings();
+  }else if(event.target.id==='city-graphics-quality'){
+   const choice=event.target.value;
+   if(!['balanced','detailed'].includes(choice))return;
+   cityMouseSettings.graphics=choice;citySaveMouseSettings();
+   location.reload();
   }
  });
  document.addEventListener('click',event=>{
@@ -7964,9 +8012,6 @@ function pathwayInit(){
 }
 
 
-const LV_LMS_DEMO={"kind":"lumenvale.lms-bundle","version":1,"courses":[{"kind":"lumenvale.lms-course","version":1,"id":"BIO-M1","title":"Biology Foundations","subject":"Biology","teacher":"LumenVale Demo Faculty","description":"Explore cells, their parts, and how living things use energy.","published":true,"modules":[{"id":"cell-structures","title":"Module 1 · Cell Structure","objectives":["Identify cell membranes, cytoplasm, and nucleus","Compare plant and animal cells"],"lesson":{"title":"Inside a Living Cell","content":"A cell is the basic structural and functional unit of living organisms. The cell membrane controls what enters and leaves the cell. Cytoplasm contains structures called organelles, and the nucleus stores most of the cell's genetic information. Plant cells often contain a cell wall and chloroplasts. Animal cells do not have chloroplasts. These structures work together to help cells grow and respond to their environment."},"flashcards":[{"front":"Cell membrane","back":"A selectively permeable boundary that controls what moves in and out of a cell."},{"front":"Nucleus","back":"An organelle that contains most of a eukaryotic cell's DNA."},{"front":"Chloroplast","back":"An organelle where photosynthesis takes place in plants and algae."}],"practice":[{"prompt":"Which structure controls what enters and leaves a cell?","choices":["Cell membrane","Ribosome","Chromosome","Vacuole"],"correctIndex":0,"explanation":"The plasma membrane is selectively permeable."}],"exam":{"title":"Cell Biology Checkpoint","timeLimitMinutes":10,"attemptLimit":3,"questions":[{"prompt":"What is the basic unit of life?","choices":["An organ","A cell","A tissue","A system"],"correctIndex":1,"explanation":"Cells are the smallest units capable of performing life's basic functions."},{"prompt":"Which structure contains most eukaryotic DNA?","choices":["Nucleus","Cell membrane","Ribosome","Cytoplasm"],"correctIndex":0,"explanation":"Most eukaryotic DNA is found in the nucleus."},{"prompt":"Which structure is usually found in plant cells but not animal cells?","choices":["Mitochondrion","Cell membrane","Chloroplast","Cytoplasm"],"correctIndex":2,"explanation":"Chloroplasts are responsible for photosynthesis."}]}},{"id":"energy","title":"Module 2 · Energy in Living Things","objectives":["Distinguish photosynthesis from cellular respiration","Explain why cells need ATP"],"lesson":{"title":"How Cells Use Energy","content":"Organisms need energy to carry out life processes. During photosynthesis, plants and algae use light energy to help form glucose from carbon dioxide and water. During cellular respiration, cells break down fuel molecules to make ATP, the molecule that transfers usable energy for many cellular activities. Mitochondria play an important role in aerobic cellular respiration. Photosynthesis and respiration are connected but are not the same process."},"flashcards":[{"front":"ATP","back":"A molecule that transfers usable energy for cellular work."},{"front":"Photosynthesis","back":"A process that uses light energy to form energy-rich organic molecules."}],"practice":[{"prompt":"Which molecule transfers usable energy for many cell activities?","choices":["ATP","DNA","RNA","Chlorophyll"],"correctIndex":0,"explanation":"ATP is often called the cell's energy currency."}],"exam":{"title":"Cell Energy Checkpoint","timeLimitMinutes":10,"attemptLimit":3,"questions":[{"prompt":"In which organelle does much aerobic cellular respiration occur?","choices":["Nucleus","Mitochondrion","Golgi apparatus","Cell wall"],"correctIndex":1},{"prompt":"Which process uses light energy to produce sugar?","choices":["Diffusion","Respiration","Photosynthesis","Osmosis"],"correctIndex":2}]}}],"assignments":[{"id":"compare-cells","title":"Compare Plant and Animal Cells","moduleId":"cell-structures","prompt":"Write 4–6 sentences comparing the structures of plant and animal cells. Explain one structure they share and one difference.","points":20,"dueDate":""}],"announcements":[{"id":"welcome-bio","title":"Welcome to Biology","body":"Start with Module 1. Complete the reading and flashcards before taking the checkpoint exam.","date":"2026-11-23"}]},{"kind":"lumenvale.lms-course","version":1,"id":"ENG-M1","title":"English Reading and Writing","subject":"English","teacher":"LumenVale Demo Faculty","description":"Practice finding main ideas, supporting details, and clear explanations.","published":true,"modules":[{"id":"main-ideas","title":"Module 1 · Main Ideas","objectives":["Identify the main idea in a paragraph","Recognize supporting evidence"],"lesson":{"title":"Understanding Main Ideas","content":"A main idea is what a paragraph or passage is mostly about. Supporting details explain or prove that main idea. To find the main idea, read the whole paragraph and ask what the author wants the reader to understand. A topic is usually just a few words, but the main idea states a complete thought about the topic. Look for repeated concepts, examples, and a concluding sentence when identifying the author's main point."},"flashcards":[{"front":"Main idea","back":"The central point that a passage communicates."},{"front":"Supporting detail","back":"A fact, example, or explanation that supports the main idea."}],"practice":[{"prompt":"What does a supporting detail do?","choices":["Changes the topic","Supports the central point","Replaces the title","Makes all opinions facts"],"correctIndex":1,"explanation":"A supporting detail gives evidence or explanation for the main idea."}],"exam":{"title":"Reading Checkpoint","timeLimitMinutes":12,"attemptLimit":3,"questions":[{"prompt":"Which choice best describes a main idea?","choices":["One small example","The central point","A dictionary definition","A page number"],"correctIndex":1},{"prompt":"Which is most likely a supporting detail?","choices":["A specific example","The book's cover","The author name","The paragraph number"],"correctIndex":0}]}}],"assignments":[{"id":"write-summary","title":"Summarize a Paragraph","moduleId":"main-ideas","prompt":"Write a short paragraph explaining why it is important to identify a passage's main idea. Include a supporting example.","points":15,"dueDate":""}],"announcements":[{"id":"welcome-eng","title":"Reading Practice","body":"Use the flashcards after reading, and practice describing the main idea in your own words.","date":"2026-11-23"}]}]};
-const LV_SCHOOL_ACTIVITIES={"kind":"lumenvale.school-activity-pack","version":1,"title":"Learning Quarter Knowledge Quest","note":"Optional game practice; never substitutes for teacher-approved academic or Qur’an records.","challenges":[{"id":"reading","subject":"English","title":"Reading Detective","icon":"📖","prompt":"A passage says a school library is quiet, contains many books, and lets students borrow them. What is its main idea?","choices":["Libraries help students read and learn.","All books are difficult.","Reading is only done at home."],"correctIndex":0,"explanation":"The main idea summarizes what the whole passage explains."},{"id":"math","subject":"Mathematics","title":"Math Lab","icon":"➗","prompt":"A classroom has 24 students. One quarter are in the science lab. How many students are in the lab?","choices":["4","6","8","12"],"correctIndex":1,"explanation":"One quarter means divide by four: 24 ÷ 4 = 6."},{"id":"science","subject":"Biology","title":"Science Investigator","icon":"🔬","prompt":"Which cell structure makes most ATP during aerobic cellular respiration?","choices":["Nucleus","Golgi apparatus","Mitochondrion","Ribosome"],"correctIndex":2,"explanation":"Mitochondria produce most ATP during aerobic respiration."},{"id":"safety","subject":"City Skills","title":"Safe Streets","icon":"🚦","prompt":"When crossing a busy avenue to reach school, what should you do?","choices":["Cross between parked cars.","Use a marked crossing and check for traffic.","Run across without looking."],"correctIndex":1,"explanation":"Use marked crossings and check approaching traffic."}]};
-
 /* Small JSON-driven school quest. Never changes teacher grades or recitation records. */
 const SCHOOL_CHALLENGE_KEY='lumenvale-school-activities-v1';
 function schoolChallengeLoad(){
@@ -8590,6 +8635,8 @@ function lmsInit(){
  });
 }
 
+
+
 /* LumenVale atmosphere v2 — cinematic but readable, entirely offline.
  * Threejs-game-skills principles: deliberate sky colors, layered depth,
  * no noise-only aesthetic or expensive per-frame texture redraws.
@@ -8673,6 +8720,7 @@ function createSkyAtmosphere({T,scene,renderer}){
  }
  return {enabled:true,mesh,texture:map,update};
 }
+
 
 /* LumenVale School — architectural material system.
  * Redesign guided by threejs-game-skills/threejs-aaa-graphics-builder:
@@ -8865,6 +8913,7 @@ function applySchoolExteriorTextures({T,group,place,low=false}){
  group.userData.schoolExteriorTextureCount=meshes.length;return meshes.length;
 }
 
+
 /* Detailed, accessible school. All furniture follows the floor-plan collision rectangles. */
 function decorateSchoolExterior(T,place,kit,sign,outside){
  const k=kit(),g=new T.Group(),x=place.x,z=place.z,f=place.face||1,front=z+f*place.d/2,h=place.h;
@@ -8952,12 +9001,9 @@ function decorateSchoolInterior(T,k,g,sign,place){
    for(let i=0;i<4;i++)k.box(x+.94,1.05+i*.03,z+.12,.42,.03,.51,i%2?'#efe7d0':'#d9bd90');
   }
  }
- station(-7,-6.42,'ACADEMIC STUDIES','#77b4a4','pathways');
- station(7,-6.42,'CAREERS & JOBS','#78a6bd','careers');
- station(-7,-1.20,'QURAN STUDIO','#9bbd83','quran');
- station(7,-1.20,'SCIENCE QUEST','#88c5c0','science');
- station(-7,5.03,'READING CORNER','#d9bc8a','library');
- station(7,5.03,'PRACTICE EXAMS','#b1bfdf','exam');
+ // The same definitions power the 3D workstations and their interaction zones.
+ for(const desk of SCHOOL_STATIONS)
+  station(desk.x,desk.z,desk.sign,desk.tint,desk.kind);
 
  // Six recognizable rooms wrap a central corridor. Each room has a wide,
  // unobstructed doorway matching the movement/collision plan in districts.js.
@@ -9186,6 +9232,7 @@ function addStreetSurfaceTextures({T,outside,streets,low}){
 }
 
 
+/* Detailed walkable 3D city extension for the existing Three.js scene. */
 function createCityWorld({T,exterior,box,piece,renderer}){
  const city=new T.Group();
  exterior.add(city);
@@ -9769,7 +9816,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    }
   }
   k.flush(outside);
-  addStreetSurfaceTextures({T,outside,streets:STREET_PLAN,low:renderer.isSoftware});
+  addStreetSurfaceTextures({T,outside,streets:STREET_PLAN,low:renderer.isSoftware||renderer.lvBalanced});
  }
  function tree(k,x,z,s=1,tall=false){
   k.put('trunk',x,1.12*s,z,.22*s,2.24*s,.21*s,'#796451');
@@ -10008,7 +10055,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    entryLabel(g,'My Words',-6,1.63,2.9);
   }else if(kind==='school'){
    decorateSchoolInterior(T,k,g,sign,place);
-   applySchoolInteriorTextures({T,group:g,place,low:renderer.isSoftware});
+   applySchoolInteriorTextures({T,group:g,place,low:renderer.isSoftware||renderer.lvBalanced});
   }else if(kind==='hall'){
    table(k,0,-4.9,7.1,1.64,'#7d6851');
    for(const x of [-7.2,7.2])for(const z of [-2.0,1.8])shelves(k,x,z,2.8,2.46,.95,false,true);
@@ -10333,14 +10380,14 @@ function createOfficeView() {
   try {
     if (!T?.PerspectiveCamera) throw new Error('3D engine not loaded');
     renderer = new T.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.4));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, cityMouseSettings?.graphics==='balanced'?1:1.4));
     renderer.outputColorSpace = T.SRGBColorSpace;
   } catch {
     const replacement = canvas.cloneNode();
     canvas.replaceWith(replacement);
     canvas = replacement;
     renderer = createSoftwareRenderer(T,canvas);
-    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1));
     viewport.dataset.renderer = 'software';
   }
 
@@ -10355,7 +10402,8 @@ function createOfficeView() {
   officeFill.position.set(2,3,-5);
   officeFill.visible=false;
   scene.add(officeFill);
-  const shadows = !renderer.isSoftware && renderer.shadowMap;
+  renderer.lvBalanced=cityMouseSettings?.graphics==='balanced';
+  const shadows = !renderer.isSoftware && !renderer.lvBalanced && renderer.shadowMap;
   if (shadows) {
     shadows.enabled=true;
     shadows.autoUpdate=false;
@@ -10784,6 +10832,18 @@ function createOfficeView() {
     current=next;
     schedule();
   }
+  // Non-invasive performance information for browser regression runs.
+  // Does not alter frame cadence or allocate extra meshes.
+  update.diagnostics=()=>({
+    quality:renderer.lvBalanced?'balanced':'detailed',
+    engine:renderer.isSoftware?'software':'webgl',
+    pixelRatio:renderer.getPixelRatio(),
+    canvas:[canvas.width,canvas.height],
+    drawCalls:renderer.info?.render?.calls??null,
+    triangles:renderer.info?.render?.triangles??null,
+    geometries:renderer.info?.memory?.geometries??null,
+    textures:renderer.info?.memory?.textures??null
+  });
   new ResizeObserver(schedule).observe(viewport);
   return update;
 }
@@ -10957,28 +11017,194 @@ function renderSecurity() {
 
 
 
-// Apps reuse the same gameplay panels and persistent data as their world locations.
-function phoneOpen(){
- const app=(id,label,icon,color)=>'<button type="button" data-phone-app="'+id+'"><span class="phone-app-icon '+color+'"><svg aria-hidden="true"><use href="#'+icon+'"></use></svg></span>'+label+'</button>';
+/* LumenVale local progress backup — versioned JSON, explicit allowlist.
+ * Adapted from awesome-gamedev-agent-skills / save-systems:
+ * validate before writing, preserve prior saves and fail safely.
+ * This backs up browser PRACTICE progress only. It is not teacher verification.
+ */
+const LV_BACKUP_KIND='lumenvale.local-save-backup';
+const LV_BACKUP_VERSION=1;
+const LV_BACKUP_MAX_BYTES=5*1024*1024;
+function gameBackupKeys(){
+ return [SAVE_KEY,CITY_SAVE_KEY,CITY_MOUSE_PREFS_KEY,LV_SYSTEMS_KEY,
+  CAMPUS_SAVE_KEY,ACADEMY_CONTENT,ACADEMY_PROGRESS,ACADEMY_PROFILE,
+  JOB_SAVE_KEY,PATHWAYS_KEY,LMS_SAVE_KEY,SCHOOL_CHALLENGE_KEY];
+}
+function gameBackupSnapshot(store=localStorage){
+ const records={};
+ for(const key of gameBackupKeys()){
+  const value=store.getItem(key);
+  if(value==null)continue;
+  if(value.length>1024*1024)throw Error('One save section is too large to export.');
+  const parsed=JSON.parse(value);
+  if(!parsed||typeof parsed!=='object')throw Error('Stored save section is not valid JSON: '+key);
+  records[key]=value;
+ }
+ const data={kind:LV_BACKUP_KIND,version:LV_BACKUP_VERSION,exportedAt:new Date().toISOString(),records};
+ if(JSON.stringify(data).length>LV_BACKUP_MAX_BYTES)throw Error('Backup exceeds the 5 MB limit.');
+ return data;
+}
+function gameBackupValidate(raw){
+ if(!raw||raw.kind!==LV_BACKUP_KIND||raw.version!==LV_BACKUP_VERSION||
+  !raw.records||typeof raw.records!=='object'||Array.isArray(raw.records))
+  throw Error('Not a LumenVale version 1 local-save backup.');
+ const allowed=new Set(gameBackupKeys()),entries=Object.entries(raw.records);
+ if(entries.length<1||entries.length>allowed.size)throw Error('Backup has no records or too many records.');
+ let total=0;
+ for(const [key,source] of entries){
+  if(!allowed.has(key)||typeof source!=='string')throw Error('Unknown save section in backup.');
+  if(source.length<2||source.length>1024*1024)throw Error('Save section size is invalid: '+key);
+  total+=source.length;
+  const value=JSON.parse(source);
+  if(value==null||typeof value!=='object')throw Error('Invalid progress data in '+key);
+ }
+ if(total>LV_BACKUP_MAX_BYTES)throw Error('Backup exceeds 5 MB.');
+ return entries;
+}
+function gameBackupApply(raw,store=localStorage){
+ const entries=gameBackupValidate(raw);
+ if(trial)throw Error('Restoring saves is disabled in practice mode.');
+ const previous=new Map(entries.map(([key])=>[key,store.getItem(key)]));
+ const changed=[];
+ try{
+  for(const [key,value] of entries){
+   store.setItem(key,value);
+   changed.push(key);
+  }
+ }catch(error){
+  // Keep the old save intact if storage is full or a write is rejected.
+  for(const key of changed.reverse()){
+   try{
+    const before=previous.get(key);
+    if(before==null)store.removeItem(key);
+    else store.setItem(key,before);
+   }catch{}
+  }
+  throw Error('Storage write failed; the previous save was restored.');
+ }
+ return entries.length;
+}
+function gameBackupDownload(){
+ const snapshot=gameBackupSnapshot();
+ const file=new Blob([JSON.stringify(snapshot,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(file),link=document.createElement('a');
+ link.download='lumenvale-progress-'+new Date().toISOString().slice(0,10)+'.json';
+ link.href=url;
+ document.body.appendChild(link);link.click();link.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1200);
+}
+function gameBackupHome(){
+ cityPanel('LumenVale / Local Saves','Save and Restore Progress',
+  '<p>Make a backup of your city, school practice, reading, jobs and settings. Your progress is still saved in this browser, not automatically synchronized to another device.</p>'+
+  '<div class="phone-backup-actions">'+
+   '<button type="button" class="button primary" data-backup="export">Download full backup</button>'+
+   '<label>Restore from a LumenVale backup file'+
+    '<input id="lv-backup-file" type="file" accept=".json,application/json" '+(trial?'disabled':'')+'></label>'+
+  '</div>'+
+  '<p class="phone-backup-warning">Restoring replaces matching local save sections. Export your current progress first. Imported practice scores remain unverified. Backup files can contain your student nicknames and writing: keep them private.</p>'+
+  '<button type="button" class="button" data-phone-backup-back="1">Back to City Phone</button>');
+}
+function gameBackupInit(){
+ document.addEventListener('click',event=>{
+  if(event.target.closest('[data-phone-backup-back]')){phoneOpen('tools');return;}
+  if(event.target.closest('[data-backup="export"]')){
+   try{gameBackupDownload();notice('Your progress backup was downloaded.');}
+   catch(e){notice('Backup failed: '+String(e?.message||e).slice(0,130));}
+  }
+ });
+ document.addEventListener('change',async event=>{
+  if(event.target.id!=='lv-backup-file')return;
+  const file=event.target.files?.[0];
+  if(!file)return;
+  try{
+   if(file.size<2||file.size>LV_BACKUP_MAX_BYTES)throw Error('Backup must be less than 5 MB.');
+   const raw=JSON.parse(await file.text());
+   const entries=gameBackupValidate(raw);
+   if(!window.confirm('Replace '+entries.length+' local progress sections? Download your current backup first.'))return;
+   const count=gameBackupApply(raw);
+   notice('Restored '+count+' progress sections. Reloading game.');
+   location.reload();
+  }catch(e){notice('Restore failed: '+String(e?.message||e).slice(0,130));}
+ });
+}
+
+
+// The City Phone is the game's main navigation: explore, learn, work and manage.
+// Skills: game-ui-ux (one clear navigation hierarchy, accessible focus and state).
+const PHONE_CATEGORIES={
+ learning:{label:'Learn',description:'Courses, reading, achievements and your next lesson.',apps:[
+  ['continue','Continue','book','jade'],['school','My Courses','orders','blue'],
+  ['teacher-content','Teacher Lessons','book','jade'],
+  ['pathways','Pathways','door-icon','jade'],['transcript','Transcript','chart-icon','gold'],
+  ['library','Library','book','gold'],['words','My Words','book','jade'],
+  ['journal','Reading Journal','orders','sage']
+ ]},
+ city:{label:'City',description:'Explore districts and manage your growing town.',apps:[
+  ['map','Town Map','map-icon','blue'],['property','Properties','window-icon','jade'],
+  ['production','Production','chart-icon','gold'],['architect','Build','plant','jade'],
+  ['garage','Garage','door-icon','sage'],['mail','Mail','mail','blue']
+ ]},
+ career:{label:'Work',description:'Turn your learning into jobs, research and experience.',apps:[
+  ['careers','Career Paths','door-icon','jade'],['jobs','Jobs','orders','gold']
+ ]},
+ tools:{label:'Tools',description:'Game settings, local backups and educator access.',apps:[
+  ['guide','Help & Settings','help-icon','sage'],['backup','Save Backup','box','blue'],
+  ['teacher-portal','Teacher Portal','book','gold'],['teacher','Demo Editor','book','sage'],
+  ['fullscreen','Fullscreen','window-icon','blue']
+ ]}
+};
+let phoneCategory='learning';
+function phoneResumeLearning(){
+ const learner=lmsLearner();
+ if(!learner)return lmsHome();
+ for(const courseId of learner.enrolled){
+  const course=lmsCourseData(courseId);
+  if(!course?.published)continue;
+  const next=course.modules.find(m=>!learner.done[lmsKey(courseId,m.id)]);
+  if(next)return lmsLesson(courseId,next.id);
+ }
+ return lmsHome();
+}
+function phoneLearningSummary(){
+ const learner=lmsLearner(),mine=(learner?.enrolled||[]).map(lmsCourseData).filter(c=>c?.published);
+ const done=mine.reduce((n,c)=>n+c.modules.filter(m=>learner.done[lmsKey(c.id,m.id)]).length,0);
+ const total=mine.reduce((n,c)=>n+c.modules.length,0);
+ const assignments=mine.reduce((n,c)=>n+c.assignments.filter(a=>!learner.submissions[lmsKey(c.id,a.id)]).length,0);
+ const upcoming=mine.flatMap(c=>c.modules.filter(m=>!learner.done[lmsKey(c.id,m.id)]).map(m=>({course:c,module:m})))[0];
+ return '<div class="phone-learning-overview">'+
+  '<div><b>'+mine.length+'</b><small>Enrolled courses</small></div>'+
+  '<div><b>'+done+'/'+total+'</b><small>Lessons complete</small></div>'+
+  '<div><b>'+assignments+'</b><small>Work to submit</small></div></div>'+
+  '<p class="phone-next-task"><span>YOUR NEXT STEP</span>'+
+  (upcoming?'<strong>'+esc(upcoming.module.title)+'</strong><small>'+esc(upcoming.course.title)+'</small>':
+   '<strong>Explore your courses</strong><small>Choose a lesson or enroll in a class</small>')+'</p>';
+}
+function phoneOpen(category=phoneCategory){
+ // Existing callers may attach phoneOpen directly as a DOM event listener.
+ if(typeof category!=='string'||!PHONE_CATEGORIES[category])category=phoneCategory;
+ phoneCategory=category;
+ const info=PHONE_CATEGORIES[category];
+ const app=(id,label,icon,color)=>'<button type="button" data-phone-app="'+id+'" aria-label="'+esc(label)+'"><span class="phone-app-icon '+color+'"><svg aria-hidden="true"><use href="#'+icon+'"></use></svg></span><span>'+esc(label)+'</span></button>';
  const metric=(id,name)=>'<div><span>'+name+'</span><b id="phone-'+id+'"></b></div>';
- cityPanel('City Phone','Overview',
-  '<div class="phone-overview">'+metric('lands','Land owned')+metric('income','Production income')+
-    metric('coins','City wallet')+metric('stock','Goods in stock')+'</div>'+
-  '<p class="phone-goal">'+esc(missions[state.step])+'</p>'+
-  '<nav class="phone-apps" aria-label="City apps">'+
-    app('property','Properties','window-icon','jade')+app('production','Production','chart-icon','gold')+app('garage','Garage','door-icon','sage')+
-    app('map','Map','map-icon','sage')+app('mail','Mail','mail','blue')+
-    app('architect','Build','plant','jade')+app('library','Library','book','gold')+
-    app('school','School LMS','orders','blue')+app('teacher','Teacher','book','gold')+app('pathways','Pathways','book','jade')+app('transcript','Transcript','orders','gold')+app('careers','Careers','door-icon','sage')+app('jobs','Jobs','orders','gold')+
-    app('words','My Words','book','jade')+app('journal','Journal','orders','gold')+
-    app('guide','Settings','help-icon','sage')+app('fullscreen','Fullscreen','window-icon','blue')+
-  '</nav>');
+ const tabs=Object.entries(PHONE_CATEGORIES).map(([key,group])=>
+  '<button type="button" data-phone-category="'+key+'" aria-pressed="'+(key===category?'true':'false')+'">'+esc(group.label)+'</button>').join('');
+ const content=info.apps.map(([id,label,icon,color])=>app(id,label,icon,color)).join('');
+ cityPanel('City Phone',info.label,
+  '<div class="phone-context-head"><b>LumenVale · City Phone</b><small>'+esc(info.description)+'</small></div>'+
+  '<nav class="phone-categories" aria-label="Phone sections">'+tabs+'</nav>'+
+  (category==='learning'?phoneLearningSummary():
+   category==='city'?'<div class="phone-overview">'+metric('lands','Land owned')+metric('income','Production / 5s')+
+    metric('coins','City wallet')+metric('stock','Goods in stock')+'</div>':
+   category==='career'?'<p class="phone-goal">Study, qualify, apply and complete tasks to earn wages.</p>':
+   '<p class="phone-goal">Progress is currently saved in this browser. Back it up before clearing browser data or switching devices.</p>')+
+  '<nav class="phone-apps" aria-label="'+esc(info.label)+' apps">'+content+'</nav>'+
+  (category==='city'?'<p class="phone-goal">'+esc(missions[state.step])+'</p>':''));
  dialog.dataset.surface='phone';
  byId('phone-back').hidden=true;
- citySync();
+ if(category==='city')citySync();
 }
 function phoneSync(){
- if(!dialog.open||dialog.dataset.surface!=='phone')return;
+ if(!dialog.open||dialog.dataset.surface!=='phone'||phoneCategory!=='city')return;
  const values={
   lands:cityLandOwned()+' / '+CITY_SITES.length,
   income:cityIncome().toLocaleString()+' / 5s',
@@ -10987,16 +11213,31 @@ function phoneSync(){
  };
  for(const [name,value] of Object.entries(values)){
   const stat=byId('phone-'+name);
-  if(stat.textContent!==value)stat.textContent=value;
+  if(stat&&stat.textContent!==value)stat.textContent=value;
  }
 }
 function phoneInit(){
- const apps={property:cityPortfolio,production:()=>systemsPanel('warehouse'),garage:()=>systemsPanel('garage'),map:campusMap,mail:systemsMailBox,
-  architect:campusArchitect,library:cityBookList,school:lmsHome,teacher:lmsTeacher,pathways:pathwayHome,transcript:pathwayTranscript,careers:campusCareer,jobs:jobPanel,words:campusVocabulary,
-  journal:academyProfile,guide:cityGuide,fullscreen:()=>{dialog.close();cityEnterFullscreen();}};
- byId('open-phone').addEventListener('click',phoneOpen);
- byId('phone-back').addEventListener('click',phoneOpen);
+ const apps={
+  continue:phoneResumeLearning,school:lmsHome,'teacher-content':pathwayImportPanel,pathways:pathwayHome,
+  transcript:pathwayTranscript,library:cityBookList,words:campusVocabulary,
+  journal:academyProfile,map:campusMap,property:cityPortfolio,
+  production:()=>systemsPanel('warehouse'),architect:campusArchitect,
+  garage:()=>systemsPanel('garage'),mail:systemsMailBox,
+  careers:campusCareer,jobs:jobPanel,guide:cityGuide,backup:gameBackupHome,
+  teacher:lmsTeacher,
+  'teacher-portal':()=>window.open('https://lumenvale-teachers.vercel.app/dashboard','_blank','noopener,noreferrer'),
+  fullscreen:()=>{dialog.close();cityEnterFullscreen();}
+ };
+ byId('open-phone').addEventListener('click',()=>phoneOpen());
+ byId('phone-back').addEventListener('click',()=>phoneOpen());
  dialog.addEventListener('click',event=>{
+  const category=event.target.closest('[data-phone-category]')?.dataset.phoneCategory;
+  if(category&&PHONE_CATEGORIES[category]){
+   phoneOpen(category);
+   // Retain keyboard focus after changing tabs.
+   dialog.querySelector('[data-phone-category="'+category+'"]')?.focus();
+   return;
+  }
   const id=event.target.closest('[data-phone-app]')?.dataset.phoneApp;
   if(!id||!apps[id])return;
   apps[id]();
@@ -11621,11 +11862,11 @@ academyInstall();
 systemsInit();
 campusInit();
 phoneInit();
+gameBackupInit();
 jobInit();
 pathwayInit();
 schoolActivitiesInit();
 lmsInit();
-
 </script>
 </body>
 </html>

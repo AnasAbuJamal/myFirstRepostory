@@ -3,10 +3,13 @@ on:
   push:
     branches:
       - market-office-first-person
+      - gamedev-skills-polish-2026-11-23
   workflow_dispatch:
 
 jobs:
   academic-smoke:
+    permissions:
+      contents: write
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -16,12 +19,30 @@ jobs:
           node-version: '22'
       - name: Build single-file game
         run: python3 market/build.py --output dist/index.html
+      - name: Verify distributed HTML matches current source
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,sys,os
+          generated=Path('dist/index.html').read_bytes()
+          committed=subprocess.check_output(['git','show','HEAD:dist/index.html'])
+          if generated!=committed:
+           i=next((n for n,(a,b) in enumerate(zip(generated,committed)) if a!=b),min(len(generated),len(committed)))
+           print('Outdated dist/index.html: difference at byte',i)
+           print('Generated:',repr(generated[max(0,i-50):i+80]))
+           print('Committed:',repr(committed[max(0,i-50):i+80]))
+           if os.environ.get('GITHUB_REF_NAME') != 'gamedev-skills-polish-2026-11-23':sys.exit(1)
+           print('Feature branch will synchronize the built file after passing browser tests.')
+          else:print('Standalone HTML exactly matches the source build')
+          PY
       - name: Run course and transcript tests
         run: |
           node --check market/lms.js
           node --check market/sky-textures.js
           node --check market/school-materials.js
-          node --test market/test-academics.cjs market/test-districts.cjs market/test-school.cjs market/test-lms.cjs
+          node --check market/save-manager.js
+          node --check market/phone.js
+          node --test market/test-academics.cjs market/test-districts.cjs market/test-school.cjs market/test-lms.cjs market/test-game-polish.cjs
       - name: Install browser for gameplay test
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
@@ -41,3 +62,13 @@ jobs:
             lumenvale-academic-smoke.png
             lumenvale-school-smoke.png
           if-no-files-found: ignore
+      - name: Synchronize tested build on feature branch
+        if: github.ref_name == 'gamedev-skills-polish-2026-11-23' && success()
+        run: |
+          git config user.name "LumenVale CI"
+          git config user.email "lumenvale-ci@users.noreply.github.com"
+          git add dist/index.html
+          if ! git diff --cached --quiet; then
+            git commit -m "Regenerate tested standalone game from current sources [skip ci]"
+            git push origin HEAD:refs/heads/gamedev-skills-polish-2026-11-23
+          fi

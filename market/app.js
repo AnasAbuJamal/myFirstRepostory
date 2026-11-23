@@ -602,6 +602,7 @@ academyInstall();
 systemsInit();
 campusInit();
 phoneInit();
+gameBackupInit();
 jobInit();
 pathwayInit();
 schoolActivitiesInit();
