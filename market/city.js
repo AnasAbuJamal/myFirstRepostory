@@ -65,7 +65,8 @@ function cityClean(input){
    owned:true,built:Boolean(info.built),
    staff:info.built&&site.kind==='factory'?number(info.staff,6):0,
    level:info.built?Math.max(1,number(info.level,10)):1,
-   landLevel:Math.max(1,Math.min(4,number(info.landLevel,4)||1))
+   landLevel:Math.max(1,Math.min(4,number(info.landLevel,4)||1)),
+   builtAt:number(info.builtAt,1e15)
   };
  }
  v.lastTick=number(input.lastTick,1e15)||Date.now();
@@ -283,7 +284,7 @@ function cityBuild(id){
  if(!site||!unit?.owned||unit.built)return false;
  if(cityCompleted()<site.unlock)return false;
  if(!citySpend(site.build)){notice('Earn more coins before construction.');return false;}
- unit.built=true;unit.level=1;unit.staff=0;
+ unit.built=true;unit.level=1;unit.staff=0;unit.builtAt=Date.now();
  citySave();citySync();cityOpenSite(id);
  notice(site.title+' constructed! Hire staff to begin production.');
  return true;
