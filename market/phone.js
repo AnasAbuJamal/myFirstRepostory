@@ -3,6 +3,7 @@
 const PHONE_CATEGORIES={
  learning:{label:'Learn',description:'Courses, reading, achievements and your next lesson.',apps:[
   ['continue','Continue','book','jade'],['school','My Courses','orders','blue'],
+  ['teacher-content','Teacher Lessons','book','jade'],
   ['pathways','Pathways','door-icon','jade'],['transcript','Transcript','chart-icon','gold'],
   ['library','Library','book','gold'],['words','My Words','book','jade'],
   ['journal','Reading Journal','orders','sage']
@@ -86,7 +87,7 @@ function phoneSync(){
 }
 function phoneInit(){
  const apps={
-  continue:phoneResumeLearning,school:lmsHome,pathways:pathwayHome,
+  continue:phoneResumeLearning,school:lmsHome,'teacher-content':pathwayImportPanel,pathways:pathwayHome,
   transcript:pathwayTranscript,library:cityBookList,words:campusVocabulary,
   journal:academyProfile,map:campusMap,property:cityPortfolio,
   production:()=>systemsPanel('warehouse'),architect:campusArchitect,
