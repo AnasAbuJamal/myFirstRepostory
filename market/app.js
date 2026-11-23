@@ -93,7 +93,7 @@ function refreshPosition() {
     state.stand && Math.hypot(player.x-STAND.x,player.z-STAND.z)<4.5 ? 'Pickup stand' :
     player.z < -12 ? 'Riverside' : 'Market grounds';
   if(byId('world-location').textContent!==place)byId('world-location').textContent=place;
-  const target = cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
+  const target = systemsNearby(player) || cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
   const name = target?.label || '';
   if (lastInteraction !== name) {
     lastInteraction=name;
@@ -348,8 +348,9 @@ function standUp() {
 }
 function interact() {
   if (terminal.open || dialog.open) return;
-  const target = cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
+  const target = systemsNearby(player) || cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
   if (!target) return;
+  if (target.system) return systemsInteract(target);
   if (target.city) return cityInteract(target);
   if (target.id === 'seat') return sitAtComputer();
   if (target.id === 'stand') {
@@ -610,3 +611,5 @@ try {
 
 // Initialize the city after the original first-person office is ready.
 cityInit();
+academyInstall();
+systemsInit();
