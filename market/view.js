@@ -430,7 +430,13 @@ function createOfficeView() {
     // Subtle first-person locomotion feedback; disabled for reduced-motion preferences.
     const moving=current.moving && player!==SEAT_POSITION;
     const sway=moving && !reduceMotion.matches ? Math.sin(now*(current.sprinting?.016:.011))*(current.sprinting?.048:.025) : 0;
-    camera.position.set(player.x,player===SEAT_POSITION?1.46:current.driving?2.15+sway:1.7+sway,player.z);
+    if(current.driving){
+      const shape=LV_VEHICLE_TYPES[systemsState.garage?.selected||'van']||LV_VEHICLE_TYPES.van;
+      const ahead=Math.min(.65,shape.length*.14),side=.30,yaw=player.yaw;
+      const driverX=player.x+Math.sin(yaw)*ahead-Math.cos(yaw)*side;
+      const driverZ=player.z-Math.cos(yaw)*ahead-Math.sin(yaw)*side;
+      camera.position.set(driverX,Math.max(1.26,shape.roof-.24)+sway,driverZ);
+    }else camera.position.set(player.x,player===SEAT_POSITION?1.46:1.7+sway,player.z);
     camera.rotation.set(player.pitch,player.yaw,0,'YXZ');
     updateCameraFeed(now);
     renderer.render(scene,camera);
