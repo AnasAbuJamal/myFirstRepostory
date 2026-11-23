@@ -33,3 +33,20 @@ CREATE TABLE IF NOT EXISTS grade_entries (
  enrollment_id uuid NOT NULL REFERENCES class_enrollments(id) ON DELETE CASCADE,points_earned numeric(8,2) NOT NULL,
  graded_at timestamptz NOT NULL DEFAULT now(),UNIQUE(assignment_id,enrollment_id)
 );
+
+
+-- Public research packs contain lesson content only, never teacher account records or student grades.
+CREATE TABLE IF NOT EXISTS research_projects (
+ id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+ teacher_user_id text NOT NULL REFERENCES teacher_memberships(auth_user_id),
+ title text NOT NULL CHECK(length(title) BETWEEN 4 AND 130),
+ field text NOT NULL DEFAULT 'General Science',
+ summary text NOT NULL CHECK(length(summary) BETWEEN 20 AND 1200),
+ reading_text text NOT NULL CHECK(length(reading_text) BETWEEN 100 AND 12000),
+ questions jsonb NOT NULL DEFAULT '[]'::jsonb,
+ reward integer NOT NULL DEFAULT 100 CHECK(reward BETWEEN 20 AND 300),
+ publish_code text NOT NULL UNIQUE,
+ published boolean NOT NULL DEFAULT true,
+ created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS research_projects_teacher_idx ON research_projects(teacher_user_id);
