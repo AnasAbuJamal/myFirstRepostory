@@ -10,7 +10,7 @@ function academySave(){
 }
 function academyStr(v,max=1000){return String(v??'').trim().slice(0,max);}
 function academyWords(pages){return pages.join(' ').trim().split(/\s+/).filter(Boolean).length;}
-function academySafeId(title){return 'lesson-'+academyStr(title,80).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,56);}
+function academySafeId(title){const slug=academyStr(title,80).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,56);return slug.startsWith('lesson-')?slug:'lesson-'+slug;}
 function academyQuestions(book){return Array.isArray(book.questions)&&book.questions.length?book.questions:[{prompt:book.question,choices:book.answers,correctIndex:book.correct}];}
 function academyDraft(pages,count){
  const passage=pages.join(' ');
