@@ -229,6 +229,7 @@ function createOfficeView() {
   stand.visible = false;
   exterior.add(stand);
   const cityRenderer=createCityWorld({T,exterior,box,piece,renderer});
+  const lumenRenderer=createLumenWorld({T,exterior,box,piece,renderer});
 
   const coatColors = { rose: '#af6760', amber: '#bc8752', blue: '#4d7982' };
   function makeVisitor(tint) {
@@ -308,6 +309,11 @@ function createOfficeView() {
     door.rotation.y=-travel*1.46;
     kits.forEach((kit,i)=>{kit.visible=i<stock;});
     cityRenderer.update(current.city,now);
+    lumenRenderer.update(now);
+    // Slow day-and-night lighting, independent of random events.
+    const sunPhase=Math.max(.05,(Math.sin(now/115000)+1)/2);
+    sun.intensity=.42+1.55*sunPhase;
+    scene.background.set(sunPhase>.50?'#bedbd7':sunPhase>.25?'#819ba0':'#3b5973');
     // Subtle first-person locomotion feedback; disabled for reduced-motion preferences.
     const moving=current.moving && player!==SEAT_POSITION;
     const sway=moving && !reduceMotion.matches ? Math.sin(now*(current.sprinting?.016:.011))*(current.sprinting?.048:.025) : 0;
