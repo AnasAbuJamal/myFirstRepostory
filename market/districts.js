@@ -23,16 +23,21 @@ const TOWN_DISTRICTS=[
  {name:'Orchard Row',x:46,z:55,tint:'#a6b489'},
  {name:'Lumen Park',x:-5,z:51,tint:'#7b9a70'},
 ];
+// World geometry, collision access and interaction prompts share one station map.
+// Keeping the interaction centers next to the actual desks avoids invisible targets.
+const SCHOOL_STATIONS=Object.freeze([
+ {x:-7,z:-6.42,r:2.6,key:'school',label:'Open your school courses',sign:'ACADEMIC STUDIES',tint:'#77b4a4',kind:'pathways'},
+ {x:7,z:-6.42,r:2.6,key:'careers',label:'Explore careers and jobs',sign:'CAREERS & JOBS',tint:'#78a6bd',kind:'careers'},
+ {x:-7,z:-1.20,r:2.5,key:'quran',label:'Open Qur’an learning',sign:'QURAN STUDIO',tint:'#9bbd83',kind:'quran'},
+ {x:7,z:-1.20,r:2.5,key:'school-quiz',label:'Try the Science Knowledge Quest',sign:'SCIENCE QUEST',tint:'#88c5c0',kind:'science'},
+ {x:-7,z:5.03,r:2.6,key:'browse',label:'Browse reading lessons',sign:'READING CORNER',tint:'#d9bc8a',kind:'library'},
+ {x:7,z:5.03,r:2.6,key:'school-practice',label:'Open assignments and exams',sign:'PRACTICE EXAMS',tint:'#b1bfdf',kind:'exam'}
+]);
 const TOWN_PLACES=[
  {id:'school',name:'LumenVale School',kind:'school',x:-37,z:-4.6,w:17,d:11,h:7.8,face:1,room:[13,12],brick:'#e8dfce',trim:'#f9f2e1',
   desks:[
-   {x:-7,z:-4.20,r:2.15,key:'school',label:'Open interactive courses and lessons'},
-   {x:7,z:-4.20,r:2.15,key:'careers',label:'Visit the career center'},
-   {x:-7,z:.85,r:2,key:'quran',label:'Open Qur’an memorization studio'},
-   {x:7,z:.85,r:2,key:'school-quiz',label:'Try the Knowledge Quest'},
-   {x:-7,z:3.20,r:2,key:'browse',label:'Browse reading lessons'},
-   {x:7,z:3.20,r:2,key:'school-practice',label:'Open classes, assignments, and exams'},
-   {x:0,z:-8.10,r:2.1,key:'school-guide',label:'Open Learning Hub and Teacher Studio'}
+   ...SCHOOL_STATIONS.map(({x,z,r,key,label})=>({x,z,r,key,label})),
+   {x:0,z:-8.10,r:2.1,key:'school-guide',label:'Open the Learning Hub'}
   ]},
  {id:'library',name:'Reading Library',kind:'library',x:16,z:10.2,w:13,d:10,h:7.1,face:-1,room:[11,11],brick:'#e2ded4',trim:'#faf6ed',
   desks:[{x:0,z:-2.0,r:2.0,key:'browse',label:'Browse library books'},{x:-6,z:1.8,r:2,key:'words',label:'Open My Words'}]},
