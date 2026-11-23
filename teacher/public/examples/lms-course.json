@@ -1,0 +1,60 @@
+{
+  "kind": "lumenvale.lms-course",
+  "version": 1,
+  "id": "DEMO-EXAMPLE",
+  "title": "Illustrative Course Template",
+  "subject": "Teacher-selected subject",
+  "teacher": "Teacher",
+  "description": "An optional example; not installed in the student school.",
+  "published": true,
+  "modules": [
+    {
+      "id": "intro-chapter",
+      "title": "Introduction Chapter",
+      "objectives": [
+        "Identify the main idea of an introductory reading"
+      ],
+      "lesson": {
+        "title": "An Example Reading",
+        "content": "This is a sample text showing how teachers structure a chapter. Teachers should replace it with a complete original explanation suited to their subject, class level, and learning goals."
+      },
+      "flashcards": [
+        {
+          "front": "Chapter",
+          "back": "A unit of lessons in a course."
+        }
+      ],
+      "practice": [
+        {
+          "prompt": "What does a chapter contain?",
+          "choices": [
+            "A structured lesson",
+            "Only a city road",
+            "Only a vehicle"
+          ],
+          "correctIndex": 0,
+          "explanation": "A chapter organizes study content."
+        }
+      ],
+      "exam": {
+        "title": "Chapter Checkpoint",
+        "questions": [
+          {
+            "prompt": "Why do students review a chapter?",
+            "choices": [
+              "To learn its key concepts",
+              "To replace the teacher",
+              "To skip all reading"
+            ],
+            "correctIndex": 0,
+            "explanation": "Review supports understanding."
+          }
+        ],
+        "timeLimitMinutes": 15,
+        "attemptLimit": 3
+      }
+    }
+  ],
+  "assignments": [],
+  "announcements": []
+}

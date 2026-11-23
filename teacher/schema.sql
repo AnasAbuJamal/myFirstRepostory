@@ -84,3 +84,17 @@ CREATE TABLE IF NOT EXISTS quran_recitation_reviews(
  created_at timestamptz NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS quran_recitation_teacher_idx ON quran_recitation_reviews(teacher_user_id,created_at DESC);
+
+-- Teacher-defined school courses. Public codes expose reviewed curriculum only.
+CREATE TABLE IF NOT EXISTS teacher_course_packs (
+ id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+ teacher_user_id text NOT NULL REFERENCES teacher_memberships(auth_user_id),
+ course_code text NOT NULL CHECK(course_code ~ '^[A-Z][A-Z0-9-]{2,30}$'),
+ title text NOT NULL CHECK(length(title) BETWEEN 3 AND 120),
+ payload jsonb NOT NULL,
+ share_code text NOT NULL UNIQUE,
+ published boolean NOT NULL DEFAULT true,
+ created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS teacher_course_packs_teacher_idx
+ ON teacher_course_packs(teacher_user_id,created_at DESC);

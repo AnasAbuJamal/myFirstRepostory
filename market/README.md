@@ -226,3 +226,11 @@ The outdoor WebGL scene now uses `sky-textures.js`: a 1024×512 generated atmosp
 School rooms now use `school-materials.js` for tile, terrazzo, wood, plaster, carpet, metal, cork, ceiling panel, board and stone surface maps. The school includes 117 added material overlays on floors, hallways, room walls, ceilings, desks, boards, shelving, seating, reception counters and entrance steps. The textured planes do not change physical collision shapes or academic records. Reduced-motion preferences are respected by the existing school animations.
 
 Both systems use the exact subset of Three.js included with the game (`PineboundThree`), not unbundled geometries. The 3D WebGL mode displays full procedural textures. The lightweight software fallback continues to draw simplified colors when hardware WebGL is unavailable. The gameplay CI runs a real Chromium WebGL test for the sky, all eight material types, school navigation and the existing School LMS.
+
+## Teacher-created school (November 2026)
+
+School starts with zero preinstalled courses, chapters, exams or career paths. Teachers can build any new class, add chapter readings, practice, flashcards, assignments and timed exams through version-1 `lumenvale.lms-course` JSON. Visit `teacher/app/dashboard/courses` for the AI JSON prompt and validated publication workflow. The optional example file is not seeded in the game. Students import JSON offline or a teacher-published share code via the School Learning Hub. Previously untouched demo classes are removed from legacy browser saves.
+
+The separate public library building was removed. LumenVale School includes the reading library, book stations, and multiple neutral classrooms awaiting teacher content. No subject-specific labs or careers are added. Existing legacy progression code remains for compatibility but does not appear in the primary school navigation.
+
+Deployers must apply `teacher/schema.sql` to the connected database to create `teacher_course_packs`. Published JSON shares curriculum content only; student grade sync with the authenticated teacher database is still future work. The Chromium QA captures exterior and interior screenshots for manual review.

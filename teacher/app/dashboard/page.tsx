@@ -14,7 +14,7 @@ export default async function Dashboard(){
  const grades=await sql`SELECT e.display_name,cl.title AS classroom,l.title AS lesson,a.points,ge.points_earned FROM grade_entries ge JOIN assignments a ON a.id=ge.assignment_id JOIN class_enrollments e ON e.id=ge.enrollment_id JOIN classrooms cl ON cl.id=a.classroom_id JOIN lessons l ON l.id=a.lesson_id WHERE a.teacher_user_id=${user.id} ORDER BY ge.graded_at DESC LIMIT 30`;
  return <div className="dashboard">
   <aside className="sidebar"><Link className="logo" href="/">✦ <span>LumenVale<small>TEACHER STUDIO</small></span></Link>
-   <nav><a href="#overview">Overview</a><a href="#classes">Classrooms</a><a href="#courses">Curriculum</a><a href="#books">Lesson Library</a><a href="#assignments">Assignments</a><a href="#grades">Gradebook</a><a href="#research">Research Studio</a><a href="/dashboard/academics">Academic Pathways</a></nav>
+   <nav><a href="#overview">Overview</a><a href="#classes">Classrooms</a><a href="#courses">Curriculum</a><a href="#books">Lesson Library</a><a href="#assignments">Assignments</a><a href="#grades">Gradebook</a><a href="#research">Research Studio</a><a href="/dashboard/courses">School JSON Studio</a><a href="/dashboard/academics">Legacy Pathways</a></nav>
    <div className="sidebar-foot"><small>Authenticated role</small><strong>{role.toUpperCase()}</strong><span>{user.email}</span></div>
   </aside>
   <main className="workspace">
