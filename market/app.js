@@ -603,3 +603,4 @@ systemsInit();
 campusInit();
 phoneInit();
 jobInit();
+pathwayInit();
