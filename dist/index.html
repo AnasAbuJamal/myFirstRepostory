@@ -4669,6 +4669,7 @@ const OFFICE_COLLIDERS = [
   [-1.24, 1.64, -.40, .68], [-3.43, -1.74, -3.02, -2.38],
 ];
 function canWalk(x,z,{doorOpen,stand}) {
+  if(typeof campusInterior!=='undefined'&&campusInterior)return x>-7.7&&x<7.7&&z>-80.4&&z< -65.3;
   if(typeof cityCanWalk==='function' && !cityCanWalk(x,z))return false;
   if (x < WALK_LIMITS.left || x > WALK_LIMITS.right || z < WALK_LIMITS.north || z > WALK_LIMITS.south) return false;
   const radius = .20;
@@ -4864,7 +4865,8 @@ function cityBookPage(){
  '<p>'+esc(pageText)+'</p><div class="city-book-footer"><span>Read carefully to unlock the next page.</span>'+
  '<button type="button" class="button primary" data-city-action="page">'+(last?'Answer question':'Next page')+'</button></div></div>'+
  '<div class="city-reading-meter"><span class="city-reading-fill" id="city-reading-fill"></span></div>'+
- '<p class="city-sub" id="city-reading-hint">Read for a few seconds before continuing.</p>');
+ '<p class="city-sub" id="city-reading-hint">Read for a few seconds before continuing.</p>'+ 
+  '<button type="button" class="button" data-wave="save-selection">Save selected word to My Words</button>');
 }
 function cityNextPage(){
  if(!cityBookSession)return;
@@ -5276,7 +5278,7 @@ function academyLibrary(){
  cityPanel('LumenVale / Library','The Knowledge Library',
  '<p>Explore books by genre. Read, complete questions, and earn the coins used to build your city.</p>'+
  '<div class="lv-library-tools"><input id="lv-search" type="search" placeholder="Search books" value="'+esc(academy.query)+'">'+
- '<button class="button" data-academy="teacher" type="button">Teacher Studio</button></div>'+
+ '<button class="button" data-wave="vocab" type="button">My Words</button></div>'+ 
  '<div class="lv-genres">'+filters+'</div><div class="lv-book-grid">'+(cards||'<p>No books in this section.</p>')+'</div>');
 }
 function academyProfile(){
@@ -5803,6 +5805,405 @@ function systemsInit(){
 }
 
 
+/* LumenVale Campus & City Architect. Offline student systems (not a teacher authorization mechanism). */
+const CAMPUS_SAVE_KEY="lumenvale-campus-v2";
+const CAMPUS_SUBJECTS=[
+ {id:"english",name:"English",icon:"📚",color:"#7698b6",units:[
+  {name:"Main Ideas",text:"A paragraph usually develops one central idea. Supporting details explain or prove that idea.",question:"What do supporting details do?",answers:["Explain the main idea","Replace the topic","End all discussions"],correct:0},
+  {name:"Vocabulary in Context",text:"Context clues are nearby words or phrases that help readers understand unfamiliar vocabulary.",question:"What are context clues?",answers:["Nearby helpful information","Random spelling mistakes","The page number"],correct:0},
+  {name:"Making Inferences",text:"An inference uses clues in the text and what you already know to reach a reasonable conclusion.",question:"How is an inference made?",answers:["Using evidence and knowledge","Guessing without evidence","Copying every sentence"],correct:0}]},
+ {id:"science",name:"Science",icon:"🧪",color:"#65a48a",units:[
+  {name:"Energy",text:"Energy makes movement and change possible. Machines transform energy from one form to another.",question:"What can machines do with energy?",answers:["Transform it","Destroy all matter","Stop time"],correct:0},
+  {name:"Living Systems",text:"Living things need energy, water, and conditions that support their growth.",question:"What do living things need?",answers:["Energy and water","Only concrete","No resources"],correct:0},
+  {name:"Investigation",text:"Scientists develop hypotheses and test them using observations and evidence.",question:"How are hypotheses evaluated?",answers:["Using evidence","By voting","By guessing"],correct:0}]},
+ {id:"math",name:"Mathematics",icon:"📐",color:"#c6a06b",units:[
+  {name:"Percentages",text:"A percentage is a number out of one hundred. A ten percent discount means ten out of every hundred.",question:"How much is 10% of 200?",answers:["20","10","200"],correct:0},
+  {name:"Business Arithmetic",text:"Profit equals revenue minus costs. A shop that earns 150 coins and spends 90 has 60 coins of profit.",question:"150 minus 90 equals?",answers:["60","90","240"],correct:0},
+  {name:"Statistics",text:"The mean is the sum of the values divided by the number of values. The mean of 2, 4, and 6 is 4.",question:"What is the mean of 2, 4, and 6?",answers:["4","6","12"],correct:0}]},
+ {id:"business",name:"Business",icon:"🏭",color:"#a98ab4",units:[
+  {name:"Customers",text:"Successful companies listen to customer needs and deliver products as promised.",question:"What builds customer trust?",answers:["Keeping promises","Ignoring orders","Changing prices secretly"],correct:0},
+  {name:"Production",text:"Factories convert materials into useful products. Workers and machines contribute to production.",question:"What happens in a factory?",answers:["Materials become products","Products disappear","Books become money automatically"],correct:0},
+  {name:"Budgeting",text:"Costs must be paid before profits can be reinvested. A business needs enough cash to pay salaries and buy supplies.",question:"What must a business pay?",answers:["Wages and supplies","Only decorations","Nothing"],correct:0}]}
+];
+const CAMPUS_CAREERS=[
+ {id:"engineer",title:"Engineer",icon:"⚙",subject:"science",description:"Improve factories and machines.",bonus:30},
+ {id:"architect",title:"Architect",icon:"📐",subject:"math",description:"Plan buildings and city districts.",bonus:35},
+ {id:"entrepreneur",title:"Entrepreneur",icon:"💼",subject:"business",description:"Manage contracts and suppliers.",bonus:40},
+ {id:"researcher",title:"Researcher",icon:"🔬",subject:"english",description:"Discover technologies through reading.",bonus:35}
+];
+const CAMPUS_DECOR=[
+ {id:"tree",name:"Plant tree",price:12,color:"#5d9769"},
+ {id:"road",name:"Road section",price:18,color:"#8a9591"},
+ {id:"park",name:"Mini park",price:55,color:"#7baf7c"},
+ {id:"house",name:"Small house",price:90,color:"#c7a586"},
+ {id:"lamp",name:"Streetlight",price:25,color:"#cfbd85"}
+];
+function campusEmpty(){return {version:2,subjects:{},career:null,careerLevel:0,words:[],decor:[],plots:{},lastExam:null};}
+function campusSanitize(input){
+ const save=campusEmpty();
+ if(!input||typeof input!=="object")return save;
+ for(const sub of CAMPUS_SUBJECTS){
+  const info=input.subjects?.[sub.id];
+  if(info&&typeof info==="object")save.subjects[sub.id]={
+   complete:Array.isArray(info.complete)?[...new Set(info.complete.filter(i=>Number.isInteger(i)&&i>=0&&i<3))]:[],
+   exams:Array.isArray(info.exams)?info.exams.filter(n=>Number.isFinite(n)&&n>=0&&n<=100).slice(-12):[]
+  };
+ }
+ if(CAMPUS_CAREERS.some(x=>x.id===input.career))save.career=input.career;
+ save.careerLevel=Math.max(0,Math.min(99,Number(input.careerLevel)||0));
+ save.words=Array.isArray(input.words)?input.words.filter(x=>x&&typeof x.word==="string"&&x.word.length<=80).slice(0,500):[];
+ save.decor=Array.isArray(input.decor)?input.decor.filter(x=>CAMPUS_DECOR.some(t=>t.id===x?.kind)&&Number.isInteger(x.x)&&Number.isInteger(x.z)).slice(0,100):[];
+ for(const site of CITY_SITES){
+  const pos=input.plots?.[site.id];
+  if(pos&&Number.isFinite(pos.x)&&Number.isFinite(pos.z)&&Number.isInteger(pos.rotation)){
+   save.plots[site.id]={x:Math.round(pos.x),z:Math.round(pos.z),rotation:((pos.rotation%4)+4)%4};
+  }
+ }
+ return save;
+}
+function campusRead(){try{return campusSanitize(JSON.parse(localStorage.getItem(CAMPUS_SAVE_KEY)));}catch{return campusEmpty();}}
+var campusState=campusRead();
+var campusInterior=null;
+var campusArchitectChoice="tree";
+var campusMoveChoice=null;
+var campusCurrentExam=null;
+function campusSave(){try{if(!trial)localStorage.setItem(CAMPUS_SAVE_KEY,JSON.stringify(campusState));}catch{notice("Local storage is unavailable.");}}
+function campusSubjectStatus(id){return campusState.subjects[id]||(campusState.subjects[id]={complete:[],exams:[]});}
+function campusGrade(percentage){
+ if(percentage>=90)return {letter:"A",points:4};
+ if(percentage>=80)return {letter:"B",points:3};
+ if(percentage>=70)return {letter:"C",points:2};
+ if(percentage>=60)return {letter:"D",points:1};
+ return {letter:"F",points:0};
+}
+function campusGPA(){
+ let total=0,attempts=0;
+ for(const sub of CAMPUS_SUBJECTS){
+  const scores=campusSubjectStatus(sub.id).exams;
+  if(scores.length){total+=campusGrade(scores[scores.length-1]).points;attempts++;}
+ }
+ return attempts?{gpa:total/attempts,classes:attempts}:null;
+}
+function campusPropertyPosition(site){
+ const pos=campusState.plots[site.id];
+ return pos||{x:site.x,z:site.z,rotation:0};
+}
+function campusInitPlotLocations(){
+ for(const site of CITY_SITES){
+  const p=campusState.plots[site.id];
+  if(p){site.x=p.x;site.z=p.z;}
+ }
+}
+function campusNearby(player){
+ if(campusInterior){
+  if(Math.hypot(player.x,player.z+79)<2.0)return {id:"factory-exit",campus:true,label:"Exit factory"};
+  if(Math.hypot(player.x-3.0,player.z+73.0)<2.4)return {id:"factory-machine",campus:true,label:"Operate production machine"};
+  if(Math.hypot(player.x+3.0,player.z+73.0)<2.4)return {id:"factory-staff",campus:true,label:"Manage worker stations"};
+  return null;
+ }
+ if(Math.hypot(player.x+37,player.z+7)<3.3)return {id:"school",campus:true,label:"Enter LumenVale School"};
+ for(const site of CITY_SITES){
+  const u=cityState.sites[site.id];
+  if(site.kind==="factory"&&u?.built&&Math.hypot(player.x-site.x,player.z-(site.z-3.2))<1.9)
+   return {id:"enter-"+site.id,campus:true,label:"Enter "+site.title};
+ }
+ return null;
+}
+function campusInteract(target){
+ const id=target?.id;
+ if(id==="school")campusSchool();
+ else if(id==="factory-exit")campusExitFactory();
+ else if(id==="factory-machine")campusFactoryMachine();
+ else if(id==="factory-staff")campusFactoryStaff();
+ else if(id?.startsWith("enter-"))campusEnterFactory(id.slice(6));
+}
+function campusSchool(){
+ const grade=campusGPA();
+ const cards=CAMPUS_SUBJECTS.map(sub=>{
+  const info=campusSubjectStatus(sub.id),last=info.exams.at(-1);
+  return '<button type="button" class="wave-course" data-wave="class" data-id="'+sub.id+'">'+
+   '<span class="wave-course-icon">'+sub.icon+'</span><strong>'+sub.name+'</strong>'+
+   '<span>'+info.complete.length+'/3 lessons · '+(last==null?'No exam yet':campusGrade(last).letter+' · '+last+'%')+'</span></button>';
+ }).join("");
+ cityPanel("LumenVale Academy","Your School & Curriculum",
+ '<p>Choose classes and study at your own pace. Complete all three units in a subject, then take its exam. Your GPA uses the most recent exam in each subject.</p>'+
+ '<div class="wave-school-stats"><div><small>Current GPA</small><b>'+(grade?grade.gpa.toFixed(2):"—")+'</b></div>'+
+ '<div><small>Graded courses</small><b>'+(grade?.classes||0)+'/4</b></div>'+
+ '<div><small>Learning XP</small><b>'+cityState.xp+'</b></div></div>'+
+ '<div class="wave-course-grid">'+cards+'</div>'+
+ '<p class="city-sub">Classes and grades are part of the game. These are not accredited school credits or real academic records.</p>');
+}
+function campusClass(id){
+ const sub=CAMPUS_SUBJECTS.find(x=>x.id===id);if(!sub)return;
+ const info=campusSubjectStatus(id);
+ const units=sub.units.map((unit,i)=>'<div class="wave-unit"><span>'+
+  (info.complete.includes(i)?'✓':'◯')+' '+unit.name+'</span>'+
+  '<button type="button" class="button" data-wave="unit" data-id="'+id+'" data-unit="'+i+'">'+
+  (info.complete.includes(i)?"Review":"Study unit")+'</button></div>').join('');
+ const allowed=info.complete.length===sub.units.length;
+ cityPanel("Academy / "+sub.name,sub.name+' Curriculum',
+ '<p>Complete the lessons to unlock the final exam. You can retake an exam to improve your grade.</p>'+
+ '<div class="wave-units">'+units+'</div>'+
+ '<div class="wave-school-stats"><div><small>Lessons</small><b>'+info.complete.length+'/3</b></div>'+
+ '<div><small>Exams taken</small><b>'+info.exams.length+'</b></div></div>'+
+ '<button type="button" class="button primary" data-wave="exam" data-id="'+id+'" '+
+ (!allowed?'disabled':'')+'>Take final exam</button>'+
+ '<button class="button" data-wave="school">Back to School</button>');
+}
+function campusUnit(id,index){
+ const sub=CAMPUS_SUBJECTS.find(x=>x.id===id),unit=sub?.units[index];if(!unit)return;
+ cityPanel("Academy / "+sub.name,unit.name,
+ '<article class="wave-lesson"><p>'+esc(unit.text)+'</p><h3>'+esc(unit.question)+'</h3>'+
+ unit.answers.map((answer,i)=>'<button class="city-answer" data-wave="unit-answer" data-id="'+id+'" data-unit="'+index+'" data-answer="'+i+'">'+
+ '<span>'+String.fromCharCode(65+i)+'</span>'+esc(answer)+'</button>').join('')+'</article>');
+}
+function campusUnitAnswer(id,index,answer){
+ const sub=CAMPUS_SUBJECTS.find(x=>x.id===id),unit=sub?.units[index];if(!unit)return;
+ if(Number(answer)!==unit.correct){notice("Try again. Reread the lesson.");return;}
+ const status=campusSubjectStatus(id);
+ if(!status.complete.includes(index)){
+  status.complete.push(index);cityEarn(12,15);campusSave();
+ }
+ campusClass(id);notice("Unit complete! +12 coins and learning XP.");
+}
+function campusExam(id){
+ const sub=CAMPUS_SUBJECTS.find(x=>x.id===id);if(!sub||campusSubjectStatus(id).complete.length!==3)return;
+ campusCurrentExam={id,index:0,correct:0};
+ campusExamStep();
+}
+function campusExamStep(){
+ const exam=campusCurrentExam,sub=CAMPUS_SUBJECTS.find(x=>x.id===exam?.id);
+ if(!exam||!sub)return;
+ const item=sub.units[exam.index];
+ cityPanel("LumenVale Exam",sub.name+' · Question '+(exam.index+1)+' of 3',
+ '<p>Each answer is final. Your score will appear in the gradebook when you finish.</p>'+
+ '<h3>'+esc(item.question)+'</h3>'+
+ item.answers.map((answer,i)=>'<button class="city-answer" data-wave="exam-answer" data-answer="'+i+'"><span>'+
+ String.fromCharCode(65+i)+'</span>'+esc(answer)+'</button>').join(''));
+}
+function campusExamAnswer(answer){
+ const exam=campusCurrentExam;if(!exam)return;
+ const sub=CAMPUS_SUBJECTS.find(x=>x.id===exam.id);
+ if(Number(answer)===sub.units[exam.index].correct)exam.correct++;
+ exam.index++;
+ if(exam.index<3)return campusExamStep();
+ const grade=Math.round(exam.correct/3*100),result=campusGrade(grade);
+ const status=campusSubjectStatus(exam.id);status.exams.push(grade);status.exams=status.exams.slice(-12);
+ campusCurrentExam=null;campusSave();
+ const gpa=campusGPA();cityEarn(grade>=60?45:8,grade>=60?25:5);
+ cityPanel("LumenVale Academy","Final exam graded",
+ '<div class="wave-exam-result"><b>'+grade+'%</b><span>'+result.letter+' · '+result.points.toFixed(1)+' grade points</span></div>'+
+ '<p>Overall GPA: <strong>'+(gpa?.gpa.toFixed(2)||"—")+'</strong>. You can review lessons or retake exams.</p>'+
+ '<button class="button primary" data-wave="school">Back to School</button>');
+}
+function campusCareer(){
+ const gpa=campusGPA();
+ const cards=CAMPUS_CAREERS.map(c=>{
+  const chosen=campusState.career===c.id,scores=campusSubjectStatus(c.subject).exams;
+  const qualified=scores.length&&scores.at(-1)>=60;
+  return '<article class="wave-career"><span>'+c.icon+'</span><h3>'+c.title+'</h3><p>'+c.description+'</p>'+
+  '<small>Pass '+CAMPUS_SUBJECTS.find(s=>s.id===c.subject).name+' to qualify</small>'+
+  '<button class="button '+(chosen?'primary':'')+'" type="button" data-wave="career-choose" data-id="'+c.id+'" '+
+  (!qualified||chosen?'disabled':'')+'>'+(chosen?'Selected career':'Choose this career')+'</button></article>';
+ }).join('');
+ cityPanel("LumenVale / Careers","Choose Your Career",
+ '<p>Finish a relevant school course before selecting a career. Your career is a long-term path, not a paid purchase.</p>'+
+ '<div class="wave-school-stats"><div><small>Selected career</small><b>'+
+ esc(CAMPUS_CAREERS.find(x=>x.id===campusState.career)?.title||'Not chosen')+'</b></div>'+
+ '<div><small>Career level</small><b>'+campusState.careerLevel+'</b></div><div><small>GPA</small><b>'+
+ (gpa?gpa.gpa.toFixed(2):'—')+'</b></div></div><div class="wave-career-grid">'+cards+'</div>'+
+ (campusState.career?'<button class="button primary" data-wave="career-task">Complete a career mission</button>':''));
+}
+function campusChooseCareer(id){
+ const choice=CAMPUS_CAREERS.find(c=>c.id===id),scores=campusSubjectStatus(choice?.subject).exams;
+ if(!choice||!scores.length||scores.at(-1)<60)return;
+ campusState.career=id;campusState.careerLevel=1;campusSave();campusCareer();
+}
+function campusCareerTask(){
+ const career=CAMPUS_CAREERS.find(x=>x.id===campusState.career);if(!career)return;
+ const lesson=CAMPUS_SUBJECTS.find(x=>x.id===career.subject)?.units[(campusState.careerLevel-1)%3];
+ campusCurrentExam={careerTask:true,id:career.subject,index:(campusState.careerLevel-1)%3,correct:0};
+ cityPanel("Career Mission",career.title+' Challenge',
+ '<p>'+esc(lesson.text)+'</p><h3>'+esc(lesson.question)+'</h3>'+
+ lesson.answers.map((a,i)=>'<button class="city-answer" data-wave="career-answer" data-answer="'+i+'"><span>'+
+ String.fromCharCode(65+i)+'</span>'+esc(a)+'</button>').join(''));
+}
+function campusCareerAnswer(answer){
+ const task=campusCurrentExam;if(!task?.careerTask)return;
+ const sub=CAMPUS_SUBJECTS.find(x=>x.id===task.id);
+ const lesson=sub.units[task.index];campusCurrentExam=null;
+ if(Number(answer)!==lesson.correct){notice("Review the mission and try again.");return;}
+ campusState.careerLevel++;campusSave();cityEarn(20+campusState.careerLevel*5,15);campusCareer();
+}
+function campusSaveWord(word,definition="",source="Library"){
+ const value=String(word||"").trim().toLowerCase().replace(/[^a-zà-ÿ'-\s]/gi,"").slice(0,60);
+ if(!value||!/[a-zà-ÿ]/i.test(value))return false;
+ const record=campusState.words.find(x=>x.word===value);
+ if(record){record.reviewed=(record.reviewed||0)+1;record.definition=definition||record.definition;}
+ else campusState.words.unshift({word:value,definition:String(definition||"").slice(0,160),source,date:Date.now(),reviewed:0});
+ campusState.words=campusState.words.slice(0,500);campusSave();return true;
+}
+function campusVocabulary(){
+ cityPanel("Student / Vocabulary","My Saved Words",
+ '<p>Save interesting words from books or lessons. You can add meanings and revisit words without earning unlimited coins.</p>'+
+ '<form class="wave-vocab-form" id="wave-word-form"><input name="word" maxlength="60" placeholder="Word" required>'+
+ '<input name="definition" maxlength="160" placeholder="Meaning or a short example">'+
+ '<button class="button primary" type="submit">Save word</button></form>'+
+ '<div class="wave-word-list">'+campusState.words.map((w,i)=>'<article><div><strong>'+esc(w.word)+'</strong><small>'+esc(w.definition||w.source)+
+ '</small></div><button class="button" type="button" data-wave="delete-word" data-index="'+i+'">Remove</button></article>').join('')+
+ (campusState.words.length?'':'<p>No words saved yet.</p>')+'</div>');
+}
+function campusSaveSelection(){
+ const selected=String(window.getSelection?.()?.toString()||"").trim().split(/\s+/)[0]||"";
+ if(!selected){notice("Select a word in the reading passage first.");return;}
+ if(campusSaveWord(selected,"",CITY_BOOKS.find(x=>x.id===cityBookSession?.id)?.title||"Library"))notice("Saved "+selected+" to My Words.");
+}
+function campusArchitectValid(x,z,except=null){
+ if(x< -38||x>38||z<0||z>32)return false;
+ if(Math.hypot(x-14,z-11)<10||Math.hypot(x+7,z-13.5)<6||
+ Math.hypot(x,z-11.6)<5||Math.hypot(x+37,z+7)<9||
+ Math.hypot(x-23.5,z-6)<6||Math.hypot(x,z)<7)return false;
+ for(const site of CITY_SITES)if(site.id!==except&&Math.abs(site.x-x)<10&&Math.abs(site.z-z)<9)return false;
+ return true;
+}
+function campusArchitect(){
+ const plots=CITY_SITES.filter(x=>cityState.sites[x.id]?.owned);
+ let body='<p>Select a construction item, then click an open square on the city grid. Each new road, park, tree or house costs coins. To relocate an owned plot, select it first, then click the new location.</p>';
+ body+='<div class="wave-builder-tools">'+CAMPUS_DECOR.map(d=>'<button type="button" class="'+(campusArchitectChoice===d.id&&!campusMoveChoice?'selected':'')+
+ '" data-wave="build-choice" data-id="'+d.id+'">'+d.name+' · '+d.price+' coins</button>').join("")+'</div>';
+ body+='<div class="wave-builder-tools">'+plots.map(site=>'<button type="button" class="'+(campusMoveChoice===site.id?'selected':'')+
+ '" data-wave="move-choice" data-id="'+site.id+'">Move '+esc(site.title)+'</button>').join('')+'</div>';
+ body+='<p class="city-sub">Move a purchased plot for 20 coins. Decorative roads are visual paths; full road-navigation AI is a future upgrade.</p>';
+ const markers=CITY_SITES.map(site=>'<span class="wave-grid-plot" style="left:'+((site.x+45)/90*100)+'%;top:'+((site.z+18)/54*100)+'%" title="'+
+ esc(site.title)+'"></span>').join('');
+ body+='<div class="wave-map-area"><div id="wave-builder-map" class="wave-builder-map" role="grid" aria-label="Choose a construction location">'+markers+'</div></div>';
+ body+='<div class="wave-builder-footer">Selection: <b>'+esc(campusMoveChoice?CITY_SITES.find(x=>x.id===campusMoveChoice)?.title||'Plot':
+ CAMPUS_DECOR.find(x=>x.id===campusArchitectChoice)?.name||'Tree')+'</b><span>Coins: '+cityState.coins.toLocaleString()+'</span></div>';
+ cityPanel("City Architect","Build Your Own City",body);
+}
+function campusPlace(x,z){
+ x=Math.round(x/2)*2;z=Math.round(z/2)*2;
+ if(!campusArchitectValid(x,z,campusMoveChoice)){notice("Choose an empty plot away from buildings and landmarks.");return false;}
+ if(campusMoveChoice){
+  const site=CITY_SITES.find(x=>x.id===campusMoveChoice);
+  if(!site||!cityState.sites[site.id]?.owned)return false;
+  if(!citySpend(20)){notice("Moving property costs 20 coins.");return false;}
+  site.x=x;site.z=z;
+  const prior=campusState.plots[site.id]||{rotation:0};
+  campusState.plots[site.id]={x,z,rotation:prior.rotation||0};
+  campusMoveChoice=null;
+  campusSave();citySave();campusArchitect();drawScene();return true;
+ }
+ const kind=CAMPUS_DECOR.find(x=>x.id===campusArchitectChoice);
+ if(!kind||campusState.decor.length>=100)return false;
+ if(campusState.decor.some(d=>Math.abs(d.x-x)<3&&Math.abs(d.z-z)<3)){notice("That square already has a decoration.");return false;}
+ if(!citySpend(kind.price))return false;
+ campusState.decor.push({kind:kind.id,x,z});campusSave();campusArchitect();drawScene();return true;
+}
+function campusMap(){
+ const all=[{title:"School",x:-37,z:-7},{title:"Library",x:14,z:11},{title:"City Hall",x:-7,z:13.5},
+ {title:"Mail",x:6,z:-7},{title:"Warehouse",x:23.5,z:6},...CITY_SITES.map(s=>({title:s.title,x:s.x,z:s.z}))];
+ const pins=all.map(x=>'<div class="wave-map-pin" style="left:'+((x.x+45)/90*100)+'%;top:'+((x.z+18)/54*100)+'%" title="'+
+ esc(x.title)+'"><span>●</span><small>'+esc(x.title)+'</small></div>').join('');
+ cityPanel("LumenVale / Map","City Map",
+ '<p>Explore the city without GPS. The map shows your buildings and the important places you can visit.</p>'+
+ '<div class="wave-map-area"><div class="wave-map">'+pins+'</div></div>'+
+ '<div class="city-actions"><button class="button" data-wave="school">School</button>'+
+ '<button class="button" data-wave="architect">City Architect</button><button class="button" data-wave="careers">Careers</button></div>');
+}
+function campusEnterFactory(id){
+ const site=CITY_SITES.find(x=>x.id===id),unit=cityState.sites[id];
+ if(!site||site.kind!=="factory"||!unit?.built)return;
+ campusInterior={id,returnX:site.x,returnZ:site.z-5.9};
+ player={...player,x:0,z:-70,yaw:0,pitch:-.08};
+ cityMousePrompt();refreshPosition();drawScene();
+ notice("Inside "+site.title+". Explore the machine and employee stations.");
+}
+function campusExitFactory(){
+ if(!campusInterior)return;
+ player={...player,x:campusInterior.returnX,z:campusInterior.returnZ,yaw:0,pitch:0};
+ campusInterior=null;refreshPosition();drawScene();
+}
+function campusFactoryMachine(){
+ const site=CITY_SITES.find(x=>x.id===campusInterior?.id),unit=cityState.sites[site?.id];
+ if(!site||!unit)return;
+ cityPanel("Factory / Machine Station",site.title+' Production',
+ '<p>Watch the conveyor and inspect manufacturing equipment.</p>'+
+ '<div class="city-factory-grid"><div><small>Machine level</small><b>'+unit.level+'</b></div>'+
+ '<div><small>Workers</small><b>'+unit.staff+'</b></div><div><small>Gross production</small><b>'+cityProduction(site,unit)+' / 5s</b></div>'+
+ '<div><small>Inventory</small><b>'+(systemsState.inventory[site.id]||0)+'</b></div></div>'+
+ '<div class="city-actions"><button class="button primary" data-wave="factory-help">Help production</button>'+
+ '<button class="button" data-wave="factory-upgrade">Upgrade machines</button></div>');
+}
+function campusFactoryStaff(){
+ const site=CITY_SITES.find(x=>x.id===campusInterior?.id),unit=cityState.sites[site?.id];
+ if(!site||!unit)return;
+ cityPanel("Factory / Workstations",site.title+' Workforce',
+ '<p>Assign workers to production and provide training. Each worker increases output and operating expenses.</p>'+
+ '<div class="wave-staff-roster">'+Array.from({length:Math.min(6,unit.staff)},(_,i)=>'<div>👷 '+esc(LV_PERSONNEL[i])+' · Level '+unit.level+'</div>').join('')+
+ (unit.staff?'':'<p>No employees yet.</p>')+'</div><button class="button primary" data-wave="factory-hire">Hire an employee</button>');
+}
+function campusInit(){
+ campusInitPlotLocations();
+ const top=document.querySelector(".walk-head");
+ if(top){
+  for(const [label,action] of [["▦ Map",campusMap],["⌂ Build",campusArchitect],["🎓 School",campusSchool],["✦ Careers",campusCareer],["✎ Words",campusVocabulary]]){
+   const b=document.createElement("button");b.type="button";b.className="top-icon lv-top-button wave-nav";
+   b.textContent=label;top.insertBefore(b,top.lastElementChild);b.addEventListener("click",action);
+  }
+ }
+ // Teacher management belongs to a separately authenticated web portal.
+ byId("lv-teacher-button")?.remove();
+ document.querySelectorAll('[data-academy="teacher"]').forEach(el=>el.remove());
+ document.addEventListener("click",event=>{
+  const el=event.target.closest("[data-wave]");if(!el)return;
+  const act=el.dataset.wave,id=el.dataset.id,index=Number(el.dataset.unit);
+  if(act==="school")campusSchool();
+  if(act==="class")campusClass(id);
+  if(act==="unit")campusUnit(id,index);
+  if(act==="unit-answer")campusUnitAnswer(id,index,el.dataset.answer);
+  if(act==="exam")campusExam(id);
+  if(act==="exam-answer")campusExamAnswer(el.dataset.answer);
+  if(act==="careers")campusCareer();
+  if(act==="career-choose")campusChooseCareer(id);
+  if(act==="career-task")campusCareerTask();
+  if(act==="career-answer")campusCareerAnswer(el.dataset.answer);
+  if(act==="vocab")campusVocabulary();
+  if(act==="delete-word"){campusState.words.splice(Number(el.dataset.index),1);campusSave();campusVocabulary();}
+  if(act==="save-selection")campusSaveSelection();
+  if(act==="map")campusMap();
+  if(act==="architect")campusArchitect();
+  if(act==="build-choice"){campusArchitectChoice=id;campusMoveChoice=null;campusArchitect();}
+  if(act==="move-choice"){campusMoveChoice=id;campusArchitect();}
+  if(act==="factory-help"&&campusInterior){cityManual(campusInterior.id);campusFactoryMachine();}
+  if(act==="factory-upgrade"&&campusInterior){cityUpgrade(campusInterior.id);campusFactoryMachine();}
+  if(act==="factory-hire"&&campusInterior){cityHire(campusInterior.id);campusFactoryStaff();}
+ });
+ document.addEventListener("submit",event=>{
+  if(event.target.id!=="wave-word-form")return;
+  event.preventDefault();
+  const fields=new FormData(event.target);
+  if(campusSaveWord(fields.get("word"),fields.get("definition"),"My vocabulary"))campusVocabulary();
+ });
+ document.addEventListener("click",event=>{
+  const map=event.target.closest("#wave-builder-map");if(!map)return;
+  const bounds=map.getBoundingClientRect();
+  const x=-45+((event.clientX-bounds.left)/bounds.width)*90;
+  const z=-18+((event.clientY-bounds.top)/bounds.height)*54;
+  campusPlace(x,z);
+ });
+ window.addEventListener("keydown",event=>{
+  if(event.repeat||event.target.matches?.("input,textarea,select")||dialog.open||terminal.open)return;
+  if(event.key.toLowerCase()==="k")campusMap();
+  if(event.key.toLowerCase()==="p")campusSchool();
+ });
+ // Add a library word saver without blocking normal page navigation.
+ document.addEventListener("pointerdown",event=>{
+  if(event.target.closest('[data-wave="save-selection"]'))event.preventDefault();
+ });
+}
+
+
 /* Detailed walkable 3D city extension for the existing Three.js scene. */
 function createCityWorld({T,exterior,box,piece,renderer}){
  const city=new T.Group();
@@ -6057,6 +6458,8 @@ function createCityWorld({T,exterior,box,piece,renderer}){
   const pause=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   for(const [id,entry] of buildings){
    const info=saved?.sites?.[id];
+   entry.lot.position.set(entry.site.x,0,entry.site.z);
+   entry.lot.rotation.y=(campusState.plots?.[id]?.rotation||0)*Math.PI/2;
    entry.ownedLand.visible=Boolean(info?.owned||info?.built);
    entry.landTiers.forEach((tier,i)=>tier.visible=Boolean(info?.owned && (info.landLevel||1)>=i+2));
    entry.active.visible=Boolean(info?.built);
@@ -6283,6 +6686,108 @@ function createLumenWorld({T,exterior,box,renderer}){
    p.legs[0].rotation.x=Math.sin(phase*3+i)*.18;
    p.legs[1].rotation.x=-Math.sin(phase*3+i)*.18;
   });
+ }
+ return {update};
+}
+
+
+/* Three.js school, walkable factories, and placed town architecture. */
+function createCampusWorld({T,exterior,box,piece,renderer}){
+ const root=new T.Group();exterior.add(root);
+ const materials=new Map(),low=Boolean(renderer.isSoftware);
+ const mat=c=>{if(!materials.has(c))materials.set(c,new T.MeshLambertMaterial({color:c,flatShading:true,side:T.DoubleSide}));return materials.get(c)};
+ const b=(g,x,y,z,w,h,d,c)=>box(g,x,y,z,w,h,d,c);
+ const sphere=(g,x,y,z,r,c)=>{const m=new T.Mesh(new T.IcosahedronGeometry(r,low?0:1),mat(c));m.position.set(x,y,z);g.add(m);return m;};
+ const cylinder=(g,x,y,z,r,h,c)=>{const m=new T.Mesh(new T.CylinderGeometry(r,r,h,10),mat(c));m.position.set(x,y,z);g.add(m);return m;};
+ function sign(g,name,x,y,z,w=5){
+  b(g,x,y,z,w,.52,.13,"#284a46");
+  if(low)return;
+  const c=document.createElement("canvas");c.width=512;c.height=90;
+  const ctx=c.getContext("2d");ctx.fillStyle="#284a46";ctx.fillRect(0,0,512,90);
+  ctx.fillStyle="#fff0bd";ctx.font="bold 36px sans-serif";ctx.textAlign="center";ctx.fillText(name.toUpperCase(),256,55,490);
+  const t=new T.CanvasTexture(c);t.colorSpace=T.SRGBColorSpace;
+  const m=new T.Mesh(new T.PlaneGeometry(w-.1,.45),new T.MeshBasicMaterial({map:t,side:T.DoubleSide}));m.position.set(x,y,z-.08);g.add(m);
+ }
+ const school=new T.Group();school.position.set(-37,0,-7);root.add(school);
+ b(school,0,.3,0,8.8,.6,7.0,"#e6d8b6");
+ b(school,0,2.9,1.0,8.1,5.1,5.4,"#b8a88e");
+ b(school,0,5.5,1.0,8.7,.32,6.0,"#657987");
+ b(school,0,1.55,-1.79,2.4,3.0,.18,"#856d56");
+ for(const x of [-3.25,-1.4,1.4,3.25]){
+  b(school,x,3.6,-1.79,1.0,1.6,.13,"#9ac6c7");
+  b(school,x,3.6,-1.91,.08,1.62,.04,"#e3e9d8");
+ }
+ for(let i=0;i<3;i++)b(school,0,.12,-2.4-i*.45,4.8,.18,.5,"#d2b995");
+ sign(school,"LUMENVALE SCHOOL",0,5,-1.93,6.8);
+ const flags=new T.Group();root.add(flags);
+ for(const [x,z] of [[-42,-8],[-32,-8]]){cylinder(flags,x,2,z,.09,4,"#abb6a5");b(flags,x+.3,3.55,z,.65,.39,.05,"#658f78");}
+ const interior=new T.Group();root.add(interior);
+ // Factory floor sits outside the public map, accessible only by entering a built site.
+ const Z=-73;
+ b(interior,0,-.12,Z,17,.22,17,"#87958c");
+ b(interior,0,4.2,Z+7.75,17,8.3,.3,"#a9b3a7");
+ b(interior,-8.2,4.2,Z, .3,8.3,16,"#a9b3a7");
+ b(interior,8.2,4.2,Z, .3,8.3,16,"#a9b3a7");
+ b(interior,0,8.42,Z,17,.22,16,"#667c79");
+ for(const x of [-6.3,-3.5,0,3.5,6.3]){
+  b(interior,x,7.65,Z-2,.85,.1,2.2,"#e6dab5");
+  b(interior,x,7.65,Z+2,.85,.1,2.2,"#e6dab5");
+ }
+ b(interior,0,.09,Z-3.0,12,.1,3,"#547371");
+ for(let i=0;i<13;i++){const roller=cylinder(interior,-5.5+i*.9,.42,Z-3.0,.24,.74,"#b5c4b4");roller.rotation.z=Math.PI/2;}
+ b(interior,3,1.4,Z,3.3,2.4,2.1,"#6a8a89");
+ b(interior,3,2.7,Z,3.7,.25,2.45,"#3e5c5b");
+ b(interior,3,1.6,Z-1.13,1.25,.65,.1,"#9bb3ad");
+ b(interior,-3,1.15,Z,3.8,2.2,1.5,"#a68e6b");
+ b(interior,-3,2.37,Z,3.95,.21,1.65,"#7f6b56");
+ for(let i=0;i<5;i++)b(interior,-4.3+i*.68,1.66,Z-.81,.40,.52,.3,"#d1ae70");
+ b(interior,0,.03,Z-7,5,.07,2.5,"#d6c58d");
+ for(const x of [-1.4,1.4])b(interior,x,.06,Z-7,.15,.08,2.5,"#eee0b5");
+ b(interior,0,2.6,Z-7.65,3.4,1.0,.14,"#315b4b");
+ sign(interior,"EXIT",0,2.6,Z-7.8,2.4);
+ sign(interior,"MACHINES",3,3.4,Z-1.3,2.4);
+ sign(interior,"WORKERS",-3,3.25,Z-1.0,2.5);
+ const packages=Array.from({length:7},(_,i)=>b(interior,-5+i*1.55,.75,Z-3.0,.58,.5,.48,"#d1a973"));
+ const people=[];
+ function worker(px,pz,shirt){
+  const g=new T.Group();g.position.set(px,0,pz);interior.add(g);
+  b(g,0,1.05,0,.55,.75,.35,shirt);
+  b(g,-.17,.45,0,.21,.85,.25,"#465550");b(g,.17,.45,0,.21,.85,.25,"#465550");
+  sphere(g,0,1.72,0,.25,"#d8a77c");return g;
+ }
+ for(let i=0;i<6;i++)people.push(worker(-5.8+i*2.2,Z+3.6,i%2?"#76a4a7":"#c59b6e"));
+ const decor=new Map();
+ function addDecoration(data){
+  const g=new T.Group();g.position.set(data.x,0,data.z);
+  if(data.kind==="tree"){
+   cylinder(g,0,.94,0,.20,1.88,"#79654d");
+   sphere(g,0,2.30,0,1.18,"#5c916a");sphere(g,.5,2.05,.35,.68,"#76a477");
+  }else if(data.kind==="road"){
+   b(g,0,.06,0,3.7,.12,3.7,"#88928c");b(g,0,.14,0,.10,.02,1.7,"#e3d9ba");
+  }else if(data.kind==="park"){
+   b(g,0,.08,0,3.7,.18,3.7,"#7a9d6d");
+   for(const [x,z] of [[-1,-1],[1,1]]){cylinder(g,x,.3,z,.15,.4,"#946e57");sphere(g,x,.65,z,.42,"#80ad7b");}
+   b(g,0,.35,0,1.5,.23,.48,"#b5966d");
+  }else if(data.kind==="house"){
+   b(g,0,1.35,0,3.2,2.7,3.2,"#c8ad8b");
+   b(g,0,2.9,0,3.5,.4,3.5,"#667f74");
+   b(g,-.65,1.50,-1.66,.7,.8,.09,"#8fc1bd");
+   b(g,.70,1.0,-1.66,.70,1.9,.09,"#8c7658");
+  }else if(data.kind==="lamp"){
+   cylinder(g,0,1.6,0,.08,3.2,"#6b8074");sphere(g,0,3.3,0,.38,"#eed5a2");
+  }
+  root.add(g);return g;
+ }
+ let seen=0;
+ function update(now){
+  interior.visible=Boolean(campusInterior);
+  people.forEach((p,i)=>{p.visible=Boolean(campusInterior&&i<(cityState.sites[campusInterior.id]?.staff||0));if(p.visible)p.rotation.y=Math.sin(now*.0008+i)*.23;});
+  packages.forEach((m,i)=>{const phase=((now*.001*.75+i*1.9)%11);m.position.x=-5.5+phase;});
+  for(const d of campusState.decor){
+   const key=d.kind+":"+d.x+":"+d.z;
+   if(!decor.has(key))decor.set(key,addDecoration(d));
+  }
+  for(const [key,obj] of decor)if(!campusState.decor.some(d=>d.kind+":"+d.x+":"+d.z===key)){root.remove(obj);decor.delete(key);}
  }
  return {update};
 }
@@ -6680,6 +7185,7 @@ function createOfficeView() {
   exterior.add(stand);
   const cityRenderer=createCityWorld({T,exterior,box,piece,renderer});
   const lumenRenderer=createLumenWorld({T,exterior,box,piece,renderer});
+  const campusRenderer=createCampusWorld({T,exterior,box,piece,renderer});
 
   const coatColors = { rose: '#af6760', amber: '#bc8752', blue: '#4d7982' };
   function makeVisitor(tint) {
@@ -6760,6 +7266,7 @@ function createOfficeView() {
     kits.forEach((kit,i)=>{kit.visible=i<stock;});
     cityRenderer.update(current.city,now);
     lumenRenderer.update(now,current);
+    campusRenderer.update(now);
     // Slow day-and-night lighting, independent of random events.
     const sunPhase=Math.max(.05,(Math.sin(now/115000)+1)/2);
     sun.intensity=.42+1.55*sunPhase;
@@ -7054,7 +7561,7 @@ function refreshPosition() {
     state.stand && Math.hypot(player.x-STAND.x,player.z-STAND.z)<4.5 ? 'Pickup stand' :
     player.z < -12 ? 'Riverside' : 'Market grounds';
   if(byId('world-location').textContent!==place)byId('world-location').textContent=place;
-  const target = systemsNearby(player) || cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
+  const target = campusNearby(player) || campusNearby(player) || systemsNearby(player) || cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
   const name = target?.label || '';
   if (lastInteraction !== name) {
     lastInteraction=name;
@@ -7311,6 +7818,7 @@ function interact() {
   if (terminal.open || dialog.open) return;
   const target = systemsNearby(player) || cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
   if (!target) return;
+  if (target.campus) return campusInteract(target);
   if (target.system) return systemsInteract(target);
   if (target.city) return cityInteract(target);
   if (target.id === 'seat') return sitAtComputer();
@@ -7574,6 +8082,7 @@ try {
 cityInit();
 academyInstall();
 systemsInit();
+campusInit();
 </script>
 </body>
 </html>
