@@ -186,6 +186,12 @@ function createCityWorld({T,exterior,box,piece,renderer}){
   landTiers.push(modern);
   landTiers.forEach(tier=>tier.visible=false);
 
+  const crane=new T.Group();lot.add(crane);
+  b(crane,3.9,2.45,3.35,.23,4.9,.23,'#c59d4b');
+  b(crane,2.3,4.76,3.35,4.1,.18,.25,'#e1b967');
+  b(crane,.55,3.15,3.35,.06,3.0,.06,'#c1c8b7');
+  b(crane,.55,1.72,3.35,.42,.21,.29,'#b48d47');
+  crane.visible=false;
   const active=new T.Group();lot.add(active);
   const workers=[];
   const motion=[];
@@ -232,7 +238,7 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    }
   }
   active.visible=false;
-  buildings.set(site.id,{active,ownedLand,landTiers,workers,motion,site,lot});
+  buildings.set(site.id,{active,crane,ownedLand,landTiers,workers,motion,site,lot});
  }
  // A few town residents make the settlement feel alive before construction.
  const townspeople=[
@@ -249,6 +255,10 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    entry.ownedLand.visible=Boolean(info?.owned||info?.built);
    entry.landTiers.forEach((tier,i)=>tier.visible=Boolean(info?.owned && (info.landLevel||1)>=i+2));
    entry.active.visible=Boolean(info?.built);
+   const age=Date.now()-(info?.builtAt||0);
+   const constructing=Boolean(info?.builtAt&&age>=0&&age<6000);
+   entry.crane.visible=constructing;
+   entry.active.scale.y=constructing?Math.max(.08,age/6000):1;
    if(!entry.active.visible)continue;
    const present=entry.site.kind==='house'?entry.workers.length:Math.min(entry.workers.length,info.staff);
    entry.workers.forEach((person,i)=>{person.rig.visible=i<present;});
