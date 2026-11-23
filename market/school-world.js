@@ -85,12 +85,9 @@ function decorateSchoolInterior(T,k,g,sign,place){
    for(let i=0;i<4;i++)k.box(x+.94,1.05+i*.03,z+.12,.42,.03,.51,i%2?'#efe7d0':'#d9bd90');
   }
  }
- station(-7,-6.42,'ACADEMIC STUDIES','#77b4a4','pathways');
- station(7,-6.42,'CAREERS & JOBS','#78a6bd','careers');
- station(-7,-1.20,'QURAN STUDIO','#9bbd83','quran');
- station(7,-1.20,'SCIENCE QUEST','#88c5c0','science');
- station(-7,5.03,'READING CORNER','#d9bc8a','library');
- station(7,5.03,'PRACTICE EXAMS','#b1bfdf','exam');
+ // The same definitions power the 3D workstations and their interaction zones.
+ for(const desk of SCHOOL_STATIONS)
+  station(desk.x,desk.z,desk.sign,desk.tint,desk.kind);
 
  // Six recognizable rooms wrap a central corridor. Each room has a wide,
  // unobstructed doorway matching the movement/collision plan in districts.js.
