@@ -33,5 +33,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: lumenvale-academic-browser
-          path: lumenvale-academic-smoke.png
+          path: |
+            lumenvale-academic-smoke.png
+            lumenvale-school-smoke.png
           if-no-files-found: ignore
