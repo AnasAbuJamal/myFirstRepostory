@@ -121,8 +121,8 @@ function campusSchool(){
    '<span class="wave-course-icon">'+sub.icon+'</span><strong>'+sub.name+'</strong>'+
    '<span>'+(campusState.enrolled.includes(sub.id)?'Enrolled · '+info.complete.length+'/3 lessons': 'Not enrolled · Click to choose')+' · '+(last==null?'No exam yet':campusGrade(last).letter+' '+last+'%')+'</span></button>';
  }).join("");
- cityPanel("LumenVale Academy","Your School & Curriculum",
- '<p>Choose classes and study at your own pace. Complete all three units in a subject, then take its exam. Your GPA uses the most recent exam in each subject.</p>'+
+ cityPanel("LumenVale Academy / Practice","Foundations Practice Classes",
+ '<p>Optional game-only foundation exercises. These scores remain separate from the teacher-controlled Academic Pathways transcript. Some existing game jobs still use these practice results.</p>'+
  '<div class="wave-school-stats"><div><small>Current GPA</small><b>'+(grade?grade.gpa.toFixed(2):"—")+'</b></div>'+
  '<div><small>Graded courses</small><b>'+(grade?.classes||0)+'/4</b></div>'+
  '<div><small>Learning XP</small><b>'+cityState.xp+'</b></div></div>'+
