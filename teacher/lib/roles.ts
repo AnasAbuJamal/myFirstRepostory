@@ -14,6 +14,7 @@ export async function signedInUser(){
 }
 export async function teacherAccess(){
  const user=await signedInUser();
+ if(!process.env.DATABASE_URL)return {user,role:null as null|'teacher'|'admin',sql:null,setupRequired:true};
  const sql=database();
  const rows=await sql`SELECT role FROM teacher_memberships WHERE auth_user_id=${user.id} LIMIT 1`;
  if(!rows.length)return {user,role:null as null|'teacher'|'admin',sql};
@@ -22,6 +23,6 @@ export async function teacherAccess(){
 }
 export async function requireTeacher(){
  const result=await teacherAccess();
- if(!result.role)redirect('/pending');
+ if(!result.role||!result.sql)redirect('/pending');
  return {user:result.user,role:result.role,sql:result.sql};
 }
