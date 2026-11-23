@@ -9,6 +9,8 @@ function createOfficeView() {
     renderer = new T.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.4));
     renderer.outputColorSpace = T.SRGBColorSpace;
+    renderer.toneMapping=T.ACESFilmicToneMapping;
+    renderer.toneMappingExposure=1.21;
   } catch {
     const replacement = canvas.cloneNode();
     canvas.replaceWith(replacement);
@@ -20,9 +22,10 @@ function createOfficeView() {
 
   const scene = new T.Scene();
   scene.background = new T.Color('#c2dad5');
-  const skyLight = new T.HemisphereLight('#e3ebff', '#9f9980', 1.55);
+  const visuals=createLumenVisuals(T,renderer);
+  const skyLight = new T.HemisphereLight('#dcecff','#988b79',1.10);
   scene.add(skyLight);
-  const sun = new T.DirectionalLight('#ffe3ae', 2.05);
+  const sun = new T.DirectionalLight('#fff0cc',2.10);
   sun.position.set(-18, 19, 12);
   scene.add(sun, sun.target);
   const officeFill = new T.DirectionalLight('#fff1d1', .65);
@@ -34,11 +37,13 @@ function createOfficeView() {
     shadows.enabled=true;
     shadows.autoUpdate=false;
     sun.castShadow=true;
-    sun.shadow.mapSize.set(1024,1024);
-    Object.assign(sun.shadow.camera,{left:-24,right:24,top:24,bottom:-24,near:3,far:80});
+    sun.shadow.mapSize.set(1536,1536);
+    shadows.type=T.PCFSoftShadowMap;
+    Object.assign(sun.shadow.camera,{left:-29,right:29,top:29,bottom:-29,near:2,far:100});
     sun.shadow.camera.updateProjectionMatrix();
     sun.shadow.bias=-.00022;
-    sun.shadow.normalBias=.052;
+    sun.shadow.normalBias=.038;
+    sun.shadow.radius=2.1;
   }
   const camera = new T.PerspectiveCamera(70, 1, .07, 145);
   const office = new T.Group();
@@ -65,7 +70,9 @@ function createOfficeView() {
   }
   const box = (group, ...shape) => piece(group, 'cube', ...shape);
 
-  box(exterior, 0, -.52, 20, 183, 1, 145, '#a5b977').receiveShadow=true;
+  const terrain=box(exterior,0,-.52,20,183,1,145,'#a5b977');
+  terrain.material=visuals.surface('grass','#a5b977',183,145);
+  terrain.receiveShadow=true;
   for (const [i, x] of [-42, -24, -5, 16, 33, 53].entries()) {
     piece(exterior, 'rock', x, -2.75, -31 - (i % 3) * 3, 16, 8 + i % 4, 13, ['#9bab8c', '#8fab89', '#a5b498'][i % 3]);
   }
@@ -126,7 +133,8 @@ function createOfficeView() {
     return [x, h * .45, z, h * 1.41, h, h * 1.2, i % 3 ? '#82a36a' : '#b0b975'];
   });
 
-  box(office, 0, -.145, .15, 8.6, .27, 8.2, '#bbb19c');
+  const officeFloor=box(office,0,-.145,.15,8.6,.27,8.2,'#bbb19c');
+  officeFloor.material=visuals.surface('wood','#bbb19c',8.6,8.2);
   for (let p = -8; p <= 8; p++) {
     const x = p * .49;
     box(office, x, -.003, .15, .014, .012, 8.16, '#a89e8e');
@@ -144,7 +152,8 @@ function createOfficeView() {
     box(office,0,2.82,z,1.74,.08,.62,'#465c56');
     box(office,0,2.774,z,1.57,.019,.48,'#fff1cc');
   }
-  const carpet = box(office,.02,.015,1.33,2.39,.024,1.72,'#819579');
+  const carpet=box(office,.02,.015,1.33,2.39,.024,1.72,'#819579');
+  carpet.material=visuals.surface('fabric','#819579',2.39,1.72);
   carpet.rotation.y=.01;
   box(office, -1.34, .44, -3.73, 5.9, .88, .17, '#d3d3c5');
   box(office, -1.34, 2.79, -3.73, 5.9, .29, .17, '#ebe6d9');
@@ -309,12 +318,23 @@ function createOfficeView() {
   const cityRenderer=createCityWorld({T,exterior,box,piece,renderer});
   const lumenRenderer=createLumenWorld({T,exterior,box,piece,renderer});
   const campusRenderer=createCampusWorld({T,exterior,box,piece,renderer});
-  const districtRenderer=createDistrictWorld({T,scene,exterior,renderer});
+  const districtRenderer=createDistrictWorld({T,scene,exterior,renderer,visuals});
   office.traverse(mesh=>{
     if(mesh.isMesh){mesh.receiveShadow=true;mesh.castShadow=mesh.position.y>.15&&mesh.position.y<2.7;}
   });
   door.traverse(mesh=>{if(mesh.isMesh)mesh.castShadow=false;});
-  const haze={isFog:true,name:'LumenVale air',color:new T.Color('#c8dbd8'),near:46,far:132};
+  const haze={isFog:true,name:'LumenVale air',color:new T.Color('#c8dbd8'),near:55,far:155};
+  const indoorBackground=new T.Color('#9aa59b');
+  const outdoorBackground=new T.Color('#c6ddde');
+  // Only a small set of nearby streetlights illuminates the town at night.
+  const streetPositions=TOWN_SAFE_FURNITURE.filter(item=>item.kind==='lamp');
+  const streetLights=renderer.isSoftware?[]:Array.from({length:4},()=>{
+    const lamp=new T.PointLight('#ffd29b',0,16,2);lamp.castShadow=false;scene.add(lamp);return lamp;
+  });
+  const officePractical=[new T.PointLight('#ffddb3',73,7,2),new T.PointLight('#fff1d7',55,6,2)];
+  officePractical[0].position.set(-1.7,2.52,-1.9);
+  officePractical[1].position.set(2.6,2.52,1.7);
+  office.add(...officePractical);
   const duskColor=new T.Color('#8998ae'), dayColor=new T.Color('#c6ddde');
   const eveningLight=new T.Color('#e6aa70'), daylight=new T.Color('#ffedc8');
 
@@ -395,38 +415,55 @@ function createOfficeView() {
     exterior.visible=!indoors;
     office.visible=!indoors;
     const enclosed=inOffice(player.x,player.z);
-    const dayPhase=.66+Math.cos(now/168000)*.24;
+    const dayPhase=.50+.50*Math.sin(now/104000);
     scene.fog=indoors?null:haze;
     officeFill.visible=enclosed&&!indoors;
     if(indoors){
-      skyLight.color.set('#fff1df');
-      skyLight.groundColor.set('#b2bcaa');
-      skyLight.intensity=1.54;
-      sun.color.set('#ffe4ba');
-      sun.intensity=.84;
-      scene.background.set('#879990');
+      skyLight.color.set('#fff0e0');
+      skyLight.groundColor.set('#a8aea2');
+      skyLight.intensity=.70;
+      sun.color.set('#ffe5c2');
+      sun.intensity=.25;
+      scene.background=indoorBackground;
     }else{
-      skyLight.color.set('#e8f2ff');
-      skyLight.groundColor.set('#c6bba3');
-      skyLight.intensity=enclosed?1.47:.87;
+      skyLight.color.set('#ddecff');
+      skyLight.groundColor.set('#928c76');
+      skyLight.intensity=enclosed?.86:.54+dayPhase*.68;
       sun.color.copy(eveningLight).lerp(daylight,dayPhase);
-      sun.intensity=1.05+dayPhase*1.05;
-      scene.background.copy(duskColor).lerp(dayColor,.30+dayPhase*.70);
-      haze.color.copy(scene.background);
+      sun.intensity=.20+dayPhase*2.25;
+      outdoorBackground.copy(duskColor).lerp(dayColor,.28+dayPhase*.72);
+      scene.background=visuals.sky(dayPhase)||outdoorBackground;
+      haze.color.copy(outdoorBackground);
+      haze.near=44+dayPhase*16;
+      haze.far=125+dayPhase*30;
+    }
+    const officeLit=enclosed&&!indoors;
+    officePractical.forEach((lamp,i)=>{
+      lamp.visible=officeLit;lamp.intensity=officeLit?(i?52:72):0;
+    });
+    if(streetLights.length){
+      const night=Math.max(0,1-dayPhase);
+      const closest=[...streetPositions].sort((a,b)=>
+       ((a.x-player.x)**2+(a.z-player.z)**2)-((b.x-player.x)**2+(b.z-player.z)**2));
+      streetLights.forEach((lamp,i)=>{
+       const spot=closest[i],distance=spot?Math.hypot(spot.x-player.x,spot.z-player.z):Infinity;
+       lamp.visible=!indoors&&night>.28&&distance<32;
+       if(lamp.visible){lamp.position.set(spot.x,3.65,spot.z);lamp.intensity=65+night*135;}
+      });
     }
     if(shadows){
       // Local shadow coverage follows the player in stable four-meter steps.
       const x=indoors?0:Math.round(player.x/4)*4;
       const z=indoors?0:Math.round(player.z/4)*4;
-      const signature=[x,z,Boolean(districtVisit),built,doorOpen,cityBuildingsBuilt()].join('/');
+      const signature=[x,z,Boolean(districtVisit),built,doorOpen,cityBuildingsBuilt(),Math.floor(dayPhase*10)].join('/');
       if(signature!==shadowSignature){
         shadowSignature=signature;
         sun.target.position.set(x,0,z);
-        sun.position.set(x-15,27,z+12);
+        sun.position.set(x-18,14+dayPhase*20,z+12);
         shadows.needsUpdate=true;
       }
     }
-    scene.userData.townLight=enclosed||indoors?1.04:.90+dayPhase*.12;
+    scene.userData.townLight=enclosed||indoors?1.08:.73+dayPhase*.32;
     // Subtle first-person locomotion feedback; disabled for reduced-motion preferences.
     const moving=current.moving && player!==SEAT_POSITION;
     const sway=moving && !reduceMotion.matches ? Math.sin(now*(current.sprinting?.016:.011))*(current.sprinting?.048:.025) : 0;
