@@ -67,11 +67,27 @@ function townEntrance(place){
 }
 function indoorFurniture(kind){
  if(kind==='library')return [[-8,-6.55,-7,5],[6.55,8,-7,5],[-3.8,3.8,-5.9,-4.1],...[-4.2,4.2].flatMap(x=>[1,5.2].map(z=>[x-1.05,x+1.05,z-.7,z+.7]))];
- if(kind==='school')return [-1,1].flatMap(a=>[
-  [a*7-1.93,a*7+1.93,-7.20,-5.65],
-  [a*7-1.93,a*7+1.93,-1.94,-.47],
-  [a*7-1.93,a*7+1.93,4.27,5.76]
- ]);
+ if(kind==='school'){
+  const blockers=[...[-1,1].flatMap(a=>[
+   [a*7-1.93,a*7+1.93,-7.20,-5.65],
+   [a*7-1.93,a*7+1.93,-1.94,-.47],
+   [a*7-1.93,a*7+1.93,4.27,5.76],
+   [a*10-1.25,a*10+1.25,-7.5,-5.9],
+   [a*10-1.25,a*10+1.25,-.7,.5],
+   [a*10-1.25,a*10+1.25,5.1,6.8]
+  ])];
+  const zones=[[-11.32,-3.38,-4.42],[-3.38,2.38,.85],[2.38,9.78,3.65]];
+  for(const side of [-1,1]){
+   const x=side*3.46;
+   for(const [start,end,door] of zones)for(const [a,b] of [[start,door-1.10],[door+1.10,end]]){
+    if(b-a>.12)blockers.push([x-.13,x+.13,a,b]);
+   }
+   const left=Math.min(side*3.4,side*12.93),right=Math.max(side*3.4,side*12.93);
+   for(const z of [-3.38,2.38])blockers.push([left,right,z-.12,z+.12]);
+  }
+  blockers.push([-10.25,-6.15,9.52,10.93],[6.16,10.34,9.18,9.77],[6.16,10.34,10.28,10.93]);
+  return blockers;
+ }
  if(kind==='hall')return [[-3.8,3.8,-5.8,-4.0],[-8,-6.3,-4.0,3.1],[6.3,8,-4.0,3.1]];
  if(kind==='warehouse')return [[-11.3,-8.3,-7.3,5.2],[8.3,11.3,-7.3,5.2],[-3,3,-8,-5.1]];
  if(kind==='press')return [[-6.65,-5,-5.4,3.8],[5,6.65,-5.4,3.8],[-2.9,2.9,-5.25,-3.72]];
