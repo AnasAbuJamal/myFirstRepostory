@@ -123,7 +123,7 @@ function applySchoolInteriorTextures({T,group,place,low=false}){
  }
  // Restrained civic architecture: ivory walls, warm-oak joinery, sage teaching
  // stations, large porcelain floor and brass accent trims.
- panel('central porcelain concourse','tile',0,.077,-.15,2.62,19.58,-PI/2);
+ panel('central porcelain concourse','tile',0,.077,-.15,6.56,19.58,-PI/2);
  const rooms=[
   {front:-11.32,back:-3.38,door:-4.42,types:['terrazzo','tile']},
   {front:-3.38,back:2.38,door:.85,types:['carpet','terrazzo']},
