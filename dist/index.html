@@ -7556,6 +7556,7 @@ function pathwayStudy(id,unit){
  '<article>'+esc(lesson.reading)+'</article></div>'+
  '<div class="city-actions"><button class="button primary" data-pathways="studied" data-id="'+esc(id)+'" data-unit="'+esc(unit)+'">Mark lesson studied</button>'+
  (lesson.flashcards.length?'<button class="button" data-pathways="cards" data-id="'+esc(id)+'" data-unit="'+esc(unit)+'">Practice flashcards</button>':'')+
+ (lesson.practice.length?'<button class="button" data-pathways="practice" data-id="'+esc(id)+'" data-unit="'+esc(unit)+'">Practice questions</button>':'')+
  '<button class="button" data-pathways="course" data-id="'+esc(id)+'">Back</button></div>');
 }
 function pathwayMarkStudied(id,unit){
@@ -7581,6 +7582,37 @@ function pathwayCards(id,unit,idx=0,flip=false){
  '<div class="city-actions"><button class="button" data-pathways="previous-card">Previous</button>'+
  '<button class="button primary" data-pathways="next-card">Next / Reviewed</button>'+
  '<button class="button" data-pathways="course" data-id="'+esc(id)+'">Back to course</button></div>');
+}
+function pathwayPractice(id,unit){
+ const lesson=pathwayState.packs[id]?.lessons.find(x=>x.id===unit);
+ if(!lesson?.practice?.length||pathwayStatus(id).locked||!pathwayState.enrolled.includes(id))return;
+ pathwaySession={kind:'practice',courseId:id,unit,index:0,correct:0};
+ pathwayPracticeQuestion();
+}
+function pathwayPracticeQuestion(){
+ const session=pathwaySession;if(session?.kind!=='practice')return;
+ const lesson=pathwayState.packs[session.courseId]?.lessons.find(x=>x.id===session.unit);
+ const q=lesson?.practice?.[session.index];if(!q)return;
+ cityPanel('Academic Practice / '+esc(session.courseId),esc(lesson.title),
+ '<p>Practice question '+(session.index+1)+' of '+lesson.practice.length+' — mistakes do not affect GPA.</p>'+
+ '<h3>'+esc(q.prompt)+'</h3>'+q.choices.map((text,i)=>
+ '<button type="button" class="city-answer" data-pathways="practice-answer" data-answer="'+i+'"><span>'+
+ String.fromCharCode(65+i)+'</span>'+esc(text)+'</button>').join('')+
+ '<button class="button" data-pathways="lesson" data-id="'+esc(session.courseId)+'" data-unit="'+esc(session.unit)+'">Review reading</button>');
+}
+function pathwayPracticeAnswer(answer){
+ const session=pathwaySession;if(session?.kind!=='practice')return;
+ const lesson=pathwayState.packs[session.courseId]?.lessons.find(x=>x.id===session.unit);
+ const q=lesson?.practice?.[session.index];if(!q)return;
+ if(Number(answer)!==q.correctIndex){notice('Not quite. Review the lesson and try another answer.');return;}
+ session.correct++;session.index++;
+ if(session.index<lesson.practice.length){pathwayPracticeQuestion();return;}
+ const id=session.courseId,unit=session.unit;
+ pathwaySession=null;
+ cityPanel('Academic Practice','Practice complete',
+ '<p>All '+lesson.practice.length+' practice questions are now correct. No GPA or official grades were changed.</p>'+
+ '<button class="button primary" data-pathways="course" data-id="'+esc(id)+'">Back to course</button>'+
+ '<button class="button" data-pathways="lesson" data-id="'+esc(id)+'" data-unit="'+esc(unit)+'">Review lesson</button>');
 }
 function pathwayExam(id){
  const pack=pathwayState.packs[id];
@@ -7757,6 +7789,8 @@ function pathwayInit(){
   if(action==='lesson')pathwayStudy(id,unit);
   if(action==='studied')pathwayMarkStudied(id,unit);
   if(action==='cards')pathwayCards(id,unit);
+  if(action==='practice')pathwayPractice(id,unit);
+  if(action==='practice-answer')pathwayPracticeAnswer(item.dataset.answer);
   if(action==='flip'&&pathwaySession?.kind==='cards'){
    const s=pathwaySession;pathwayCards(s.courseId,s.unit,s.index,!s.flipped);
   }
