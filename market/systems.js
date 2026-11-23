@@ -19,6 +19,23 @@ const LV_HOME_DECOR=[
 const LV_PERSONNEL=['Amina · Operator','Leo · Mechanic','Noor · Engineer','Sam · Driver','Mira · Quality Inspector','Omar · Shift Lead'];
 const LV_TREASURES=[{id:'river',x:35,z:-16,reward:50,unlock:2,clue:'Follow the road east, then search the riverside rocks.'},{id:'forest',x:-49.7,z:55,reward:90,unlock:3,clue:'Look by the old trees on the far western edge.'},{id:'garden',x:1.95,z:56.8,reward:140,unlock:4,clue:'Look beyond the homes and gardens at the south edge of the town.'}];
 var systemsDriving=false;
+const LV_GARAGE_CATALOG=[
+ {id:'van',cost:0,title:'Vale Courier',detail:'Your original delivery van · generous cargo space'},
+ {id:'compact',cost:310,title:'Juniper Hatch',detail:'Lightweight urban hatchback for city streets'},
+ {id:'sedan',cost:470,title:'Vale Executive',detail:'Refined four-door sedan with a smooth roofline'},
+ {id:'suv',cost:710,title:'Evergreen SUV',detail:'Tall family car with rails and broad windows'},
+ {id:'coupe',cost:850,title:'Riviera Sport',detail:'Low, sporty coupe with a rear deck spoiler'},
+ {id:'pickup',cost:630,title:'Foundry Pickup',detail:'Practical work truck with an exposed cargo bed'}
+];
+const LV_GARAGE_PAINTS=[
+ {id:'cream',title:'Ivory'},
+ {id:'jade',title:'Forest teal'},
+ {id:'amber',title:'Golden amber'},
+ {id:'coral',title:'Terracotta'},
+ {id:'navy',title:'Ocean blue'},
+ {id:'mint',title:'Soft sage'},
+ {id:'charcoal',title:'Graphite'}
+];
 const LV_PRODUCTS={workshop:{name:'Furniture',icon:'🪑'},lumber:{name:'Lumber',icon:'🪵'},
  textile:{name:'Fabric',icon:'🧵'},greenhouse:{name:'Produce',icon:'🌿'},assembly:{name:'Tools',icon:'🛠️'}};
 const LV_CONTRACTS=[
@@ -45,7 +62,7 @@ const LV_TECH=[
  {id:'automation',title:'Modern Automation',cost:620,books:5,desc:'Automate routine work. +25% output.',boost:.25}
 ];
 function systemsBlank(){return {version:1,inventory:{},upgrades:{},tech:{},contracts:{},
-  paid:0,earned:0,rep:0,lastTick:Date.now(),mailRead:[],ledger:[],achievements:[],training:{},treasures:[],npcDone:[],homeDecor:{},chainMade:0};}
+  paid:0,earned:0,rep:0,lastTick:Date.now(),mailRead:[],ledger:[],achievements:[],training:{},treasures:[],npcDone:[],homeDecor:{},chainMade:0,garage:{selected:'van',paint:'cream',owned:['van']}};}
 function systemsClean(raw){
  const s=systemsBlank();
  if(!raw||raw.version!==1)return s;
@@ -63,6 +80,11 @@ function systemsClean(raw){
  s.npcDone=Array.isArray(raw.npcDone)?raw.npcDone.filter(x=>LV_CHARACTERS.some(n=>n.id===x)):[];
  for(const d of LV_HOME_DECOR)s.homeDecor[d.id]=Boolean(raw.homeDecor?.[d.id]);
  s.chainMade=count(raw.chainMade,1e9);
+ const garage=raw.garage&&typeof raw.garage==='object'?raw.garage:{};
+ s.garage.owned=Array.isArray(garage.owned)?[...new Set(garage.owned.filter(id=>LV_GARAGE_CATALOG.some(c=>c.id===id)))]:['van'];
+ if(!s.garage.owned.includes('van'))s.garage.owned.unshift('van');
+ s.garage.selected=s.garage.owned.includes(garage.selected)?garage.selected:'van';
+ s.garage.paint=LV_GARAGE_PAINTS.some(p=>p.id===garage.paint)?garage.paint:'cream';
  for(const id of Object.keys(LV_PRODUCTS))s.training[id]=count(raw.training?.[id],5);
  return s;
 }
@@ -229,7 +251,7 @@ function systemsReadLetter(id){
  '<button class="button" type="button" data-systems="mail">Back to mailbox</button></div></article>');
 }
 function systemsPanel(tab='overview'){
- const buttons=[['overview','Overview'],['contracts','Contracts'],['warehouse','Warehouse'],['workers','Workers'],['home','Home'],['research','Research'],['upgrades','City Upgrades'],['newspaper','Newspaper'],['explore','Explore'],['achievements','Achievements']];
+ const buttons=[['overview','Overview'],['contracts','Contracts'],['warehouse','Warehouse'],['workers','Workers'],['garage','Garage'],['home','Home'],['research','Research'],['upgrades','City Upgrades'],['newspaper','Newspaper'],['explore','Explore'],['achievements','Achievements']];
  const nav='<div class="lv-city-nav">'+buttons.map(([id,title])=>'<button class="'+(id===tab?'active':'')+'" data-systems="tab" data-tab="'+id+'">'+title+'</button>').join('')+'</div>';
  let html='';
  if(tab==='overview'){
@@ -264,6 +286,25 @@ function systemsPanel(tab='overview'){
    '<article class="lv-contract"><h3>'+esc(x.name)+'</h3><p>'+esc(x.desc)+'</p><small>Cost: '+x.cost+' coins</small> '+
    (systemsState.homeDecor[x.id]?'<b>✓ Installed</b>':'<button class="button primary" data-systems="decor" data-id="'+x.id+'" '+
    (!systemsState.upgrades.home||cityState.coins<x.cost?'disabled':'')+'>Purchase</button>')+'</article>').join('');
+ }else if(tab==='garage'){
+  const garage=systemsState.garage||{selected:'van',paint:'cream',owned:['van']};
+  html='<div class="lv-garage-intro"><h3>Vehicle Design Garage</h3><p>Collect original LumenVale car models and repaint your personal car. Every design has its own body shape, glass, wheel rims and details. Road traffic and the school bus use separate models.</p>'+
+   '<p><b>Currently selected:</b> '+esc(LV_GARAGE_CATALOG.find(x=>x.id===garage.selected)?.title||'Vale Courier')+'</p>'+
+   (systemsState.upgrades.delivery?'':'<p>First buy the delivery van under City Upgrades to unlock the garage.</p>')+'</div>'+
+   '<div class="lv-garage-cars">'+LV_GARAGE_CATALOG.map(car=>{
+    const owned=garage.owned.includes(car.id),chosen=garage.selected===car.id;
+    return '<article class="lv-garage-car"><div class="lv-car-mark">◉ <span>'+esc(car.title)+'</span></div>'+
+     '<p>'+esc(car.detail)+'</p><small>'+(owned?'In your collection':car.cost+' coins')+'</small>'+
+     '<button type="button" class="button '+(chosen?'primary':'')+'" data-systems="garage-car" data-id="'+car.id+'" '+
+     (!systemsState.upgrades.delivery||chosen||!owned&&cityState.coins<car.cost?'disabled':'')+'>'+
+     (chosen?'Currently selected':owned?'Drive this car':'Buy & select · '+car.cost)+'</button></article>';
+   }).join('')+'</div>'+
+   '<h3>Customize your paint</h3><p>Repainting costs 25 coins. The selected finish appears on your car in the 3D city.</p>'+
+   '<div class="lv-garage-colors">'+LV_GARAGE_PAINTS.map(p=>
+    '<button type="button" class="lv-paint-chip '+(garage.paint===p.id?'active':'')+'" data-systems="garage-paint" data-id="'+p.id+'" '+
+    (!systemsState.upgrades.delivery||garage.paint===p.id||cityState.coins<25?'disabled':'')+'>'+
+    '<span style="background:'+LV_VEHICLE_PAINTS[p.id]+'"></span>'+esc(p.title)+'</button>').join('')+'</div>'+
+   '<p class="city-sub">Drive your purchased vehicle near the warehouse. Press V or E to enter and exit. Personal garage data stays saved on this device.</p>';
  }else if(tab==='workers'){
   html='<p>Employees produce goods and earn income automatically. Every worker has a professional role. Training costs coins and improves productivity.</p>'+
    CITY_SITES.filter(x=>x.kind==='factory'&&cityState.sites[x.id]?.built).map(x=>{
@@ -340,15 +381,39 @@ function systemsTreasure(id){
  cityEarn(t.reward,10);systemsLedger('Found hidden chest: '+id,t.reward);systemsSave();systemsAchievements();
  notice('Hidden treasure discovered! +'+t.reward+' coins.');
 }
+function systemsGarageChoose(id){
+ const car=LV_GARAGE_CATALOG.find(x=>x.id===id);
+ if(!car)return false;
+ if(!systemsState.upgrades.delivery){
+  notice('Buy the delivery van in City Upgrades to open your garage.');return false;
+ }
+ if(!systemsState.garage.owned.includes(id)){
+  if(!systemsSpend(car.cost,'Purchased '+car.title)){notice('You need '+car.cost+' coins to purchase this car.');return false;}
+  systemsState.garage.owned.push(id);
+ }
+ systemsState.garage.selected=id;
+ systemsSave();systemsPanel('garage');
+ notice('Now driving '+car.title+'.');
+ return true;
+}
+function systemsGaragePaint(id){
+ const color=LV_GARAGE_PAINTS.find(x=>x.id===id);
+ if(!color||!systemsState.upgrades.delivery)return false;
+ if(systemsState.garage.paint===id)return false;
+ if(!systemsSpend(25,'Vehicle repaint: '+color.title)){notice('A paint change costs 25 coins.');return false;}
+ systemsState.garage.paint=id;systemsSave();systemsPanel('garage');
+ notice('Your car has a new '+color.title+' finish.');
+ return true;
+}
 function systemsVehicle(){
  if(!systemsState.upgrades.delivery){notice('Buy the delivery van from City Hall first.');return;}
  if(!systemsDriving&&Math.hypot(player.x-CITY_UPGRADE_LOTS.delivery.x,player.z-CITY_UPGRADE_LOTS.delivery.z)>5){notice('Visit the delivery van at the warehouse to drive.');return;}
  systemsDriving=!systemsDriving;
- notice(systemsDriving?'Driving delivery van · WASD steer · V or E to exit':'Exited the delivery van.');
+ notice(systemsDriving?'Driving '+(LV_GARAGE_CATALOG.find(x=>x.id===systemsState.garage.selected)?.title||'your car')+' · WASD steer · V or E to exit':'Exited your vehicle.');
 }
 function systemsNearby(player){
- if(systemsDriving)return {id:'vehicle',system:true,label:'Exit delivery van'};
- if(systemsState.upgrades.delivery&&Math.hypot(player.x-CITY_UPGRADE_LOTS.delivery.x,player.z-CITY_UPGRADE_LOTS.delivery.z)<3)return {id:'vehicle',system:true,label:'Drive your delivery van'};
+ if(systemsDriving)return {id:'vehicle',system:true,label:'Exit your car'};
+ if(systemsState.upgrades.delivery&&Math.hypot(player.x-CITY_UPGRADE_LOTS.delivery.x,player.z-CITY_UPGRADE_LOTS.delivery.z)<3)return {id:'vehicle',system:true,label:'Drive your vehicle'};
  for(const t of LV_TREASURES){
   if(cityCompleted()>=t.unlock&&!systemsState.treasures.includes(t.id)&&Math.hypot(player.x-t.x,player.z-t.z)<2.8)
     return {id:'treasure-'+t.id,system:true,label:'Discover hidden treasure'};
@@ -379,6 +444,8 @@ function systemsInit(){
   if(action==='decor')systemsDecor(id);
   if(action==='npc-answer')systemsAnswerNpc(id,b.dataset.answer);
   if(action==='contract')systemsContract(id);
+  if(action==='garage-car')systemsGarageChoose(id);
+  if(action==='garage-paint')systemsGaragePaint(id);
  });
  window.addEventListener('keydown',event=>{
   if(event.repeat||event.target.matches?.('input,textarea,select')||dialog.open||terminal.open)return;
