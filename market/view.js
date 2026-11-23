@@ -230,6 +230,7 @@ function createOfficeView() {
   exterior.add(stand);
   const cityRenderer=createCityWorld({T,exterior,box,piece,renderer});
   const lumenRenderer=createLumenWorld({T,exterior,box,piece,renderer});
+  const campusRenderer=createCampusWorld({T,exterior,box,piece,renderer});
 
   const coatColors = { rose: '#af6760', amber: '#bc8752', blue: '#4d7982' };
   function makeVisitor(tint) {
@@ -310,6 +311,7 @@ function createOfficeView() {
     kits.forEach((kit,i)=>{kit.visible=i<stock;});
     cityRenderer.update(current.city,now);
     lumenRenderer.update(now,current);
+    campusRenderer.update(now);
     // Slow day-and-night lighting, independent of random events.
     const sunPhase=Math.max(.05,(Math.sin(now/115000)+1)/2);
     sun.intensity=.42+1.55*sunPhase;
