@@ -13,10 +13,10 @@ def inside_script(code):
 
 def build():
     assets = {
-        '/* GAME STYLES */': source('style.css') + '\n' + source('walking.css'),
+        '/* GAME STYLES */': source('style.css') + '\n' + source('walking.css') + '\n' + source('city.css'),
         '/* GAME ENGINE */': inside_script('/*\n' + source('vendor/THREE-LICENSE.txt') + '*/\n' + source('vendor/three.js')),
         '/* GAME CODE */': inside_script(
-            '\n\n'.join(source(name) for name in ('story.js', 'rules.js', 'walk.js', 'software.js', 'view.js', 'reports.js', 'app.js'))
+            '\n\n'.join(source(name) for name in ('story.js', 'rules.js', 'walk.js', 'city.js', 'city-world.js', 'software.js', 'view.js', 'reports.js', 'app.js'))
         ),
     }
     page = source('template.html')
