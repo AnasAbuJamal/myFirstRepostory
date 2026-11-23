@@ -128,8 +128,8 @@ async function main(){
   await page.screenshot({path:'lumenvale-school-library.png'});
   // In-game closeups: inspect the new classroom and library furniture in place.
   for(const view of [
-   {file:'lumenvale-classroom-table-in-game.png',x:-8.25,z:-4.05,yaw:.9,pitch:-.17},
-   {file:'lumenvale-library-table-in-game.png',x:-8.30,z:8.70,yaw:1.06,pitch:-.16}
+   {file:'lumenvale-classroom-table-in-game.png',x:-7.25,z:-4.10,yaw:.98,pitch:-.17},
+   {file:'lumenvale-library-table-in-game.png',x:-7.30,z:9.05,yaw:1.04,pitch:-.16}
   ]){
    const reachable=await page.evaluate(v=>{
     const clear=canWalk(v.x,v.z,{doorOpen:false,stand:false});
