@@ -33,7 +33,7 @@ function phoneSync(){
 }
 function phoneInit(){
  const apps={property:cityPortfolio,production:()=>systemsPanel('warehouse'),garage:()=>systemsPanel('garage'),map:campusMap,mail:systemsMailBox,
-  architect:campusArchitect,library:cityBookList,school:campusSchool,pathways:pathwayHome,transcript:pathwayTranscript,careers:campusCareer,jobs:jobPanel,words:campusVocabulary,
+  architect:campusArchitect,library:cityBookList,school:pathwayHome,pathways:pathwayHome,transcript:pathwayTranscript,careers:campusCareer,jobs:jobPanel,words:campusVocabulary,
   journal:academyProfile,guide:cityGuide,fullscreen:()=>{dialog.close();cityEnterFullscreen();}};
  byId('open-phone').addEventListener('click',phoneOpen);
  byId('phone-back').addEventListener('click',phoneOpen);
