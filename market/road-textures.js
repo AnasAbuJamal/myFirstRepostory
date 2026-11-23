@@ -22,7 +22,7 @@ function addStreetSurfaceTextures({T,outside,streets,low}){
   ctx.lineWidth=.4+rnd()*.8;ctx.stroke();
  }
  const asphalt=new T.CanvasTexture(canvas);
- asphalt.wrapS=asphalt.wrapT=T.RepeatWrapping;
+ asphalt.wrapS=asphalt.wrapT=1000; // Three.js RepeatWrapping (not exported by the bundled subset).
  asphalt.colorSpace=T.SRGBColorSpace;asphalt.anisotropy=4;
  function surface(w,d,x,z,y,turn){
   const map=asphalt.clone();map.repeat.set(Math.max(1,w/9),Math.max(1,d/9));map.needsUpdate=true;
