@@ -252,6 +252,8 @@ function createCityWorld({T,exterior,box,piece,renderer}){
   const pause=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   for(const [id,entry] of buildings){
    const info=saved?.sites?.[id];
+   entry.lot.position.set(entry.site.x,0,entry.site.z);
+   entry.lot.rotation.y=(campusState.plots?.[id]?.rotation||0)*Math.PI/2;
    entry.ownedLand.visible=Boolean(info?.owned||info?.built);
    entry.landTiers.forEach((tier,i)=>tier.visible=Boolean(info?.owned && (info.landLevel||1)>=i+2));
    entry.active.visible=Boolean(info?.built);
