@@ -180,7 +180,8 @@ function createOfficeView() {
   exterior.add(officeBuilding);
   const front=-3.74;
   for(const floor of [3.23,5.54]){
-    box(officeBuilding,0,floor+.94,.13,8.6,1.88,8.22,'#dedfd2');
+    const facade=box(officeBuilding,0,floor+.94,.13,8.6,1.88,8.22,'#dedfd2');
+    facade.material=visuals.surface('plaster','#dedfd2',8.6,8.22);
     box(officeBuilding,0,floor-.11,.13,8.77,.24,8.39,'#f0eee3');
     for(const x of [-3.25,-1.62,0,1.62,3.25])for(const z of [front-.26,4.28]){
       const normal=z<0?-1:1;
@@ -197,7 +198,8 @@ function createOfficeView() {
       box(officeBuilding,x+side*.104,floor+1.24,z,.022,.51,1.05,'#98b9bd');
     }
   }
-  box(officeBuilding,0,7.52,.13,8.82,.28,8.48,'#929d96');
+  const headquartersRoof=box(officeBuilding,0,7.52,.13,8.82,.28,8.48,'#929d96');
+  headquartersRoof.material=visuals.surface('roof','#929d96',8.82,8.48);
   for(const side of [-1,1]){
     box(officeBuilding,side*4.31,7.77,.13,.18,.47,8.49,'#e9e8df');
     box(officeBuilding,0,7.77,.13+side*4.19,8.82,.47,.18,'#e9e8df');
@@ -315,9 +317,9 @@ function createOfficeView() {
   buildStand();
   stand.visible = false;
   exterior.add(stand);
-  const cityRenderer=createCityWorld({T,exterior,box,piece,renderer});
+  const cityRenderer=createCityWorld({T,exterior,box,piece,renderer,visuals});
   const lumenRenderer=createLumenWorld({T,exterior,box,piece,renderer});
-  const campusRenderer=createCampusWorld({T,exterior,box,piece,renderer});
+  const campusRenderer=createCampusWorld({T,exterior,box,piece,renderer,visuals});
   const districtRenderer=createDistrictWorld({T,scene,exterior,renderer,visuals});
   office.traverse(mesh=>{
     if(mesh.isMesh){mesh.receiveShadow=true;mesh.castShadow=mesh.position.y>.15&&mesh.position.y<2.7;}
