@@ -1,0 +1,42 @@
+/* Jobs & Research — role-focused learning and meaningful paid employment. */
+.job-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin:1.25rem 0}
+.job-stats>div{display:grid;gap:.35rem;padding:.9rem;background:#e9f0e7;border:1px solid #d0dfcf;border-radius:10px}
+.job-stats small{font-size:.76rem;color:#6a846f}.job-stats b{font-size:1.45rem;color:#345d49}
+.job-role-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin:1rem 0}
+.job-role-card{display:flex;flex-direction:column;gap:.7rem;padding:1.1rem;background:#fffefa;border-radius:12px;border:1px solid #cddbcf;min-width:0;box-shadow:0 4px 14px #243a3012}
+.job-role-card header{display:flex;gap:.8rem;align-items:center}
+.job-symbol{font-size:1.8rem;display:grid;place-items:center;width:48px;height:48px;border-radius:12px;background:#e8eee3}
+.job-role-card h3{margin:0;font:700 1.16rem/1.2 Georgia,serif;color:#2c5240}
+.job-role-card small{font-size:.74rem;color:#a17d43}
+.job-role-card p{font-size:.88rem;color:#577160;line-height:1.55;margin:0}
+.job-requirements{display:grid;gap:.28rem;margin:.2rem 0}
+.job-requirements>div{font-size:.79rem;display:flex;align-items:center;justify-content:space-between;gap:.25rem;padding:.35rem .5rem;border-radius:6px}
+.job-requirements>div.met{background:#e6f3e6;color:#31724d}
+.job-requirements>div.missing{background:#fff0de;color:#8d6144}
+.job-requirements small{font-size:.68rem;color:inherit;opacity:.77}
+.job-commands{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-top:auto}
+.job-commands .button{font-size:.78rem}
+.job-hired{color:#388051;font-weight:800;font-size:.83rem}
+.job-role-card .button:disabled{opacity:.62;cursor:default}
+.job-reading{padding:1.15rem 1.25rem;border:1px solid #d4dcca;background:#fcfaf0;border-radius:12px}
+.job-reading small{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:#749077}
+.job-reading p{font:1.13rem/1.92 Georgia,serif;color:#32463b;white-space:pre-wrap}
+.job-reading-actions{display:flex;gap:.65rem;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:1.1rem;border-top:1px solid #e1e2ce;padding-top:.8rem}
+.job-reading-actions span{font-size:.82rem;color:#708470}
+.job-quiz h3{font:700 1.21rem/1.35 Georgia,serif;color:#2d5240;margin:1.3rem 0}
+.job-progress{color:#6e876d;font-size:.83rem;font-weight:700}
+.job-quiz .city-answer{margin:.45rem 0}
+.job-research-grid{display:grid;gap:.65rem;margin:1rem 0}
+.job-research-card{padding:1rem;border:1px solid #cfded1;border-left:4px solid #7d9a86;border-radius:9px;background:#fffefa}
+.job-research-card small{font-size:.74rem;color:#778e77;font-weight:700}
+.job-research-card h3{margin:.3rem 0;font:700 1.15rem Georgia,serif;color:#2c563d}
+.job-research-card p{margin:.45rem 0;color:#59715e;line-height:1.55;font-size:.87rem}
+.job-research-card>div{display:flex;gap:.8rem;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:.65rem}
+.job-research-card>div span{color:#8d754d;font-size:.76rem;font-weight:700}
+.job-import{background:#ecf3e9;border:1px dashed #9cbda4;padding:1rem;border-radius:12px;margin:1rem 0}
+.job-import h3{margin:0 0 .6rem;color:#315b45}.job-import p{font-size:.83rem;color:#5e7961;margin:.4rem 0 1rem}
+.job-import form{display:flex;flex-wrap:wrap;gap:.5rem}.job-import form input{flex:1;min-width:130px}
+.job-import input{border:1px solid #b8cbb8;border-radius:8px;padding:.68rem;background:#fff;color:#274b39}
+.job-file-field{display:grid;gap:.3rem;margin:1.1rem 0 0;color:#365943;font-size:.83rem;font-weight:800}
+.job-file-field input{max-width:100%}
+@media(max-width:690px){.job-role-grid{grid-template-columns:1fr}.job-stats{gap:.4rem}.job-stats>div{padding:.65rem}.job-stats b{font-size:1.15rem}}
