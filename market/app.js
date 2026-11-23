@@ -83,16 +83,17 @@ function drawScene(animate = '') {
     player: terminal.open ? SEAT_POSITION : player,
     camera: terminal.open && tab === 'cameras' ? securityChannel : null,
     built: state.stand, visitor: activeVisitor, waiting: VISITORS[state.step]?.style,
-    doorOpen, stock: shopTotals(state).onShelf, animate,
+    doorOpen, stock: shopTotals(state).onShelf, city:cityState, animate,
   });
 }
 let lastInteraction = '';
 function refreshPosition() {
-  const place = inOffice(player.x,player.z) ? 'Shop office' :
+  const place = cityNearby(player)?.id==='library' ? 'Town library' :
+    cityNearby(player) ? 'City development plot' : inOffice(player.x,player.z) ? 'Shop office' :
     state.stand && Math.hypot(player.x-STAND.x,player.z-STAND.z)<4.5 ? 'Pickup stand' :
     player.z < -12 ? 'Riverside' : 'Market grounds';
   if(byId('world-location').textContent!==place)byId('world-location').textContent=place;
-  const target = nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
+  const target = cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
   const name = target?.label || '';
   if (lastInteraction !== name) {
     lastInteraction=name;
@@ -306,6 +307,7 @@ async function dictate(id, control) {
 }
 function modal(label, title, html) {
   mousePosition = null;
+  if(document.pointerLockElement)document.exitPointerLock();
   byId('overlay-label').textContent = label;
   byId('overlay-body').innerHTML = '<h2 class="title" id="overlay-title" tabindex="-1">' + title + '</h2>' + html;
   if (!dialog.open) dialog.showModal();
@@ -337,6 +339,7 @@ function showExpansion() {
 }
 function sitAtComputer() {
   stopMovement();
+  if(document.pointerLockElement)document.exitPointerLock();
   terminal.showModal();
   openTab(tab, true);
 }
@@ -345,8 +348,9 @@ function standUp() {
 }
 function interact() {
   if (terminal.open || dialog.open) return;
-  const target = nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
+  const target = cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
   if (!target) return;
+  if (target.city) return cityInteract(target);
   if (target.id === 'seat') return sitAtComputer();
   if (target.id === 'stand') {
     return modal('Market grounds','Your pickup stand','<p>Customers can collect future orders here. The shop computer shows this stand on the Pickup lot camera.</p>');
@@ -386,6 +390,7 @@ byId('show-guide').addEventListener('click', () => {
     '<p><b>Reply.</b> Write to the person in your own words. They’ll ask a follow-up if they need more information.</p>' +
     '<p><b>Meet your visitors.</b> Open the office door when a customer or supplier arrives.</p>' +
     '<p><b>Grow the shop.</b> Sit at the computer to see reports and live feeds from the entrance, pickup lot, and road. The stand changes the playable grounds.</p>' +
+    '<p><b>Build a city.</b> Walk east to the new library. Read short books to earn city coins, then build factories, hire workers, and upgrade machines. Press F for fullscreen.</p>' +
     '<p>' + (trial ? 'Practice mode is separate from your saved shop.' : 'The browser saves your shop progress and drafts as you play.') + '</p>');
 });
 const actions = {
@@ -572,7 +577,7 @@ world.addEventListener('pointerdown',event => {
 });
 world.addEventListener('pointermove',event => {
   if (event.pointerType==='mouse') {
-    if (!isWalking() || event.target.id!=='landscape') {
+    if (document.pointerLockElement || !isWalking() || event.target.id!=='landscape') {
       mousePosition = null;
       return;
     }
@@ -607,3 +612,6 @@ try {
   scene = drawIllustratedView(replacement,byId('view'));
   drawScene();
 }
+
+// Initialize the city after the original first-person office is ready.
+cityInit();
