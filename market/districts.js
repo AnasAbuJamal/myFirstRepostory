@@ -3,7 +3,7 @@ const TOWN_BOUNDS={left:-58,right:69,north:-18,south:84};
 const STREET_PLAN=[
  {name:'Market Avenue',axis:'x',at:-9.8,from:-20,to:62,width:9.2},
  {name:'Foundry Avenue',axis:'x',at:21.3,from:-50,to:62,width:10.6},
- {name:'Park Avenue',axis:'x',at:41.5,from:-50,to:62,width:10.6},
+ {name:'Park Avenue',axis:'x',at:41.5,from:-50,to:62,width:9.0},
  {name:'Orchard Street',axis:'x',at:66,from:-20,to:62,width:9.4},
  {name:'Campus Lane',axis:'z',at:-50,from:4,to:41.5,width:9},
  {name:'Mill Street',axis:'z',at:-20,from:-9.8,to:66,width:9.6},
@@ -130,19 +130,21 @@ townFurniture('bin',[[-38.45,3.4],[14.55,3.9],[-5.8,5.15],[49.35,26.65],[1.25,49
 townFurniture('planter',[[-3.4,-5.06],[.45,-5.06],[12.8,-5.08],[18.15,-5.08],[48.6,16.07]],1.30,.62);
 // Decorative parked cars removed: keep roads open for moving traffic.
 const TOWN_WALKS=[
- {x:-11.5,z:-4.37,span:1.35},{x:24.4,z:-5.08,span:1.6},
- {x:-36.5,z:5.45,span:4.1},{x:56.35,z:26.15,span:.60},
- {x:-4.45,z:46.35,span:1.5},{x:50,z:61.4,span:3.3},
+ {x:-11.5,z:-4.37,span:1.35},{x:24.4,z:-4.75,span:1.4},
+ {x:-36.5,z:5.45,span:4.1},{x:56.35,z:27.05,span:.35},
+ {x:-4.45,z:47.65,span:1.1},{x:50,z:60.4,span:2.5},
 ];
 
+// Exclude street furniture that would intrude into the newly widened road lanes.
+const TOWN_SAFE_FURNITURE=TOWN_FURNITURE.filter(f=>!atStreet(f.x,f.z,.38));
 const TOWN_RESERVED=[
  MARKET_OFFICE,...TOWN_PUBLIC_PLACES,...TOWN_HOMES,...Object.values(CITY_UPGRADE_LOTS),
- ...TOWN_DOOR_PATHS,...TOWN_FURNITURE,townRect(-6.5,54.6,19.2,17.9),
+ ...TOWN_DOOR_PATHS,...TOWN_SAFE_FURNITURE,townRect(-6.5,54.6,19.2,17.9),
  townRect(32.45,49.2,5.6,5.6),townRect(5.1,-4.12,1.0,.68),
  townRect(-4.3,-16,5.8,3.4),...TOWN_WALKS.map(p=>townRect(p.x,p.z,p.span*2+.6,.5))
 ];
 const TOWN_STREET_SOLIDS=[
- ...TOWN_FURNITURE.map(f=>f.kind==='tree'?townRect(f.x,f.z,.36,.36):f),
+ ...TOWN_SAFE_FURNITURE.map(f=>f.kind==='tree'?townRect(f.x,f.z,.36,.36):f),
  PARK_FOUNTAIN,townRect(5.1,-4.12,1.0,.68)
 ];
 function streetCurbRuns(street,side){
