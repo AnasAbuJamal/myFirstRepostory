@@ -400,11 +400,12 @@ function createOfficeView() {
     scene.fog=indoors?null:haze;
     officeFill.visible=enclosed&&!indoors;
     if(indoors){
-      skyLight.color.set('#fff1df');
-      skyLight.groundColor.set('#b2bcaa');
-      skyLight.intensity=1.54;
-      sun.color.set('#ffe4ba');
-      sun.intensity=.84;
+      const schoolInterior=districtVisit?.place?.kind==='school';
+      skyLight.color.set(schoolInterior?'#fff7ed':'#fff1df');
+      skyLight.groundColor.set(schoolInterior?'#c6c3b6':'#b2bcaa');
+      skyLight.intensity=schoolInterior?1.88:1.54;
+      sun.color.set(schoolInterior?'#fff3df':'#ffe4ba');
+      sun.intensity=schoolInterior?1.03:.84;
       scene.background.set('#879990');
     }else{
       skyLight.color.set('#e8f2ff');
