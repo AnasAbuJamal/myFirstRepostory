@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "books": [
+    {
+      "id": "the-careful-workshop",
+      "title": "The Careful Workshop",
+      "genre": "Business",
+      "readingLevel": "Elementary",
+      "pages": [
+        "The town opened a new workshop beside the central road. Its owner, Lina, received three orders from the local school. She counted the wooden boards, checked the prices, and planned delivery for Friday. Before accepting the orders, Lina asked her workers whether the materials were ready.",
+        "One worker noticed that the workshop only had enough boards for two orders. Lina decided to purchase additional boards from the lumber mill. She updated the customer, explained the new schedule, and checked that the total price still covered wages and materials."
+      ],
+      "wordCount": 88,
+      "questionCount": 3,
+      "reward": 65,
+      "questions": [
+        {
+          "prompt": "Why did Lina purchase additional wooden boards?",
+          "choices": [
+            "To decorate the office",
+            "There were not enough boards for every order",
+            "To stop working"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "prompt": "When did Lina originally plan to deliver the school orders?",
+          "choices": [
+            "Friday",
+            "Monday",
+            "Sunday"
+          ],
+          "correctIndex": 0
+        },
+        {
+          "prompt": "Which costs did Lina consider when checking the price?",
+          "choices": [
+            "Wages and materials",
+            "Only decorations",
+            "Only the rent"
+          ],
+          "correctIndex": 0
+        }
+      ]
+    },
+    {
+      "id": "how-electric-motors-work",
+      "title": "How Electric Motors Help Factories",
+      "genre": "Science",
+      "readingLevel": "Middle School",
+      "pages": [
+        "Electric motors power machines in many factories. The motor turns electrical energy into movement that can drive a conveyor belt or operate a saw. Engineers inspect equipment regularly so workers can use the machines safely.",
+        "Efficient factories do not leave every machine running when the building is empty. Turning off unused equipment can reduce energy costs. Routine maintenance also helps machines work reliably and prevents unnecessary waste."
+      ],
+      "wordCount": 67,
+      "questionCount": 3,
+      "reward": 75
+    }
+  ]
+}
