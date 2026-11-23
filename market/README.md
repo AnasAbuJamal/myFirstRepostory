@@ -234,3 +234,18 @@ School starts with zero preinstalled courses, chapters, exams or career paths. T
 The separate public library building was removed. LumenVale School includes the reading library, book stations, and multiple neutral classrooms awaiting teacher content. No subject-specific labs or careers are added. Existing legacy progression code remains for compatibility but does not appear in the primary school navigation.
 
 Deployers must apply `teacher/schema.sql` to the connected database to create `teacher_course_packs`. Published JSON shares curriculum content only; student grade sync with the authenticated teacher database is still future work. The Chromium QA captures exterior and interior screenshots for manual review.
+
+
+## Reusable real-geometry classroom and library tables
+
+The custom `market/school-tables.js` module creates two original walnut-and-steel
+3D assets with CanvasTexture wood grain, painted metal, protective feet,
+reinforcement plates, and metal bolt hardware. The classroom version has open
+stretcher braces; the library version has a full lower wooden shelf and extra
+wood joinery details. InstancedMesh groups preserve draw-call performance.
+
+School interiors place four classroom tables and two library tables, replacing
+only the old generic extra worktables in the same position and collider footprint.
+No new curriculum, labs, or factories are added. Balanced mode skips tiny
+hardware and keeps both models playable. Chromium tests inspect the real geometry,
+and capture both model closeups in the school.

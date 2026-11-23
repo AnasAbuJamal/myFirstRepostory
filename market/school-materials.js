@@ -145,7 +145,7 @@ function applySchoolInteriorTextures({T,group,place,low=false}){
    panel('perimeter finish '+tier,'plaster',side*12.855,2.37,center,depth-.20,4.5,0,PI/2);
    panel('teaching board '+tier,'board',x,2.57,r.front+.454,4.87,1.34);
    panel('built-in shelf '+tier,'shelf',side*11.32,1.20,center+.615,1.00,1.13);
-   panel('writing table '+tier,'wood',side*10,.838,center+1.42,2.39,1.18,-PI/2);
+   // Each new 3D table has its own walnut PBR grain; no flat overlay.
    panel('cork pinboard '+tier,'cork',x+1.52,2.62,r.front+.58,1.15,.62);
    // Independent lamp fascia and tactile floor border give useful scale cues.
    panel('doorheader '+tier,'metal',side*4.55,3.84,r.door,1.61,.30,0,0,'#f4f1e7');

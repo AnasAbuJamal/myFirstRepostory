@@ -55,6 +55,7 @@ jobs:
           node --check market/lms.js
           node --check market/sky-textures.js
           node --check market/school-materials.js
+          node --check market/school-tables.js
           node --check market/save-manager.js
           node --check market/phone.js
           node --test market/test-academics.cjs market/test-districts.cjs market/test-school.cjs market/test-lms.cjs market/test-game-polish.cjs
@@ -78,6 +79,8 @@ jobs:
             lumenvale-school-smoke.png
             lumenvale-school-exterior.png
             lumenvale-school-library.png
+            lumenvale-classroom-table-in-game.png
+            lumenvale-library-table-in-game.png
           if-no-files-found: ignore
       - name: Synchronize tested build on design branch
         if: (github.ref_name == 'gamedev-skills-polish-2026-11-23' || github.ref_name == 'market-office-first-person') && success()

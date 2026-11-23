@@ -61,6 +61,22 @@ async function main(){
    return {entered:districtVisit?.place?.id,position:{x:player.x,z:player.z}};
   });
   assert.equal(entering.entered,'school','School entry was not accessible');
+  // Create both furniture models as genuine Three.js meshes and inspect parts.
+  const detailedTables=await page.evaluate(()=>{
+   const T=PineboundThree;
+   return ['classroom','library'].map(variant=>{
+    const model=createSchoolFurnitureTable(T,variant,false),meta=model.userData.tableAsset;
+    return {...meta,allInstanced:model.children.every(o=>o.isInstancedMesh),
+     texturedGroups:model.children.filter(o=>!!o.material.map).length};
+   });
+  });
+  assert.equal(detailedTables.length,2);
+  for(const table of detailedTables){
+   assert.ok(table.parts>=45,'Furniture too simplistic: '+JSON.stringify(table));
+   assert.ok(table.allInstanced&&table.texturedGroups>=2,'Table PBR material or mesh missing');
+   assert.ok(table.width<=2.50&&table.depth<=1.30&&table.height<.92,'Table exceeds reserved school footprint');
+  }
+  console.log('PASS: reusable detailed table geometry and wood textures',JSON.stringify(detailedTables));
   const hall=await page.evaluate(()=>{
    const settings={doorOpen:false,stand:false};
    // Movement must be allowed along the entire center aisle, including the
@@ -100,6 +116,19 @@ async function main(){
   assert.equal(libraryView.inside,'school');
   assert.ok(libraryView.canEnter,'The school library approach is blocked');
   await page.screenshot({path:'lumenvale-school-library.png'});
+  // In-game closeups: inspect the new classroom and library furniture in place.
+  for(const view of [
+   {file:'lumenvale-classroom-table-in-game.png',x:-8.25,z:-4.05,yaw:.9,pitch:-.17},
+   {file:'lumenvale-library-table-in-game.png',x:-8.30,z:8.70,yaw:1.06,pitch:-.16}
+  ]){
+   const reachable=await page.evaluate(v=>{
+    const clear=canWalk(v.x,v.z,{doorOpen:false,stand:false});
+    player={...player,x:v.x,z:v.z,yaw:v.yaw,pitch:v.pitch};
+    refreshPosition();drawScene();return clear;
+   },view);
+   assert.ok(reachable,'Furniture camera intersects a collider: '+view.file);
+   await page.screenshot({path:view.file});
+  }
   console.log('School keyboard navigation:',previous.toFixed(2),'->',moved.toFixed(2));
 
   await page.evaluate(()=>window.pathwayHome());

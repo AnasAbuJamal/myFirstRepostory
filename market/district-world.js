@@ -333,7 +333,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    entryLabel(g,'Library desk',0,-4.56);
    entryLabel(g,'My Words',-6,1.63,2.9);
   }else if(kind==='school'){
-   decorateSchoolInterior(T,k,g,sign,place);
+   decorateSchoolInterior(T,k,g,sign,place,renderer.isSoftware||renderer.lvBalanced);
    applySchoolInteriorTextures({T,group:g,place,low:renderer.isSoftware||renderer.lvBalanced});
   }else if(kind==='hall'){
    table(k,0,-4.9,7.1,1.64,'#7d6851');

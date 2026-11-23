@@ -47,3 +47,15 @@ test('renderer and build reference the school modules and asphalt',()=>{
  assert.match(build,/road-textures\.js/);
  assert.match(build,/school-activities\.json/);
 });
+
+test('school table models are bundled and replace only six generic worktables',()=>{
+ const build=fs.readFileSync(path.join(__dirname,'build.py'),'utf8');
+ const school=fs.readFileSync(path.join(__dirname,'school-world.js'),'utf8');
+ const furniture=fs.readFileSync(path.join(__dirname,'school-tables.js'),'utf8');
+ assert.match(build,/school-tables\.js/);
+ assert.match(school,/createSchoolFurnitureTable\(T,tier===2\?'library':'classroom',low\)/);
+ assert.doesNotMatch(school,/k\.box\(side\*10\.0,\.77,center\+1\.42,2\.42/);
+ assert.match(furniture,/new T\.InstancedMesh/);
+ assert.match(furniture,/new T\.CanvasTexture/);
+ assert.match(furniture,/new T\.MeshStandardMaterial/);
+});

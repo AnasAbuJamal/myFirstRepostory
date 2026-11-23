@@ -61,7 +61,7 @@ function decorateSchoolExterior(T,place,kit,sign,outside){
  k.flush(g);
  applySchoolExteriorTextures({T,group:g,place,low:false});
 }
-function decorateSchoolInterior(T,k,g,sign,place){
+function decorateSchoolInterior(T,k,g,sign,place,low=false){
  const wood='#a88762';
  // Central clear route from entry to information; side rooms never block it.
  k.box(0,.048,-.15,6.52,.022,19.6,'#e1e4db');
@@ -159,10 +159,14 @@ function decorateSchoolInterior(T,k,g,sign,place){
     for(const d of [-.40,-.14,.15,.40])
      k.box(side*11.32,level+.15,center+d,.45,.24,.08,tier===2?'#a9927a':'#7c9b9a');
    }
-   // Worktable & two chairs in each subject room, offset from interactive station.
-   k.box(side*10.0,.77,center+1.42,2.42,.12,1.22,'#aa8968');
-   for(const dx of [-.97,.97])for(const dz of [-.46,.46])
-    k.box(side*10.0+dx,.39,center+1.42+dz,.10,.75,.12,'#556b60');
+   // Four original classroom models and two premium library models replace
+   // the old flat slab-and-legs placeholders; preserve collision positions.
+   const tableModel=createSchoolFurnitureTable(T,tier===2?'library':'classroom',low);
+   tableModel.position.set(side*10.0,0,center+1.42);
+   g.add(tableModel);
+   if(!g.userData.schoolFurniture)g.userData.schoolFurniture=[];
+   g.userData.schoolFurniture.push(tableModel);
+   // Existing chairs keep their positions and safe walking clearances.
    for(const dz of [-1.05,1.07]){
     k.box(side*10,.48,center+1.42+dz,1.07,.12,.62,'#6b8980');
     k.box(side*10,.93,center+1.42+dz+.25,.99,.89,.09,'#698379');
