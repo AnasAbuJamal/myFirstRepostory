@@ -354,8 +354,9 @@ async function pathwayRedeemRecitation(code,studentCode){
   if(!response.ok)throw Error(result?.error||'Unable to verify recitation.');
   const id=result?.courseId;
   if(!['QUR-M1','QUR-H1'].includes(id)||result?.verified!==true)throw Error('Invalid verification response.');
-  if(pathwayState.recitations[id]?.complete&&result.courseComplete){notice('This course is already verified in your game.');return;}
-  pathwayState.recitations[id]={verified:true,complete:Boolean(result.courseComplete),verifiedAt:new Date().toISOString()};
+  const previouslyCompleted=Boolean(pathwayState.recitations[id]?.complete);
+  pathwayState.recitations[id]={verified:true,complete:previouslyCompleted||Boolean(result.courseComplete),
+   verifiedAt:new Date().toISOString()};
   pathwaySave();
   const coins=Math.max(0,Math.min(100,Number(result.coins)||0));
   if(coins)cityEarn(coins,8);
