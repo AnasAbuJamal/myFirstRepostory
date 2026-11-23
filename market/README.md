@@ -202,3 +202,10 @@ The vehicle model tests are at `market/test-vehicles.cjs` (run `node --test mark
 **Road changes:** Streets now range from 9.0 to 10.6 city units wide, compared with the old ~7–8. Decorative parked cars and their collision obstacles have been removed. The parking-bay scenery has been removed too. Wide streets share the collision/map layout, and obstructing street furniture is filtered from the rendered sidewalks. The player's usable garage car can still be found at the warehouse after buying the garage unlock.
 
 Real-world job accreditation and paid employment are **not** granted by the game. The game simulates qualifications and work as a learning activity. Student scores are local browser progress, not secure school records.
+
+
+### Walkable Research Laboratory
+
+Once the city owner purchases **Research Laboratory** under City Upgrades, the building becomes enterable from its front door. The lab interior now has study desks, reference shelves and equipment displays. Approach the research desk to open the student Research Library or use the careers desk to view paid job qualifications. The lab is an optional immersive workplace; students can still study from the Career Center if they have not purchased the building.
+
+The Research Scientist job checks **Science ≥67%, English ≥67%, and GPA ≥2.5** before hiring. This is stricter than simply selecting the Researcher career interest. Teacher-published research projects provide one-time rewards after the student has read the text and answered all questions. Other jobs have a three-minute rest period between shifts.
