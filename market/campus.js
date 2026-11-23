@@ -126,7 +126,8 @@ function campusSchool(){
  '<div class="wave-school-stats"><div><small>Current GPA</small><b>'+(grade?grade.gpa.toFixed(2):"—")+'</b></div>'+
  '<div><small>Graded courses</small><b>'+(grade?.classes||0)+'/4</b></div>'+
  '<div><small>Learning XP</small><b>'+cityState.xp+'</b></div></div>'+
- '<div class="wave-course-grid">'+cards+'</div>'+
+ '<div class="city-actions"><button type="button" class="button primary" data-pathways="home">Academic Pathways</button><button type="button" class="button" data-pathways="transcript">Practice Transcript</button><button type="button" class="button" data-pathways="quran">Qur’an Memorization</button></div>'+ 
+  '<div class="wave-course-grid">'+cards+'</div>'+
  '<p class="city-sub">Classes and grades are part of the game. These are not accredited school credits or real academic records.</p>');
 }
 function campusClass(id){
