@@ -18,14 +18,12 @@ function make(){
   preamble+'\n'+engine+'\nreturn {state:lmsState,validate:lmsValidateCourse,import:lmsImportObject,home:lmsHome,course:lmsCourse,lesson:lmsLesson,teacher:lmsTeacher,academic:lmsAcademicPack,examStart:lmsExamStart,examAnswer:lmsExamAnswer,panels:()=>record.last};');
  return fn(demo,catalog,saved,events,notices,record);
 }
-test('seeded courses contain lessons, exams, assignments and announcements',()=>{
+test('school begins with no courses, chapters, careers or exams',()=>{
  const game=make();
- assert.equal(Object.keys(game.state.courses).length,2);
- assert.equal(game.state.courses['BIO-M1'].modules.length,2);
- assert.equal(game.state.courses['ENG-M1'].assignments.length,1);
+ assert.equal(Object.keys(game.state.courses).length,0);
+ assert.deepEqual(Array.from(game.state.learners.student.enrolled),[]);
  game.home();
- assert.match(game.panels()[2],/Biology Foundations/);
- assert.match(game.panels()[2],/My Learning Dashboard/);
+ assert.match(game.panels()[2],/No classes have been added yet/);
  game.teacher();
  assert.match(game.panels()[2],/Local teacher preview/);
 });
@@ -44,6 +42,8 @@ test('JSON schema rejects invalid questions and duplicate modules atomically',()
 });
 test('study a lesson, pass a timed exam and retain local practice score',()=>{
  const game=make(),id='BIO-M1',mid='cell-structures';
+ game.import(demo.courses[0]);
+ game.state.learners.student.enrolled.push(id);
  game.lesson(id,mid);
  assert.match(game.panels()[2],/cell membrane/i);
  game.examStart(id,mid);
@@ -55,5 +55,6 @@ test('study a lesson, pass a timed exam and retain local practice score',()=>{
 });
 test('academic JSON export route preserves the existing verified teacher format',()=>{
  const game=make();
+ game.import(demo.courses[0]);
  assert.equal(game.academic(game.state.courses['BIO-M1']).validated,true);
 });

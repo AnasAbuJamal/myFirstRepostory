@@ -31,8 +31,8 @@ jobs:
            print('Outdated dist/index.html: difference at byte',i)
            print('Generated:',repr(generated[max(0,i-50):i+80]))
            print('Committed:',repr(committed[max(0,i-50):i+80]))
-           if os.environ.get('GITHUB_REF_NAME') != 'gamedev-skills-polish-2026-11-23':sys.exit(1)
-           print('Feature branch will synchronize the built file after passing browser tests.')
+           if os.environ.get('GITHUB_REF_NAME') not in ('gamedev-skills-polish-2026-11-23','market-office-first-person'):sys.exit(1)
+           print('Source build will be synchronized when browser checks pass.')
           else:print('Standalone HTML exactly matches the source build')
           PY
       - name: Run course and transcript tests
@@ -61,14 +61,15 @@ jobs:
           path: |
             lumenvale-academic-smoke.png
             lumenvale-school-smoke.png
+            lumenvale-school-exterior.png
           if-no-files-found: ignore
-      - name: Synchronize tested build on feature branch
-        if: github.ref_name == 'gamedev-skills-polish-2026-11-23' && success()
+      - name: Synchronize tested build on design branch
+        if: (github.ref_name == 'gamedev-skills-polish-2026-11-23' || github.ref_name == 'market-office-first-person') && success()
         run: |
           git config user.name "LumenVale CI"
           git config user.email "lumenvale-ci@users.noreply.github.com"
           git add dist/index.html
           if ! git diff --cached --quiet; then
             git commit -m "Regenerate tested standalone game from current sources [skip ci]"
-            git push origin HEAD:refs/heads/gamedev-skills-polish-2026-11-23
+            git push origin HEAD:refs/heads/${GITHUB_REF_NAME}
           fi

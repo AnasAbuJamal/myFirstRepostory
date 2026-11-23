@@ -13,7 +13,7 @@ var cityState={sites:{mill:{built:true}}}, campusState={plots:{mill:{rotation:1}
 var CITY_SITES=[{name:"Mill",title:"Mill",kind:"factory",id:"mill",x:-26,z:9}];
 var notice=()=>{},stopMovement=()=>{},refreshPosition=()=>{},drawScene=()=>{};
 var action=null,cityBookList=()=>action="library", campusSchool=()=>action="practice", pathwayHome=()=>action="school";
-var lmsHome=()=>action="learning",jobPanel=()=>action="careers",pathwayQuran=()=>action="quran",schoolQuizPanel=()=>action="quiz",schoolGuide=()=>action="guide";
+var lmsHome=()=>action="learning",lmsImportPanel=()=>action="import",campusVocabulary=()=>action="words",jobPanel=()=>action="careers",pathwayQuran=()=>action="quran",schoolQuizPanel=()=>action="quiz",schoolGuide=()=>action="guide";
 var campusFactoryMachine=()=>action="factory", systemsPanel=tab=>action=tab;
 `,sandbox);
  return code=>vm.runInContext(code,sandbox);
@@ -21,7 +21,7 @@ var campusFactoryMachine=()=>action="factory", systemsPanel=tab=>action=tab;
 test('public buildings have reachable doors, separate floor plans and collision',()=>{
  const run=world();
  const result=run('TOWN_PUBLIC_PLACES.map(place=>{const e=townEntrance(place);return [districtWalk(e.x,e.z),districtNearby(e)?.place.id===place.id,!districtWalk(place.x,place.z)]})');
- assert.equal(result.length,8);
+ assert.equal(result.length,7);
  assert.ok(result.every(row=>row.every(Boolean)));
 });
 test('each door loads a walkable room and an exit restores the same doorway',()=>{
@@ -44,9 +44,9 @@ test('school, library and relocated factory interiors invoke existing systems',(
  districtInteract(districtNearby(school.desks[0]));
  const schoolAction=action;
  districtInteract({key:'exit'});
- const library=TOWN_PLACES.find(x=>x.id==='library');
+ const library=TOWN_PLACES.find(x=>x.id==='school');
  districtInteract(districtNearby(townEntrance(library)));
- districtInteract(districtNearby(library.desks[0]));
+ districtInteract(districtNearby(library.desks.find(d=>d.key==='browse')));
  const libraryAction=action;
  districtInteract({key:'exit'});
  const rotated=factoryEntrance(CITY_SITES[0],1);
@@ -72,5 +72,5 @@ test('every school workstation is on walkable floor and invokes its own activity
   })
  `);
  assert.equal(JSON.stringify(result.map(row=>row[0]&&row[1])),JSON.stringify(Array(7).fill(true)));
- assert.equal(JSON.stringify(result.map(row=>row[2])),JSON.stringify(['learning','careers','quran','quiz','library','learning','learning']));
+ assert.equal(JSON.stringify(result.map(row=>row[2])),JSON.stringify(['learning','learning','import','learning','library','words','learning']));
 });

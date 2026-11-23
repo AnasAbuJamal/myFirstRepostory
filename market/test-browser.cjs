@@ -18,10 +18,11 @@ async function main(){
    hasEngine:typeof window.phoneOpen==='function',
    renderer:document.querySelector('#view')?.dataset.renderer||'webgl',
    catalogCount:LV_DEFAULT_ACADEMICS.courses.length,
+   installedClasses:Object.keys(lmsState.courses).length,
    initialPosition:{x:player.x,z:player.z}
   }));
   assert.ok(startup.hasCanvas&&startup.hasPhone&&startup.hasEngine,'3D view or UI failed');
-  assert.equal(startup.catalogCount,20,'Catalog not embedded');
+  assert.equal(startup.installedClasses,0,'A fresh school must have no installed classes');
   console.log('Startup renderer:',startup.renderer,'warnings:',warnings.join(' | '));
   assert.notEqual(startup.renderer,'illustrated','3D scene crashed into flat illustrated fallback');
   console.log('Renderer:',startup.renderer,'at',startup.initialPosition);
@@ -46,6 +47,9 @@ async function main(){
   }
   console.log('PASS: textured sky and '+textures.surfaces+' school surface overlays');
 
+  // Capture the school's street elevation before entering.
+  await page.evaluate(()=>{player={...player,x:-37,z:6.7,yaw:0,pitch:-.09};refreshPosition();drawScene();});
+  await page.screenshot({path:'lumenvale-school-exterior.png'});
   // Walk into the school using the actual enter interaction.
   const entering=await page.evaluate(()=>{
    player={...player,x:-37,z:1.78,yaw:0,pitch:0};
@@ -99,6 +103,9 @@ async function main(){
   // Canvas-style local learning portal: course navigation, lessons, exams,
   // assignment submission and manual teacher review all run in the browser.
   await page.evaluate(()=>lmsHome());
+  assert.match(await page.locator('#overlay').innerText(),/No classes have been added yet/);
+  // Install samples only in this explicit regression test, not during gameplay.
+  await page.evaluate(()=>{lmsImportObject(LV_LMS_DEMO);lmsLearner().enrolled.push('BIO-M1');lmsSave();lmsHome();});
   assert.match(await page.locator('#overlay').innerText(),/My Learning Dashboard/);
   await page.locator('#overlay [data-lms="course"][data-id="BIO-M1"]').first().click();
   assert.match(await page.locator('#overlay').innerText(),/Cell Structure/);
