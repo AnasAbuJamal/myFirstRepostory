@@ -125,6 +125,23 @@ async function main(){
   await page.evaluate(()=>lmsCourse('BIO-M1','grades'));
   assert.match(await page.locator('#overlay').innerText(),/18 \/ 20/);
   console.log('PASS: Learning Hub enrollment, lesson, timed exam, assignment, teacher grading, gradebook');
+
+  // New City Phone hierarchy, local save backup and teacher entry route.
+  await page.evaluate(()=>phoneOpen('learning'));
+  assert.match(await page.locator('#overlay').innerText(),/YOUR NEXT STEP/);
+  assert.equal(await page.locator('#overlay [data-phone-category]').count(),4);
+  await page.locator('#overlay [data-phone-category="city"]').click();
+  assert.equal(await page.locator('#overlay [data-phone-category="city"]').getAttribute('aria-pressed'),'true');
+  await page.locator('#overlay [data-phone-category="tools"]').click();
+  assert.equal(await page.locator('#overlay [data-phone-app="teacher-portal"]').count(),1);
+  await page.locator('#overlay [data-phone-app="backup"]').click();
+  assert.match(await page.locator('#overlay').innerText(),/Save and Restore Progress/);
+  const backup=await page.evaluate(()=>gameBackupSnapshot());
+  assert.equal(backup.kind,'lumenvale.local-save-backup');
+  assert.ok(Object.keys(backup.records).length>0,'Current game data missing from backup');
+  await page.locator('#overlay [data-phone-backup-back]').click();
+  assert.equal(await page.locator('#overlay [data-phone-category="tools"]').getAttribute('aria-pressed'),'true');
+  console.log('PASS: categorized City Phone, local backups, student and teacher navigation');
   await page.screenshot({path:'lumenvale-academic-smoke.png'});
   assert.deepEqual(errors,[],'Unexpected browser JavaScript errors');
   assert.ok(!warnings.some(m=>m.includes('Using the illustrated office view')),
