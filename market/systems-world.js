@@ -1,5 +1,5 @@
 /* Optional decorative district that responds to city services and the economy. */
-function createLumenWorld({T,exterior,box,piece,renderer}){
+function createLumenWorld({T,exterior,box,piece,renderer,visuals}){
  const root=new T.Group();exterior.add(root);
  const low=Boolean(renderer?.isSoftware),palette=new Map();
  const colors={wood:'#986f4f',gold:'#e1bd76',stone:'#c9c1ae',glass:'#9cc8c7',road:'#718276'};
@@ -8,6 +8,11 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
   return palette.get(color);
  }
  function b(g,x,y,z,w,h,d,c){return box(g,x,y,z,w,h,d,c);}
+ function surfaced(g,kind,x,y,z,w,h,d,color){
+  const mesh=b(g,x,y,z,w,h,d,color);
+  if(visuals?.enabled)mesh.material=visuals.surface(kind,color,w,d);
+  return mesh;
+ }
  function sphere(g,x,y,z,r,c){
   const mesh=new T.Mesh(new T.IcosahedronGeometry(r,low?0:1),paint(c));mesh.position.set(x,y,z);g.add(mesh);return mesh;
  }
@@ -26,8 +31,8 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
   mesh.position.set(x,y,z-.06);g.add(mesh);
  }
  function house(g,x,z,w,h,d,c){
-  b(g,x,h/2,z,w,h,d,c);
-  b(g,x,h+.1,z,w+.4,.26,d+.4,'#56796c');
+  surfaced(g,'plaster',x,h/2,z,w,h,d,c);
+  surfaced(g,'roof',x,h+.1,z,w+.4,.26,d+.4,'#56796c');
   b(g,x-.85,h*.54,z-d/2-.05,.75,.8,.06,colors.glass);
   b(g,x+.78,h*.40,z-d/2-.05,.8,1.55,.06,'#806149');
  }
@@ -132,7 +137,7 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
   sphere(flowers,x,.74,-2.78,.32,x<0?'#f1b4ac':'#e2d17f');
  }home.add(flowers);homeDecor.set('flowers',flowers);
  const patio=new T.Group();
- b(patio,0,.16,-3.9,3.7,.26,2.9,'#b59a7b');
+ surfaced(patio,'stone',0,.16,-3.9,3.7,.26,2.9,'#b59a7b');
  b(patio,-1.3,.7,-3.9,.23,1.1,.90,'#7e624b');
  b(patio,1.3,.7,-3.9,.23,1.1,.9,'#7e624b');
  b(patio,0,.82,-3.9,2.2,.16,1.25,'#9d8263');
