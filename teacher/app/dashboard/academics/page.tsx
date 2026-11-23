@@ -13,7 +13,7 @@ export default async function Academics(){
  WHERE c.teacher_user_id=${user.id} ORDER BY c.title,e.display_name LIMIT 250`;
  const reviews=await sql`SELECT r.id,r.course_id,r.surah,r.verses,r.accuracy,r.tajweed,r.fluency,
  r.approved,r.course_complete,r.reward_coins,r.redeem_code,r.redeemed_at,r.created_at,
- e.display_name
+ e.display_name,e.student_code
  FROM quran_recitation_reviews r JOIN class_enrollments e ON e.id=r.enrollment_id
  WHERE r.teacher_user_id=${user.id} ORDER BY r.created_at DESC LIMIT 75`;
  return <main className="academic-teacher-page">
@@ -74,11 +74,11 @@ export default async function Academics(){
    </section>
    <section className="panel wide">
     <div className="section-head"><h2>Recitation records and reward codes</h2><span>{reviews.length} reviews</span></div>
-    <p>Approved students receive an unpredictable, one-time code. Share it privately with the matching student. The game redeems it on the teacher server before awarding coins. A code cannot be reused.</p>
+    <p>Approved students receive an unpredictable, one-time code. Share it privately with the matching student along with their classroom code. The game redeems it on the teacher server before awarding coins. A code cannot be reused.</p>
     <div className="records">{reviews.map(r=><div className="academic-published" key={String(r.id)}>
      <div><strong>{r.display_name} · {r.surah} ({r.verses})</strong>
       <small>{r.course_id} · Accuracy {r.accuracy}% · Tajweed {r.tajweed}% · Fluency {r.fluency}%</small>
-      <p>{r.approved?'✓ Approved':'Not approved'} · {r.course_complete?'Course complete':'Course still in progress'} · {r.reward_coins} coins</p>
+      <p>Private classroom code: <code>{String(r.student_code)}</code></p><p>{r.approved?'✓ Approved':'Not approved'} · {r.course_complete?'Course complete':'Course still in progress'} · {r.reward_coins} coins</p>
       {r.approved&&<p>{r.redeemed_at?'Redeemed':'Private one-time code'}: <code>{r.redeemed_at?'Used':String(r.redeem_code)}</code></p>}
      </div>
     </div>)}{!reviews.length&&<p className="empty">No recitations assessed yet.</p>}</div>
