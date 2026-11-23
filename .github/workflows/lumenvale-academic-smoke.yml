@@ -1,0 +1,37 @@
+name: LumenVale Academic Gameplay Smoke Test
+on:
+  push:
+    branches:
+      - market-office-first-person
+  workflow_dispatch:
+
+jobs:
+  academic-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build single-file game
+        run: python3 market/build.py --output dist/index.html
+      - name: Run course and transcript tests
+        run: node --test market/test-academics.cjs
+      - name: Install browser for gameplay test
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Launch local game
+        run: |
+          python3 -m http.server 8765 --directory dist > /tmp/lumenvale-server.log 2>&1 &
+          sleep 3
+      - name: Run real Chromium smoke test
+        run: node market/test-browser.cjs
+      - name: Upload browser screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lumenvale-academic-browser
+          path: lumenvale-academic-smoke.png
+          if-no-files-found: ignore
