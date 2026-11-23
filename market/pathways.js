@@ -372,7 +372,7 @@ function pathwayImportObject(input,name='Teacher JSON'){
   if(item.kind===PATHWAYS_TYPES.cards)return pathwayValidateCards(item);
   return pathwayValidatePack(item);
  });
- const nextPacks={...pathwayState.packs},nextPlans={...pathwayState.quranPlans},reset=new Set();
+ const nextPacks=JSON.parse(JSON.stringify(pathwayState.packs)),nextPlans={...pathwayState.quranPlans},reset=new Set();
  // Base course files are processed first, even if the JSON bundle lists exam/cards before them.
  for(const item of parsed.filter(x=>x.kind===PATHWAYS_TYPES.pack)){
   if(!nextPacks[item.courseId]||JSON.stringify(nextPacks[item.courseId])!==JSON.stringify(item))
