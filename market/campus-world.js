@@ -1,9 +1,14 @@
 /* Three.js school, walkable factories, and placed town architecture. */
-function createCampusWorld({T,exterior,box,piece,renderer}){
+function createCampusWorld({T,exterior,box,piece,renderer,visuals}){
  const root=new T.Group();exterior.add(root);
  const materials=new Map(),low=Boolean(renderer.isSoftware);
  const mat=c=>{if(!materials.has(c))materials.set(c,new T.MeshLambertMaterial({color:c,flatShading:true,side:T.DoubleSide}));return materials.get(c)};
  const b=(g,x,y,z,w,h,d,c)=>box(g,x,y,z,w,h,d,c);
+ function surfaced(g,kind,x,y,z,w,h,d,color){
+  const mesh=b(g,x,y,z,w,h,d,color);
+  if(visuals?.enabled)mesh.material=visuals.surface(kind,color,w,d);
+  return mesh;
+ }
  const sphere=(g,x,y,z,r,c)=>{const m=new T.Mesh(new T.IcosahedronGeometry(r,low?0:1),mat(c));m.position.set(x,y,z);g.add(m);return m;};
  const cylinder=(g,x,y,z,r,h,c)=>{const m=new T.Mesh(new T.CylinderGeometry(r,r,h,10),mat(c));m.position.set(x,y,z);g.add(m);return m;};
  function sign(g,name,x,y,z,w=5){
@@ -22,14 +27,14 @@ function createCampusWorld({T,exterior,box,piece,renderer}){
    cylinder(g,0,.94,0,.20,1.88,"#79654d");
    sphere(g,0,2.30,0,1.18,"#5c916a");sphere(g,.5,2.05,.35,.68,"#76a477");
   }else if(data.kind==="road"){
-   b(g,0,.06,0,3.7,.12,3.7,"#88928c");b(g,0,.14,0,.10,.02,1.7,"#e3d9ba");
+   surfaced(g,"asphalt",0,.06,0,3.7,.12,3.7,"#88928c");b(g,0,.14,0,.10,.02,1.7,"#e3d9ba");
   }else if(data.kind==="park"){
-   b(g,0,.08,0,3.7,.18,3.7,"#7a9d6d");
+   surfaced(g,"grass",0,.08,0,3.7,.18,3.7,"#7a9d6d");
    for(const [x,z] of [[-1,-1],[1,1]]){cylinder(g,x,.3,z,.15,.4,"#946e57");sphere(g,x,.65,z,.42,"#80ad7b");}
    b(g,0,.35,0,1.5,.23,.48,"#b5966d");
   }else if(data.kind==="house"){
-   b(g,0,1.35,0,3.2,2.7,3.2,"#c8ad8b");
-   b(g,0,2.9,0,3.5,.4,3.5,"#667f74");
+   surfaced(g,"brick",0,1.35,0,3.2,2.7,3.2,"#c8ad8b");
+   surfaced(g,"roof",0,2.9,0,3.5,.4,3.5,"#667f74");
    b(g,-.65,1.50,-1.66,.7,.8,.09,"#8fc1bd");
    b(g,.70,1.0,-1.66,.70,1.9,.09,"#8c7658");
   }else if(data.kind==="lamp"){
