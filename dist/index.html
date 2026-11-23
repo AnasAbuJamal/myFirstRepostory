@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#21382c">
 <meta name="description" content="Start a little shop in a jungle office. Read customer emails, sell garden kits, and build your first pickup stand.">
-<title>Jungle Miner · Market Office</title>
+<title>LumenVale · City of Knowledge</title>
 <style>
 :root {
   color-scheme: light; --paper:#f6f4eb; --panel:#fffdf7; --ink:#20372c; --muted:#51665a;
@@ -340,6 +340,114 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
 .city-mouse-settings input[type=range]{width:100%;margin:.85rem 0;accent-color:#48785a;cursor:pointer}
 .city-mouse-settings label.city-toggle{display:flex;align-items:center;gap:.55rem}
 .city-mouse-settings input[type=checkbox]{height:16px;width:16px;accent-color:#437552}
+
+/* LumenVale teacher studio and reading-library redesign. */
+.lv-top-button{white-space:nowrap;font:600 .78rem system-ui,sans-serif;min-width:72px;border:1px solid #8caa9180;border-radius:7px;margin-inline:.1rem;padding:.58rem .5rem}
+.lv-top-button:hover{background:#50715b}
+.lv-library-tools{display:flex;gap:.75rem;align-items:center;margin:1rem 0;flex-wrap:wrap}
+.lv-library-tools input{border:1px solid #b9cdb9;border-radius:9px;background:#fffef6;padding:.7rem .9rem;min-width:180px;flex:1}
+.lv-genres{display:flex;gap:.4rem;overflow-x:auto;padding:.25rem 0 .8rem;scrollbar-width:thin}
+.lv-filter{white-space:nowrap;padding:.43rem .75rem;border:1px solid #d0d8c5;border-radius:40px;background:#f3f5ec;color:#416350;font-size:.83rem;font-weight:700}
+.lv-filter:hover,.lv-filter.active{background:#315b46;color:#fff6dc;border-color:#315b46}
+.lv-book-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:.9rem;margin:1rem 0}
+.lv-library-book{display:flex;gap:.85rem;min-width:0;min-height:152px;text-align:left;align-items:stretch;padding:.66rem;border:1px solid #c5d2bc;border-radius:13px;background:#fffdf4;transition:transform .18s,box-shadow .18s;box-shadow:0 3px 14px #21352c10}
+.lv-library-book:hover{transform:translateY(-3px);box-shadow:0 12px 22px #183c2b23;border-color:#719a78}
+.lv-book-cover{display:flex;flex-direction:column;align-items:center;justify-content:space-between;flex:none;width:95px;border-radius:4px 12px 12px 4px;padding:.7rem .38rem .6rem;text-align:center;color:#f4e9c9;background:linear-gradient(145deg,#304a65,#4a7b6f 70%,#789b72);border-left:9px solid #1d3747;box-shadow:4px 3px 5px #24352930;overflow:hidden}
+.lv-library-book:nth-child(3n+2) .lv-book-cover{background:linear-gradient(145deg,#8c5d4d,#b89069);border-left-color:#62443c}
+.lv-library-book:nth-child(3n) .lv-book-cover{background:linear-gradient(145deg,#665c82,#9e8f9f);border-left-color:#494261}
+.lv-book-cover small{font-size:.47rem;letter-spacing:.11em}
+.lv-book-cover strong{font:600 .92rem/1.15 Georgia,serif;overflow-wrap:anywhere}
+.lv-book-details{display:flex;flex-direction:column;align-items:flex-start;gap:.48rem;padding:.42rem 0;min-width:0;flex:1}
+.lv-book-details small{font-size:.75rem;color:#69816b}
+.lv-book-details b{font:700 1.13rem/1.2 Georgia,serif;color:#294a3a}
+.lv-book-details em{font-size:.78rem;line-height:1.4;color:#4e654f;font-style:normal}
+.lv-book-details small:last-child{color:#3f8a53;font-weight:700;margin-top:auto}
+.lv-teacher-notice{padding:.85rem 1rem;border-left:4px solid #c49756;background:#f3ebd8;color:#514e37;border-radius:8px;margin:.8rem 0 1.25rem}
+.lv-teacher-notice p{margin:.25rem 0 0;font-size:.86rem}
+.lv-form{display:grid;gap:.8rem;margin:1rem 0;padding:1rem;border:1px solid #d4dbc9;border-radius:11px;background:#f9fbf5}
+.lv-form label{display:grid;gap:.3rem;font-size:.84rem;font-weight:690;color:#455d4b}
+.lv-form input,.lv-form textarea,.lv-import input{padding:.7rem;border:1px solid #bbcbbc;border-radius:8px;background:white;max-width:100%;color:#263d31;font-family:inherit}
+.lv-form textarea{min-height:100px;resize:vertical;line-height:1.65}
+.lv-form input:focus-visible,.lv-form textarea:focus-visible,.lv-import input:focus-visible{outline:2px solid #629574;outline-offset:2px}
+.lv-import{display:flex;align-items:center;flex-wrap:wrap;gap:.75rem;padding:.9rem;background:#edf4eb;border:1px dashed #9bb89a;border-radius:10px}
+.lv-import input[type=file]{min-width:180px;flex:1}
+.lv-import label{display:flex;align-items:center;gap:.35rem;font-size:.8rem;font-weight:700}
+.lv-import input[type=number]{width:72px;min-width:0}
+.lv-teacher-books{display:grid;gap:.55rem;margin:.8rem 0 1.5rem}
+.lv-teacher-book{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.65rem;padding:.78rem .85rem;border:1px solid #cdd8c9;border-radius:9px;background:#fffdfa}
+.lv-teacher-book span:first-child{display:grid;gap:.15rem;min-width:0}
+.lv-teacher-book b{color:#315a43}
+.lv-teacher-book small{color:#6c846b;font-size:.77rem}
+.lv-teacher-book span:last-child{display:flex;gap:.4rem}
+.lv-teacher-book .button{font-size:.8rem;padding:.43rem .6rem}
+.lv-table-scroll{max-width:100%;overflow-x:auto}
+.lv-table{width:100%;border-collapse:collapse;font-size:.88rem;background:#fffdf6;margin:.8rem 0 1rem}
+.lv-table th,.lv-table td{padding:.68rem .8rem;text-align:left;border-bottom:1px solid #d8e1d3}
+.lv-table th{background:#e8eee3;color:#315943}
+.lv-progress{border-radius:9px;border:1px solid #d8e2d1;padding:.45rem .9rem;background:#f4f7ed}
+.lv-progress p{margin:.5rem 0;font-size:.88rem}
+@media(max-width:790px){.lv-top-button{font-size:.68rem;min-width:0;padding:.4rem}.lv-book-grid{grid-template-columns:1fr}.lv-book-cover{width:82px}.lv-library-book{min-height:130px}}
+@media(max-width:540px){.lv-top-button{font-size:.56rem}.lv-form,.lv-import{padding:.65rem}.lv-book-details b{font-size:.99rem}}
+@media(prefers-reduced-motion:reduce){.lv-library-book{transition:none}}
+
+.lv-genre-chart{display:grid;gap:.5rem;padding:.85rem;background:#f8faf3;border:1px solid #d8e4d6;border-radius:10px;margin:1rem 0}
+.lv-genre-chart-row{display:grid;grid-template-columns:minmax(75px,1fr) 3fr 30px;gap:.6rem;align-items:center;font-size:.83rem;color:#385d45}
+.lv-genre-chart-row>div{background:#dce6d6;border-radius:40px;overflow:hidden;height:11px}
+.lv-genre-chart-row i{display:block;background:#63967a;height:100%;border-radius:40px;min-width:2px}
+.lv-genre-chart-row b{text-align:right;font-size:.84rem}
+
+/* LumenVale business management, mailbox, and economy. */
+.lv-city-nav{display:flex;flex-wrap:wrap;gap:.38rem;align-items:center;padding:.4rem 0 .9rem;border-bottom:1px solid #d9e2d4}
+.lv-city-nav button{border:1px solid #ccd9c9;background:#f1f5ed;color:#41654e;border-radius:6px;font-size:.79rem;font-weight:700;padding:.53rem .65rem}
+.lv-city-nav button:hover,.lv-city-nav button.active{background:#315a45;border-color:#315a45;color:#fff7d8}
+.lv-city-content{padding:1rem 0 0;min-height:210px}
+.lv-city-content h3{font-size:1.03rem;margin:.95rem 0 .7rem;color:#284d3a}
+.lv-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin:1.2rem 0}
+.lv-kpis>div{background:#eaf1e9;border:1px solid #ceddcd;border-radius:10px;padding:.84rem}
+.lv-kpis small{display:block;color:#607966;font-size:.76rem}
+.lv-kpis strong{display:block;color:#325b3f;font:750 clamp(1.15rem,2vw,1.55rem)/1.35 system-ui;margin-top:.3rem}
+.lv-ledger{display:flex;justify-content:space-between;gap:.9rem;align-items:baseline;border-bottom:1px solid #dfe7da;padding:.5rem 0;font-size:.86rem;margin:0}
+.lv-ledger b{white-space:nowrap}
+.lv-ledger .positive{color:#286c46}.lv-ledger .negative{color:#ac6049}
+.lv-contract{border:1px solid #d4decf;border-radius:11px;background:#fffdf6;padding:1rem;display:grid;gap:.47rem;margin:.7rem 0}
+.lv-contract small{font-size:.78rem;color:#6e826d}
+.lv-contract h3{font-size:1.12rem;margin:0;color:#345c43}
+.lv-contract p{margin:0;font-size:.88rem;color:#536c58}
+.lv-contract>b{color:#8b6b3c;font-size:.9rem}
+.lv-contract .button{justify-self:start;margin-top:.3rem}
+.lv-contract .button:disabled{opacity:.6}
+.lv-warehouse{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.7rem;margin:.85rem 0}
+.lv-warehouse>div{display:grid;gap:.6rem;justify-items:start;padding:.9rem;background:#f5f8f1;border:1px solid #d9e2d1;border-radius:9px}
+.lv-warehouse b{color:#315841}.lv-warehouse strong{font-size:1.3rem;color:#446149}.lv-warehouse .button{font-size:.78rem}
+.lv-upgrade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.7rem;margin:.85rem 0}
+.lv-upgrade{display:grid;align-content:start;gap:.65rem;padding:1rem;border:1px solid #d5decf;border-radius:10px;background:#fffdf6}
+.lv-upgrade h3{margin:0!important;color:#355d49}
+.lv-upgrade p{margin:0;color:#617766;font-size:.84rem;line-height:1.48}
+.lv-upgrade small{font-size:.76rem;color:#9a754b}
+.lv-upgrade .button{justify-self:start;margin-top:auto}
+.lv-upgrade>b{color:#477a52}
+.lv-mailbox{display:grid;grid-template-columns:1fr;gap:.6rem;margin-top:1rem}
+.lv-mail{display:flex;align-items:center;gap:.9rem;padding:.89rem 1rem;border:1px solid #d5e0d0;background:#fffef8;border-radius:10px;text-align:left}
+.lv-mail:hover{background:#eaf1e5;border-color:#a2c2a7}
+.lv-mail-icon{font-size:1.45rem;display:grid;place-items:center;width:42px;height:42px;border-radius:9px;background:#315e47;color:#f6d7a4;flex:none}
+.lv-mail>span:last-child{display:grid;gap:.1rem}
+.lv-mail small{color:#617c66;font-size:.78rem}
+.lv-mail strong{font-size:.98rem;color:#315842}
+.lv-mail em{font-size:.7rem;color:#a26b3b;font-style:normal}
+.lv-letter{padding:1.4rem;border:1px solid #e0d8c5;background:#fffaf0;border-radius:9px;font:1.05rem/1.65 Georgia,serif}
+.lv-letter small{color:#887b62;font:700 .75rem system-ui}
+.lv-letter p{font-size:1.05rem;line-height:1.7}
+.lv-newspaper{padding:clamp(1rem,3vw,2.5rem);background:#f7f0df;border:1px solid #ded0b2;color:#403c2d;box-shadow:0 4px 18px #402d171a}
+.lv-newspaper small{display:block;text-align:center;letter-spacing:.09em;color:#7f6f55;font-size:.7rem;border-block:1px solid #c7b795;padding:.5rem}
+.lv-newspaper h2{text-align:center;font:700 clamp(1.35rem,4vw,2.45rem)/1.15 Georgia,serif;margin:1.1rem 0}
+.lv-newspaper h3{font:700 1.17rem Georgia,serif;border-bottom:1px solid #caba9a;padding-bottom:.4rem}
+.lv-newspaper p{font:1rem/1.7 Georgia,serif}
+.lv-achievement{display:flex;align-items:center;gap:.8rem;margin:.45rem 0;padding:.69rem;background:#f0f5ec;border:1px solid #d5e3d1;border-radius:9px}
+.lv-achievement span{font-size:1.2rem}.lv-achievement b{margin-left:auto;color:#5e7a55;font-size:.8rem}
+@media(max-width:620px){.lv-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.lv-city-nav button{font-size:.7rem;padding:.4rem .5rem}.lv-mail{padding:.66rem}.lv-letter{padding:1rem}}
+
+.lv-roster{display:flex;flex-wrap:wrap;gap:.38rem;margin:.55rem 0}
+.lv-roster span{padding:.38rem .53rem;background:#ecf1e8;color:#3a6550;border:1px solid #d6e1d0;border-radius:7px;font-size:.75rem}
 </style>
 </head>
 <body>
@@ -366,7 +474,7 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
   <header class="masthead walk-head">
     <div class="brand">
       <span class="brand-mark"><svg aria-hidden="true"><use href="#plant"></use></svg></span>
-      <div><h1>Jungle Miner</h1><p>Market Office</p></div>
+      <div><h1>LumenVale</h1><p>City of Knowledge</p></div>
     </div>
     <div class="top-date" id="top-date"></div>
     <button class="top-icon" id="show-guide" type="button" title="How to play" aria-label="How to play"><svg aria-hidden="true"><use href="#help-icon"></use></svg></button>
@@ -4571,7 +4679,7 @@ function canWalk(x,z,{doorOpen,stand}) {
     x > left-radius && x < right+radius && z > north-radius && z < south+radius);
 }
 function walkStep(player, forward, sideways, seconds, settings) {
-  const speed = inOffice(player.x,player.z) ? 2.8 : settings.sprint ? 7.3 : 4.15;
+  const speed = settings.driving ? 10 : inOffice(player.x,player.z) ? 2.8 : settings.sprint ? 7.3 : 4.15;
   const magnitude = Math.max(1,Math.hypot(forward,sideways));
   const scale = Math.max(0,Math.min(seconds,.045))*speed/magnitude;
   const dx = (Math.cos(player.yaw)*sideways-Math.sin(player.yaw)*forward)*scale;
@@ -4648,7 +4756,10 @@ function cityClean(input){
  if(!input || input.version!==1)return v;
  const number=(n,max)=>Number.isFinite(n)?Math.max(0,Math.min(max,Math.floor(n))):0;
  v.coins=number(input.coins,1e12);v.xp=number(input.xp,1e9);v.lifetime=number(input.lifetime,1e12);
- for(const book of CITY_BOOKS){const info=input.books?.[book.id];if(info)v.books[book.id]={count:number(info.count,1e5),last:number(info.last,1e15)};}
+ for(const [id,info] of Object.entries(input.books||{})){
+ if(/^[a-z0-9-]{1,90}$/.test(id)&&info&&typeof info==='object')
+  v.books[id]={count:number(info.count,1e5),last:number(info.last,1e15)};
+}
  for(const site of CITY_SITES){
   const info=input.sites?.[site.id];
   // Preserve existing city saves: previously constructed buildings already own their land.
@@ -4677,7 +4788,8 @@ function cityLandImproveCost(site,landLevel){return site.land*(landLevel+1)*2;}
 function cityProduction(site,record){
  if(!record?.built || site.kind!=='factory')return 0;
  const landLevel=Math.max(1,Math.min(4,record.landLevel||1));
- return Math.floor(site.rate*record.staff*record.level*(1+.25*(landLevel-1)));
+ const training=typeof systemsState!=='undefined'?Math.max(0,systemsState.training?.[site.id]||0):0;
+ return Math.floor(site.rate*record.staff*record.level*(1+.25*(landLevel-1))*(1+.06*training));
 }
 function cityIncome(){
  return CITY_SITES.reduce((total,site)=>total+cityProduction(site,cityState.sites[site.id]),0);
@@ -4722,6 +4834,7 @@ function cityPanel(label,title,body){
  modal(label,title,body);
 }
 function cityBookList(){
+ if(typeof academyLibrary==='function')return academyLibrary();
  const completed=cityCompleted();
  const cards=CITY_BOOKS.map(book=>{
   const count=cityState.books[book.id]?.count||0;
@@ -4736,7 +4849,7 @@ function cityBookList(){
 function cityOpenBook(id){
  const book=CITY_BOOKS.find(b=>b.id===id);
  if(!book)return;
- cityBookSession={id:book.id,page:0,started:performance.now(),ready:false};
+ cityBookSession={id:book.id,page:0,started:performance.now(),openedAt:performance.now(),quizIndex:0,mistakes:0,ready:false};
  cityBookPage();
 }
 function cityBookPage(){
@@ -4745,9 +4858,9 @@ function cityBookPage(){
  const page=session.page;
  const last=page===book.pages.length-1;
  const pageText=book.pages[page];
- cityPanel('Library · '+book.shelf,book.title,
+ cityPanel('Library · '+esc(book.genre||book.shelf),esc(book.title),
  '<div class="city-book-open"><div class="city-page-count">PAGE '+(page+1)+' OF '+book.pages.length+'</div>'+
- '<p>'+pageText+'</p><div class="city-book-footer"><span>Read carefully to unlock the next page.</span>'+
+ '<p>'+esc(pageText)+'</p><div class="city-book-footer"><span>Read carefully to unlock the next page.</span>'+
  '<button type="button" class="button primary" data-city-action="page">'+(last?'Answer question':'Next page')+'</button></div></div>'+
  '<div class="city-reading-meter"><span class="city-reading-fill" id="city-reading-fill"></span></div>'+
  '<p class="city-sub" id="city-reading-hint">Read for a few seconds before continuing.</p>');
@@ -4767,29 +4880,40 @@ function cityNextPage(){
 }
 function cityQuiz(error=''){
  const book=CITY_BOOKS.find(b=>b.id===cityBookSession?.id);if(!book)return;
- cityPanel('Reading challenge',book.title,
- '<div class="city-quiz"><p class="city-sub">Check what you understood.</p><h3>'+book.question+'</h3>'+
- book.answers.map((answer,i)=>'<button type="button" class="city-answer" data-city-action="answer" data-index="'+i+'">'+
- '<span>'+String.fromCharCode(65+i)+'</span>'+answer+'</button>').join('')+
- (error?'<p class="city-wrong">'+error+'</p>':'')+'</div>');
+ const questions=typeof academyQuestions==='function'?academyQuestions(book):
+  [{prompt:book.question,choices:book.answers,correctIndex:book.correct}];
+ const index=Math.max(0,cityBookSession.quizIndex||0),q=questions[index];if(!q)return;
+ cityPanel('Reading challenge',esc(book.title),
+ '<div class="city-quiz"><p class="city-sub">Question '+(index+1)+' of '+questions.length+
+ ' · '+(book.wordCount||book.pages.join(' ').split(/\s+/).length)+' words</p><h3>'+esc(q.prompt)+'</h3>'+
+ q.choices.map((answer,i)=>'<button type="button" class="city-answer" data-city-action="answer" data-index="'+i+'">'+
+ '<span>'+String.fromCharCode(65+i)+'</span>'+esc(answer)+'</button>').join('')+
+ (error?'<p class="city-wrong">'+esc(error)+'</p>':'')+'</div>');
 }
 function cityAnswer(index){
  const book=CITY_BOOKS.find(b=>b.id===cityBookSession?.id);if(!book)return;
- if(Number(index)!==book.correct){cityQuiz('Not quite. Return to the passage in your mind and try another answer.');return;}
- const old=cityState.books[book.id]||{count:0,last:0};
- const first=old.count===0;
- const now=Date.now();
- if(!first && now-old.last<120000){
+ const session=cityBookSession,qs=typeof academyQuestions==='function'?academyQuestions(book):
+  [{prompt:book.question,choices:book.answers,correctIndex:book.correct}];
+ const question=qs[session.quizIndex||0];if(!question)return;
+ if(Number(index)!==question.correctIndex){
+  session.mistakes=(session.mistakes||0)+1;
+  cityQuiz('Not quite. Return to the passage and try again.');return;
+ }
+ if((session.quizIndex||0)<qs.length-1){session.quizIndex=(session.quizIndex||0)+1;cityQuiz();return;}
+ const old=cityState.books[book.id]||{count:0,last:0},first=old.count===0,now=Date.now();
+ if(!first&&now-old.last<120000){
   cityPanel('Library','Already practiced','<p>You finished this book recently. Choose another book, or try this one again in two minutes.</p>'+
    '<button class="button primary" type="button" data-city-action="library">Back to shelf</button>');
   return;
  }
  const earned=first?book.reward:Math.max(5,Math.floor(book.reward*.12));
  cityState.books[book.id]={count:old.count+1,last:now};
+ if(typeof academyRecord==='function')academyRecord(book,session);
  cityBookSession=null;
  cityEarn(earned,first?book.xp:5);
  cityPanel('Reading complete','+'+earned+' coins!',
- '<div class="city-success-medal">★</div><p>Correct! You earned <b>'+earned+' coins</b> and learning XP.</p>'+
+ '<div class="city-success-medal">★</div><p>Correct! You finished <b>'+qs.length+
+ ' questions</b> and earned <b>'+earned+' coins</b> and learning XP.</p>'+
  '<p>You have completed <b>'+cityCompleted()+'</b> different books. Reading unlocks new factories and buildings.</p>'+
  '<div class="city-duo"><button type="button" class="button primary" data-city-action="library">Read another book</button>'+
  '<button type="button" class="button" data-city-action="close">Explore the city</button></div>');
@@ -4977,7 +5101,7 @@ function cityInit(){
  prompt.id='city-mouse-prompt';
  prompt.className='city-mouse-prompt';
  prompt.innerHTML='<div class="city-resume-card"><div class="city-crosshair-symbol" aria-hidden="true">✛</div>'+
-  '<h2>Jungle Miner</h2><p>Move the mouse to look around. No holding or dragging needed.</p>'+
+  '<h2>LUMENVALE</h2><p>Read. Build. Thrive. Look freely with the mouse—no holding or dragging.</p>'+
   '<button type="button" id="city-resume-button">▶ Click to Play</button>'+
   '<small>WASD move · E interact · Esc releases mouse · F fullscreen</small></div>';
  byId('view').append(prompt);
@@ -5045,6 +5169,572 @@ function cityInit(){
  },1000);
  cityTick();citySync();drawScene();
  cityMousePrompt();
+}
+
+
+/* LumenVale Teacher Studio: JSON lessons, local student profiles, and a genre library. */
+const ACADEMY_CONTENT='lumenvale-pack-v1',ACADEMY_PROGRESS='lumenvale-progress-v1',ACADEMY_PROFILE='lumenvale-profile-v1';
+function academyStored(key,fallback){try{const d=JSON.parse(localStorage.getItem(key));return d&&typeof d==='object'?d:fallback;}catch{return fallback;}}
+const academy={books:academyStored(ACADEMY_CONTENT,[]),progress:academyStored(ACADEMY_PROGRESS,{}),
+ profile:academyStored(ACADEMY_PROFILE,{nickname:'Explorer'}),genre:'All',query:''};
+function academySave(){
+ try{localStorage.setItem(ACADEMY_CONTENT,JSON.stringify(academy.books));
+ localStorage.setItem(ACADEMY_PROGRESS,JSON.stringify(academy.progress));
+ localStorage.setItem(ACADEMY_PROFILE,JSON.stringify(academy.profile));}catch{notice('Browser storage is full. Export your lesson pack.');}
+}
+function academyStr(v,max=1000){return String(v??'').trim().slice(0,max);}
+function academyWords(pages){return pages.join(' ').trim().split(/\s+/).filter(Boolean).length;}
+function academySafeId(title){const slug=academyStr(title,80).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,56);return slug.startsWith('lesson-')?slug:'lesson-'+slug;}
+function academyQuestions(book){return Array.isArray(book.questions)&&book.questions.length?book.questions:[{prompt:book.question,choices:book.answers,correctIndex:book.correct}];}
+function academyDraft(pages,count){
+ const passage=pages.join(' ');
+ const sentences=(passage.match(/[^.!?]+[.!?]?/g)||[]).map(x=>x.trim()).filter(x=>x.split(/\s+/).length>=7);
+ const vocab=[...new Set((passage.toLowerCase().match(/[a-z]{5,}/g)||[]).filter(x=>!['there','where','their','which','about','would','could','these','those','before','after','because','should','every'].includes(x)))];
+ if(!sentences.length||vocab.length<4)throw Error('Add a longer passage or supply your own questions.');
+ const out=[];
+ for(let i=0;i<Math.min(10,count);i++){
+  const sentence=sentences[i%sentences.length];
+  const words=(sentence.match(/[a-z]{5,}/gi)||[]).filter(x=>vocab.includes(x.toLowerCase()));
+  if(!words.length)continue;
+  const correct=words[(i*3+1)%words.length];
+  const choices=[correct,...vocab.filter(x=>x!==correct.toLowerCase()&&!words.some(y=>y.toLowerCase()===x)).slice(i*2,i*2+3)];
+  for(const v of vocab)if(choices.length<4&&v!==correct.toLowerCase()&&!choices.includes(v))choices.push(v);
+  if(choices.length<3)continue;
+  const position=i%choices.length,ordered=choices.slice(position).concat(choices.slice(0,position));
+  out.push({prompt:'Which word completes this sentence? '+sentence.replace(correct,'_____'),
+   choices:ordered,correctIndex:ordered.indexOf(correct),generated:true});
+ }
+ if(!out.length)throw Error('Could not produce a draft question. Supply a teacher-written question.');
+ return out;
+}
+function academyNormalizeQuestion(q){
+ const prompt=academyStr(q?.prompt??q?.question,500),choices=q?.choices??q?.answers;
+ const answer=Number(q?.correctIndex??q?.correct);
+ if(prompt.length<8||!Array.isArray(choices)||choices.length<2||choices.length>5||
+  choices.some(c=>typeof c!=='string'||!c.trim()||c.length>250)||
+  !Number.isInteger(answer)||answer<0||answer>=choices.length)throw Error('Invalid question; use prompt, choices, and correctIndex.');
+ return {prompt,choices:choices.map(x=>academyStr(x,250)),correctIndex:answer,generated:Boolean(q.generated)};
+}
+function academyNormalize(raw,i=0,count=3){
+ if(!raw||typeof raw!=='object')throw Error('Book '+(i+1)+' must be an object.');
+ const title=academyStr(raw.title,90),genre=academyStr(raw.genre??raw.genera??raw.category??'General',36);
+ const pages=Array.isArray(raw.pages)?raw.pages.map(x=>academyStr(x,2200)).filter(Boolean):
+  (academyStr(raw.text??raw.passage,12000).match(/[\s\S]{1,1200}/g)||[]);
+ if(title.length<3||!pages.length||pages.length>14||pages.join(' ').length>16000)throw Error('Book '+(i+1)+' needs a title and 1–14 pages.');
+ const questions=Array.isArray(raw.questions)&&raw.questions.length?raw.questions.map(academyNormalizeQuestion):
+  academyDraft(pages,Math.max(1,Math.min(10,Number(raw.questionCount??count)||3)));
+ const wordCount=academyWords(pages), declared=Number(raw.wordCount||raw.numberOfWords||0);
+ const id=academySafeId(raw.id||title);
+ return {id,title,genre,shelf:genre,pages,questions,question:questions[0].prompt,
+  answers:questions[0].choices,correct:questions[0].correctIndex,wordCount,
+  declaredWordCount:declared>0?declared:null,level:academyStr(raw.readingLevel||'General',30),
+  reward:Math.max(15,Math.min(300,Number(raw.reward)||Math.round(30+wordCount*.15))),
+  xp:Math.max(10,Math.min(90,Math.round(wordCount/8))),published:raw.published!==false,custom:true};
+}
+function academyMount(){
+ for(let i=CITY_BOOKS.length-1;i>=0;i--)if(CITY_BOOKS[i].custom)CITY_BOOKS.splice(i,1);
+ if(!Array.isArray(academy.books))academy.books=[];
+ const good=[];
+ academy.books.slice(0,100).forEach((raw,i)=>{try{const b=academyNormalize(raw,i);good.push(b);if(b.published)CITY_BOOKS.push(b);}catch{}});
+ academy.books=good;
+}
+function academyImport(data,count=3){
+ const items=Array.isArray(data)?data:Array.isArray(data?.books)?data.books:[data];
+ if(!items.length||items.length>100)throw Error('JSON must contain 1–100 books.');
+ const next=items.map((b,i)=>academyNormalize(b,i,count));
+ const existing=[...academy.books];
+ for(const book of next){const index=existing.findIndex(x=>x.id===book.id);if(index>=0)existing[index]=book;else existing.push(book);}
+ if(existing.length>100)throw Error('Browser limit: 100 custom books. Export a pack first.');
+ academy.books=existing;academyMount();academySave();citySync();
+ return {imported:next.length,mismatches:next.filter(x=>x.declaredWordCount&&x.declaredWordCount!==x.wordCount)};
+}
+function academyRecord(book,session){
+ const name=academy.profile.nickname||'Explorer';
+ const student=academy.progress[name]||{books:{},xp:0,attempts:[]};
+ const questions=academyQuestions(book).length,mistakes=session?.mistakes||0;
+ student.books[book.id]={title:book.title,genre:book.genre||book.shelf,wordCount:book.wordCount||academyWords(book.pages),
+  questions,mistakes,date:Date.now()};
+ student.xp+=(book.xp||10);
+ student.attempts.unshift({book:book.title,questions,mistakes,date:Date.now()});
+ student.attempts=student.attempts.slice(0,100);
+ academy.progress[name]=student;academySave();
+}
+function academyLibrary(){
+ const genres=['All',...new Set(CITY_BOOKS.map(x=>x.genre||x.shelf))];
+ if(!genres.includes(academy.genre))academy.genre='All';
+ const books=CITY_BOOKS.filter(x=>academy.genre==='All'||(x.genre||x.shelf)===academy.genre);
+ const filters=genres.map(g=>'<button class="lv-filter '+(academy.genre===g?'active':'')+'" data-academy="genre" data-genre="'+esc(g)+'">'+esc(g)+'</button>').join('');
+ const cards=books.map(book=>{
+  const completed=cityState.books[book.id]?.count;
+  return '<button class="lv-library-book" type="button" data-academy="open" data-id="'+esc(book.id)+'">'+
+  '<span class="lv-book-cover"><small>✦ LIBRARY ✦</small><strong>'+esc(book.title)+'</strong></span>'+
+  '<span class="lv-book-details"><small>'+esc(book.genre||book.shelf)+' · '+(book.custom?'Teacher book':'Starter book')+'</small>'+
+  '<b>'+esc(book.title)+'</b><em>'+ (book.wordCount||academyWords(book.pages))+' words · '+academyQuestions(book).length+
+  ' questions · '+book.reward+' coins</em><small>'+(completed?'✓ Completed':'Ready to read')+'</small></span></button>';
+ }).join('');
+ cityPanel('LumenVale / Library','The Knowledge Library',
+ '<p>Explore books by genre. Read, complete questions, and earn the coins used to build your city.</p>'+
+ '<div class="lv-library-tools"><input id="lv-search" type="search" placeholder="Search books" value="'+esc(academy.query)+'">'+
+ '<button class="button" data-academy="teacher" type="button">Teacher Studio</button></div>'+
+ '<div class="lv-genres">'+filters+'</div><div class="lv-book-grid">'+(cards||'<p>No books in this section.</p>')+'</div>');
+}
+function academyProfile(){
+ const nickname=academy.profile.nickname||'Explorer',profile=academy.progress[nickname];
+ const books=Object.values(profile?.books||{});
+ cityPanel('Student Role','Your Reading Journal',
+ '<div class="city-factory-grid"><div><small>Student</small><b>'+esc(nickname)+'</b></div>'+
+ '<div><small>Completed books</small><b>'+books.length+'</b></div><div><small>Learning XP</small><b>'+(profile?.xp||0)+'</b></div>'+
+ '<div><small>Words practiced</small><b>'+books.reduce((n,b)=>n+b.wordCount,0)+'</b></div></div>'+
+ '<div class="lv-progress">'+(books.map(b=>'<p><b>'+esc(b.title)+'</b> · '+b.wordCount+' words · '+b.questions+' questions · '+b.mistakes+' mistakes</p>').join('')||
+ '<p>No reading sessions completed yet.</p>')+'</div>'+
+ '<form id="lv-profile-form" class="lv-form"><label>Student nickname<input name="nickname" maxlength="30" required value="'+esc(nickname)+'"></label>'+
+ '<button class="button primary" type="submit">Change nickname</button></form>');
+}
+function academyTeacher(){
+ const rows=academy.books.map(b=>'<div class="lv-teacher-book"><span><b>'+esc(b.title)+'</b><small>'+esc(b.genre)+' · '+b.wordCount+
+ ' words · '+b.questions.length+' questions'+(b.questions.some(q=>q.generated)?' · draft questions':'')+'</small></span>'+
+ '<span><button class="button" type="button" data-academy="publish" data-id="'+esc(b.id)+'">'+(b.published?'Unpublish':'Publish')+'</button>'+
+ '<button class="button" type="button" data-academy="delete" data-id="'+esc(b.id)+'">Delete</button></span></div>').join('');
+ const students=Object.entries(academy.progress);
+ const totalWords=academy.books.reduce((n,b)=>n+b.wordCount,0);
+ const totalQuestions=academy.books.reduce((n,b)=>n+b.questions.length,0);
+ const genres=[...new Set(academy.books.map(x=>x.genre))];
+ const genreTotals=genres.map(genre=>({genre,count:academy.books.filter(b=>b.genre===genre).length}));
+ const chart=genreTotals.map(g=>'<div class="lv-genre-chart-row"><span>'+esc(g.genre)+'</span><div><i style="width:'+Math.round(100*g.count/Math.max(1,academy.books.length))+'%"></i></div><b>'+g.count+'</b></div>').join('');
+ cityPanel('Teacher Role','Teacher Content Studio',
+ '<div class="lv-teacher-notice"><b>Local teacher dashboard</b><p>No password protection or cloud synchronization yet. Import and export course packs to move content between computers.</p></div>'+
+ '<div class="city-factory-grid"><div><small>Teacher books</small><b>'+academy.books.length+'</b></div>'+ 
+ '<div><small>Total words</small><b>'+totalWords.toLocaleString()+'</b></div>'+
+ '<div><small>Questions available</small><b>'+totalQuestions+'</b></div>'+
+ '<div><small>Genres</small><b>'+genres.length+'</b></div>'+
+ '<div><small>Reading profiles</small><b>'+students.length+'</b></div></div>'+
+ '<h3>Import lesson JSON</h3><p>A lesson may have genre (or genera), title, pages/text, wordCount and questions. If questions are omitted, the game generates draft fill-in questions; please review them before assigning.</p>'+
+ '<div class="lv-import"><input type="file" id="lv-import-json" accept=".json,application/json">'+
+ '<label>Generate questions <input type="number" min="1" max="10" value="3" id="lv-question-count"></label></div>'+
+ '<div class="city-actions"><button class="button" data-academy="template">JSON template</button>'+
+ '<button class="button" data-academy="export">Export books</button>'+
+ '<button class="button" data-academy="report">Export progress</button></div>'+
+ '<h3>Create a book manually</h3><form id="lv-create-form" class="lv-form">'+
+ '<label>Book title<input name="title" maxlength="90" required></label>'+
+ '<label>Genre<input name="genre" maxlength="36" required></label>'+
+ '<label>Reading level<input name="readingLevel" maxlength="30" value="Beginner"></label>'+
+ '<label>Draft question count<input name="questionCount" type="number" min="1" max="10" value="3"></label>'+
+ '<label>Reading passage<textarea name="text" rows="4" required maxlength="12000"></textarea></label>'+
+ '<button class="button primary" type="submit">Create book</button></form>'+
+ '<h3>Manage published books</h3><div class="lv-teacher-books">'+(rows||'<p>No imported books yet.</p>')+'</div>'+
+ '<h3>Reading by genre</h3><div class="lv-genre-chart">'+(chart||'<p>No imported genres yet.</p>')+'</div>'+ 
+ '<h3>Student progress on this device</h3><div class="lv-table-scroll"><table class="lv-table"><thead><tr><th>Nickname</th><th>Books</th><th>Words</th><th>Questions</th><th>Corrections</th><th>XP</th></tr></thead><tbody>'+
+ (students.map(([name,data])=>{const books=Object.values(data.books||{});return '<tr><td>'+esc(name)+'</td><td>'+books.length+'</td><td>'+books.reduce((n,x)=>n+(x.wordCount||0),0)+
+ '</td><td>'+books.reduce((n,x)=>n+(x.questions||0),0)+'</td><td>'+books.reduce((n,x)=>n+(x.mistakes||0),0)+'</td><td>'+data.xp+'</td></tr>';}).join('')||
+ '<tr><td colspan="6">No reading data recorded yet.</td></tr>')+'</tbody></table></div>'+
+ '<button class="button" data-academy="student">Switch to student view</button>');
+}
+function academyExport(filename,data){
+ const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+ const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function academyTemplate(){
+ return {version:1,books:[{id:'sample-market',title:'The Busy Market',genre:'Business',readingLevel:'Beginner',
+ pages:['At the market, Maya sells apples to her neighbors. She checks the number of apples on her shelves and writes the prices clearly. Customers return because she treats them kindly.',
+ 'One afternoon Maya receives an order for twelve apples. She reads the order carefully and records the delivery time.'],
+ wordCount:56,questionCount:2,questions:[{prompt:'What does Maya sell?',choices:['Apples','Shoes','Computers'],correctIndex:0},
+ {prompt:'What does Maya record for the customer?',choices:['Delivery time','Bus number','Shoe size'],correctIndex:0}]}]};
+}
+function academyInstall(){
+ academyMount();citySync();
+ const bar=document.querySelector('.walk-head');
+ if(bar){
+  const b=document.createElement('button');b.type='button';b.className='top-icon lv-top-button';b.textContent='✎ Teacher';b.title='Open Teacher Studio';
+  bar.insertBefore(b,bar.lastElementChild);b.addEventListener('click',academyTeacher);
+  const p=document.createElement('button');p.type='button';p.className='top-icon lv-top-button';p.textContent='◉ Student';p.title='Open student journal';
+  bar.insertBefore(p,bar.lastElementChild);p.addEventListener('click',academyProfile);
+ }
+ document.addEventListener('click',event=>{
+  const control=event.target.closest('[data-academy]');if(!control)return;
+  const act=control.dataset.academy,id=control.dataset.id;
+  if(act==='teacher')academyTeacher();
+  if(act==='student'){academyProfile();}
+  if(act==='genre'){academy.genre=control.dataset.genre;academyLibrary();}
+  if(act==='open')cityOpenBook(id);
+  if(act==='publish'){const b=academy.books.find(x=>x.id===id);if(b){b.published=!b.published;academyMount();academySave();academyTeacher();}}
+  if(act==='delete'){const b=academy.books.find(x=>x.id===id);
+   if(b&&confirm('Delete the imported book "'+b.title+'"?')){academy.books=academy.books.filter(x=>x.id!==id);academyMount();academySave();academyTeacher();}}
+  if(act==='template')academyExport('lumenvale-template.json',academyTemplate());
+  if(act==='export')academyExport('lumenvale-books.json',{version:1,books:academy.books});
+  if(act==='report')academyExport('lumenvale-progress.json',academy.progress);
+ });
+ document.addEventListener('input',event=>{
+  if(event.target.id==='lv-search'){
+   academy.query=event.target.value.toLowerCase().slice(0,70);
+   document.querySelectorAll('.lv-library-book').forEach(el=>el.hidden=!el.textContent.toLowerCase().includes(academy.query));
+  }
+ });
+ document.addEventListener('change',async event=>{
+  if(event.target.id!=='lv-import-json')return;
+  const file=event.target.files?.[0];if(!file)return;
+  if(file.size>2*1024*1024){notice('JSON file too large (maximum 2 MB).');return;}
+  try{
+   const raw=JSON.parse(await file.text());
+   const outcome=academyImport(raw,Number(byId('lv-question-count')?.value)||3);
+   academyTeacher();
+   notice('Imported '+outcome.imported+' books.'+(outcome.mismatches.length?' Check declared word counts.':''));
+  }catch(e){notice('Import error: '+String(e.message).slice(0,150));}
+ });
+ document.addEventListener('submit',event=>{
+  if(event.target.id==='lv-create-form'){
+   event.preventDefault();
+   try{const data=Object.fromEntries(new FormData(event.target));
+    academyImport(data,Number(data.questionCount)||3);academyTeacher();notice('New book created. Review generated questions.');}
+   catch(e){notice('Book error: '+e.message);}
+  }
+  if(event.target.id==='lv-profile-form'){
+   event.preventDefault();const data=new FormData(event.target);
+   const nickname=academyStr(data.get('nickname'),30).replace(/[<>"]/g,'');
+   if(['__proto__','constructor','prototype'].includes(nickname.toLowerCase())){notice('Choose another nickname.');return;}
+   if(!nickname)return;
+   academy.profile.nickname=nickname;academySave();academyProfile();
+  }
+ });
+}
+
+
+/* LumenVale City Systems: mail, expenses, orders, technology and citizens. */
+const LV_SYSTEMS_KEY='lumenvale-city-systems-v1';
+const LV_PERSONNEL=['Amina · Operator','Leo · Mechanic','Noor · Engineer','Sam · Driver','Mira · Quality Inspector','Omar · Shift Lead'];
+const LV_TREASURES=[{id:'river',x:35,z:-14,reward:50,unlock:2,clue:'Follow the road east, then search the riverside rocks.'},{id:'forest',x:-38,z:29,reward:90,unlock:3,clue:'Look by the old trees on the far western edge.'},{id:'garden',x:8,z:32,reward:140,unlock:4,clue:'Look beyond the homes and gardens at the south edge of the town.'}];
+var systemsDriving=false;
+const LV_PRODUCTS={workshop:{name:'Furniture',icon:'🪑'},lumber:{name:'Lumber',icon:'🪵'},
+ textile:{name:'Fabric',icon:'🧵'},greenhouse:{name:'Produce',icon:'🌿'},assembly:{name:'Tools',icon:'🛠️'}};
+const LV_CONTRACTS=[
+ {id:'starter-desk',title:'School Furniture',customer:'Principal Harper',goods:{workshop:5},reward:110,reputation:6,needs:1},
+ {id:'timber',title:'Wood for New Homes',customer:'Lena Builders',goods:{lumber:8},reward:190,reputation:8,needs:2},
+ {id:'community',title:'Community Hall Order',customer:'Town Council',goods:{workshop:8,lumber:5},reward:320,reputation:10,needs:2},
+ {id:'uniforms',title:'Festival Uniforms',customer:'Local School',goods:{textile:10},reward:340,reputation:12,needs:3},
+ {id:'gardens',title:'Community Garden Supply',customer:'Garden Club',goods:{greenhouse:12},reward:440,reputation:14,needs:4},
+ {id:'equipment',title:'Engineering Equipment',customer:'Research Center',goods:{assembly:10},reward:750,reputation:18,needs:5}
+];
+const LV_UPGRADES=[
+ {id:'garden',title:'Public Garden',cost:85,desc:'Plant a brighter green space for residents.',reputation:5},
+ {id:'lights',title:'Streetlights',cost:150,desc:'Illuminate the growing city after dark.',reputation:6},
+ {id:'home',title:'Your Home',cost:190,desc:'Build a small home to customize beside the plaza.',reputation:5},
+ {id:'delivery',title:'Delivery Van',cost:230,desc:'Send goods to customers. +15% contract rewards.',reputation:7},
+ {id:'power',title:'Clean Power Station',cost:280,desc:'Support factories. +10% production.',reputation:10},
+ {id:'office',title:'Executive Office',cost:340,desc:'Expand your company headquarters.',reputation:6},
+ {id:'research',title:'Research Laboratory',cost:450,desc:'Open science innovation and +10% production.',reputation:12},
+ {id:'train',title:'Worker Training Center',cost:520,desc:'Improve employee output by 15%.',reputation:10}
+];
+const LV_TECH=[
+ {id:'energy',title:'Efficient Energy',cost:170,books:2,desc:'Machines use energy efficiently. +10% factory output.',boost:.10},
+ {id:'logistics',title:'Smart Logistics',cost:290,books:3,desc:'Improve production coordination. +15% output.',boost:.15},
+ {id:'automation',title:'Modern Automation',cost:620,books:5,desc:'Automate routine work. +25% output.',boost:.25}
+];
+function systemsBlank(){return {version:1,inventory:{},upgrades:{},tech:{},contracts:{},
+  paid:0,earned:0,rep:0,lastTick:Date.now(),mailRead:[],ledger:[],achievements:[],training:{},treasures:[]};}
+function systemsClean(raw){
+ const s=systemsBlank();
+ if(!raw||raw.version!==1)return s;
+ const count=(v,max)=>Number.isFinite(v)?Math.max(0,Math.min(max,Math.floor(v))):0;
+ for(const id of Object.keys(LV_PRODUCTS))s.inventory[id]=count(raw.inventory?.[id],1e7);
+ for(const e of LV_UPGRADES)s.upgrades[e.id]=Boolean(raw.upgrades?.[e.id]);
+ for(const e of LV_TECH)s.tech[e.id]=Boolean(raw.tech?.[e.id]);
+ for(const e of LV_CONTRACTS){const state=raw.contracts?.[e.id];if(state==='accepted'||state==='done')s.contracts[e.id]=state;}
+ s.paid=count(raw.paid,1e12);s.earned=count(raw.earned,1e12);s.rep=count(raw.rep,1e7);
+ s.lastTick=count(raw.lastTick,1e15)||Date.now();
+ s.mailRead=Array.isArray(raw.mailRead)?raw.mailRead.filter(x=>typeof x==='string').slice(0,100):[];
+ s.ledger=Array.isArray(raw.ledger)?raw.ledger.filter(x=>x&&typeof x.note==='string').slice(0,100):[];
+ s.achievements=Array.isArray(raw.achievements)?raw.achievements.filter(x=>typeof x==='string').slice(0,100):[];
+ s.treasures=Array.isArray(raw.treasures)?raw.treasures.filter(x=>LV_TREASURES.some(t=>t.id===x)):[];
+ for(const id of Object.keys(LV_PRODUCTS))s.training[id]=count(raw.training?.[id],5);
+ return s;
+}
+function systemsLoad(){try{return systemsClean(JSON.parse(localStorage.getItem(LV_SYSTEMS_KEY)));}catch{return systemsBlank();}}
+var systemsState=systemsLoad();
+function systemsSave(){try{if(!trial)localStorage.setItem(LV_SYSTEMS_KEY,JSON.stringify(systemsState));}catch{}}
+function systemsLedger(note,coins){
+ systemsState.ledger.unshift({note,coins,at:Date.now()});systemsState.ledger=systemsState.ledger.slice(0,100);
+}
+function systemsMultiplier(){
+ let multiplier=1;
+ if(systemsState.upgrades.power)multiplier+=.10;
+ if(systemsState.upgrades.research)multiplier+=.10;
+ if(systemsState.upgrades.train)multiplier+=.15;
+ for(const tech of LV_TECH)if(systemsState.tech[tech.id])multiplier+=tech.boost;
+ return multiplier;
+}
+function systemsExpenseRate(){
+ const factories=CITY_SITES.filter(x=>x.kind==='factory'&&cityState.sites[x.id]?.built);
+ const staff=factories.reduce((n,x)=>n+(cityState.sites[x.id]?.staff||0),0);
+ return staff?Math.max(1,Math.ceil(staff*.8)+Math.floor(factories.length/2)):0;
+}
+function systemsNetIncome(){return Math.max(0,Math.floor(cityIncome()*systemsMultiplier())-systemsExpenseRate());}
+function systemsTick(now=Date.now()){
+ let ticks=Math.floor((now-systemsState.lastTick)/CITY_TICK_MS);
+ if(ticks<0){systemsState.lastTick=now;systemsSave();return;}
+ ticks=Math.min(720,ticks);
+ if(!ticks)return;
+ systemsState.lastTick=now;
+ // The original 3D city engine already grants gross machine income. Apply
+ // game expenses, research bonuses and virtual products for the same tick interval.
+ const gross=cityIncome(),bonus=Math.floor(gross*(systemsMultiplier()-1))*ticks;
+ const charge=Math.min(cityState.coins+bonus,systemsExpenseRate()*ticks);
+ cityState.coins+=bonus-charge;cityState.lifetime+=bonus;
+ systemsState.paid+=charge;systemsState.earned+=gross*ticks+bonus;
+ for(const [id,product] of Object.entries(LV_PRODUCTS)){
+  const unit=cityState.sites[id];
+  if(unit?.built&&unit.staff>0){
+   const count=Math.max(1,Math.floor(ticks*unit.staff*Math.max(1,unit.level)*Math.max(1,unit.landLevel||1)/2));
+   systemsState.inventory[id]=Math.min(1e7,(systemsState.inventory[id]||0)+count);
+  }
+ }
+ if(charge)systemsLedger('Factory wages, power and maintenance',-charge);
+ systemsSave();citySave();
+ systemsAchievements();
+}
+function systemsSpend(cost,note){
+ if(!citySpend(cost))return false;
+ systemsState.paid+=cost;systemsLedger(note,-cost);systemsSave();return true;
+}
+function systemsUpgrade(id){
+ const upgrade=LV_UPGRADES.find(x=>x.id===id);
+ if(!upgrade||systemsState.upgrades[id])return;
+ if(!systemsSpend(upgrade.cost,'City upgrade: '+upgrade.title)){notice('You need more coins for '+upgrade.title+'.');return;}
+ systemsState.upgrades[id]=true;systemsState.rep+=upgrade.reputation;
+ systemsSave();systemsPanel('upgrades');notice(upgrade.title+' unlocked!');
+}
+function systemsResearch(id){
+ const tech=LV_TECH.find(x=>x.id===id);
+ if(!tech||systemsState.tech[id])return;
+ if(cityCompleted()<tech.books){notice('Read '+tech.books+' different books before researching this.');return;}
+ if(!systemsSpend(tech.cost,'Research: '+tech.title)){notice('Not enough coins for research.');return;}
+ systemsState.tech[id]=true;systemsSave();systemsPanel('research');
+ notice('Research complete: '+tech.title+'.');
+}
+function systemsTraining(id){
+ const unit=cityState.sites[id],site=CITY_SITES.find(x=>x.id===id);
+ if(!unit?.built||!unit.staff||!site||site.kind!=='factory')return;
+ const level=systemsState.training[id]||0,cost=40*(level+1);
+ if(level>=5)return;
+ if(!systemsSpend(cost,'Employee training at '+site.title))return;
+ systemsState.training[id]=level+1;systemsSave();systemsPanel('workers');notice('Worker training upgraded.');
+}
+function systemsContractReady(contract){
+ return Object.entries(contract.goods).every(([id,count])=>(systemsState.inventory[id]||0)>=count);
+}
+function systemsContract(id){
+ const order=LV_CONTRACTS.find(x=>x.id===id);
+ if(!order||cityCompleted()<order.needs)return;
+ const state=systemsState.contracts[id];
+ if(state==='done')return;
+ if(state!=='accepted'){
+  systemsState.contracts[id]='accepted';systemsLedger('Accepted contract: '+order.title,0);systemsSave();systemsPanel('contracts');
+  notice('Contract accepted. Build factories and produce the required goods.');return;
+ }
+ if(!systemsContractReady(order)){notice('Keep producing goods before dispatching this order.');return;}
+ for(const [product,count] of Object.entries(order.goods))systemsState.inventory[product]-=count;
+ const reward=Math.floor(order.reward*(systemsState.upgrades.delivery?1.15:1));
+ cityEarn(reward,10);systemsState.earned+=reward;systemsState.rep+=order.reputation;
+ systemsState.contracts[id]='done';systemsLedger('Delivered contract: '+order.title,reward);
+ systemsSave();systemsAchievements();systemsPanel('contracts');
+ notice('Order delivered! Earned '+reward+' coins.');
+}
+function systemsRestock(id){
+ const product=LV_PRODUCTS[id];if(!product)return;
+ const cost=25,quantity=5;
+ if(!systemsSpend(cost,'Warehouse supplies: '+product.name))return;
+ systemsState.inventory[id]=Math.min(1e7,(systemsState.inventory[id]||0)+quantity);
+ systemsSave();systemsPanel('warehouse');
+ notice('Purchased '+quantity+' '+product.name+' for '+cost+' coins.');
+}
+function systemsAchievements(){
+ const milestones=[
+  ['reader',cityCompleted()>=1,'First Reader',25],
+  ['bookworm',cityCompleted()>=5,'Knowledge Seeker',75],
+  ['landowner',cityLandOwned()>=1,'Landowner',20],
+  ['builder',cityBuildingsBuilt()>=2,'Growing Town',60],
+  ['employer',cityPopulation()>=3,'Hiring Manager',45],
+  ['trader',Object.values(systemsState.contracts).some(x=>x==='done'),'First Shipment',35],
+  ['mayor',systemsState.rep>=40,'City Leader',110],
+  ['explorer',systemsState.treasures.length>=1,'Curious Explorer',35]
+ ];
+ let changed=false;
+ for(const [id,ready,title,reward] of milestones){
+  if(!ready||systemsState.achievements.includes(id))continue;
+  systemsState.achievements.push(id);systemsState.rep+=3;cityState.coins+=reward;cityState.lifetime+=reward;
+  systemsLedger('Achievement: '+title,reward);changed=true;
+ }
+ if(changed){systemsSave();citySave();citySync();}
+}
+function systemsMail(){
+ const messages=[
+ {id:'welcome',from:'Maya · Town Library',subject:'Welcome to LumenVale',
+  body:'Our library is open. Read, complete questions, and use your coins to buy land. The town needs thoughtful builders.'},
+ {id:'purchase',from:'City Land Registry',subject:'How property ownership works',
+  body:'First purchase a plot, then build and improve it. Land development and factory machinery upgrades both cost coins.'},
+ {id:'first-employee',from:'Workers Union',subject:'Employees need salaries',unlock:cityPopulation()>=1,
+  body:'Your workers earn coins for your factories, but wages, power, and maintenance are deducted automatically every production cycle.'},
+ {id:'supply',from:'Principal Harper',subject:'School furniture request',unlock:cityState.sites.workshop?.built,
+  body:'We need five finished pieces of furniture. Open Contracts to accept the order and arrange delivery.',button:'Open contracts',tab:'contracts'},
+ {id:'training',from:'Engineering Society',subject:'Improve your machines',unlock:cityCompleted()>=2,
+  body:'Research new machinery technologies at City Hall. Reading more books unlocks deeper knowledge.',button:'Open research',tab:'research'},
+ {id:'treasure',from:'Explorer Guild',subject:'A hidden reward awaits',unlock:cityCompleted()>=2,
+  body:'Reading unlocks discoveries. Look for a small treasure chest near the river on the eastern side of town. More clues appear under City Hall > Exploration.'},
+ {id:'council',from:'LumenVale Council',subject:'Community development',unlock:cityLandOwned()>=2,
+  body:'Your city is growing. Invest in streetlights, gardens, housing, and public services to improve its reputation.',button:'City upgrades',tab:'upgrades'}
+ ];
+ return messages.filter(m=>m.unlock!==false);
+}
+function systemsMailBox(){
+ const messages=systemsMail();
+ const cards=messages.map(m=>'<button class="lv-mail" type="button" data-systems="letter" data-id="'+m.id+'">'+
+ '<span class="lv-mail-icon">'+(systemsState.mailRead.includes(m.id)?'✉':'✦')+'</span><span><small>'+esc(m.from)+'</small>'+
+ '<strong>'+esc(m.subject)+'</strong><em>'+ (systemsState.mailRead.includes(m.id)?'Read':'New message')+'</em></span></button>').join('');
+ cityPanel('City Post Office','Your Mailbox','<p>Messages from residents, clients, and city services. New business opportunities appear as your city develops.</p>'+
+ '<div class="lv-mailbox">'+cards+'</div>');
+}
+function systemsReadLetter(id){
+ const m=systemsMail().find(x=>x.id===id);if(!m)return;
+ if(!systemsState.mailRead.includes(id)){systemsState.mailRead.push(id);systemsSave();}
+ cityPanel('Mail / '+esc(m.from),esc(m.subject),
+ '<article class="lv-letter"><small>From: '+esc(m.from)+'</small><p>'+esc(m.body)+'</p>'+
+ '<div class="city-actions">'+(m.tab?'<button class="button primary" type="button" data-systems="tab" data-tab="'+m.tab+'">'+esc(m.button)+'</button>':'')+
+ '<button class="button" type="button" data-systems="mail">Back to mailbox</button></div></article>');
+}
+function systemsPanel(tab='overview'){
+ const buttons=[['overview','Overview'],['contracts','Contracts'],['warehouse','Warehouse'],['workers','Workers'],['research','Research'],['upgrades','City Upgrades'],['newspaper','Newspaper'],['explore','Explore'],['achievements','Achievements']];
+ const nav='<div class="lv-city-nav">'+buttons.map(([id,title])=>'<button class="'+(id===tab?'active':'')+'" data-systems="tab" data-tab="'+id+'">'+title+'</button>').join('')+'</div>';
+ let html='';
+ if(tab==='overview'){
+  const gross=cityIncome(),net=systemsNetIncome();
+  html='<p>Your company turns knowledge into land, jobs and services. Review your finances before expanding.</p>'+
+   '<div class="lv-kpis"><div><small>Wallet</small><strong>'+cityState.coins.toLocaleString()+'</strong></div>'+
+   '<div><small>Gross / 5 sec</small><strong>'+gross+'</strong></div>'+
+   '<div><small>Expenses / 5 sec</small><strong>'+systemsExpenseRate()+'</strong></div>'+
+   '<div><small>Est. net / 5 sec</small><strong>'+net+'</strong></div>'+
+   '<div><small>Reputation</small><strong>'+systemsState.rep+'</strong></div>'+
+   '<div><small>Employees</small><strong>'+cityPopulation()+'</strong></div></div>'+
+   '<h3>Recent financial activity</h3>'+systemsState.ledger.slice(0,10).map(t=>'<p class="lv-ledger">'+esc(t.note)+
+   '<b class="'+(t.coins>=0?'positive':'negative')+'">'+(t.coins>0?'+':'')+t.coins+' coins</b></p>').join('');
+ }else if(tab==='contracts'){
+  html='<p>Deliver finished goods for extra coins and reputation. Employees produce inventory every five seconds.</p>'+
+   LV_CONTRACTS.filter(x=>cityCompleted()>=x.needs).map(o=>{
+    const status=systemsState.contracts[o.id],ready=status==='accepted'&&systemsContractReady(o);
+    return '<article class="lv-contract"><small>'+esc(o.customer)+' · '+(status==='done'?'Delivered':status==='accepted'?'Active order':'Available')+'</small>'+
+     '<h3>'+esc(o.title)+'</h3><p>'+Object.entries(o.goods).map(([id,n])=>n+' '+LV_PRODUCTS[id].name+' (have '+(systemsState.inventory[id]||0)+')').join(' · ')+'</p>'+
+     '<b>Reward: '+Math.floor(o.reward*(systemsState.upgrades.delivery?1.15:1))+' coins</b>'+
+     (status==='done'?' <span>✓ Complete</span>':'<button class="button primary" data-systems="contract" data-id="'+o.id+'" '+
+     (status==='accepted'&&!ready?'disabled':'')+'>'+(status==='accepted'?'Dispatch order':'Accept contract')+'</button>')+'</article>';
+   }).join('');
+  if(!html.includes('lv-contract'))html+='<p>Read your first library book to unlock contracts.</p>';
+ }else if(tab==='warehouse'){
+  html='<p>Factories create products over time. You can also purchase emergency stock when a customer needs a faster delivery.</p>'+
+   '<div class="lv-warehouse">'+Object.entries(LV_PRODUCTS).map(([id,p])=>'<div><b>'+p.icon+' '+p.name+'</b>'+
+   '<strong>'+ (systemsState.inventory[id]||0)+' units</strong><button class="button" data-systems="restock" data-id="'+id+'" '+(cityState.coins<25?'disabled':'')+'>Buy 5 · 25 coins</button></div>').join('')+'</div>';
+ }else if(tab==='workers'){
+  html='<p>Employees produce goods and earn income automatically. Every worker has a professional role. Training costs coins and improves productivity.</p>'+
+   CITY_SITES.filter(x=>x.kind==='factory'&&cityState.sites[x.id]?.built).map(x=>{
+    const unit=cityState.sites[x.id],level=systemsState.training[x.id]||0;
+    return '<article class="lv-contract"><h3>'+esc(x.title)+'</h3><p>Workers: '+unit.staff+
+    ' · Machinery level '+unit.level+' · Training level '+level+'/5</p>'+
+    '<div class="lv-roster">'+LV_PERSONNEL.slice(0,unit.staff).map((who,i)=>'<span>👷 '+esc(who)+' · Skill '+(1+level+(i%2))+'</span>').join('')+'</div>'+ 
+    '<button class="button" data-systems="train" data-id="'+x.id+'" '+(!unit.staff||level===5||cityState.coins<40*(level+1)?'disabled':'')+
+    '>Train staff · '+(40*(level+1))+' coins</button></article>';
+   }).join('')||'<p>Build a factory and hire your first employee to begin training.</p>';
+ }else if(tab==='research'){
+  html='<p>Read new books to unlock technologies. Each research project permanently improves factory output.</p>'+
+   LV_TECH.map(x=>'<article class="lv-contract"><h3>'+esc(x.title)+'</h3><p>'+esc(x.desc)+'</p>'+
+    '<small>Requires '+x.books+' books · '+x.cost+' coins</small> '+
+    (systemsState.tech[x.id]?'<b>✓ Researched</b>':'<button class="button primary" data-systems="research" data-id="'+x.id+'" '+
+    (cityCompleted()<x.books||cityState.coins<x.cost?'disabled':'')+'>Research</button>')+'</article>').join('');
+ }else if(tab==='upgrades'){
+  html='<p>Improve homes, delivery services, streets, utilities and public life. These are optional coin-consuming investments.</p>'+
+   '<div class="lv-upgrade-grid">'+LV_UPGRADES.map(x=>'<article class="lv-upgrade"><h3>'+esc(x.title)+'</h3><p>'+esc(x.desc)+'</p>'+
+    '<small>+'+x.reputation+' city reputation</small>'+
+    (systemsState.upgrades[x.id]?'<b>✓ Owned</b>':'<button class="button primary" data-systems="upgrade" data-id="'+x.id+'" '+
+    (cityState.coins<x.cost?'disabled':'')+'>Purchase · '+x.cost+'</button>')+'</article>').join('')+'</div>';
+ }else if(tab==='newspaper'){
+  const date=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  html='<article class="lv-newspaper"><small>THE LUMENVALE LEDGER · '+esc(date)+'</small>'+
+  '<h2>A City Built One Story at a Time</h2>'+
+  '<p>Readers have completed '+cityCompleted()+' books and purchased '+cityLandOwned()+' plots. '+cityPopulation()+
+  ' employees are helping grow local businesses.</p>'+
+  '<h3>On the economic front</h3><p>Factories are producing approximately '+cityIncome()+
+  ' coins every five seconds before expenses. Salaries and utilities cost '+systemsExpenseRate()+' coins per cycle.</p>'+
+  '<h3>Opportunities</h3><p>'+LV_CONTRACTS.filter(x=>!systemsState.contracts[x.id]&&cityCompleted()>=x.needs).length+
+  ' unclaimed delivery contracts are available. The local library welcomes new readers.</p></article>';
+ }else if(tab==='explore'){
+  html='<p>Read a book to learn clues, explore the city in first person, and collect hidden treasure chests. New caches unlock as you learn.</p>'+LV_TREASURES.map(t=>
+   '<article class="lv-contract"><h3>'+ (systemsState.treasures.includes(t.id)?'✓ Found':'Hidden cache')+'</h3><p>'+esc(t.clue)+'</p><small>Requires '+t.unlock+' completed books · Reward '+t.reward+' coins</small></article>').join('');
+ }else if(tab==='achievements'){
+  const list=[['reader','First Reader'],['bookworm','Knowledge Seeker'],['landowner','Landowner'],['builder','Growing Town'],
+   ['employer','Hiring Manager'],['trader','First Shipment'],['mayor','City Leader']];
+  html='<p>Achievements reward reading, city planning, and running a business.</p>'+
+   list.map(([id,title])=>'<p class="lv-achievement"><span>'+(systemsState.achievements.includes(id)?'🏆':'◇')+'</span>'+
+   esc(title)+'<b>'+(systemsState.achievements.includes(id)?'Unlocked':'Locked')+'</b></p>').join('');
+ }
+ cityPanel('LumenVale / City Hall','City Management',nav+'<div class="lv-city-content">'+html+'</div>');
+}
+function systemsTreasure(id){
+ const t=LV_TREASURES.find(x=>x.id===id);if(!t||systemsState.treasures.includes(id))return;
+ if(cityCompleted()<t.unlock){notice('Read '+t.unlock+' books to unlock this treasure.');return;}
+ systemsState.treasures.push(id);systemsState.earned+=t.reward;
+ cityEarn(t.reward,10);systemsLedger('Found hidden chest: '+id,t.reward);systemsSave();systemsAchievements();
+ notice('Hidden treasure discovered! +'+t.reward+' coins.');
+}
+function systemsVehicle(){
+ if(!systemsState.upgrades.delivery){notice('Buy the delivery van from City Hall first.');return;}
+ if(!systemsDriving&&Math.hypot(player.x-23.5,player.z-9)>5){notice('Visit the delivery van at the warehouse to drive.');return;}
+ systemsDriving=!systemsDriving;
+ notice(systemsDriving?'Driving delivery van · WASD steer · V or E to exit':'Exited the delivery van.');
+}
+function systemsNearby(player){
+ if(systemsDriving)return {id:'vehicle',system:true,label:'Exit delivery van'};
+ if(systemsState.upgrades.delivery&&Math.hypot(player.x-23.5,player.z-9)<3)return {id:'vehicle',system:true,label:'Drive your delivery van'};
+ for(const t of LV_TREASURES){
+  if(cityCompleted()>=t.unlock&&!systemsState.treasures.includes(t.id)&&Math.hypot(player.x-t.x,player.z-t.z)<2.8)
+    return {id:'treasure-'+t.id,system:true,label:'Discover hidden treasure'};
+ }
+ if(Math.hypot(player.x-6.15,player.z+7.0)<2.5)return {id:'mailbox',system:true,label:'Check your mailbox'};
+ if(Math.hypot(player.x+7.0,player.z-13.5)<2.9)return {id:'cityhall',system:true,label:'Visit City Hall'};
+ if(Math.hypot(player.x-23.5,player.z-6.0)<2.8)return {id:'depot',system:true,label:'Visit delivery warehouse'};
+ return null;
+}
+function systemsInteract(target){
+ if(target?.id==='vehicle')systemsVehicle();
+ else if(target?.id?.startsWith('treasure-'))systemsTreasure(target.id.slice(9));
+ else if(target?.id==='mailbox')systemsMailBox();
+ else if(target?.id==='depot')systemsPanel('warehouse');
+ else systemsPanel('overview');
+}
+function systemsInit(){
+ const bar=document.querySelector('.walk-head');
+ if(bar){
+  for(const [label,fn] of [['✉ Mail',systemsMailBox],['🏛 City',()=>systemsPanel('overview')]]){
+   const b=document.createElement('button');b.type='button';b.className='top-icon lv-top-button';b.textContent=label;
+   bar.insertBefore(b,bar.lastElementChild);b.addEventListener('click',fn);
+  }
+ }
+ document.addEventListener('click',event=>{
+  const b=event.target.closest('[data-systems]');if(!b)return;
+  const action=b.dataset.systems,id=b.dataset.id;
+  if(action==='tab')systemsPanel(b.dataset.tab);
+  if(action==='mail')systemsMailBox();
+  if(action==='letter')systemsReadLetter(id);
+  if(action==='upgrade')systemsUpgrade(id);
+  if(action==='research')systemsResearch(id);
+  if(action==='restock')systemsRestock(id);
+  if(action==='train')systemsTraining(id);
+  if(action==='contract')systemsContract(id);
+ });
+ window.addEventListener('keydown',event=>{
+  if(event.repeat||event.target.matches?.('input,textarea,select')||dialog.open||terminal.open)return;
+  const key=event.key.toLowerCase();
+  if(key==='b'){event.preventDefault();systemsPanel('overview');}
+  if(key==='n'){event.preventDefault();systemsMailBox();}
+  if(key==='v'){event.preventDefault();systemsVehicle();}
+ });
+ systemsTick();systemsAchievements();
+ setInterval(()=>{systemsTick();citySync();},1000);
 }
 
 
@@ -5332,6 +6022,174 @@ function cityCanWalk(x,z){
   if(Math.abs(x-site.x)<3.72 && z>site.z-2.60 && z<site.z+3.3)return false;
  }
  return true;
+}
+
+
+/* Optional decorative district that responds to city services and the economy. */
+function createLumenWorld({T,exterior,box,renderer}){
+ const root=new T.Group();exterior.add(root);
+ const low=Boolean(renderer?.isSoftware),palette=new Map();
+ const colors={wood:'#986f4f',gold:'#e1bd76',stone:'#c9c1ae',glass:'#9cc8c7',road:'#718276'};
+ function paint(color){
+  if(!palette.has(color))palette.set(color,new T.MeshLambertMaterial({color,flatShading:true,side:T.DoubleSide}));
+  return palette.get(color);
+ }
+ function b(g,x,y,z,w,h,d,c){return box(g,x,y,z,w,h,d,c);}
+ function sphere(g,x,y,z,r,c){
+  const mesh=new T.Mesh(new T.IcosahedronGeometry(r,low?0:1),paint(c));mesh.position.set(x,y,z);g.add(mesh);return mesh;
+ }
+ function column(g,x,y,z,r,h,c){
+  const obj=new T.Mesh(new T.CylinderGeometry(r,r,h,8),paint(c));obj.position.set(x,y,z);g.add(obj);return obj;
+ }
+ function sign(g,title,x,y,z,w=3,h=.45){
+  b(g,x,y,z,w,h,.08,'#2c5040');
+  if(low)return;
+  const cv=document.createElement('canvas');cv.width=512;cv.height=96;
+  const ctx=cv.getContext('2d');if(!ctx)return;
+  ctx.fillStyle='#2c5040';ctx.fillRect(0,0,512,96);
+  ctx.fillStyle='#f6e2ab';ctx.textAlign='center';ctx.font='bold 34px sans-serif';ctx.fillText(title,256,61,502);
+  const texture=new T.CanvasTexture(cv);texture.colorSpace=T.SRGBColorSpace;
+  const mesh=new T.Mesh(new T.PlaneGeometry(w-.12,h-.08),new T.MeshBasicMaterial({map:texture,side:T.DoubleSide}));
+  mesh.position.set(x,y,z-.06);g.add(mesh);
+ }
+ function house(g,x,z,w,h,d,c){
+  b(g,x,h/2,z,w,h,d,c);
+  b(g,x,h+.1,z,w+.4,.26,d+.4,'#56796c');
+  b(g,x-.85,h*.54,z-d/2-.05,.75,.8,.06,colors.glass);
+  b(g,x+.78,h*.40,z-d/2-.05,.8,1.55,.06,'#806149');
+ }
+ function truck(color){
+  const group=new T.Group();
+  b(group,0,.65,0,2.75,.74,1.42,color);
+  b(group,-.56,1.18,0,1.20,.77,1.34,color);
+  b(group,-.75,1.23,-.70,.70,.48,.05,colors.glass);
+  b(group,1.03,1.16,0,.58,.95,1.3,'#c6b698');
+  for(const x of [-.92,.95])for(const z of [-.73,.73]){
+   const tire=column(group,x,.37,z,.32,.16,'#293532');tire.rotation.x=Math.PI/2;
+  }
+  b(group,-1.39,.72,-.49,.1,.18,.22,'#f8e3b0');
+  return group;
+ }
+ // Pedestrian mailbox at the office exit.
+ const mailbox=new T.Group();mailbox.position.set(6.15,0,-7.0);root.add(mailbox);
+ column(mailbox,0,1.0,0,.105,2.0,'#74634d');
+ b(mailbox,0,2.03,0,.93,.73,.55,'#c25a4a');
+ b(mailbox,0,2.43,0,1.0,.10,.68,'#813e37');
+ b(mailbox,0,2.11,-.29,.70,.095,.035,'#f1d492');
+ sign(mailbox,'MAIL',0,1.81,-.30,.74,.20);
+ // City Hall - permanent municipal hub.
+ const hall=new T.Group();hall.position.set(-7,0,13.5);root.add(hall);
+ b(hall,0,.21,0,6.5,.40,5.4,'#d5c4a3');
+ b(hall,0,2.25,.25,5.9,3.9,4.8,'#b7a187');
+ b(hall,0,4.28,.25,6.5,.22,5.25,'#527466');
+ for(const x of [-2.48,-.83,.83,2.48])column(hall,x,1.9,-2.2,.19,3.1,'#e2d9c2');
+ b(hall,0,1.19,-2.24,1.13,2.0,.14,'#85634d');
+ sign(hall,'CITY HALL',0,3.74,-2.35,3.3,.52);
+ // Business warehouse and goods loading bay.
+ const depot=new T.Group();depot.position.set(23.5,0,6.0);root.add(depot);
+ b(depot,0,1.5,1.4,7.4,3.0,5.4,'#9baca5');
+ b(depot,0,3.03,1.4,7.75,.23,5.75,'#617a74');
+ b(depot,-1.75,1.30,-1.36,2.78,2.3,.12,'#536c65');
+ b(depot,1.8,1.30,-1.36,2.3,2.3,.12,'#c5b9a0');
+ for(let i=0;i<5;i++){b(depot,-2.75+i*1.25,.43,-2.6,.94,.78,.66,'#ad875b');}
+ sign(depot,'CITY WAREHOUSE',0,2.67,-1.49,4.7,.47);
+ // Cars travel along the road and change the view without a cutscene.
+ const traffic=[truck('#e6ad63'),truck('#5b99a1'),truck('#c67968')];
+ traffic.forEach(car=>root.add(car));
+ const addUpgrade=(id,x,z,build)=>{
+  const obj=new T.Group();obj.position.set(x,0,z);root.add(obj);obj.visible=false;
+  build(obj);return [id,obj];
+ };
+ const upgrades=new Map([
+ addUpgrade('garden',4,3,g=>{
+  for(let i=0;i<13;i++){
+   const theta=i*2.4,px=Math.cos(theta)*(1.1+i%3*.39),pz=Math.sin(theta)*(1.1+i%3*.39);
+   column(g,px,.24,pz,.20,.47,'#b17f61');sphere(g,px,.66,pz,.44,i%2?'#75a66e':'#659e80');
+  }
+ }),
+ addUpgrade('lights',0,0,g=>{
+  for(const [x,z] of [[-2,5],[9,26],[24,25],[-24,19],[30,6]]){
+   column(g,x,1.85,z,.095,3.7,'#667e76');
+   sphere(g,x,3.86,z,.36,'#f9dfaa');
+  }
+ }),
+ addUpgrade('home',25,32,g=>{
+  house(g,0,0,6.1,3.2,4.8,'#d1aa83');
+  sign(g,'MY HOME',0,2.85,-2.49,2.8,.37);
+ }),
+ addUpgrade('delivery',23,9,g=>g.add(truck('#d4cb9f'))),
+ addUpgrade('power',-39,30,g=>{
+  for(const x of [-2,0,2])for(const z of [-2,0,2]){
+   column(g,x,.65,z,.12,1.28,'#84908b');
+   const pane=b(g,x,1.30,z,1.66,.09,1.21,'#567c9b');pane.rotation.x=-.33;
+  }
+ }),
+ addUpgrade('office',-12,-1,g=>{
+  house(g,0,0,6.7,4.2,5.6,'#9ebbb5');
+  sign(g,'HEADQUARTERS',0,3.8,-2.88,4.2,.50);
+ }),
+ addUpgrade('research',36,-3,g=>{
+  house(g,0,0,6.9,4.0,5.6,'#bccdc9');
+  sphere(g,0,4.54,0,.5,'#a5d5d6');
+  sign(g,'RESEARCH LAB',0,3.57,-2.91,4.1,.50);
+ }),
+ addUpgrade('train',-2,33,g=>{
+  house(g,0,0,5.4,2.9,3.3,'#a4b5a5');
+  sign(g,'TRAINING',0,2.60,-1.72,3.1,.45);
+ })
+ ]);
+ // More animated residents and simple market signage.
+ const hiddenChests=LV_TREASURES.map(cache=>{
+  const chest=new T.Group();chest.position.set(cache.x,0,cache.z);
+  b(chest,0,.25,0,.75,.46,.50,'#80624a');
+  b(chest,0,.53,0,.83,.15,.59,'#d0b269');
+  b(chest,0,.34,-.28,.13,.30,.04,'#ebd286');
+  for(const x of [-.30,.30])b(chest,x,.49,-.29,.07,.20,.02,'#cdb274');
+  root.add(chest);return {cache,chest};
+ });
+ const pedestrians=[];
+ function figure(x,z,coat){
+  const rig=new T.Group();rig.position.set(x,0,z);root.add(rig);
+  const legs=[];
+  for(const px of [-.13,.13])legs.push(b(rig,px,.40,0,.21,.75,.23,'#42544c'));
+  b(rig,0,1.06,0,.54,.60,.29,coat);
+  sphere(rig,0,1.61,0,.23,'#d3a17a');
+  sphere(rig,0,1.76,-.01,.21,'#544034');
+  return {rig,legs,x,z};
+ }
+ pedestrians.push(figure(9,15,'#8ba2b8'),figure(-18,24,'#b68f78'),figure(17,28,'#b28a9f'));
+ function update(now,view){
+  const phase=now*.001;
+  for(let i=0;i<traffic.length;i++){
+   const car=traffic[i],distance=(phase*(i+1)*1.15+i*23)%78;
+   car.position.set(-37+distance,0,i===1?26:18);
+   car.rotation.y=i===1?Math.PI:0;
+  }
+  for(const [id,group] of upgrades)group.visible=Boolean(systemsState.upgrades[id]);
+  for(const item of hiddenChests){
+   item.chest.visible=cityCompleted()>=item.cache.unlock&&!systemsState.treasures.includes(item.cache.id);
+   if(item.chest.visible)item.chest.rotation.y=Math.sin(phase*.55)*.09;
+  }
+  if(upgrades.get('delivery').visible){
+   const van=upgrades.get('delivery');
+   if(systemsDriving&&view?.player){
+    van.position.set(view.player.x,0,view.player.z);
+    van.rotation.y=view.player.yaw+Math.PI/2;
+   }else{
+    van.position.set(23,0,9);
+    van.rotation.y=0;
+   }
+  }
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  pedestrians.forEach((p,i)=>{
+   const walking=Math.sin(phase*(.8+i*.12)+i);
+   p.rig.position.x=p.x+walking*1.25;
+   p.rig.rotation.y=walking*.3;
+   p.legs[0].rotation.x=Math.sin(phase*3+i)*.18;
+   p.legs[1].rotation.x=-Math.sin(phase*3+i)*.18;
+  });
+ }
+ return {update};
 }
 
 
@@ -5726,6 +6584,7 @@ function createOfficeView() {
   stand.visible = false;
   exterior.add(stand);
   const cityRenderer=createCityWorld({T,exterior,box,piece,renderer});
+  const lumenRenderer=createLumenWorld({T,exterior,box,piece,renderer});
 
   const coatColors = { rose: '#af6760', amber: '#bc8752', blue: '#4d7982' };
   function makeVisitor(tint) {
@@ -5805,10 +6664,15 @@ function createOfficeView() {
     door.rotation.y=-travel*1.46;
     kits.forEach((kit,i)=>{kit.visible=i<stock;});
     cityRenderer.update(current.city,now);
+    lumenRenderer.update(now,current);
+    // Slow day-and-night lighting, independent of random events.
+    const sunPhase=Math.max(.05,(Math.sin(now/115000)+1)/2);
+    sun.intensity=.42+1.55*sunPhase;
+    scene.background.set(sunPhase>.50?'#bedbd7':sunPhase>.25?'#819ba0':'#3b5973');
     // Subtle first-person locomotion feedback; disabled for reduced-motion preferences.
     const moving=current.moving && player!==SEAT_POSITION;
     const sway=moving && !reduceMotion.matches ? Math.sin(now*(current.sprinting?.016:.011))*(current.sprinting?.048:.025) : 0;
-    camera.position.set(player.x,player===SEAT_POSITION?1.46:1.7+sway,player.z);
+    camera.position.set(player.x,player===SEAT_POSITION?1.46:current.driving?2.15+sway:1.7+sway,player.z);
     camera.rotation.set(player.pitch,player.yaw,0,'YXZ');
     updateCameraFeed(now);
     renderer.render(scene,camera);
@@ -6085,7 +6949,7 @@ function drawScene(animate = '') {
     player: terminal.open ? SEAT_POSITION : player,
     camera: terminal.open && tab === 'cameras' ? securityChannel : null,
     built: state.stand, visitor: activeVisitor, waiting: VISITORS[state.step]?.style,
-    doorOpen, stock: shopTotals(state).onShelf, city:cityState, moving:moveKeys.has('w')||moveKeys.has('s')||moveKeys.has('a')||moveKeys.has('d'), sprinting:moveKeys.has('Shift'), animate,
+    doorOpen, stock: shopTotals(state).onShelf, city:cityState, moving:moveKeys.has('w')||moveKeys.has('s')||moveKeys.has('a')||moveKeys.has('d'), sprinting:moveKeys.has('Shift'), driving:systemsDriving, animate,
   });
 }
 let lastInteraction = '';
@@ -6095,7 +6959,7 @@ function refreshPosition() {
     state.stand && Math.hypot(player.x-STAND.x,player.z-STAND.z)<4.5 ? 'Pickup stand' :
     player.z < -12 ? 'Riverside' : 'Market grounds';
   if(byId('world-location').textContent!==place)byId('world-location').textContent=place;
-  const target = cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
+  const target = systemsNearby(player) || cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
   const name = target?.label || '';
   if (lastInteraction !== name) {
     lastInteraction=name;
@@ -6350,8 +7214,9 @@ function standUp() {
 }
 function interact() {
   if (terminal.open || dialog.open) return;
-  const target = cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
+  const target = systemsNearby(player) || cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
   if (!target) return;
+  if (target.system) return systemsInteract(target);
   if (target.city) return cityInteract(target);
   if (target.id === 'seat') return sitAtComputer();
   if (target.id === 'stand') {
@@ -6517,7 +7382,7 @@ function stepMovement(time) {
   const forward=pressed('w')-pressed('s'), side=pressed('d')-pressed('a');
   if (forward||side) {
     const intervals=Math.max(1,Math.ceil(elapsed/.04));
-    for(let i=0;i<intervals;i++)player=walkStep(player,forward,side,elapsed/intervals,{doorOpen,stand:state.stand,sprint:moveKeys.has('Shift')});
+    for(let i=0;i<intervals;i++)player=walkStep(player,forward,side,elapsed/intervals,{doorOpen,stand:state.stand,sprint:moveKeys.has('Shift'),driving:systemsDriving});
   }
   refreshPosition();
   drawScene();
@@ -6612,6 +7477,8 @@ try {
 
 // Initialize the city after the original first-person office is ready.
 cityInit();
+academyInstall();
+systemsInit();
 </script>
 </body>
 </html>
