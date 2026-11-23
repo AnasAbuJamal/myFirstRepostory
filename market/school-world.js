@@ -202,6 +202,55 @@ function decorateSchoolInterior(T,k,g,sign,place){
  schoolPerson(9.6,7.12,'#708f99',5,false);
  g.userData.schoolPeople=people;
 
+ // Architectural detail pass: trim and wayfinding, not more visual noise.
+ // These are decorative pieces only; the interactive desks and collision
+ // boundaries remain exactly where they were.
+ const oak='#b28e66',ivory='#f1ede2',brass='#b7a078',sage='#557e70',ink='#294946';
+ // Continuous corridor ceiling coves emphasize perspective and scale.
+ for(const side of [-1,1]){
+  k.box(side*2.92,4.83,-.18,.115,.12,21.35,oak);
+  k.light(side*2.81,4.76,-.18,.045,.025,21.20,'#fcead0');
+  k.box(side*3.19,.18,-.18,.055,.30,20.9,brass);
+  // One carefully composed oak-panelled feature wall per section,
+  // set behind existing teaching stations, never across a doorway.
+  for(const z of [-8.83,-1.87,6.88]){
+   for(let i=0;i<7;i++){
+    k.box(side*12.72,2.07,z+(i-3)*.28,.065,2.95,.045,i%3===0?brass:oak);
+   }
+   k.box(side*12.67,3.58,z, .075,.11,2.36,ivory);
+   k.box(side*12.67,.54,z, .075,.11,2.36,ivory);
+  }
+ }
+ // Subject-coded illuminated markers at the room entrances.
+ const wayfinding=[
+  {z:-4.42,l:'BIOLOGY',r:'CAREERS',c:'#648b79'},
+  {z:.85,l:'QURAN',r:'SCIENCE',c:'#7b998b'},
+  {z:3.65,l:'LIBRARY',r:'EXAMS',c:'#9b9c80'}
+ ];
+ for(const area of wayfinding){
+  k.box(0,4.61,area.z,3.52,.14,.12,oak);
+  for(const side of [-1,1]){
+   const x=side*3.47;
+   k.box(x,3.91,area.z,.25,.11,2.19,brass);
+   k.light(x,3.82,area.z,.065,.04,1.88,'#ffebc8');
+   const label=side<0?area.l:area.r;
+   // Text plane faces along +Z and stays above the opening.
+   sign(g,label,side*3.65,3.96,area.z,1.95,.30,1,ink);
+  }
+ }
+ // A warmer, more believable desk edge and inset lighting at reception.
+ for(const x of [-9.90,-6.50]){
+  k.box(x,.89,10.82,.06,.13,.08,brass);
+ }
+ k.light(-8.2,1.08,10.88,3.52,.045,.035,'#fff0d2');
+ // Slim framed faculty information panels, kept off the main walk aisle.
+ for(const x of [-2.45,2.45]){
+  k.box(x,1.94,-11.16,1.12,1.50,.10,oak);
+  k.box(x,1.94,-11.10,.97,1.35,.025,ivory);
+  k.box(x,2.42,-11.065,.70,.045,.02,sage);
+  for(let t=0;t<3;t++)k.box(x,2.14-t*.27,-11.057,.60,.028,.02,'#a8b6a9');
+ }
+
  // Detailed information wall with slowly rotating globe above floor height.
  sign(g,'WELCOME TO LUMENVALE',0,3.69,-11.43,6.05,.61,1,'#315e53');
  sign(g,'STUDENT INFORMATION',0,1.78,-11.43,3.44,.40,1,'#4c7166');
