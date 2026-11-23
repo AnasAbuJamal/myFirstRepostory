@@ -21,13 +21,38 @@ function decorateSchoolExterior(T,place,kit,sign,outside){
  for(const a of [-.56,.56])k.box(x+a,1.15,front+f*.25,.05,1.98,.13,'#f1e9d8');
  k.box(x,3.70,front+f*1.45,6.25,.15,1.02,'#425e57');
  for(const q of [-2.35,2.35])k.light(x+q,3.48,front+f*1.56,.31,.19,.31,'#ffe2a6');
- sign(g,'SCHOOL OF KNOWLEDGE',x,4.44,front+f*.2,6.72,.54,f,'#315e52');
- sign(g,'LEARN  ·  CREATE  ·  GROW',x,5.24,front+f*.2,6.52,.42,f,'#315e52');
+ sign(g,'LUMENVALE SCHOOL',x,4.44,front+f*.2,6.72,.54,f,'#315e52');
+ sign(g,'LEARNING CAMPUS  ·  OPEN CURRICULUM',x,5.24,front+f*.2,6.52,.42,f,'#315e52');
  const dial=new T.Mesh(new T.CylinderGeometry(.43,.43,.035,28),new T.MeshBasicMaterial({color:'#f8edda',side:T.DoubleSide}));
  dial.position.set(x,h+1.97,front+f*.43);dial.rotation.x=Math.PI/2;if(f<0)dial.rotation.y=Math.PI;g.add(dial);
  for(let n=0;n<12;n++){const a=n*Math.PI/6;k.box(x+Math.sin(a)*.34,h+1.97+Math.cos(a)*.34,front+f*.453,.032,.053,.012,'#3f605b');}
  k.box(x,h+2.06,front+f*.47,.035,.23,.02,'#3f605b',0,0,-.4);
  k.box(x+.10,h+1.97,front+f*.47,.22,.035,.02,'#3f605b',0,0,-.2);
+ // Ordered downtown-scale facade inspired by urban street architecture.
+ // Bay rhythm is consistent; added surfaces remain within the school parcel.
+ const graphite='#293c40', bronze='#b3926e', glass='#597e8a', pale='#e6e5dc';
+ for(const y of [2.04,4.80,6.60]){
+  for(const side of [-1,1])for(const i of [0,1,2]){
+   const px=x+side*(2.48+i*1.90);
+   k.box(px,y,front+f*.29,1.47,1.26,.055,graphite);
+   k.box(px,y,front+f*.325,1.30,1.12,.034,glass);
+   k.box(px,y+.32,front+f*.352,1.28,.36,.014,'#8eabb1');
+   k.box(px,y,front+f*.367,.045,1.17,.035,pale);
+   k.box(px,y-.65,front+f*.335,1.52,.08,.10,bronze);
+  }
+ }
+ for(const yy of [3.27,5.75,7.52])k.box(x,yy,front+f*.28,16.3,.115,.10,yy===7.52?graphite:bronze);
+ for(const side of [-1,1]){
+  k.box(x+side*8.0,4.09,front+f*.25,.13,7.44,.12,graphite);
+  for(const yy of [1.05,3.48,5.95])k.box(x+side*7.82,yy,front+f*.30,.28,.20,.22,bronze);
+ }
+ // The entrance canopy is overhead; door and pedestrian approaches stay clear.
+ k.box(x,3.32,front+f*.94,4.86,.18,1.25,graphite);
+ k.box(x,3.20,front+f*1.48,4.52,.075,.095,bronze);
+ for(const sx of [-1.82,1.82]){
+  k.box(x+sx,1.31,front+f*.36,.07,2.35,.05,pale);
+  k.box(x+sx,2.62,front+f*.36,.55,.08,.05,bronze);
+ }
  k.flush(g);
  applySchoolExteriorTextures({T,group:g,place,low:false});
 }
@@ -49,7 +74,7 @@ function decorateSchoolInterior(T,k,g,sign,place){
   k.box(0,4.62,z,21.2,.16,.17,'#668578');
   for(const x of [-8,0,8])k.light(x,4.52,z,1.16,.05,.50,'#ffebbd');
  }
- for(const [x,title,tint] of [[-7,'ACADEMIC PATHWAYS','#486e66'],[7,'CAREER CENTER','#547b7c']]){
+ for(const [x,title,tint] of [[-7,'COURSE STUDIO','#486e66'],[7,'STUDENT HUB','#547b7c']]){
   k.box(x,2.57,-11.63,5.75,2.16,.15,'#f0e7d4');
   k.box(x,2.57,-11.52,5.32,1.68,.10,tint);
   sign(g,title,x,3.79,-11.41,5.2,.56,1,'#345d53');
@@ -92,11 +117,11 @@ function decorateSchoolInterior(T,k,g,sign,place){
  // Six recognizable rooms wrap a central corridor. Each room has a wide,
  // unobstructed doorway matching the movement/collision plan in districts.js.
  const roomZones=[
-  {start:-11.32,end:-3.38,door:-4.42,nameLeft:'BIOLOGY CLASS',nameRight:'CAREER STUDIO',
+  {start:-11.32,end:-3.38,door:-4.42,nameLeft:'FUTURE CLASSROOM A',nameRight:'FUTURE CLASSROOM B',
    toneLeft:'#dce9d9',toneRight:'#dee7ea',trim:'#678e80'},
-  {start:-3.38,end:2.38,door:.85,nameLeft:'QURAN LEARNING',nameRight:'SCIENCE LAB',
+  {start:-3.38,end:2.38,door:.85,nameLeft:'CURRICULUM ROOM',nameRight:'ASSESSMENT ROOM',
    toneLeft:'#efe7d3',toneRight:'#d6e7e1',trim:'#7c9b83'},
-  {start:2.38,end:9.78,door:3.65,nameLeft:'READING LIBRARY',nameRight:'EXAM CENTER',
+  {start:2.38,end:9.78,door:3.65,nameLeft:'SCHOOL LIBRARY',nameRight:'STUDY LOUNGE',
    toneLeft:'#eae1d0',toneRight:'#e0e2eb',trim:'#8292a0'}
  ];
  for(let tier=0;tier<roomZones.length;tier++){
@@ -146,13 +171,28 @@ function decorateSchoolInterior(T,k,g,sign,place){
    k.box(side*8.14,.22,room.end,9.58,.43,.06,'#8eae9b');
   }
  }
+ // The left front room is the school library. Additional books stay inside
+ // the existing bookcase collision boundary and preserve accessible aisles.
+ for(let rack=0;rack<3;rack++){
+  const z=3.90+rack*1.60;
+  k.box(-11.38,1.44,z,.76,2.16,1.25,'#6c5947');
+  for(const yy of [.71,1.30,1.87]){
+   k.box(-10.98,yy,z,.86,.075,1.26,'#b38f68');
+   for(let index=0;index<8;index++){
+    const zz=z-.49+index*.135;
+    k.box(-10.94,yy+.18,zz,.35,.35+(index%3)*.045,.095,
+     ['#5f8390','#bb8e63','#6a977d','#a27e91'][index%4]);
+   }
+  }
+ }
+ // No teacher has published a classroom or lab yet. These rooms remain flexible.
  // Reception and waiting lounge sit to either side of the main entry,
  // preserving the center aisle and the exit at z=11.0.
  k.box(-8.2,.86,10.22,4.10,.21,1.28,'#886b52');
  k.box(-8.2,1.47,10.58,4.10,1.08,.16,'#719387');
  k.box(-8.2,1.52,10.50,3.65,.065,.08,'#d3e5d3');
  k.box(-8.2,.44,10.38,3.78,.69,.92,'#b59a79');
- sign(g,'STUDENT RECEPTION',-8.2,2.75,10.91,4.48,.45,1,'#416857');
+ sign(g,'SCHOOL RECEPTION',-8.2,2.75,10.91,4.48,.45,1,'#416857');
  for(const z of [9.48,10.6]){
   k.box(8.25,.53,z,4.12,.20,.58,'#648478');
   k.box(8.25,.97,z+.20,4.12,.68,.13,'#607c71');
@@ -161,7 +201,7 @@ function decorateSchoolInterior(T,k,g,sign,place){
  k.box(0,.052,10.6,2.60,.025,1.18,'#efe3bd');
  sign(g,'WELCOME · MY COURSES · GRADES',0,3.63,11.63,8.0,.44,-1,'#42685d');
  // School timetable and accessible route markers.
- for(const [z,label] of [[-5.25,'CLASSROOMS'],[.05,'LIBRARY · LAB'],[5.9,'STUDENT HUB']]){
+ for(const [z,label] of [[-5.25,'FUTURE CLASSROOMS'],[.05,'COURSES · ASSESSMENTS'],[5.9,'LIBRARY · STUDY']]){
   k.box(0,3.31,z,2.20,.62,.10,'#35584d');
   sign(g,label,0,3.33,z+.079,2.08,.42,1,'#35584d');
  }
@@ -220,9 +260,9 @@ function decorateSchoolInterior(T,k,g,sign,place){
  }
  // Subject-coded illuminated markers at the room entrances.
  const wayfinding=[
-  {z:-4.42,l:'BIOLOGY',r:'CAREERS',c:'#648b79'},
-  {z:.85,l:'QURAN',r:'SCIENCE',c:'#7b998b'},
-  {z:3.65,l:'LIBRARY',r:'EXAMS',c:'#9b9c80'}
+  {z:-4.42,l:'CLASSES',r:'DIRECTORY',c:'#648b79'},
+  {z:.85,l:'JSON IMPORT',r:'ASSESSMENTS',c:'#7b998b'},
+  {z:3.65,l:'LIBRARY',r:'STUDY',c:'#9b9c80'}
  ];
  for(const area of wayfinding){
   k.box(0,4.61,area.z,3.52,.14,.12,oak);
@@ -250,7 +290,7 @@ function decorateSchoolInterior(T,k,g,sign,place){
 
  // Detailed information wall with slowly rotating globe above floor height.
  sign(g,'WELCOME TO LUMENVALE',0,3.69,-11.43,6.05,.61,1,'#315e53');
- sign(g,'STUDENT INFORMATION',0,1.78,-11.43,3.44,.40,1,'#4c7166');
+ sign(g,'TEACHER-LED LEARNING',0,1.78,-11.43,3.44,.40,1,'#4c7166');
  for(const x of [-2,2]){
   k.box(x,1.06,-10.66,1.31,2.02,.68,'#ae8d67');
   for(const y of [.60,1.10,1.65])k.box(x,y,-10.29,1.21,.08,.75,'#e5cc9b');
