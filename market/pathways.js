@@ -3,7 +3,7 @@
  * Student offline packs and grades are always labeled PRACTICE / UNVERIFIED.
  */
 const PATHWAYS_KEY='lumenvale-academic-v1';
-const PATHWAYS_TYPES={catalog:'lumenvale.catalog',pack:'lumenvale.academic-pack',quran:'lumenvale.quran-plan'};
+const PATHWAYS_TYPES={catalog:'lumenvale.catalog',pack:'lumenvale.academic-pack',quran:'lumenvale.quran-plan',exam:'lumenvale.exam-pack',cards:'lumenvale.flashcard-pack'};
 function pathwayInitial(){return {version:1,goal:'biology',ageBand:'10-13',enrolled:[],packs:{},quranPlans:{},study:{},scores:{},recitations:{},history:[],flashcardReviews:{},importNames:[]};}
 function pathwayString(value,max=500){return String(value??'').trim().slice(0,max);}
 function pathwayValidateQuestions(list,name,limits={min:2,max:30}){
@@ -44,6 +44,29 @@ function pathwayValidatePack(raw){
   author:pathwayString(raw.author,100)||'Teacher materials',lessons,
   exam:{title:pathwayString(raw.exam?.title,150)||'Final examination',questions:exam},
   gradePolicy:{passPercent},source:pathwayString(raw.source,300),publishedAt:pathwayString(raw.publishedAt,40)};
+}
+function pathwayValidateExam(raw){
+ const courseId=pathwayString(raw.courseId,35),course=pathwayCourse(courseId);
+ if(!course||course.kind==='teacher-recitation')throw Error('Exam pack has an unknown academic course.');
+ const exam=pathwayValidateQuestions(raw.exam?.questions,'Exam',{min:3,max:40});
+ return {kind:PATHWAYS_TYPES.exam,version:1,courseId,title:pathwayString(raw.title,130)||'Exam Pack',
+  exam:{title:pathwayString(raw.exam?.title,150)||'Final exam',questions:exam},
+  gradePolicy:{passPercent:Math.max(60,Math.min(100,Number(raw.gradePolicy?.passPercent)||70))}};
+}
+function pathwayValidateCards(raw){
+ const courseId=pathwayString(raw.courseId,35),course=pathwayCourse(courseId);
+ if(!course||course.kind==='teacher-recitation')throw Error('Flashcard pack has an unknown academic course.');
+ const lessonId=pathwayString(raw.lessonId,45);
+ if(!/^[a-zA-Z0-9_-]{3,45}$/.test(lessonId))throw Error('Choose an existing lessonId.');
+ if(!Array.isArray(raw.flashcards)||!raw.flashcards.length||raw.flashcards.length>60)
+  throw Error('Flashcard pack requires 1–60 cards.');
+ const flashcards=raw.flashcards.map(card=>{
+  const front=pathwayString(card?.front,180),back=pathwayString(card?.back,600);
+  if(!front||!back)throw Error('Each card needs front and back text.');
+  return {front,back};
+ });
+ return {kind:PATHWAYS_TYPES.cards,version:1,courseId,lessonId,
+  title:pathwayString(raw.title,130)||'Flashcard Practice',flashcards};
 }
 function pathwayValidateQuran(raw){
  if(!raw||raw.kind!==PATHWAYS_TYPES.quran||raw.version!==1)throw Error('Expected lumenvale.quran-plan JSON, version 1.');
@@ -340,23 +363,38 @@ function pathwayImportPanel(){
  '<button class="button" data-pathways="home">Back to pathways</button>');
 }
 function pathwayImportObject(input,name='Teacher JSON'){
- const items=Array.isArray(input)?input:Array.isArray(input?.packs)?input.packs:[input];
- if(items.length<1||items.length>25)throw Error('Import 1–25 course packs at a time.');
- const parsed=items.map(item=>{
-  if(item?.kind===PATHWAYS_TYPES.quran)return pathwayValidateQuran(item);
+ const records=Array.isArray(input)?input:Array.isArray(input?.packs)?input.packs:[input];
+ if(records.length<1||records.length>25)throw Error('Import 1–25 academic packs at a time.');
+ const parsed=records.map(item=>{
+  if(item?.version!==1)throw Error('All packs must use version 1.');
+  if(item.kind===PATHWAYS_TYPES.quran)return pathwayValidateQuran(item);
+  if(item.kind===PATHWAYS_TYPES.exam)return pathwayValidateExam(item);
+  if(item.kind===PATHWAYS_TYPES.cards)return pathwayValidateCards(item);
   return pathwayValidatePack(item);
  });
+ const nextPacks={...pathwayState.packs},nextPlans={...pathwayState.quranPlans},reset=new Set();
+ // Base course files are processed first, even if the JSON bundle lists exam/cards before them.
+ for(const item of parsed.filter(x=>x.kind===PATHWAYS_TYPES.pack)){
+  if(!nextPacks[item.courseId]||JSON.stringify(nextPacks[item.courseId])!==JSON.stringify(item))
+   reset.add(item.courseId);
+  nextPacks[item.courseId]=item;
+ }
  for(const item of parsed){
-  if(item.kind===PATHWAYS_TYPES.quran)pathwayState.quranPlans[item.courseId]=item;
-  else{
-   const old=pathwayState.packs[item.courseId];
-   pathwayState.packs[item.courseId]=item;
-   // Changed content resets previous offline exam/reading because the test may differ.
-   if(!old||JSON.stringify(old)!==JSON.stringify(item)){
-    delete pathwayState.study[item.courseId];delete pathwayState.scores[item.courseId];
-   }
+  if(item.kind===PATHWAYS_TYPES.quran){nextPlans[item.courseId]=item;continue;}
+  if(item.kind===PATHWAYS_TYPES.pack)continue;
+  const base=nextPacks[item.courseId];
+  if(!base)throw Error('Import a full lesson pack for '+item.courseId+' before separate exams or flashcards.');
+  if(item.kind===PATHWAYS_TYPES.exam){
+   base.exam=item.exam;base.gradePolicy=item.gradePolicy;
+   reset.add(item.courseId);
+  }else{
+   const lesson=base.lessons.find(l=>l.id===item.lessonId);
+   if(!lesson)throw Error('Flashcard pack refers to a missing lesson: '+item.lessonId);
+   lesson.flashcards=item.flashcards;
   }
  }
+ pathwayState.packs=nextPacks;pathwayState.quranPlans=nextPlans;
+ for(const id of reset){delete pathwayState.study[id];delete pathwayState.scores[id];}
  pathwayState.importNames=[...new Set([name,...pathwayState.importNames])].slice(0,15);
  pathwaySave();return parsed.length;
 }
