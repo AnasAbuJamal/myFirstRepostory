@@ -162,7 +162,8 @@ function cityBookPage(){
  '<p>'+esc(pageText)+'</p><div class="city-book-footer"><span>Read carefully to unlock the next page.</span>'+
  '<button type="button" class="button primary" data-city-action="page">'+(last?'Answer question':'Next page')+'</button></div></div>'+
  '<div class="city-reading-meter"><span class="city-reading-fill" id="city-reading-fill"></span></div>'+
- '<p class="city-sub" id="city-reading-hint">Read for a few seconds before continuing.</p>');
+ '<p class="city-sub" id="city-reading-hint">Read for a few seconds before continuing.</p>'+ 
+  '<button type="button" class="button" data-wave="save-selection">Save selected word to My Words</button>');
 }
 function cityNextPage(){
  if(!cityBookSession)return;
