@@ -78,7 +78,7 @@ function systemsTick(now=Date.now()){
  for(const [id,product] of Object.entries(LV_PRODUCTS)){
   const unit=cityState.sites[id];
   if(unit?.built&&unit.staff>0){
-   const count=Math.floor(ticks*unit.staff*Math.max(1,unit.level)*Math.max(1,unit.landLevel||1)/2);
+   const count=Math.max(1,Math.floor(ticks*unit.staff*Math.max(1,unit.level)*Math.max(1,unit.landLevel||1)/2));
    systemsState.inventory[id]=Math.min(1e7,(systemsState.inventory[id]||0)+count);
   }
  }
