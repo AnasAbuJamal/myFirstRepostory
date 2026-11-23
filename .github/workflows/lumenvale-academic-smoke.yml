@@ -17,7 +17,9 @@ jobs:
       - name: Build single-file game
         run: python3 market/build.py --output dist/index.html
       - name: Run course and transcript tests
-        run: node --test market/test-academics.cjs market/test-districts.cjs market/test-school.cjs
+        run: |
+          node --check market/lms.js
+          node --test market/test-academics.cjs market/test-districts.cjs market/test-school.cjs market/test-lms.cjs
       - name: Install browser for gameplay test
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
