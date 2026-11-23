@@ -39,25 +39,10 @@ function createCityWorld({T,exterior,box,piece,renderer}){
   mesh.position.set(x,y,z-.075);g.add(mesh);
  }
  function person(g,x,z,shirt,hair='#443529'){
-  const rig=new T.Group();rig.position.set(x,0,z);g.add(rig);
-  const left=new T.Group(),right=new T.Group();
-  left.position.set(-.18,.78,0);right.position.set(.18,.78,0);
-  b(left,0,-.37,.0,.22,.76,.27,'#394844');
-  b(right,0,-.37,.0,.22,.76,.27,'#364643');
-  b(left,0,-.72,-.07,.26,.15,.38,'#3d3027');
-  b(right,0,-.72,-.07,.26,.15,.38,'#3d3027');
-  rig.add(left,right);
-  b(rig,0,1.08,0,.62,.67,.34,shirt);
-  const armL=new T.Group(),armR=new T.Group();
-  armL.position.set(-.38,1.3,0);armR.position.set(.38,1.3,0);
-  b(armL,0,-.25,0,.16,.56,.19,shirt);
-  b(armR,0,-.25,0,.16,.56,.19,shirt);
-  rig.add(armL,armR);
-  cylinder(rig,0,1.58,0,.13,.17,'#ba805a',7);
-  sphere(rig,0,1.87,0,.30,'#c9906b');
-  const hairMesh=sphere(rig,0,2.06,.015,.29,hair);hairMesh.scale.y=.48;
-  for(const ex of [-.105,.105])sphere(rig,ex,1.88,-.266,.025,'#2f392f');
-  return {rig,left,right,armL,armR,x,z};
+  const actor=makeTownCitizen(T,piece,box,{coat:shirt,hair,skin:'#bd8866',pants:'#495957',style:'cap'});
+  actor.rig.position.set(x,.03,z);
+  g.add(actor.rig);
+  return {rig:actor.rig,left:actor.legs[0],right:actor.legs[1],armL:actor.arms[0],armR:actor.arms[1],x,z};
  }
  function plant(g,x,z,scale=1){
   b(g,x,.24*scale,z,.44*scale,.48*scale,.44*scale,'#aa734e');
@@ -68,33 +53,6 @@ function createCityWorld({T,exterior,box,piece,renderer}){
     .27*scale,.72*scale,.25*scale,i%2?'#4e8d5d':'#6fa36a');
    leaf.rotation.z=Math.sin(a)*.26;
   }
- }
- // Plaza fountain and garden beds.
- const park=new T.Group();park.position.set(6.7,0,10.9);city.add(park);
- cylinder(park,0,.28,0,2.2,.45,'#a6b7ad',12);
- cylinder(park,0,.53,0,1.97,.17,'#78b0b6',12);
- cylinder(park,0,1.1,0,.28,1.0,'#ccd9cf',10);
- sphere(park,0,1.67,0,.39,'#88bfd0');
- for(let i=0;i<8;i++){
-  const a=i*PI/4;
-  plant(park,Math.cos(a)*3.3,Math.sin(a)*3.3,.65);
- }
- // Decorative lamps, benches, market awnings, and trees.
- for(const [x,z] of [[-19,15],[-34,16],[29,24],[-4,30]]){
-  cylinder(city,x,1.8,z,.095,3.6,'#56665d');
-  sphere(city,x,3.72,z,.3,'#f5d8a2');
-  cylinder(city,x,3.44,z,.30,.15,'#4b5e52');
- }
- for(const [x,z] of [[6,10],[7,28],[23,9],[-16,30]]){
-  b(city,x,.46,z,2.3,.20,.55,'#9f754f');
-  for(const a of [-.86,.86])b(city,x+a,.26,z,.13,.42,.12,'#78624d');
-  b(city,x,.91,z+.23,2.3,.75,.13,'#9f754f');
- }
- for(const [x,z] of [[-37,3],[-38,32],[-5,33],[27,33],[38,27],[37,3],[-6,4]]){
-  cylinder(city,x,1.0,z,.24,2,'#7a654c');
-  sphere(city,x,3.0,z,1.45,'#4f805b');
-  sphere(city,x-.64,2.75,z+.35,1.0,'#68986b');
-  sphere(city,x+.59,2.95,z-.27,.92,'#588f5d');
  }
  // Empty plots become real production buildings once the player spends coins.
  const buildings=new Map();
@@ -208,15 +166,11 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    }
   }
   active.visible=false;
+  for(const part of active.children){
+   if(part.isMesh){part.castShadow=true;part.receiveShadow=true;}
+  }
   buildings.set(site.id,{active,crane,ownedLand,landTiers,workers,motion,site,lot});
  }
- // A few town residents make the settlement feel alive before construction.
- const townspeople=[
-  person(city,8,15.4,'#b16e63','#533c32'),
-  person(city,20,15.4,'#75a18a','#2e372f'),
-  person(city,-7,24.2,'#bc9c60','#5d453a'),
-  person(city,5,27,'#9a80bb','#443b31')
- ];
  function update(saved,now){
   const time=now*.001;
   const pause=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -241,7 +195,6 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    // Factory machinery and people keep moving even while the player stands still.
    animatePeople(entry.workers, time, pause, id.length*.27);
   }
-  animatePeople(townspeople,time,pause,0);
  }
  function animatePeople(people,time,pause,offset){
   if(pause)return;

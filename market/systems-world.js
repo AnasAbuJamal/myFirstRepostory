@@ -1,5 +1,5 @@
 /* Optional decorative district that responds to city services and the economy. */
-function createLumenWorld({T,exterior,box,renderer}){
+function createLumenWorld({T,exterior,box,piece,renderer}){
  const root=new T.Group();exterior.add(root);
  const low=Boolean(renderer?.isSoftware),palette=new Map();
  const colors={wood:'#986f4f',gold:'#e1bd76',stone:'#c9c1ae',glass:'#9cc8c7',road:'#718276'};
@@ -44,12 +44,12 @@ function createLumenWorld({T,exterior,box,renderer}){
   return group;
  }
  // Pedestrian mailbox at the office exit.
- const mailbox=new T.Group();mailbox.position.set(6.15,0,-7.0);root.add(mailbox);
- column(mailbox,0,1.0,0,.105,2.0,'#74634d');
- b(mailbox,0,2.03,0,.93,.73,.55,'#c25a4a');
- b(mailbox,0,2.43,0,1.0,.10,.68,'#813e37');
- b(mailbox,0,2.11,-.29,.70,.095,.035,'#f1d492');
- sign(mailbox,'MAIL',0,1.81,-.30,.74,.20);
+ const mailbox=new T.Group();mailbox.position.set(5.1,0,-4.12);root.add(mailbox);
+ column(mailbox,0,.55,0,.095,1.1,'#606e67');
+ b(mailbox,0,1.11,0,.93,.73,.55,'#c25a4a');
+ b(mailbox,0,1.51,0,1.0,.10,.68,'#813e37');
+ b(mailbox,0,1.19,-.29,.70,.095,.035,'#f1d492');
+ sign(mailbox,'MAIL',0,.92,-.30,.74,.20);
  // Cars travel along the road and change the view without a cutscene.
  const traffic=[truck('#e6ad63'),truck('#5b99a1'),truck('#c67968')];
  traffic.forEach(car=>root.add(car));
@@ -58,14 +58,14 @@ function createLumenWorld({T,exterior,box,renderer}){
   build(obj);return [id,obj];
  };
  const upgrades=new Map([
- addUpgrade('garden',4,3,g=>{
+ addUpgrade('garden',5.95,3.94,g=>{
   for(let i=0;i<13;i++){
    const theta=i*2.4,px=Math.cos(theta)*(1.1+i%3*.39),pz=Math.sin(theta)*(1.1+i%3*.39);
    column(g,px,.24,pz,.20,.47,'#b17f61');sphere(g,px,.66,pz,.44,i%2?'#75a66e':'#659e80');
   }
  }),
  addUpgrade('lights',0,0,g=>{
-  for(const [x,z] of [[-2,5],[9,26],[24,25],[-24,19],[30,6]]){
+  for(const [x,z] of [[-2,5],[13.4,24.65],[24,25],[-25.2,14.2],[31.5,5.4]]){
    column(g,x,1.85,z,.095,3.7,'#667e76');
    sphere(g,x,3.86,z,.36,'#f9dfaa');
   }
@@ -81,7 +81,7 @@ function createLumenWorld({T,exterior,box,renderer}){
    const pane=b(g,x,1.30,z,1.66,.09,1.21,'#567c9b');pane.rotation.x=-.33;
   }
  }),
- addUpgrade('office',-12,-1,g=>{
+ addUpgrade('office',-15.1,-.72,g=>{
   house(g,0,0,6.7,4.2,5.6,'#9ebbb5');
   sign(g,'HEADQUARTERS',0,3.8,-2.88,4.2,.50);
  }),
@@ -123,22 +123,38 @@ function createLumenWorld({T,exterior,box,renderer}){
   b(solar,x,3.52,.11,1.27,.03,.13,'#a2c4c9');
  }
  home.add(solar);homeDecor.set('solar',solar);
- const pedestrians=[];
- function figure(x,z,coat){
-  const rig=new T.Group();rig.position.set(x,0,z);root.add(rig);
-  const legs=[];
-  for(const px of [-.13,.13])legs.push(b(rig,px,.40,0,.21,.75,.23,'#42544c'));
-  b(rig,0,1.06,0,.54,.60,.29,coat);
-  sphere(rig,0,1.61,0,.23,'#d3a17a');
-  sphere(rig,0,1.76,-.01,.21,'#544034');
-  return {rig,legs,x,z};
- }
- pedestrians.push(figure(9,15,'#8ba2b8'),figure(-18,24,'#b68f78'),figure(17,28,'#b28a9f'));
+ const appearance=[
+  {coat:'#527d91',skin:'#cda381',hair:'#342c29',pants:'#4e6267',style:'long',bag:true},
+  {coat:'#ac784b',skin:'#9d624a',hair:'#352b28',pants:'#556659',style:'cap'},
+  {coat:'#a05c78',skin:'#d39f7c',hair:'#6a4b36',pants:'#47595a',style:'short',bag:true},
+  {coat:'#718654',skin:'#a16c56',hair:'#41332c',pants:'#4b6263',style:'long'},
+  {coat:'#3e8271',skin:'#d2ad8f',hair:'#775639',pants:'#455957',style:'cap',bag:true},
+  {coat:'#bd6c55',skin:'#8e5d4a',hair:'#302b29',pants:'#49596c',style:'short'},
+ ];
+ const citizens=LV_CHARACTERS.map((citizen,i)=>{
+  const member=makeTownCitizen(T,piece,box,appearance[i]);
+  member.rig.position.set(citizen.x,.08,citizen.z);
+  member.rig.rotation.y=[-1.4,.25,1.2][i];
+  root.add(member.rig);
+  return member;
+ });
+ const promenade=[
+  {x:-11.6,z:-4.02,span:.75},{x:15.5,z:-4.53,span:2.3},{x:-37.0,z:4.8,span:4.0},
+  {x:46.7,z:25.0,span:3.1},{x:-6.05,z:50.8,span:3.9},{x:49.9,z:58.1,span:3.2}
+ ];
+ const pedestrians=promenade.map((path,i)=>{
+  const member=makeTownCitizen(T,piece,box,appearance[(i+3)%appearance.length]);
+  member.rig.position.set(path.x,.074,path.z);
+  member.rig.rotation.y=Math.PI/2;
+  root.add(member.rig);
+  return {...member,...path};
+ });
+ const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
  function update(now,view){
   const phase=now*.001;
   for(let i=0;i<traffic.length;i++){
    const car=traffic[i],distance=(phase*(i+1)*1.15+i*28)%102;
-   car.position.set(i===1?55-distance:-47+distance,0,i===1?21.05:18.54);
+   car.position.set(i===1?55-distance:-47+distance,.064,i===1?21.14:18.45);
    car.rotation.y=i===1?Math.PI:0;
   }
   for(const [id,group] of upgrades)group.visible=Boolean(systemsState.upgrades[id]);
@@ -157,13 +173,16 @@ function createLumenWorld({T,exterior,box,renderer}){
     van.rotation.y=0;
    }
   }
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-  pedestrians.forEach((p,i)=>{
-   const walking=Math.sin(phase*(.8+i*.12)+i);
-   p.rig.position.x=p.x+walking*1.25;
-   p.rig.rotation.y=walking*.3;
-   p.legs[0].rotation.x=Math.sin(phase*3+i)*.18;
-   p.legs[1].rotation.x=-Math.sin(phase*3+i)*.18;
+  if(motion.matches)return;
+  citizens.forEach((person,i)=>{
+   person.arms[0].rotation.x=Math.sin(phase*1.2+i)*.075;
+  });
+  pedestrians.forEach((person,i)=>{
+   const travel=phase*.49+i*1.75, stride=Math.sin(phase*6+i)*.36;
+   person.rig.position.x=person.x+Math.sin(travel)*person.span;
+   person.rig.rotation.y=Math.cos(travel)>=0?Math.PI/2:-Math.PI/2;
+   person.legs.forEach((leg,side)=>{leg.rotation.x=side?stride:-stride;});
+   person.arms.forEach((arm,side)=>{arm.rotation.x=side?-stride*.72:stride*.72;});
   });
  }
  return {update};

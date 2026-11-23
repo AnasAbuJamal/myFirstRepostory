@@ -1,6 +1,6 @@
-# Jungle Miner · Market Office
+# LumenVale · Market Office
 
-A first-person story game about opening a tiny garden-kit business. The playable chapter takes place in an office on an empty lot. Read realistic customer emails, compose your own replies, receive visitors, restock the shelf, and build a pickup stand outside.
+A first-person story game about opening a tiny garden-kit business. The playable chapter takes place in the ground floor of the Market Office downtown. Read realistic customer emails, compose your own replies, receive visitors, restock the shelf, and build a pickup stand outside.
 
 ## Play
 
@@ -49,9 +49,9 @@ This branch now adds a connected 3D town around the original office. Walk east t
 
 At an empty construction plot, press **E** to pay the construction cost. New plot types unlock as you complete unique books. Return to a completed factory and press **E** to hire employees, upgrade machinery, or manually help the production line. Workers appear as animated 3D characters, generate coins every five seconds, and can produce for up to one hour while the browser is closed. The city also has a worker housing block, plaza, roads, gardens, benches, and signs.
 
-The **City coins** HUD is a separate expansion economy from the original shop's chapter wallet, so the scripted opening story remains playable without rebalancing. Progress is stored in localStorage under jungle-miner-city-v1. On a private browser or blocked storage, the play session still works but may not persist.
+The **City wallet** on the City Phone is a separate expansion economy from the original shop's chapter wallet, so the scripted opening story remains playable without rebalancing. Progress is stored in localStorage under jungle-miner-city-v1. On a private browser or blocked storage, the play session still works but may not persist.
 
-**Controls:** WASD to walk; hover/move mouse to look in regular mode; E to interact; **F** or the fullscreen button to request fullscreen + pointer lock. The cursor is hidden during fullscreen exploration. Press **Esc** to release pointer lock, and approach objects or use the City Guide for help. Touch and arrow controls from the office remain available.
+**Controls:** WASD to walk; click Play to capture the mouse, then move it to look; E to interact; **F** or the fullscreen button to request fullscreen + pointer lock. The cursor is hidden during fullscreen exploration. Press **Esc** to release pointer lock, and approach objects or use the City Guide for help. Touch and arrow controls from the office remain available.
 
 **Implementation:** Built with the existing bundled Three.js r180 renderer, with a lightweight procedural world and character rigs rather than large model downloads. Modules: city.js (reading, persistence, economy), city-world.js (3D geometry and animation), and city.css (HUD and library panels). No new runtime packages or network access are required. This is a gameplay expansion, not a completed collection of textbook lessons.
 
@@ -69,7 +69,7 @@ The default build command still produces a fully offline page with the expansion
 
 The game has been rebranded to **LumenVale: City of Knowledge**. The playable browser game now includes these additional systems:
 
-- **Teacher Studio (local prototype):** Teacher button in the top bar or the library opens a local content dashboard. Import a JSON file (up to 2 MB), review imported books, publish/unpublish or remove them, author a basic book, and export a portable lesson pack. Each lesson can specify `title`, `genre` (also accepts `genera`), `pages` or `text`, `readingLevel`, `wordCount`, `reward`, and `questions` with `prompt`, `choices`, and zero-based `correctIndex`. A `questionCount` requests 1–10 locally generated **draft fill-in-the-blank questions** when explicit questions are absent. Teachers should review draft questions for quality and accuracy; this is not AI-generated deep comprehension assessment.
+- **Teacher Studio (local prototype):** The earlier development build included a local content dashboard. Import a JSON file (up to 2 MB), review imported books, publish/unpublish or remove them, author a basic book, and export a portable lesson pack. Each lesson can specify `title`, `genre` (also accepts `genera`), `pages` or `text`, `readingLevel`, `wordCount`, `reward`, and `questions` with `prompt`, `choices`, and zero-based `correctIndex`. A `questionCount` requests 1–10 locally generated **draft fill-in-the-blank questions** when explicit questions are absent. Teachers should review draft questions for quality and accuracy; this is not AI-generated deep comprehension assessment.
 - **Genre library:** Library books are grouped by genre, show calculated word counts and question counts, and award coins after all questions are correctly answered. Books may have several questions, and attempts are recorded for local student nicknames. The teacher dashboard summarizes books, genres, words, question totals and locally recorded student progress. An example file is at `market/example-course-pack.json`.
 - **Mailbox and city dashboard:** Visit the roadside mailbox near the office or press **N**. Read messages from citizens and business clients. Press **B** to open City Hall's overview, contracts, warehouse, employees, research, civic upgrades, newspaper, exploration clues, and achievements.
 - **Meaningful expenses and investments:** Workers generate factory income but cost wages and maintenance every production cycle. Building/land costs, research, employee training, warehouse resupply, public gardens, streetlights, power, delivery van, headquarters, home, and a laboratory all consume in-game coins. Factories make inventory; delivering contract goods provides payouts and reputation. Training and technology improve output.
@@ -127,7 +127,7 @@ The local teacher course-pack example is available at `market/example-course-pac
 
 ## Campus, City Architect, and separate teacher portal
 
-**Student game:** The student can open **School** in the top navigation or walk to the school building in the western district. The player chooses classes in English, Math, Science, and Business, completes three lessons per course, and takes final exams. Latest course exam percentages determine a game-only 4.0 GPA. Students can explore four career paths; passing the matching subject unlocks a career. **Words** is a local vocabulary journal, and the reading book view supports selecting a word and saving it.
+**Student game:** The student can open **School** on the City Phone or walk to the school building in the western district. The player chooses classes in English, Math, Science, and Business, completes three lessons per course, and takes final exams. Latest course exam percentages determine a game-only 4.0 GPA. Students can explore four career paths; passing the matching subject unlocks a career. **Words** is a local vocabulary journal, and the reading book view supports selecting a word and saving it.
 
 **City Architect:** The **Build** button opens a top-down town grid. Players can spend in-game coins to place trees, parks, roads, lamps, and small houses, or move purchased factory plots. Buildings can rotate in quarter turns. All objects render in the Three.js world and persist in localStorage. The **Map** is a pin map of world buildings, not geographic GPS.
 
@@ -156,3 +156,19 @@ marked exit to return to the same door. The teacher portal remains a separate
 app under teacher/.
 
 Run `node --test market/test-*.cjs` from the repository root.
+
+
+## Downtown and City Phone
+
+Use **P** or the bottom-right Phone button to see land owned, estimated
+production income per five seconds, the city wallet, and goods in stock.
+The Properties app shows progress by parcel. Production opens the warehouse.
+School, Library, the reading journal, My Words, Careers, City Architect,
+Mail, the map, and display controls are accessible from the phone. The
+Market Office computer still handles story orders, customer messages,
+reports, and live security cameras.
+
+`districts.js` owns the street plan and public building proportions.
+`district-world.js` builds shared instanced streets, facade details, and
+interiors. WebGL uses a cached local directional shadow map. The Canvas
+fallback renders the same geometry with simpler lighting.

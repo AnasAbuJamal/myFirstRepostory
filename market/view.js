@@ -24,7 +24,22 @@ function createOfficeView() {
   scene.add(skyLight);
   const sun = new T.DirectionalLight('#ffe3ae', 2.05);
   sun.position.set(-18, 19, 12);
-  scene.add(sun);
+  scene.add(sun, sun.target);
+  const officeFill = new T.DirectionalLight('#fff1d1', .65);
+  officeFill.position.set(2,3,-5);
+  officeFill.visible=false;
+  scene.add(officeFill);
+  const shadows = !renderer.isSoftware && renderer.shadowMap;
+  if (shadows) {
+    shadows.enabled=true;
+    shadows.autoUpdate=false;
+    sun.castShadow=true;
+    sun.shadow.mapSize.set(1024,1024);
+    Object.assign(sun.shadow.camera,{left:-24,right:24,top:24,bottom:-24,near:3,far:80});
+    sun.shadow.camera.updateProjectionMatrix();
+    sun.shadow.bias=-.00022;
+    sun.shadow.normalBias=.052;
+  }
   const camera = new T.PerspectiveCamera(70, 1, .07, 145);
   const office = new T.Group();
   const exterior = new T.Group();
@@ -50,11 +65,7 @@ function createOfficeView() {
   }
   const box = (group, ...shape) => piece(group, 'cube', ...shape);
 
-  box(exterior, 0, -.52, 20, 183, 1, 145, '#8b9c70');
-  box(exterior, 0, .007, -10, 48, .031, 2.5, '#c6b28a');
-  box(exterior, 2.62, .006, -6.7, 2.12, .035, 6.3, '#c8b794');
-  box(exterior, -4.32, .006, -11.74, 1.6, .034, 3.4, '#c1af89');
-  box(exterior, -5.3, .007, -13.4, 8.7, .039, 4.2, '#9dac76');
+  box(exterior, 0, -.52, 20, 183, 1, 145, '#a5b977').receiveShadow=true;
   for (const [i, x] of [-42, -24, -5, 16, 33, 53].entries()) {
     piece(exterior, 'rock', x, -2.75, -31 - (i % 3) * 3, 16, 8 + i % 4, 13, ['#9bab8c', '#8fab89', '#a5b498'][i % 3]);
   }
@@ -72,8 +83,7 @@ function createOfficeView() {
   exterior.add(new T.Mesh(river, new T.MeshLambertMaterial({ color: '#76aca5', side: T.DoubleSide })));
 
   const trees = [
-    [-9, -8, 2.5], [8, -9, 2.9], [11, -13, 2.1], [-14, -12, 2.8],
-    [-22, -16, 2.8], [-15, -25, 3.15], [1, -24, 2.1], [17, -22, 3.4],
+    [-22, -16.7, 2.8], [-15, -25, 3.15], [1, -24, 2.1], [17, -22, 3.4],
   ];
   let seed = 371;
   function random() {
@@ -111,56 +121,96 @@ function createOfficeView() {
       h * .77, h * .68, h * .73, ['#4c805a', '#588b60', '#75a06c', '#609364'][i % 4]];
   });
   instances('cone', 105, i => {
-    const x = (random() - .5) * 54, z = i % 2 ? -11.6 - random() * 3 : -17 - random();
+    const x = (random() - .5) * 71, z = -18.5 - random()*3;
     const h = .11 + random() * .45;
     return [x, h * .45, z, h * 1.41, h, h * 1.2, i % 3 ? '#82a36a' : '#b0b975'];
   });
-  for (const [x, z] of [[-9, -14], [-.5, -12.3], [-7., -16.2], [5, -13.5]]) {
-    piece(exterior, 'rock', x, .14, z, .47, .33, .44, '#a2a395');
-  }
 
-  box(office, 0, -.145, .15, 8.6, .27, 8.2, '#a98456');
+  box(office, 0, -.145, .15, 8.6, .27, 8.2, '#bbb19c');
   for (let p = -8; p <= 8; p++) {
     const x = p * .49;
-    box(office, x, -.003, .15, .014, .012, 8.16, '#927550');
-    if (p % 2 === 0) box(office, x + .245, -.003, p * .38, .49, .012, .015, '#927550');
+    box(office, x, -.003, .15, .014, .012, 8.16, '#a89e8e');
+    if (p % 2 === 0) box(office, x + .245, -.003, p * .38, .49, .012, .015, '#a89e8e');
   }
-  box(office, -4.18, 1.45, .1, .14, 2.9, 7.8, '#c2b48a');
-  box(office, 4.18, 1.45, .1, .14, 2.9, 7.8, '#c2b48a');
-  box(office, 0, 1.45, 4.10, 8.47, 2.9, .15, '#c9b68c');
-  box(office, 0, 2.935, .1, 8.5, .14, 8, '#b4a47f');
-  box(office, 0, 3.09, .1, 8.98, .18, 8.64, '#567765');
+  box(office, -4.18, 1.45, .1, .14, 2.9, 7.8, '#e5e2d7');
+  box(office, 4.18, 1.45, .1, .14, 2.9, 7.8, '#e5e2d7');
+  box(office, 0, 1.45, 4.10, 8.47, 2.9, .15, '#e5e2d7');
+  box(office, 0, 2.935, .1, 8.5, .14, 8, '#eeede4');
+
   for (const x of [-4.15,4.15]) for (let z=-3.45; z<3.7; z+=.74) {
-    box(office,x,1.56,z,.032,2.72,.016,'#a99572');
+    box(office,x,1.56,z,.032,2.72,.016,'#d4d3c8');
   }
   for (const z of [-1.10,1.84]) {
-    box(office,0,2.82,z,1.74,.08,.62,'#d6c8a0');
-    box(office,0,2.774,z,1.57,.019,.48,'#f0e2b8');
+    box(office,0,2.82,z,1.74,.08,.62,'#465c56');
+    box(office,0,2.774,z,1.57,.019,.48,'#fff1cc');
   }
-  const carpet = box(office,.02,.015,1.33,2.39,.024,1.72,'#768469');
+  const carpet = box(office,.02,.015,1.33,2.39,.024,1.72,'#819579');
   carpet.rotation.y=.01;
-  box(office, -1.34, .44, -3.73, 5.9, .88, .17, '#c6ad79');
-  box(office, -1.34, 2.79, -3.73, 5.9, .29, .17, '#c9b584');
-  box(office, -3.97, 1.76, -3.73, .54, 1.82, .18, '#c9b584');
-  box(office, 1.58, 1.74, -3.73, .76, 1.88, .18, '#c3b081');
-  box(office, 3.78, 1.45, -3.73, .85, 2.92, .18, '#c9b584');
-  box(office, 2.7, 2.72, -3.73, 1.6, .42, .18, '#c9b584');
-  for (const x of [-3.7, -1.76, .07, 1.25]) box(office, x, 1.74, -3.61, .092, 1.74, .13, '#47735d');
-  for (const y of [.93, 1.81, 2.60]) box(office, -1.24, y, -3.59, 5.08, .076, .16, '#51725b');
-  box(office, -1.23, .87, -3.55, 5.22, .09, .45, '#6a7c5a');
-  for (const x of [1.95, 3.36]) box(office, x, 1.22, -3.59, .11, 2.45, .24, '#62583b');
-  box(office, 2.65, 2.46, -3.59, 1.43, .11, .24, '#62583b');
+  box(office, -1.34, .44, -3.73, 5.9, .88, .17, '#d3d3c5');
+  box(office, -1.34, 2.79, -3.73, 5.9, .29, .17, '#ebe6d9');
+  box(office, -3.97, 1.76, -3.73, .54, 1.82, .18, '#ebe6d9');
+  box(office, 1.58, 1.74, -3.73, .76, 1.88, .18, '#ebe6d9');
+  box(office, 3.78, 1.45, -3.73, .85, 2.92, .18, '#ebe6d9');
+  box(office, 2.7, 2.72, -3.73, 1.6, .42, .18, '#ebe6d9');
+  for (const x of [-3.7, -1.76, .07, 1.25]) box(office, x, 1.74, -3.61, .092, 1.74, .13, '#415b59');
+  for (const y of [.93, 1.81, 2.60]) box(office, -1.24, y, -3.59, 5.08, .076, .16, '#415b59');
+  box(office, -1.23, .87, -3.55, 5.22, .09, .45, '#a4ada1');
+  for (const x of [1.95, 3.36]) box(office, x, 1.22, -3.59, .11, 2.45, .24, '#334c49');
+  box(office, 2.65, 2.46, -3.59, 1.43, .11, .24, '#334c49');
   const door = new T.Group();
   door.position.set(3.30, 0, -3.57);
-  box(door, -.65, 1.20, 0, 1.31, 2.38, .10, '#94704c');
-  box(door, -.65, 1.70, .064, 1.02, .76, .027, '#c4a375');
-  box(door, -.65, .70, .064, 1.02, .80, .027, '#ae8b61');
+  box(door, -.65, 1.20, 0, 1.31, 2.38, .10, '#486661');
+  box(door, -.65, 1.70, .064, 1.02, .76, .027, '#8caaad');
+  box(door, -.65, .70, .064, 1.02, .80, .027, '#5d7a76');
   piece(door, 'rock', -1.14, 1.14, .12, .066, .06, .057, '#d6aa61');
   office.add(door);
 
+  // The ground floor is the original working office, with two floors above its ceiling.
+  const officeBuilding=new T.Group();
+  officeBuilding.name='Market Office building';
+  exterior.add(officeBuilding);
+  const front=-3.74;
+  for(const floor of [3.23,5.54]){
+    box(officeBuilding,0,floor+.94,.13,8.6,1.88,8.22,'#dedfd2');
+    box(officeBuilding,0,floor-.11,.13,8.77,.24,8.39,'#f0eee3');
+    for(const x of [-3.25,-1.62,0,1.62,3.25])for(const z of [front-.26,4.28]){
+      const normal=z<0?-1:1;
+      box(officeBuilding,x,floor+.96,z,1.29,1.42,.11,'#f5f2e7');
+      box(officeBuilding,x,floor+.99,z+.067*normal,1.10,1.21,.05,'#547885');
+      box(officeBuilding,x,floor+1.32,z+.096*normal,1.08,.49,.021,'#91b5b9');
+      box(officeBuilding,x,floor+.99,z+.108*normal,.061,1.21,.018,'#dfe9e4');
+      box(officeBuilding,x,floor+.21,z,1.36,.11,.24,'#c6cfc1');
+    }
+    for(const side of [-1,1])for(const z of [-2.65,-.7,1.28,3.11]){
+      const x=side*4.324;
+      box(officeBuilding,x,floor+.94,z,.11,1.38,1.25,'#f2f0e7');
+      box(officeBuilding,x+side*.071,floor+.96,z,.058,1.2,1.06,'#62848d');
+      box(officeBuilding,x+side*.104,floor+1.24,z,.022,.51,1.05,'#98b9bd');
+    }
+  }
+  box(officeBuilding,0,7.52,.13,8.82,.28,8.48,'#929d96');
+  for(const side of [-1,1]){
+    box(officeBuilding,side*4.31,7.77,.13,.18,.47,8.49,'#e9e8df');
+    box(officeBuilding,0,7.77,.13+side*4.19,8.82,.47,.18,'#e9e8df');
+  }
+  box(officeBuilding,1.98,7.96,1.8,2.45,.70,2.25,'#b7bfb5');
+  box(officeBuilding,.02,2.98,-4.16,8.65,.18,1.19,'#587c70');
+  box(officeBuilding,.02,2.89,-4.74,8.65,.19,.105,'#40665a');
+  box(officeBuilding,-1.15,2.79,-3.86,5.46,.49,.16,'#385952');
+  for(const x of [-3.85,1.43,3.74])box(officeBuilding,x,1.48,-3.82,.17,2.92,.23,'#e5e2d1');
+  for(const x of [-2.94,-1.06,.78]){
+    box(officeBuilding,x,1.72,-3.81,1.59,1.39,.026,'#6b878a');
+    box(officeBuilding,x,2.15,-3.830,1.59,.49,.014,'#9bbabd');
+    box(officeBuilding,x,1.72,-3.844,.057,1.41,.014,'#d7e0d8');
+  }
+  box(officeBuilding,2.65,.035,-4.14,1.43,.055,1.02,'#768e80');
+  officeBuilding.traverse(mesh=>{
+    if(mesh.isMesh){mesh.castShadow=true;mesh.receiveShadow=true;}
+  });
+
   function table(x, z, width, depth) {
-    box(office, x, .77, z, width, .12, depth, '#926f48');
-    box(office, x, .84, z, width + .025, .035, depth + .02, '#ac8959');
+    box(office, x, .77, z, width, .12, depth, '#846c54');
+    box(office, x, .84, z, width + .025, .035, depth + .02, '#bba081');
     for (const a of [-1, 1]) for (const b of [-1, 1]) {
       box(office, x + a * width * .42, .36, z + b * depth * .38, .13, .72, .13, '#71513a');
     }
@@ -201,6 +251,30 @@ function createOfficeView() {
     leaf.rotation.x = Math.cos(a) * .49;
     leaf.rotation.z = Math.sin(a) * .51;
   }
+  // Cabinets, meeting space, receipt tray, and perimeter seating leave a clear path to the door.
+  for(const z of [.35,1.02,1.69]){
+    box(office,-3.62,.48,z,.69,.87,.65,'#b0bbb0');
+    box(office,-3.62,.94,z,.72,.067,.66,'#d3c6ab');
+    box(office,-3.255,.68,z,.036,.037,.24,'#627971');
+    box(office,-3.255,.40,z,.036,.037,.24,'#627971');
+  }
+  box(office,2.96,.095,3.48,1.43,.14,.75,'#4a645b');
+  box(office,2.96,.44,3.48,1.48,.28,.76,'#829a89');
+  box(office,2.96,.73,3.76,1.54,.46,.18,'#668477');
+  box(office,2.45,.62,3.52,.32,.25,.22,'#e0bd7e');
+  table(3.02,3.15,1.06,.49);
+  box(office,3.02,.887,3.15,.43,.045,.30,'#f8eee1');
+  box(office,2.0,.49,.4,.38,.96,.38,'#d1d5c7');
+  const indoorPlant=piece(office,'pot',2.0,.96,.4,.35,.31,.35,'#d5b59e');
+  indoorPlant.rotation.y=.40;
+  piece(office,'rock',2.0,1.24,.40,.35,.30,.31,'#77995d');
+  box(office,-3.3,1.79,4.01,1.37,.89,.09,'#687c72');
+  box(office,-3.3,1.79,3.96,1.22,.76,.03,'#e8e7d5');
+  for(const y of [1.51,1.76,2.02]) {
+    box(office,-3.52,y,3.941,.38,.026,.012,'#96a79c');
+    box(office,-3.01,y,3.941,.25,.043,.014,'#c0a16e');
+  }
+
   const kits = [];
   for (let i = 0; i < 9; i++) {
     const bin = new T.Group();
@@ -213,15 +287,18 @@ function createOfficeView() {
   }
 
   const stand = new T.Group();
-  stand.position.set(-4.3, 0, -12.45);
+  stand.position.set(STAND.x, 0, STAND.z);
   function buildStand() {
-    box(stand, 0, .11, 0, 2.96, .22, 2.1, '#a18962');
+    box(stand, 0, .11, 0, 2.96, .22, 2.1, '#cbc6b3');
     box(stand, 0, .55, -.2, 2.61, .94, 1.34, '#986e4b');
     box(stand, 0, 1.05, -.11, 2.79, .14, 1.45, '#cc9e68');
     for (const x of [-1.32, 1.32]) {
       for (const z of [-.83, .76]) box(stand, x, 1.2, z, .14, 2.38, .14, '#826847');
     }
-    box(stand, 0, 2.31, .22, 3.06, .13, 2.21, '#50816a').rotation.x = .13;
+    for(let i=0;i<8;i++){
+      const x=(i-3.5)*.38;
+      box(stand,x,2.31,.22,.393,.11,2.21,i%2?'#eee9d4':'#5b8876').rotation.x=.13;
+    }
     box(stand, 0, 2.12, .96, 2.95, .28, .095, '#72a78a');
     box(stand, -.39, 1.23, .05, .41, .27, .34, '#d4b78a');
     box(stand, .16, 1.25, .05, .40, .31, .35, '#d2ba8d');
@@ -233,22 +310,18 @@ function createOfficeView() {
   const lumenRenderer=createLumenWorld({T,exterior,box,piece,renderer});
   const campusRenderer=createCampusWorld({T,exterior,box,piece,renderer});
   const districtRenderer=createDistrictWorld({T,scene,exterior,renderer});
-  const haze={isFog:true,name:'LumenVale air',color:new T.Color('#bfcdc4'),near:38,far:124};
-  const duskColor=new T.Color('#6a7790'), dayColor=new T.Color('#c2d8d0');
+  office.traverse(mesh=>{
+    if(mesh.isMesh){mesh.receiveShadow=true;mesh.castShadow=mesh.position.y>.15&&mesh.position.y<2.7;}
+  });
+  door.traverse(mesh=>{if(mesh.isMesh)mesh.castShadow=false;});
+  const haze={isFog:true,name:'LumenVale air',color:new T.Color('#c8dbd8'),near:46,far:132};
+  const duskColor=new T.Color('#8998ae'), dayColor=new T.Color('#c6ddde');
   const eveningLight=new T.Color('#e6aa70'), daylight=new T.Color('#ffedc8');
 
-  const coatColors = { rose: '#af6760', amber: '#bc8752', blue: '#4d7982' };
+  districtRenderer.label(exterior,'Market Office',-1.17,2.79,-3.962,5.31,.40,-1,'#385952');
+  const coatColors = { rose: '#9a535a', amber: '#b38149', blue: '#4d7982' };
   function makeVisitor(tint) {
-    const group = new T.Group();
-    for (const x of [-.14, .14]) {
-      box(group, x, .45, 0, .205, .76, .21, '#454e44');
-      box(group, x, .085, .046, .23, .16, .33, '#453732');
-    }
-    box(group, 0, 1.01, 0, .50, .50, .29, tint);
-    for (const x of [-.32, .32]) box(group, x, .98, .02, .135, .46, .128, tint).rotation.z = x * .31;
-    piece(group, 'rock', 0, 1.55, .025, .232, .255, .21, '#c88e60');
-    piece(group, 'rock', 0, 1.66, -.014, .235, .155, .22, '#5b4035');
-    return group;
+    return makeTownCitizen(T,piece,box,{coat:tint,skin:'#bd895f',hair:'#4a332b',pants:'#3e4e50',style:'short'}).rig;
   }
   const guests = Object.fromEntries(Object.entries(coatColors).map(([key,tint]) => [key, makeVisitor(tint)]));
   for (const guest of Object.values(guests)) {
@@ -257,7 +330,7 @@ function createOfficeView() {
   }
 
   let frameId = 0, wake = 0, current = null, animation = null, lastCamera = -100;
-  let width = 0, height = 0;
+  let width = 0, height = 0, shadowSignature = '';
   const feeds = new Map(Object.entries(SECURITY_CAMERAS).map(([id,settings]) => {
     const view = new T.PerspectiveCamera(settings.horizontal,16/9,.08,125);
     view.position.set(...settings.position);
@@ -321,26 +394,39 @@ function createOfficeView() {
     const indoors=Boolean(districtVisit);
     exterior.visible=!indoors;
     office.visible=!indoors;
-    // Long blue-hour shadows and warm interiors have separate lighting.
-    const dayPhase=(Math.cos(now/144000)+1)*.5;
+    const enclosed=inOffice(player.x,player.z);
+    const dayPhase=.66+Math.cos(now/168000)*.24;
     scene.fog=indoors?null:haze;
+    officeFill.visible=enclosed&&!indoors;
     if(indoors){
-      skyLight.color.set('#fbe8c9');
-      skyLight.groundColor.set('#a9b1a0');
-      skyLight.intensity=1.89;
-      sun.color.set('#ffddb1');
-      sun.intensity=.91;
-      scene.background.set('#7a847e');
+      skyLight.color.set('#fff1df');
+      skyLight.groundColor.set('#b2bcaa');
+      skyLight.intensity=1.54;
+      sun.color.set('#ffe4ba');
+      sun.intensity=.84;
+      scene.background.set('#879990');
     }else{
-      skyLight.color.set('#d9e2f3');
-      skyLight.groundColor.set('#9e987b');
-      skyLight.intensity=1.08+dayPhase*.42;
+      skyLight.color.set('#e8f2ff');
+      skyLight.groundColor.set('#c6bba3');
+      skyLight.intensity=enclosed?1.47:.87;
       sun.color.copy(eveningLight).lerp(daylight,dayPhase);
-      sun.intensity=.36+dayPhase*1.68;
-      scene.background.copy(duskColor).lerp(dayColor,.24+dayPhase*.76);
+      sun.intensity=1.05+dayPhase*1.05;
+      scene.background.copy(duskColor).lerp(dayColor,.30+dayPhase*.70);
       haze.color.copy(scene.background);
     }
-    scene.userData.townLight=indoors?1.04:.73+dayPhase*.27;
+    if(shadows){
+      // Local shadow coverage follows the player in stable four-meter steps.
+      const x=indoors?0:Math.round(player.x/4)*4;
+      const z=indoors?0:Math.round(player.z/4)*4;
+      const signature=[x,z,Boolean(districtVisit),built,doorOpen,cityBuildingsBuilt()].join('/');
+      if(signature!==shadowSignature){
+        shadowSignature=signature;
+        sun.target.position.set(x,0,z);
+        sun.position.set(x-15,27,z+12);
+        shadows.needsUpdate=true;
+      }
+    }
+    scene.userData.townLight=enclosed||indoors?1.04:.90+dayPhase*.12;
     // Subtle first-person locomotion feedback; disabled for reduced-motion preferences.
     const moving=current.moving && player!==SEAT_POSITION;
     const sway=moving && !reduceMotion.matches ? Math.sin(now*(current.sprinting?.016:.011))*(current.sprinting?.048:.025) : 0;

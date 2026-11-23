@@ -45,7 +45,7 @@ const CITY_SITES=[
  {id:'homes',title:'Worker Homes',kind:'house',x:0,z:25,land:75,build:160,hire:0,rate:0,unlock:2,color:'#b88d6a'},
  {id:'textile',title:'Textile Factory',kind:'factory',x:-27,z:27,land:130,build:280,hire:95,rate:15,unlock:3,color:'#8196ab'},
  {id:'greenhouse',title:'Greenhouse',kind:'factory',x:16,z:27,land:210,build:460,hire:140,rate:25,unlock:4,color:'#67a28b'},
- {id:'assembly',title:'Assembly Plant',kind:'factory',x:31,z:16,land:350,build:820,hire:240,rate:43,unlock:5,color:'#879eaf'}
+ {id:'assembly',title:'Assembly Plant',kind:'factory',x:30,z:12,land:350,build:820,hire:240,rate:43,unlock:5,color:'#879eaf'}
 ];
 const CITY_LIBRARY={x:14,z:8};
 function cityBlank(){return {version:1,coins:0,xp:0,lifetime:0,books:{},sites:{},lastTick:Date.now(),manual:{}};}
@@ -340,14 +340,11 @@ function cityGuide(){
  '<label for="city-mouse-sensitivity">Mouse sensitivity: <strong id="city-sensitivity-value">'+Math.round(cityMouseSettings.sensitivity*1000)+'</strong></label>'+
  '<input id="city-mouse-sensitivity" type="range" min="2" max="10" step="1" value="'+Math.round(cityMouseSettings.sensitivity*1000)+'">'+
  '<label class="city-toggle"><input id="city-invert-y" type="checkbox" '+(cityMouseSettings.invertY?'checked':'')+'> Invert vertical look</label></div>'+
- '<p class="city-sub">Click Play once to capture the mouse · Esc releases cursor · Click to resume · Shift sprint · E interact · F fullscreen · G guide · M properties. Menus release the mouse for their buttons. Saves stay on this device.</p>');
+ '<p class="city-sub">Click Play to capture the mouse · Esc releases it · Shift sprints · E interacts · P opens your phone · F toggles fullscreen. Menus release the mouse for their buttons. Saves stay on this device.</p>');
 }
 function citySync(){
- const balance=byId('city-coins'),learning=byId('city-learning'),income=byId('city-income'),lands=byId('city-lands'),objective=byId('city-objective');
- if(balance)balance.textContent=cityState.coins.toLocaleString();
- if(learning)learning.textContent=cityCompleted()+'/'+CITY_BOOKS.length;
- if(income)income.textContent=cityIncome()+'/5s';
- if(lands)lands.textContent=cityLandOwned()+'/'+CITY_SITES.length;
+ if(typeof phoneSync==='function')phoneSync();
+ const objective=byId('city-objective');
  if(objective){
   objective.textContent=!cityCompleted()?'Visit the library and finish your first book':
    !cityState.sites.workshop?.owned?'Buy workshop land (20 coins)':
@@ -380,30 +377,16 @@ function cityMousePrompt(){
  const prompt=byId('city-mouse-prompt'),paused=Boolean(dialog.open||terminal.open);
  byId('view').classList.toggle('is-locked',locked);
  if(prompt)prompt.hidden=locked||paused;
- const status=byId('city-mouse-state');
- if(status)status.textContent=locked?'Mouse locked · Esc to release':'Mouse unlocked · Click to resume';
  if(!locked)stopMovement();
 }
 function cityInit(){
- const hud=document.createElement('div');
- hud.className='city-hud';hud.innerHTML=
- '<div class="city-chip"><small>City coins</small><strong id="city-coins">0</strong></div>'+
- '<div class="city-chip"><small>Books read</small><strong id="city-learning">0/6</strong></div>'+ 
- '<div class="city-chip"><small>Land owned</small><strong id="city-lands">0/6</strong></div>'+
- '<div class="city-chip"><small>Production</small><strong id="city-income">0/5s</strong></div>'+
- '<div class="city-hud-actions"><button type="button" id="city-help" title="City guide">Guide</button>'+ 
-  '<button type="button" id="city-portfolio" title="Land and buildings">Properties</button>'+
- '<button type="button" id="city-full" title="Fullscreen and mouse capture">⛶ Fullscreen</button></div>'+
- '<p class="city-goal" id="city-objective"></p>'+ 
- '<p class="city-mouse-state" id="city-mouse-state">Mouse unlocked · Click to resume</p>';
- byId('view').append(hud);
  const prompt=document.createElement('div');
  prompt.id='city-mouse-prompt';
  prompt.className='city-mouse-prompt';
  prompt.innerHTML='<div class="city-resume-card"><div class="city-crosshair-symbol" aria-hidden="true">✛</div>'+
-  '<h2>LUMENVALE</h2><p>Read. Build. Thrive. Look freely with the mouse—no holding or dragging.</p>'+
+  '<h2>Enter LumenVale</h2><p>Click Play to look around with your mouse.</p>'+
   '<button type="button" id="city-resume-button">▶ Click to Play</button>'+
-  '<small>WASD move · E interact · Esc releases mouse · F fullscreen</small></div>';
+  '<small>WASD move · E interact · P phone · Esc releases mouse</small></div>';
  byId('view').append(prompt);
  byId('city-resume-button').addEventListener('click',cityRequestMouseLock);
  byId('landscape').addEventListener('click',cityRequestMouseLock);
@@ -411,9 +394,6 @@ function cityInit(){
  document.addEventListener('pointerlockerror',()=>notice('Mouse capture failed. Click Play again.'));
  dialog.addEventListener('close',()=>requestAnimationFrame(cityMousePrompt));
  terminal.addEventListener('close',()=>requestAnimationFrame(cityMousePrompt));
- byId('city-help').addEventListener('click',cityGuide);
- byId('city-portfolio').addEventListener('click',cityPortfolio);
- byId('city-full').addEventListener('click',cityEnterFullscreen);
  document.addEventListener('input',event=>{
   if(event.target.id==='city-mouse-sensitivity'){
    cityMouseSettings.sensitivity=Number(event.target.value)/1000;
@@ -455,10 +435,6 @@ function cityInit(){
    turnCamera(event.movementX||0,event.movementY||0);
   }
  });
- document.addEventListener('fullscreenchange',()=>{
-  byId('city-full').textContent=document.fullscreenElement?'⤡ Windowed':'⛶ Fullscreen';
- });
-
  setInterval(()=>{
   cityTick();citySync();
   if(cityBookSession){

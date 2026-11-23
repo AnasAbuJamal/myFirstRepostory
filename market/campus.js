@@ -242,7 +242,7 @@ function campusSaveSelection(){
 }
 function campusArchitectValid(x,z,except=null){
  if(x< -38||x>38||z<0||z>32)return false;
- if(atStreet(x,z,2.8)||TOWN_PLACES.some(p=>placeOverlap(p,x,z,5.4))||
+ if(atStreet(x,z,2.8)||TOWN_PUBLIC_PLACES.some(p=>placeOverlap(p,x,z,5.4))||
  Math.hypot(x,z-11.6)<5||Math.hypot(x+37,z+7)<9||
  Math.hypot(x-23.5,z-6)<6||Math.hypot(x,z)<7)return false;
  for(const site of CITY_SITES)if(site.id!==except&&Math.abs(site.x-x)<10&&Math.abs(site.z-z)<9)return false;
@@ -290,19 +290,27 @@ function campusPlace(x,z){
  campusState.decor.push({kind:kind.id,x,z});campusSave();campusArchitect();drawScene();return true;
 }
 function campusMap(){
- const all=[...TOWN_PLACES.map(p=>({title:p.name,x:p.x,z:p.z})),
+ const all=[...TOWN_PUBLIC_PLACES.map(p=>({title:p.name,x:p.x,z:p.z})),
  {title:"Market Office",x:0,z:0},{title:"Lumen Park",x:-5,z:51},
  ...CITY_SITES.map(s=>({title:s.title,x:s.x,z:s.z}))];
  const mapX=x=>(x-TOWN_BOUNDS.left)/(TOWN_BOUNDS.right-TOWN_BOUNDS.left)*100;
  const mapZ=z=>(z-TOWN_BOUNDS.north)/(TOWN_BOUNDS.south-TOWN_BOUNDS.north)*100;
- const roads=STREET_PLAN.map(s=>'<i class="town-map-road '+s.axis+'" style="left:'+
-  mapX(s.axis==='x'?s.from:s.at)+'%;top:'+mapZ(s.axis==='x'?s.at:s.from)+'%;'+
-  (s.axis==='x'?'width:'+(mapX(s.to)-mapX(s.from)):'height:'+(mapZ(s.to)-mapZ(s.from)))+'%"></i>').join('');
+ const roads=STREET_PLAN.map(s=>{
+  const horizontal=s.axis==='x';
+  const [x,z]=horizontal?[s.from,s.at-s.width/2]:[s.at-s.width/2,s.from];
+  const width=horizontal?s.to-s.from:s.width;
+  const depth=horizontal?s.width:s.to-s.from;
+  return '<i class="town-map-road" title="'+esc(s.name)+'" style="left:'+mapX(x)+'%;top:'+mapZ(z)+
+   '%;width:'+mapX(TOWN_BOUNDS.left+width)+'%;height:'+mapZ(TOWN_BOUNDS.north+depth)+'%"></i>';
+ }).join('');
+ const here=districtVisit?.origin||player;
+ const marker='<span class="town-map-player" style="left:'+mapX(here.x)+'%;top:'+mapZ(here.z)+
+  '%" title="Your location" aria-label="Your location"></span>';
  const pins=all.map(x=>'<div class="wave-map-pin" style="left:'+mapX(x.x)+'%;top:'+mapZ(x.z)+'%" title="'+
  esc(x.title)+'"><span>●</span><small>'+esc(x.title)+'</small></div>').join('');
  cityPanel("LumenVale / Map","City Map",
- '<p>Explore the city without GPS. The map shows your buildings and the important places you can visit.</p>'+
- '<div class="wave-map-area"><div class="wave-map town-street-map">'+roads+pins+'</div></div>'+
+ '<p>The blue dot marks your location. Choose a district or follow the street grid to explore.</p>'+
+ '<div class="wave-map-area"><div class="wave-map town-street-map">'+roads+pins+marker+'</div></div>'+
  '<div class="city-actions"><button class="button" data-wave="school">School</button>'+
  '<button class="button" data-wave="architect">City Architect</button><button class="button" data-wave="careers">Careers</button></div>');
 }
@@ -327,16 +335,6 @@ function campusFactoryStaff(){
 }
 function campusInit(){
  campusInitPlotLocations();
- const top=document.querySelector(".walk-head");
- if(top){
-  for(const [label,action] of [["▦ Map",campusMap],["⌂ Build",campusArchitect],["🎓 School",campusSchool],["✦ Careers",campusCareer],["✎ Words",campusVocabulary]]){
-   const b=document.createElement("button");b.type="button";b.className="top-icon lv-top-button wave-nav";
-   b.textContent=label;top.insertBefore(b,top.lastElementChild);b.addEventListener("click",action);
-  }
- }
- // Teacher management belongs to a separately authenticated web portal.
- byId("lv-teacher-button")?.remove();
- document.querySelectorAll('[data-academy="teacher"]').forEach(el=>el.remove());
  document.addEventListener("click",event=>{
   const el=event.target.closest("[data-wave]");if(!el)return;
   const act=el.dataset.wave,id=el.dataset.id,index=Number(el.dataset.unit);
@@ -379,7 +377,6 @@ function campusInit(){
  window.addEventListener("keydown",event=>{
   if(event.repeat||event.target.matches?.("input,textarea,select")||dialog.open||terminal.open)return;
   if(event.key.toLowerCase()==="k")campusMap();
-  if(event.key.toLowerCase()==="p")campusSchool();
  });
  // Add a library word saver without blocking normal page navigation.
  document.addEventListener("pointerdown",event=>{

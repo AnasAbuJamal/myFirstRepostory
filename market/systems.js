@@ -1,13 +1,13 @@
 /* LumenVale City Systems: mail, expenses, orders, technology and citizens. */
 const LV_SYSTEMS_KEY='lumenvale-city-systems-v1';
 const LV_CHARACTERS=[
- {id:'lena',name:'Lena',title:'Civil Engineer',x:9,z:15,
+ {id:'lena',name:'Lena',title:'Civil Engineer',x:3.40,z:6.75,
   story:'Our city needs a safe road before the next shipment. Workers must inspect the route, repair broken pavement, and keep the crossing clear for pedestrians.',
   question:'What should workers do before the shipment?',choices:['Inspect and repair the road','Remove every crossing','Ignore the pavement'],answer:0,reward:36},
- {id:'omar',name:'Omar',title:'Workshop Foreman',x:-18,z:24,
+ {id:'omar',name:'Omar',title:'Workshop Foreman',x:-14.6,z:24.85,
   story:'A delivery truck arrived with five boxes of wood. Four boxes are needed for the current orders. One box can stay in the storeroom for future customers.',
   question:'How many boxes should remain in storage?',choices:['Four','One','Five'],answer:1,reward:44},
- {id:'maya',name:'Maya',title:'City Planner',x:17,z:28,
+ {id:'maya',name:'Maya',title:'City Planner',x:-1.8,z:43.6,
   story:'The new neighborhood has homes, a school, and a park. The council recommends saving electricity by using efficient lights and maintaining public spaces.',
   question:'Which choice would help this neighborhood?',choices:['Use efficient lights','Waste electricity','Close the park'],answer:0,reward:52}
 ];
@@ -17,7 +17,7 @@ const LV_HOME_DECOR=[
  {id:'solar',name:'Solar Roof',cost:170,desc:'Modernize your rooftop and improve city reputation.'}
 ];
 const LV_PERSONNEL=['Amina · Operator','Leo · Mechanic','Noor · Engineer','Sam · Driver','Mira · Quality Inspector','Omar · Shift Lead'];
-const LV_TREASURES=[{id:'river',x:35,z:-14,reward:50,unlock:2,clue:'Follow the road east, then search the riverside rocks.'},{id:'forest',x:-38,z:29,reward:90,unlock:3,clue:'Look by the old trees on the far western edge.'},{id:'garden',x:8,z:32,reward:140,unlock:4,clue:'Look beyond the homes and gardens at the south edge of the town.'}];
+const LV_TREASURES=[{id:'river',x:35,z:-14,reward:50,unlock:2,clue:'Follow the road east, then search the riverside rocks.'},{id:'forest',x:-38,z:29,reward:90,unlock:3,clue:'Look by the old trees on the far western edge.'},{id:'garden',x:-7.0,z:56.2,reward:140,unlock:4,clue:'Look beyond the homes and gardens at the south edge of the town.'}];
 var systemsDriving=false;
 const LV_PRODUCTS={workshop:{name:'Furniture',icon:'🪑'},lumber:{name:'Lumber',icon:'🪵'},
  textile:{name:'Fabric',icon:'🧵'},greenhouse:{name:'Produce',icon:'🌿'},assembly:{name:'Tools',icon:'🛠️'}};
@@ -354,9 +354,7 @@ function systemsNearby(player){
     return {id:'treasure-'+t.id,system:true,label:'Discover hidden treasure'};
  }
  for(const c of LV_CHARACTERS){if(Math.hypot(player.x-c.x,player.z-c.z)<2.1)return {id:'citizen-'+c.id,system:true,label:'Talk to '+c.name};}
- if(Math.hypot(player.x-6.15,player.z+7.0)<2.5)return {id:'mailbox',system:true,label:'Check your mailbox'};
- if(Math.hypot(player.x+7.0,player.z-13.5)<2.9)return {id:'cityhall',system:true,label:'Visit City Hall'};
- if(Math.hypot(player.x-23.5,player.z-6.0)<2.8)return {id:'depot',system:true,label:'Visit delivery warehouse'};
+ if(Math.hypot(player.x-5.1,player.z+4.12)<2.5)return {id:'mailbox',system:true,label:'Check your mailbox'};
  return null;
 }
 function systemsInteract(target){
@@ -368,13 +366,6 @@ function systemsInteract(target){
  else systemsPanel('overview');
 }
 function systemsInit(){
- const bar=document.querySelector('.walk-head');
- if(bar){
-  for(const [label,fn] of [['✉ Mail',systemsMailBox],['🏛 City',()=>systemsPanel('overview')]]){
-   const b=document.createElement('button');b.type='button';b.className='top-icon lv-top-button';b.textContent=label;
-   bar.insertBefore(b,bar.lastElementChild);b.addEventListener('click',fn);
-  }
- }
  document.addEventListener('click',event=>{
   const b=event.target.closest('[data-systems]');if(!b)return;
   const action=b.dataset.systems,id=b.dataset.id;

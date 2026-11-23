@@ -94,7 +94,7 @@ function worldInteraction() {
     nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
 }
 function refreshPosition() {
-  const place = districtVisit ? districtVisit.place.name : inOffice(player.x,player.z) ? 'Shop office' :
+  const place = districtVisit ? districtVisit.place.name : inOffice(player.x,player.z) ? 'Market Office' :
     state.stand && Math.hypot(player.x-STAND.x,player.z-STAND.z)<4.5 ? 'Pickup stand' :
     player.z < -12 ? 'Riverwalk' : districtName(player.x,player.z);
   if(byId('world-location').textContent!==place)byId('world-location').textContent=place;
@@ -313,6 +313,7 @@ async function dictate(id, control) {
 function modal(label, title, html) {
   mousePosition = null;
   if(document.pointerLockElement)document.exitPointerLock();
+  dialog.removeAttribute('data-surface');
   byId('overlay-label').textContent = label;
   byId('overlay-body').innerHTML = '<h2 class="title" id="overlay-title" tabindex="-1">' + title + '</h2>' + html;
   if (!dialog.open) dialog.showModal();
@@ -620,3 +621,4 @@ cityInit();
 academyInstall();
 systemsInit();
 campusInit();
+phoneInit();

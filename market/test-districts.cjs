@@ -19,13 +19,13 @@ var campusFactoryMachine=()=>action="factory", systemsPanel=tab=>action=tab;
 }
 test('public buildings have reachable doors, separate floor plans and collision',()=>{
  const run=world();
- const result=run('TOWN_PLACES.map(place=>{const e=townEntrance(place);return [districtWalk(e.x,e.z),districtNearby(e)?.place.id===place.id,!districtWalk(place.x,place.z)]})');
- assert.equal(result.length,6);
+ const result=run('TOWN_PUBLIC_PLACES.map(place=>{const e=townEntrance(place);return [districtWalk(e.x,e.z),districtNearby(e)?.place.id===place.id,!districtWalk(place.x,place.z)]})');
+ assert.equal(result.length,8);
  assert.ok(result.every(row=>row.every(Boolean)));
 });
 test('each door loads a walkable room and an exit restores the same doorway',()=>{
  const run=world();
- const result=run(`TOWN_PLACES.map(place=>{
+ const result=run(`TOWN_PUBLIC_PLACES.map(place=>{
   const e=townEntrance(place);
   districtInteract(districtNearby(e));
   const entered=districtVisit.place.id===place.id&&districtWalk(player.x,player.z);

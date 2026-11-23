@@ -169,13 +169,6 @@ function academyTemplate(){
 }
 function academyInstall(){
  academyMount();citySync();
- const bar=document.querySelector('.walk-head');
- if(bar){
-  const b=document.createElement('button');b.type='button';b.className='top-icon lv-top-button';b.textContent='✎ Teacher';b.title='Open Teacher Studio';
-  bar.insertBefore(b,bar.lastElementChild);b.addEventListener('click',academyTeacher);
-  const p=document.createElement('button');p.type='button';p.className='top-icon lv-top-button';p.textContent='◉ Student';p.title='Open student journal';
-  bar.insertBefore(p,bar.lastElementChild);p.addEventListener('click',academyProfile);
- }
  document.addEventListener('click',event=>{
   const control=event.target.closest('[data-academy]');if(!control)return;
   const act=control.dataset.academy,id=control.dataset.id;

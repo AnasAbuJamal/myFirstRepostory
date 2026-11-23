@@ -7,7 +7,7 @@ const { test } = require('node:test');
 const source = name => fs.readFileSync(path.join(__dirname,name),'utf8');
 const realm = vm.createContext({});
 const logic = vm.runInContext(source('story.js') + '\n' + source('rules.js') + '\n' + source('walk.js') + '\n' + source('reports.js') +
-  '\n({cleanProgress, shopTotals, replyOrder, replyNotes, completeVisit, completeLevel, canWalk, walkStep, nearbyInteraction, walletHistory, START_POSITION})',realm);
+  '\n({cleanProgress, shopTotals, replyOrder, replyNotes, completeVisit, completeLevel, canWalk, walkStep, nearbyInteraction, walletHistory, START_POSITION, STAND})',realm);
 const asPlain = value => JSON.parse(JSON.stringify(value));
 
 test('confirm, reserve, and sell Lina’s first order once', () => {
@@ -90,7 +90,7 @@ test('the player can leave through the open door and must approach the desk', ()
   assert.equal(logic.canWalk(2.62,-3.72,view),false);
   assert.equal(logic.canWalk(2.62,-3.72,{...view,doorOpen:true}),true);
   assert.equal(logic.canWalk(1,-3.72,{...view,doorOpen:true}),false);
-  assert.equal(logic.canWalk(-4.3,-12.45,{...view,stand:true}),false);
+  assert.equal(logic.canWalk(logic.STAND.x,logic.STAND.z,{...view,stand:true}),false);
   let player = {x:2.62,z:-2.7,yaw:0,pitch:0};
   for(let i=0;i<36;i++)player=logic.walkStep(player,1,0,1/60,{...view,doorOpen:true});
   assert.ok(player.z < -4);

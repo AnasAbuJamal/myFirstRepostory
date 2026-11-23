@@ -32,6 +32,8 @@ function createDistrictWorld({T,scene,exterior,renderer}){
      mesh.setColorAt(i,tint.set(v.color));
     });
     mesh.computeBoundingSphere();
+    mesh.castShadow=group.userData.castsShadow===true&&form!=='light';
+    mesh.receiveShadow=form!=='light';
     group.add(mesh);
    }
   }
@@ -44,8 +46,8 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   const ctx=canvas.getContext('2d');
   if(!ctx)return;
   ctx.fillStyle=color;ctx.fillRect(0,0,640,140);
-  ctx.strokeStyle='#dfc783';ctx.lineWidth=3;ctx.strokeRect(6,6,628,128);
-  ctx.fillStyle='#f7ebcf';ctx.font='bold 48px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.strokeStyle='#efeed774';ctx.lineWidth=2;ctx.strokeRect(6,6,628,128);
+  ctx.fillStyle='#faf8e9';ctx.font='700 47px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillText(title,320,71,595);
   const texture=new T.CanvasTexture(canvas);texture.colorSpace=T.SRGBColorSpace;
   const mesh=new T.Mesh(new T.PlaneGeometry(width,height), new T.MeshBasicMaterial({map:texture}));
@@ -62,33 +64,45 @@ function createDistrictWorld({T,scene,exterior,renderer}){
  function streetWorks(){
   const k=kit();
   for(const s of STREET_PLAN){
-   streetBox(k,s,s.from-1.3,s.to+1.3,s.width+3,.004,.05,'#b8ab91');
-   streetBox(k,s,s.from,s.to,s.width,.032,.05,'#505955');
+   streetBox(k,s,s.from-2.3,s.to+2.3,s.width+4.6,.003,.050,'#c5c5bb');
+   streetBox(k,s,s.from,s.to,s.width,.030,.041,'#5e6568');
    for(const side of [-1,1]){
-    streetBox(k,s,s.from,s.to,.17,.079,.072,'#dfcdae',side*(s.width/2+.08));
-    streetBox(k,s,s.from,s.to,.054,.062,.009,'#afa997',side*(s.width/2-.27));
+    const edge=side*(s.width/2);
+    streetBox(k,s,s.from,s.to,.14,.058,.043,'#e7e6d9',edge+.08*side);
+    streetBox(k,s,s.from,s.to,.046,.056,.009,'#cecfcc',edge-.26*side);
+    for(let t=s.from+.9;t<s.to;t+=1.75){
+     const [x,z]=onRoad(s,t,edge+1.22*side);
+     if(atStreet(x,z,.06))continue;
+     k.box(x,.033,z,s.axis==='x'?.025:2.0,.008,s.axis==='x'?2.0:.025,'#b8b9b2');
+    }
    }
-   for(let t=s.from+3;t<s.to-2;t+=5){
-    const [x,z]=onRoad(s,t);
-    if(STREET_PLAN.some(other=>other.axis!==s.axis&&Math.abs(t-other.at)<4.8&&s.at>=other.from&&s.at<=other.to))continue;
-    streetBox(k,s,t-.68,t+.68,.063,.063,.008,'#ddc69b');
-    if(Math.round(t)%4===0)k.box(x,.065,z,.17,.011,.12,'#96856b');
+   for(let t=s.from+2.5;t<s.to-1;t+=4){
+    if(STREET_PLAN.some(other=>other.axis!==s.axis&&Math.abs(t-other.at)<other.width/2+1.8&&s.at>=other.from&&s.at<=other.to))continue;
+    streetBox(k,s,t-.78,t+.78,.072,.055,.009,'#f1f0e6');
    }
   }
   for(const a of STREET_PLAN.filter(x=>x.axis==='x'))for(const b of STREET_PLAN.filter(x=>x.axis==='z')){
    if(b.at<a.from||b.at>a.to||a.at<b.from||a.at>b.to)continue;
-   k.box(b.at,.066,a.at,b.width+.07,.026,a.width+.07,'#55605b');
-   for(const side of [-1,1])for(let offset=-1.8;offset<=1.81;offset+=.6){
-    k.box(b.at+offset,.084,a.at+side*(a.width/2+1.03),.28,.014,1.05,'#e9dfc4');
-    k.box(b.at+side*(b.width/2+1.03),.084,a.at+offset,1.05,.014,.28,'#e9dfc4');
+   k.box(b.at,.063,a.at,b.width+.15,.027,a.width+.15,'#5e6568');
+   for(const side of [-1,1])for(let offset=-2.7;offset<=2.71;offset+=.60){
+    if(a.at+side*(a.width/2+1.15)>b.from&&a.at+side*(a.width/2+1.15)<b.to)
+     k.box(b.at+offset,.083,a.at+side*(a.width/2+1.15),.29,.009,1.22,'#f0efe4');
+    if(b.at+side*(b.width/2+1.15)>a.from&&b.at+side*(b.width/2+1.15)<a.to)
+     k.box(b.at+side*(b.width/2+1.15),.083,a.at+offset,1.22,.009,.29,'#f0efe4');
    }
   }
   k.flush(outside);
  }
- function tree(k,x,z,s=1,fall=false){
-  k.put('trunk',x,1.36*s,z,.19*s,2.72*s,.19*s,'#705943');
-  for(const [a,b,y] of [[0,0,3.25],[.66,.24,3],[-.57,-.29,3.0],[.15,-.48,3.68]]){
-   k.put('stone',x+a*s,y*s,z+b*s,1.04*s,.89*s,1.02*s,fall?(a>0?'#b68e59':'#94734d'):(a>0?'#6b926a':'#507b61'),0,a,0);
+ function tree(k,x,z,s=1,tall=false){
+  k.put('trunk',x,1.12*s,z,.22*s,2.24*s,.21*s,'#796451');
+  k.put('stone',x+.35*s,.04,z-.23*s,1.10*s,.035,1.05*s,'#6c8d58');
+  if(tall){
+   for(const [y,w,h] of [[2.36,.88,1.17],[3.03,.70,1.34],[3.76,.44,.90]])
+    k.put('stone',x,y*s,z,w*s,h*s,w*s,'#397652',0,y,0);
+  }else{
+   for(const [a,b,y,size,tone] of [[0,0,2.95,1.01,'#75a344'],[.62,.14,2.88,.77,'#83b44c'],[-.55,-.25,2.91,.80,'#6c9f43'],[.12,-.43,3.55,.79,'#a1bd52']]){
+    k.put('stone',x+a*s,y*s,z+b*s,size*s,size*.93*s,size*s,tone,0,a,0);
+   }
   }
  }
  function bench(k,x,z){
@@ -117,52 +131,71 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   k.light(x+1.46,.60,z+.40,.04,.14,.19,'#e8cb94');
  }
  function publicPlaces(){
-  const k=kit();
-  for(const [x,z] of [[-48,4],[-42,5],[-33,5],[-27,4],[-17,10],[-2,7],[3,16],[10,16],[22,14],[29,13],[40,22],[56,23],[42,35],[55,35],[2,41],[-13,45],[-12,57],[11,54],[18,49],[48,60],[58,60],[-42,47]]){
+  const paving=kit(), k=kit();
+  const props=new T.Group();props.userData.castsShadow=true;outside.add(props);
+  // Hardscaped frontage and signed plazas sit between the building line and the curb.
+  for(const [x,z,w,d] of [[-5,-4.36,19,1.25],[2.55,-4.42,4.6,1.34],[15.5,-4.45,8.2,1.4],[.2,5.95,10.8,3.2],[16,4.05,13.9,2.4],[-37,2.42,18,3.1],[48.5,16.08,13.2,1.56],[48.5,24.78,12.6,1.42],[-4.3,-14.7,5.8,3.7]]){
+   paving.box(x,.03,z,w,.11,d,'#d4d2c7');
+  }
+  for(const [x,z] of [[-1.5,5.65],[3.7,5.65],[-24,-3.8],[-5.3,-4.53],[5.9,-3.6],[11.5,-4.58],[20,-4.58],[-40,3.2],[-34,3.2],[10.6,4.2],[21.6,4.2],[42.5,14.88],[54.7,14.88],[42.5,25],[54.7,25],[11.9,43.9],[-12.8,44.2],[-41.8,44.8],[42.5,58.5],[58.8,58.5]]){
    streetLamp(k,x,z);
   }
-  for(const [x,z] of [[-47,-8],[-47,8],[-30,1],[-18,1],[4,8],[9,14],[21,15],[24,12],[42,15],[54,18],[45,35],[54,34],[14,43],[55,47],[43,46],[20,59],[-26,57],[-38,61]]){
-   tree(k,x,z,.86+(Math.abs(x)%5)*.046,z>45&&z%2===1);
+  for(const [x,z,tall] of [[-15.7,-14.35,true],[-10.5,-14.35,false],[-.4,-14.4,false],[5.9,-14.55,true],[13,-14.4,false],[18.3,-14.45,false],[-44,2.6,false],[-30,2.6,false],[-3.9,6.1,true],[4.15,5.65,false],[11,3.05,true],[21.1,3.05,false],[42.3,14.7,true],[54.75,14.5,false],[43,25,false],[54.9,25.12,true],[14,44.8,false],[55,47,true],[43,46,false],[20,58.1,false],[-26,56.5,true],[-38,57.6,false]]){
+   tree(k,x,z,.78+(Math.abs(x)%4)*.055,tall);
   }
-  for(const [x,z] of [[-35,3],[-39,3],[-2,9],[4,11],[11,5],[19,5],[46,17],[51,17],[47,25],[53,25],[14,49],[16,53]]){
-   planting(k,x,z);
+  for(const [x,z] of [[-2.8,-4.46],[.5,-4.46],[13.0,-4.48],[18.1,-4.48],[-41.3,2.36],[-32.5,2.36],[-3.3,6.25],[2.65,5.75],[12,4.45],[20,4.45],[45.3,15.72],[51.7,15.72],[45.5,25.28],[51.6,25.28],[14,49],[16,53]]){
+   planting(k,x,z,1.5,.72);
   }
-  for(const [x,z] of [[-29,4],[2,12],[13,15],[45,17],[49,25],[-9,47],[0,47],[0,54]])bench(k,x,z);
-  for(const [x,z] of [[-40,3],[3,13],[41,19],[52,29],[-10,48]]){
-   k.put('trunk',x,.40,z,.25,.80,.23,'#5d6f63');
-   k.box(x,.84,z,.52,.10,.47,'#485a51');
+  for(const [x,z] of [[-38.7,3.3],[-2.35,6.52],[19.8,4.7],[44.3,16.7],[50.5,24.6],[-11.1,47],[.25,47],[.25,54]])bench(k,x,z);
+  for(const [x,z] of [[-40,3.45],[3.7,6.5],[43,16.9],[53.9,24.5],[-10,48]]){
+   k.put('trunk',x,.36,z,.22,.72,.22,'#425a55');k.box(x,.75,z,.46,.09,.49,'#3b4d52');
   }
-  parked(k,43,17,'#a77758');parked(k,52,23,'#738e89');parked(k,29,10,'#aa8c67');parked(k,-43,23,'#76868e');
-  // Park paths, lawns, the pergola and a planted reflecting pool.
-  k.box(-5,-.005,51,22,.048,19,'#779368');
-  k.box(-5,.030,51,19,.038,2,'#c4b191');k.box(-5,.032,51,2,.038,17,'#c4b191');
-  k.box(-9,.20,54,5.5,.40,4.5,'#bcad91');k.box(-9,.417,54,4.8,.038,3.8,'#669a91');
-  for(const [x,z] of [[-14,44],[-1,44],[-14,59],[-1,59],[-10,59],[1,55]])tree(k,x,z,1.0,true);
-  for(const x of [-11.2,-7.0])for(const z of [44.8,48.5])k.box(x,1.37,z,.17,2.70,.17,'#79634c');
-  for(let i=0;i<7;i++)k.box(-11.5+i*.8,2.76,46.65,.10,.15,4.2,'#8e734d');
-  // Orchard Row’s water tower marks the southeast crossing.
+  // Signed parallel bays keep cars out of sidewalks and the through lanes.
+  for(const [x,z,paint] of [[44,17.05,'#dfad51'],[51,17.05,'#568ca7'],[-44,22.68,'#be6b56'],[27.5,17.05,'#dae0da']]){
+   paving.box(x,.061,z,4.5,.02,1.84,'#696e71');
+   for(const side of [-1,1])paving.box(x+side*2.20,.074,z,.055,.012,1.89,'#edede4');
+   parked(k,x,z,paint);
+  }
+  paving.box(-5,.001,51,22,.071,17,'#8caf63');
+  paving.box(-5,.042,51,19,.04,1.85,'#dedbd0');
+  paving.box(-5,.045,51,1.75,.04,16.8,'#dedbd0');
+  k.box(-9,.20,54,5.5,.40,4.5,'#c7c2ad');k.box(-9,.417,54,4.8,.038,3.8,'#629ba8');
+  k.put('trunk',-9,.85,54,.9,1.10,.9,'#dad6c5');
+  k.put('trunk',-9,1.48,54,1.12,.17,1.12,'#e4e0d3');
+  for(const [x,z,tall] of [[-14,44,true],[-.65,44.9,false],[-14,58.95,false],[-1.8,58.4,true],[-10.8,59.1,false],[2,55.7,false]])tree(k,x,z,.95,tall);
+  paving.box(5.65,.064,52.25,8.2,.038,10.0,'#c7805d');
+  for(const x of [2.02,9.28])paving.box(x,.089,52.25,.055,.009,9.1,'#fff0d8');
+  for(const z of [47.73,52.25,56.77])paving.box(5.65,.089,z,7.29,.009,.055,'#fff0d8');
+  paving.box(5.65,.089,55.1,2.8,.012,1.9,'#538f83');
+  k.box(5.65,1.54,56.92,.12,3.0,.12,'#455453');
+  k.box(5.65,2.73,56.67,.95,.62,.065,'#f7eee0');
+  k.box(5.65,2.48,56.44,.42,.075,.39,'#a65842');
+  // Orchard Row’s water tower is visible from the surrounding blocks.
   for(const x of [30.8,34.1])for(const z of [47.3,51.1])k.box(x,3.0,z,.28,6,.28,'#687671');
   k.put('trunk',32.45,6.1,49.2,2.6,2.85,2.6,'#7b9592');
   k.put('trunk',32.45,7.63,49.2,2.76,.42,2.76,'#4c6c65');
-  k.flush(outside);
-  sign(outside,'Lumen Park',-5,1.51,42,3.25,.64,-1);
-  sign(outside,'Orchard Row',29.4,1.55,41.6,3.15,.64,-1);
-  for(const [title,x,z] of [['Learning Quarter',-44,4.5],['Civic Square',4,7],['Riverside Market',40,16],['Foundry District',-19,17]]){
-   const board=kit();board.box(x,.71,z,.12,1.40,.12,'#5a6357');board.flush(outside);
-   sign(outside,title,x,1.66,z,3.15,.62,-1);
-  }
+  paving.flush(outside); k.flush(props);
+  sign(outside,'Lumen Park',-5,1.51,44,3.25,.64,-1);
+  sign(outside,'Orchard Row',29.4,1.55,44.5,3.15,.64,-1);
  }
  function facade(place){
   const k=kit(),{x,z,w,d,h,kind,brick,trim}=place;
   const f=place.face||1, front=z+f*d/2, door=x+(place.entry||0);
-  const roof=h+.10;
-  k.box(x,.08,z,w+.62,.18,d+.61,'#a8957a');
+  const roof=h+.10, accent=place.accent||'#527b79', storefront=['shop','press','cafe'].includes(kind);
+  k.box(x,.06,z,w+.63,.13,d+.61,'#d3d0c4');
   k.box(x,h/2+.08,z,w,h,d,brick);
-  k.box(x,.37,z,w+.15,.59,d+.1,'#a29480');
-  k.box(x,roof,z,w+.50,.28,d+.38,kind==='warehouse'?'#4f6664':'#516c66');
+  k.box(x,.25,z,w+.15,.42,d+.1,'#b8b8ad');
+  k.box(x,roof,z,w+.35,.24,d+.26,kind==='warehouse'?'#788982':'#a3aaa1');
+  if(kind!=='home'){
+   for(const edge of [-1,1]){
+    k.box(x,roof+.25,z+edge*d/2,w+.38,.48,.20,trim);
+    k.box(x+edge*w/2,roof+.25,z,.20,.48,d+.20,trim);
+   }
+   k.box(x+w*.19,roof+.37,z+d*.19,w*.27,.52,d*.24,'#a4aba3');
+  }
   k.box(x,h-.22,front+f*.05,w+.20,.20,.18,trim);
   k.box(x,3.42,front+f*.055,w,.13,.13,trim);
-  k.box(door,1.25,front+f*.06,1.55,2.44,.13,'#3e5b51');
+  k.box(door,1.25,front+f*.06,1.55,2.44,.13,accent);
   k.box(door,1.64,front+f*.134,1.31,1.36,.049,'#82a9aa');
   k.box(door,1.65,front+f*.17,.063,1.40,.022,trim);
   k.box(door-.27,1.02,front+f*.175,.10,.05,.035,'#d5b778');
@@ -171,7 +204,8 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    const normal=side==='front'?f:-f;
    k.box(px,y,pz,ww+.18,hh+.15,.11,trim);
    k.box(px,y,pz+normal*.065,ww,hh,.049,'#506c63');
-   k.box(px,y,pz+normal*.091,ww-.14,hh-.14,.023,kind==='warehouse'?'#91a6a0':'#7fa2a3');
+   k.box(px,y,pz+normal*.091,ww-.14,hh-.14,.023,kind==='warehouse'?'#74908d':'#6e9097');
+   k.box(px,y+hh*.22,pz+normal*.105,ww-.14,hh*.32,.010,'#a3c0c5');
    k.box(px,y,pz+normal*.106,.06,hh-.08,.017,'#d6c8ab');
    k.box(px,y-.04,pz+normal*.106,ww-.08,.058,.018,'#c0b59c');
    k.box(px,y-hh/2-.11,pz+normal*.087,ww+.26,.10,.21,trim);
@@ -179,8 +213,9 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   const bays=Math.floor(w/2);
   for(let i=0;i<bays;i++){
    const px=x+(i-(bays-1)/2)*1.86;
-   if(Math.abs(px-door)>1.63)window(px,1.86,front+f*.062,kind==='shop'?1.40:1.09,1.53,'front');
-   if(h>=6&&kind!=='warehouse')window(px,5.24,front+f*.060,1.04,1.35,'front');
+   if(Math.abs(px-door)>1.63)window(px,1.86,front+f*.062,storefront?1.40:1.09,1.53,'front');
+   if(h>=6&&kind!=='warehouse')window(px,h>=7.2?4.87:5.03,front+f*.060,1.10,h>=7.2?1.23:1.55,'front');
+   if(h>=7.2&&kind!=='warehouse')window(px,h-.95,front+f*.060,1.03,1.14,'front');
    if(i%2===0)window(px,h>5?4.65:1.75,z-f*(d/2+.062),1.10,1.21,'back');
   }
   for(const side of [-1,1]){
@@ -209,9 +244,13 @@ function createDistrictWorld({T,scene,exterior,renderer}){
     k.box(x+6.15,3.89,front+f*2,.94,.53,.035,'#597b67');
    }
    planting(k,door-3.75,front+f*.76,1.10,1.04);
-  }else if(kind==='shop'){
-   k.box(x,3.34,front+f*.69,w-.59,.14,1.43,'#3e685c',f*.095);
-   for(let i=0;i<8;i++)k.box(x+(i-3.5)*1.39,3.28,front+f*1.42,1.34,.27,.10,i%2?'#d9c397':'#527968');
+  }else if(storefront){
+   const strips=Math.ceil(w/.46),stripe=(w-.66)/strips;
+   for(let i=0;i<strips;i++){
+    const px=x+(i-(strips-1)/2)*stripe, tint=i%2?'#fcf2dd':accent;
+    k.box(px,2.96,front+f*.57,stripe+.012,.10,1.13,tint,f*.18);
+    k.box(px,2.76,front+f*1.10,stripe+.012,.18,.085,tint);
+   }
    planting(k,door-3.0,front+f*1.76,1.23,.82);
   }else if(kind==='warehouse'){
    for(let i=0;i<9;i++)k.box(x-2.6,1.0+i*.22,front+f*.108,3.4,.163,.115,'#a5b0a4');
@@ -221,8 +260,8 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   }else{
    for(const side of [-1,1])k.box(x+side*w*.24,h+.42,z,w*.54,.20,d+.48,'#6a625a',0,0,-side*.18);
   }
-  const group=new T.Group();outside.add(group);k.flush(group);
-  if(place.name)sign(group,place.name,door,kind==='warehouse'?4.48:kind==='shop'?4.15:3.94,front+f*.18,Math.min(6.8,w-.5),.65,f);
+  const group=new T.Group();group.userData.castsShadow=true;outside.add(group);k.flush(group);
+  if(place.name)sign(group,place.name,door,kind==='warehouse'?4.48:storefront?3.55:3.94,front+f*.18,Math.min(6.8,w-.5),.65,f);
  }
  function table(k,x,z,w,d,c='#977454',y=.84){
   k.box(x,y,z,w,.15,d,c);
@@ -274,6 +313,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
  const rooms=new Map();
  function makeRoom(place){
   const g=new T.Group(), k=kit();
+  g.userData.castsShadow=true;
   const kind=place.kind,[w,d]=place.room;
   roomShell(g,k,place);
   k.box(0,.024,3.0,3.05,.029,7.1,kind==='library'?'#7e8e74':'#b5a68a');
@@ -303,6 +343,26 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    for(const x of [-2.25,0,2.25])k.box(x,.58,-6.75,1.92,1.13,2.6,'#b0936d');
    for(const x of [-5,6])table(k,x,-4.18+(x>0?8.3:0),2.6,1,'#7d7661');
    entryLabel(g,'Inventory',-5,-3.57,3.25);entryLabel(g,'Contracts',6,2.6,3.25);
+  }else if(kind==='press'){
+   for(const side of [-1,1])for(const z of [-3.35,.30,2.80])shelves(k,side*5.85,z,2.65,2.45,.87,true,true);
+   table(k,0,-4.48,5.8,1.45,'#7c8a80');
+   k.box(-.9,1.03,-4.45,1.0,.26,.64,'#566965');
+   k.box(-.9,1.185,-4.42,.76,.063,.52,'#d9e0d2');
+   for(let i=0;i<5;i++)k.box(1.32,.94+i*.035,-4.51,.53,.027,.74,i%2?'#ebe2ce':'#cfbfa5');
+   entryLabel(g,'Publishing desk',0,-3.72,4.5);
+  }else if(kind==='cafe'){
+   table(k,0,-4.62,6.9,1.45,'#ae7863',1.07);
+   k.box(-1.98,1.33,-4.55,1.25,.39,.66,'#607875');
+   k.box(-1.98,1.48,-4.19,1.11,.18,.068,'#d2d3bf');
+   for(let i=0;i<5;i++)k.put('trunk',.35+i*.34,1.22,-4.38,.13,.19,.13,'#e5e3d8');
+   for(const x of [-4,4])for(const z of [.5,4]){
+    table(k,x,z,1.7,1.25,'#ab8b69',.68);
+    for(const side of [-1,1]){
+     k.box(x+side*1.12,.38,z,.49,.09,.48,'#698a75');
+     k.box(x+side*1.31,.60,z,.09,.45,.48,'#698a75');
+    }
+   }
+   entryLabel(g,'Trade noticeboard',0,-3.88,4.5);
   }else if(kind==='factory'){
    const chosen={workshop:'#ad815c',lumber:'#a98767',textile:'#7790a3',greenhouse:'#6d9a84',assembly:'#788caa'}[place.id]||'#71877e';
    table(k,0,-6.2,6.28,2.25,chosen,1.35);
@@ -354,7 +414,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   return g;
  }
  streetWorks(); publicPlaces();
- for(const place of TOWN_PLACES)facade(place);
+ for(const place of TOWN_PUBLIC_PLACES)facade(place);
  TOWN_HOMES.forEach((h,i)=>facade({...h,h:4.1+(i%2)*.33,kind:'home'}));
  function update(now){
   inside.visible=Boolean(districtVisit);
@@ -375,6 +435,6 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    });
   }
  }
- return {update};
+ return {update,label:sign};
 }
 

@@ -247,15 +247,7 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
 .touch-move{grid-template-columns:repeat(3,2.85rem);gap:.27rem;position:absolute;right:.8rem;bottom:.85rem;z-index:2}
 .touch-move button{height:2.55rem;touch-action:none;background:#294839e8;border:1px solid #b5c29eaf;border-radius:6px;color:#fff4d5;font-size:1.18rem}
 
-/* Incremental city-building layer, added to the original office HUD. */
-.city-hud{position:absolute;right:clamp(.75rem,3.25vw,3rem);top:85px;z-index:3;width:min(380px,calc(100vw - 32px));display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.42rem;pointer-events:none}
-.city-chip{min-width:0;border:1px solid #b7c9ad85;border-radius:9px;padding:.58rem .53rem;background:#263f34e8;color:#fff7df;box-shadow:0 6px 24px #0d20175c}
-.city-chip small{display:block;font-size:.65rem;color:#d3ddc2;letter-spacing:.012em;white-space:nowrap}
-.city-chip strong{display:block;margin-top:.13rem;color:#ffe3a2;font-size:clamp(1rem,1.6vw,1.3rem);line-height:1.2;overflow:hidden;text-overflow:ellipsis}
-.city-hud-actions{grid-column:1/-1;display:flex;gap:.35rem;pointer-events:auto}
-.city-hud-actions button{flex:1;min-height:33px;border:1px solid #a9be9b8a;background:#2b4b39de;border-radius:7px;color:#fff9e8;font-weight:650;font-size:.76rem;padding:.35rem .5rem}
-.city-hud-actions button:hover{background:#446b50}
-.city-goal{grid-column:1/-1;padding:.55rem .7rem;border:1px solid #d5c58a95;border-left:3px solid #e9c27a;border-radius:7px;background:#e9e6cbeb;color:#254a35;font-size:.77rem;line-height:1.3;margin:0;box-shadow:0 5px 15px #1d2b2055}
+/* City and library panels. */
 .city-sub{font-size:.9rem;color:#617261;line-height:1.5}
 .city-shelf{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:1.1rem 0 0}
 .city-library-stats{background:#ebefe5;border:1px solid #d6dfc8;border-radius:8px;padding:.65rem .75rem;font-size:.9rem;color:#3c6245}
@@ -289,12 +281,6 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
 :fullscreen .walk-world button{cursor:pointer}
 :fullscreen dialog,:fullscreen dialog *{cursor:auto}
 @media(max-width:720px){
- .city-hud{top:76px;right:.7rem;width:min(235px,calc(100vw - 22px));gap:.3rem}
- .city-chip{padding:.4rem .35rem}
- .city-chip small{font-size:.55rem}
- .city-chip strong{font-size:.9rem}
- .city-goal{font-size:.69rem;padding:.4rem}
- .city-hud-actions button{font-size:.65rem}
  .city-shelf{grid-template-columns:1fr}
  .city-book-card{min-height:90px}
  .city-book-open{min-height:220px}
@@ -305,8 +291,6 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
 /* Pointer-locked FPS mouse: the native browser owns the mouse while exploring. */
 .walk-world.is-locked,.walk-world.is-locked #landscape{cursor:none}
 .walk-world:not(.is-locked) #landscape{cursor:crosshair}
-.walk-world.is-locked .city-hud-actions{pointer-events:none;opacity:.64}
-.city-mouse-state{grid-column:1/-1;text-align:right;display:inline-block;margin:0;padding:.23rem .52rem;border-radius:6px;background:#132f26b5;color:#dfebcf;font-size:.72rem;letter-spacing:.01em}
 .city-mouse-prompt{position:absolute;inset:0;z-index:5;pointer-events:none;display:grid;place-items:center;background:linear-gradient(180deg,#071b1092,#09190cc2 53%,#091b1188);padding:1.2rem}
 .city-mouse-prompt[hidden]{display:none!important}
 .city-resume-card{pointer-events:auto;width:min(410px,96vw);text-align:center;border:1px solid #b8cfb39c;border-radius:18px;background:linear-gradient(155deg,#1d3d31f7,#102c25f8);color:#f6eed7;padding:2rem 1.35rem;box-shadow:0 24px 85px #0008}
@@ -325,9 +309,6 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
 .city-portfolio-item small{display:block;color:#687d6b;font-size:.74rem;margin-top:.25rem}
 .city-portfolio-item strong{flex:none;color:#59794d;font-size:.78rem}
 @media(max-width:720px){
- .city-hud{width:min(272px,calc(100vw - 15px))}
- .city-chip strong{font-size:.77rem}
- .city-chip small{font-size:.53rem}
  .city-portfolio-list{grid-template-columns:1fr}
  .city-mouse-prompt{display:none}
 }
@@ -517,10 +498,57 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
 .town-map-road {position:absolute;display:block;background:#71817c;opacity:.8;pointer-events:none}
 .town-map-road.x {height:4px}
 .town-map-road.z {width:4px}
+
+/* The viewport shows direction and the current task. Management lives on the phone. */
+.walk-head{inset:18px auto auto 20px;min-height:0;padding:8px 11px 8px 8px;gap:.55rem;border-radius:12px;border:1px solid #f1f5e741;background:#182b2cec;box-shadow:0 4px 18px #172d2630}
+.walk-head .brand{gap:.62rem}
+.walk-head .brand h1{font:720 1.13rem/1 var(--sans);letter-spacing:.005em;color:#fff}
+.walk-head .brand-mark,.terminal-brand .brand-mark{height:30px;width:30px;border-radius:7px;color:#243a34;background:#d7e5b7}
+.walk-head .brand-mark svg{width:18px;height:18px}
+.walk-head .top-icon,.walk-head .top-date{display:none}
+.place-marker{left:20px;top:75px;background:#182b2cd9;border-color:#eeffe14d;font-size:.74rem;color:#f4f8ee}
+.quest{width:min(310px,52vw);left:20px;bottom:20px;padding:.66rem .78rem;border:1px solid #ecf7e444;border-radius:10px;background:#182b2ce8;color:#f4f8ee}
+.quest h2,.quest .timeline,.quest-meta #step-number{display:none}
+.quest-meta{font-size:.68rem;letter-spacing:.035em;color:#d6e4b8}
+.quest p{margin:.23rem 0 0;color:#f4f8ee;font-size:.85rem;line-height:1.34}
+.phone-trigger{position:absolute;right:20px;bottom:20px;display:flex;gap:.47rem;align-items:center;padding:.57rem .63rem;background:#182b2cec;border:1px solid #eaf6dc68;border-radius:10px;color:#fff;font:650 .83rem/1.1 var(--sans);z-index:6;min-height:42px}
+.phone-trigger:hover{background:#30453b}
+.phone-trigger svg,.phone-apps svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.walk-hints{right:20px;bottom:71px;font-size:.72rem;background:#182b2cc8}
+dialog[data-surface="phone"]{inset:auto 22px 21px auto;margin:0;width:min(386px,calc(100vw - 40px));max-height:min(670px,calc(100dvh - 40px));border:6px solid #17272a;border-radius:30px;color:#1e3430;background:#f2f5ed;box-shadow:0 18px 60px #0f221d8a}
+dialog[data-surface="phone"]::backdrop{background:#111d2348;backdrop-filter:none}
+dialog[data-surface="phone"] .modal-head{background:#243c36;color:#eef5e5;padding:.55rem 1rem}
+dialog[data-surface="phone"] .modal-body{padding:.83rem 1rem 1rem}
+dialog[data-surface="phone"] .title{font:730 1.35rem/1.2 var(--sans);letter-spacing:-.025em;margin:0 0 .65rem;color:#213c35}
+#phone-back{margin-left:auto;width:auto;padding:0 .7rem;font:650 .82rem/1.3 var(--sans);min-height:30px;margin-right:.38rem}
+#phone-back[hidden]{display:none}
+.phone-overview{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.38rem}
+.phone-overview div{background:#fff;border:1px solid #dce5d9;border-radius:10px;padding:.47rem .55rem}
+.phone-overview span,.phone-overview b{display:block}
+.phone-overview span{color:#4e625a;font-size:.72rem}
+.phone-overview b{margin-top:.12rem;color:#254b3d;font-size:1.08rem;font-variant-numeric:tabular-nums}
+.town-map-player{position:absolute;z-index:3;translate:-50% -50%;width:11px;height:11px;border-radius:50%;background:#2979a3;border:2px solid #fff;box-shadow:0 0 0 1px #18516f;pointer-events:none}
+.phone-goal{border-left:2px solid #7d9e68;padding:.1rem 0 .1rem .58rem;margin:.65rem 0;color:#405c4d;font-size:.78rem;line-height:1.3}
+.phone-apps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.36rem .28rem}
+.phone-apps button{display:grid;justify-items:center;gap:.22rem;padding:.32rem .1rem .29rem;border:0;border-radius:10px;background:transparent;color:#26453b;font:650 .73rem/1.15 var(--sans)}
+.phone-apps button:hover,.phone-apps button:focus-visible{background:#deebdf}
+.phone-app-icon{display:grid;place-items:center;height:32px;width:36px;border-radius:9px;background:#dde9d5;color:#315450}
+.phone-app-icon.jade{background:#cee8dd;color:#236254}
+.phone-app-icon.gold{background:#f5e8c5;color:#6e542d}
+.phone-app-icon.blue{background:#dce9f3;color:#385973}
+@media(pointer:coarse){.phone-trigger{bottom:110px}.phone-trigger kbd{display:none}}
+@media(max-width:600px){
+ .walk-head{left:10px;top:10px}.place-marker{top:63px;left:10px}
+ .quest{left:10px;bottom:10px}.phone-trigger{right:10px}
+ .walk-hints{right:10px}.walk-hints>kbd,.walk-hints>span{display:none}
+ dialog[data-surface="phone"]{inset:auto 8px 8px auto;width:min(386px,calc(100vw - 16px));max-height:calc(100dvh - 16px)}
+}
 </style>
 </head>
 <body>
 <svg aria-hidden="true" class="symbols" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="vale-mark" viewBox="0 0 24 24"><path d="M3 19V5l9 8 9-8v14M3 19l9-6 9 6M12 13v7"/></symbol>
+  <symbol id="phone-icon" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 5h4M11 18.5h2"/></symbol>
   <symbol id="plant" viewBox="0 0 24 24"><path d="M5 21h14M12 21v-8M12 14C5 14 3 9 3 5c6 0 9 3 9 9Zm0-2c0-5 3-8 9-9 0 5-3 8-9 9Z"/></symbol>
   <symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></symbol>
   <symbol id="orders" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></symbol>
@@ -542,13 +570,13 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
   <div class="world-vignette" aria-hidden="true"></div>
   <header class="masthead walk-head">
     <div class="brand">
-      <span class="brand-mark"><svg aria-hidden="true"><use href="#plant"></use></svg></span>
-      <div><h1>LumenVale</h1><p>City of Knowledge</p></div>
+      <span class="brand-mark"><svg aria-hidden="true"><use href="#vale-mark"></use></svg></span>
+      <h1>LumenVale</h1>
     </div>
     <div class="top-date" id="top-date"></div>
     <button class="top-icon" id="show-guide" type="button" title="How to play" aria-label="How to play"><svg aria-hidden="true"><use href="#help-icon"></use></svg></button>
   </header>
-  <div class="place-marker"><i></i><span id="world-location">Shop office</span></div>
+  <div class="place-marker"><i></i><span id="world-location">Market Office</span></div>
   <span class="aim" aria-hidden="true"></span>
   <aside class="quest" aria-label="Current objective">
     <div class="quest-meta"><span id="scene-detail">Level 1</span><span id="step-number">1 of 7</span></div>
@@ -557,6 +585,7 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
     <ol id="timeline" class="timeline" aria-label="Chapter progress"></ol>
   </aside>
   <button type="button" id="interact" class="interact"><kbd>E</kbd><span>Sit at the computer</span></button>
+  <button class="phone-trigger" id="open-phone" type="button" aria-haspopup="dialog" aria-label="Open City Phone"><svg aria-hidden="true"><use href="#phone-icon"></use></svg><span>Phone</span><kbd>P</kbd></button>
   <div class="walk-hints"><kbd>WASD</kbd> Walk <span></span> <kbd>Mouse</kbd> Look <button type="button" id="move-toggle" aria-controls="movement-pad" aria-expanded="false">Controls</button></div>
   <div class="touch-move" id="movement-pad" aria-label="Touch movement">
     <button type="button" data-move="ArrowLeft" aria-label="Look left">↶</button><button type="button" data-move="w" aria-label="Walk forward">↑</button><button type="button" data-move="ArrowRight" aria-label="Look right">↷</button>
@@ -566,7 +595,7 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
 <dialog id="terminal" class="terminal" aria-labelledby="terminal-title">
   <section class="terminal-screen">
     <header class="terminal-head">
-      <div class="terminal-brand"><span class="brand-mark"><svg aria-hidden="true"><use href="#plant"></use></svg></span><h2 id="terminal-title">Market Office Computer</h2></div>
+      <div class="terminal-brand"><span class="brand-mark"><svg aria-hidden="true"><use href="#vale-mark"></use></svg></span><h2 id="terminal-title">Market Office Computer</h2></div>
       <div class="dashboard">
     <div class="stat" aria-label="Wallet"><svg aria-hidden="true"><use href="#coin-icon"></use></svg><div><span>Wallet</span><b id="coins">20 coins</b></div></div>
     <div class="stat" aria-label="Shop stock"><svg aria-hidden="true"><use href="#box"></use></svg><div><span>On the shelf</span><b id="stock">8 kits</b></div></div>
@@ -585,7 +614,7 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
   </section>
 </dialog>
 <dialog id="overlay" aria-labelledby="overlay-title">
-  <header class="modal-head"><span id="overlay-label"></span><button type="button" id="close-overlay" aria-label="Close window">×</button></header>
+  <header class="modal-head"><span id="overlay-label"></span><button type="button" id="phone-back" title="Return to the phone" hidden>‹ Phone</button><button type="button" id="close-overlay" aria-label="Close window">×</button></header>
   <div class="modal-body" id="overlay-body"></div>
 </dialog>
 <div id="notice" class="toast" role="status" aria-live="polite"></div>
@@ -4720,11 +4749,11 @@ const WALK_LIMITS = { left: -45, right: 45, north: -18, south: 36 };
 const START_POSITION = { x: .32, z: 2.2, yaw: .11, pitch: -.08 };
 const SEAT_POSITION = { x: .02, z: 1.02, yaw: .19, pitch: -.09 };
 const DOOR = { x: 2.63, z: -3.65 };
-const STAND = { x: -4.3, z: -12.45 };
+const STAND = { x: -4.3, z: -14.7 };
 
 const SECURITY_CAMERAS = {
-  front: { name: 'Front entrance', position: [6.8, 4.6, -7.5], target: [1.9, .5, -2.85], horizontal: 69 },
-  lot: { name: 'Pickup lot', position: [-11.1, 6.6, -6.9], target: [-3.7, .65, -12.85], horizontal: 67 },
+  front: { name: 'Front entrance', position: [5.5, 3.1, -6.2], target: [1.9, .5, -2.85], horizontal: 69 },
+  lot: { name: 'Pickup lot', position: [-10.5, 5.1, -8.7], target: [-4.3, .65, -14.7], horizontal: 67 },
   road: { name: 'Road and river', position: [13.2, 10.0, -7.6], target: [.2, .3, -14.8], horizontal: 74 },
 };
 
@@ -4735,6 +4764,7 @@ function inOffice(x,z) {
 const OFFICE_COLLIDERS = [
   [-4.26, -4.10, -3.85, 4.15], [4.10, 4.26, -3.85, 4.15],
   [-4.25, 4.25, 4.02, 4.16], [-4.25, 1.99, -3.85, -3.52], [3.29, 4.25, -3.85, -3.52],
+  [-3.95, -3.24, .05, 1.96], [2.32, 3.77, 2.9, 3.91], [1.80, 2.20, .20, .60],
   [-1.24, 1.64, -.40, .68], [-3.43, -1.74, -3.02, -2.38],
 ];
 function canWalk(x,z,{doorOpen,stand}) {
@@ -4775,14 +4805,20 @@ function nearbyInteraction({x,z}, doorOpen, pending, stand) {
 // The public street plan is shared by scenery, collision, the map and door prompts.
 const TOWN_BOUNDS={left:-58,right:69,north:-17,south:75};
 const STREET_PLAN=[
- {name:'Foundry Avenue',axis:'x',at:19.8,from:-51,to:62,width:5.6},
- {name:'Park Avenue',axis:'x',at:38.8,from:-51,to:62,width:5.8},
- {name:'Orchard Street',axis:'x',at:63,from:-25,to:62,width:5.2},
- {name:'Campus Lane',axis:'z',at:-50,from:3,to:45,width:4.6},
- {name:'Mill Street',axis:'z',at:-20,from:5,to:65,width:4.6},
- {name:'Market Street',axis:'z',at:6,from:15,to:65,width:4.6},
- {name:'Depot Road',axis:'z',at:38,from:1,to:65,width:5.2},
- {name:'Eastbank Road',axis:'z',at:62,from:3,to:65,width:4.6},
+ {name:'Market Avenue',axis:'x',at:-8.6,from:-24,to:20,width:7.8},
+ {name:'Foundry Avenue',axis:'x',at:19.8,from:-50,to:62,width:8.2},
+ {name:'Park Avenue',axis:'x',at:39,from:-50,to:62,width:8.2},
+ {name:'Orchard Street',axis:'x',at:63,from:-20,to:62,width:7.4},
+ {name:'Campus Lane',axis:'z',at:-50,from:4,to:40,width:7.0},
+ {name:'Mill Street',axis:'z',at:-20,from:-8.6,to:63,width:7.2},
+ {name:'Civic Lane',axis:'z',at:8,from:-8.6,to:2,width:7.0},
+ {name:'Market Street',axis:'z',at:8,from:16,to:63,width:7.2},
+ {name:'Depot Road',axis:'z',at:38,from:7,to:63,width:7.8},
+ {name:'Eastbank Road',axis:'z',at:62,from:4,to:63,width:7.0},
+];
+const DOWNTOWN_FRONTAGE=[
+ {id:'press',name:'Vale Press',kind:'press',room:[8,7],desks:[{x:0,z:-2.4,r:2,key:'words',label:'Open My Words at the publishing desk'}],x:-7.8,z:-.35,w:6,d:6.8,h:7.5,face:-1,brick:'#ded7c9',trim:'#faf2df',accent:'#587d87'},
+ {id:'cafe',name:'Juniper Café',kind:'cafe',room:[8,8],desks:[{x:0,z:-2.4,r:2,key:'shop',label:'Read the café trade noticeboard'}],x:15.5,z:-.65,w:7.6,d:6.2,h:8.5,face:-1,brick:'#eee4cf',trim:'#fffae9',accent:'#a96c46'},
 ];
 const TOWN_DISTRICTS=[
  {name:'Learning Quarter',x:-37,z:-5,tint:'#bca675'},
@@ -4793,19 +4829,20 @@ const TOWN_DISTRICTS=[
  {name:'Lumen Park',x:-5,z:51,tint:'#7b9a70'},
 ];
 const TOWN_PLACES=[
- {id:'school',name:'LumenVale School',kind:'school',x:-37,z:-4.6,w:17,d:11,h:7.8,face:1,room:[13,12],brick:'#b28163',trim:'#e4d4b4',
+ {id:'school',name:'LumenVale School',kind:'school',x:-37,z:-4.6,w:17,d:11,h:7.8,face:1,room:[13,12],brick:'#e8dfce',trim:'#f9f2e1',
   desks:[{x:-7,z:-.8,r:2,key:'school',label:'Open classes, exams and GPA'},{x:7,z:-.8,r:2,key:'careers',label:'Visit the career office'}]},
- {id:'library',name:'Reading Library',kind:'library',x:16,z:10.2,w:13,d:10,h:7.1,face:-1,room:[11,11],brick:'#c8ada0',trim:'#ead9b7',
+ {id:'library',name:'Reading Library',kind:'library',x:16,z:10.2,w:13,d:10,h:7.1,face:-1,room:[11,11],brick:'#e2ded4',trim:'#faf6ed',
   desks:[{x:0,z:-2.0,r:2.0,key:'browse',label:'Browse library books'},{x:-6,z:1.8,r:2,key:'words',label:'Open My Words'}]},
- {id:'city-hall',name:'City Hall',kind:'hall',x:-.65,z:12.2,w:10.5,d:8.8,h:7.8,face:-1,room:[10,9],brick:'#c9ba99',trim:'#f0e4c3',
+ {id:'city-hall',name:'City Hall',kind:'hall',x:-.65,z:12.2,w:10.5,d:8.8,h:7.8,face:-1,room:[10,9],brick:'#e8dfce',trim:'#f9f1db',
   desks:[{x:0,z:-2.2,r:2,key:'civic',label:'Open City Hall services'},{x:-5,z:1.5,r:2,key:'build',label:'Open City Architect'}]},
- {id:'warehouse',name:'Eastbank Warehouse',kind:'warehouse',x:25.8,z:.25,w:12.1,d:9.1,h:6.2,face:1,entry:3.25,room:[13,10],brick:'#73847f',trim:'#a9b7a4',
+ {id:'warehouse',name:'Eastbank Warehouse',kind:'warehouse',x:25.8,z:.25,w:12.1,d:9.1,h:6.2,face:1,entry:3.25,room:[13,10],brick:'#bac8c1',trim:'#e7ebe1',
   desks:[{x:-5,z:-2.7,r:2,key:'warehouse',label:'Manage warehouse inventory'},{x:6,z:2.6,r:2,key:'contracts',label:'Review city contracts'}]},
- {id:'market-shop',name:'Fern & Finch',kind:'shop',x:48.5,z:10.5,w:12.5,d:9.8,h:7.0,face:1,room:[9,8],brick:'#ac7660',trim:'#ecd5a7',
+ {id:'market-shop',name:'Fern & Finch',kind:'shop',x:48.5,z:10.5,w:12.5,d:9.8,h:7.0,face:1,room:[9,8],brick:'#eaddd4',trim:'#fcf5e8',accent:'#775484',
   desks:[{x:0,z:-2.5,r:2,key:'shop',label:'Read the market bulletin'}]},
- {id:'outfitter',name:'Eastbank Outfitters',kind:'shop',x:48.5,z:30.6,w:11.5,d:9.2,h:6.7,face:-1,room:[9,8],brick:'#8b9a8d',trim:'#e7d9b4',
+ {id:'outfitter',name:'Eastbank Outfitters',kind:'shop',x:48.5,z:30.6,w:11.5,d:9.2,h:6.7,face:-1,room:[9,8],brick:'#dedfd2',trim:'#f5f4e7',accent:'#438878',
   desks:[{x:0,z:-2.5,r:2,key:'shop',label:'Read the supply bulletin'}]},
 ];
+const TOWN_PUBLIC_PLACES=[...TOWN_PLACES,...DOWNTOWN_FRONTAGE];
 const FACTORY_ROOM={room:[14,12],kind:'factory',desks:[{x:0,z:-3.6,r:2,key:'machine',label:'Operate production machine'},
  {x:-8,z:.0,r:2,key:'staff',label:'Manage worker stations'}]};
 let districtVisit=null;
@@ -4830,6 +4867,8 @@ function indoorFurniture(kind){
  if(kind==='school')return [-1,1].flatMap(a=>[[a*7-1.65,a*7+1.65,-7.25,-5.95],...[a*6.15,a*8.9].flatMap(x=>[-4.3,-2.6].map(z=>[x-.6,x+.6,z-.4,z+.4]))]);
  if(kind==='hall')return [[-3.8,3.8,-5.8,-4.0],[-8,-6.3,-4.0,3.1],[6.3,8,-4.0,3.1]];
  if(kind==='warehouse')return [[-11.3,-8.3,-7.3,5.2],[8.3,11.3,-7.3,5.2],[-3,3,-8,-5.1]];
+ if(kind==='press')return [[-6.65,-5,-5.4,3.8],[5,6.65,-5.4,3.8],[-2.9,2.9,-5.25,-3.72]];
+ if(kind==='cafe')return [[-3.5,3.5,-5.35,-3.89],...[-4,4].flatMap(x=>[.5,4].map(z=>[x-.85,x+.85,z-.65,z+.65]))];
  if(kind==='factory')return [[-3.6,3.6,-7.8,-4.8],[4.8,10,-9,-3.5],[-11,-9.1,-4,4.5]];
  return [[-7.6,-6,-5.5,4],[6,7.6,-5.5,4],[-3.8,3.8,-5.6,-4],[-1.85,1.85,1.89,3.31]];
 }
@@ -4840,7 +4879,7 @@ function districtWalk(x,z){
    x>l-.20&&x<r+.20&&z>n-.20&&z<s+.20);
  }
  return x>=TOWN_BOUNDS.left&&x<=TOWN_BOUNDS.right&&z>=TOWN_BOUNDS.north&&z<=TOWN_BOUNDS.south&&
-  !TOWN_PLACES.some(p=>placeOverlap(p,x,z,.19))&&
+  !TOWN_PUBLIC_PLACES.some(p=>placeOverlap(p,x,z,.19))&&
   !(x>30.6&&x<34.2&&z>44.3&&z<54.5)&&
   !TOWN_HOMES.some(p=>placeOverlap(p,x,z,.19));
 }
@@ -4865,7 +4904,7 @@ function districtNearby(p){
   const desk=place.desks.find(d=>Math.hypot(p.x-d.x,p.z-d.z)<d.r);
   return desk?{district:true,key:desk.key,label:desk.label}:null;
  }
- for(const place of TOWN_PLACES){
+ for(const place of TOWN_PUBLIC_PLACES){
   const e=townEntrance(place);
   if(Math.hypot(p.x-e.x,p.z-e.z)<2.2)return {district:true,key:'enter',place,origin:e,label:'Enter '+place.name};
  }
@@ -4911,6 +4950,52 @@ function districtInteract(target){
  }
 }
 
+
+
+// Low-poly character rig shared by street residents and office visitors.
+function makeTownCitizen(T,piece,box,{coat,skin,hair,pants,style='short',bag=false}){
+ const rig=new T.Group(), arms=[],legs=[];
+ const block=(...values)=>box(rig,...values);
+ block(0,.84,0,.36,.19,.235,pants);
+ block(0,1.102,0,.405,.46,.245,coat);
+ block(0,1.305,.01,.456,.14,.267,coat);
+ block(0,1.060,.129,.031,.36,.012,'#d9d6c9');
+ block(.113,1.143,.136,.101,.099,.016,coat);
+ block(.114,1.180,.147,.093,.014,.014,'#d9d6c9');
+ piece(rig,'trunk',0,1.375,.01,.16,.17,.16,skin);
+ piece(rig,'rock',0,1.544,.026,.177,.208,.166,skin);
+ piece(rig,'rock',0,1.661,-.012,.185,.132,.171,hair);
+ if(style==='long'){
+  block(0,1.448,-.106,.30,.24,.10,hair);
+  for(const sign of [-1,1])block(sign*.133,1.412,-.04,.074,.29,.095,hair);
+ }
+ if(style==='cap'){
+  block(0,1.644,.111,.257,.056,.211,coat);
+  piece(rig,'rock',0,1.684,.011,.181,.084,.173,coat);
+ }
+ for(const side of [-1,1]){
+  piece(rig,'rock',side*.149,1.52,.026,.038,.069,.042,skin);
+  block(side*.058,1.565,.166,.023,.029,.017,'#2a2c27');
+  block(side*.061,1.602,.164,.043,.012,.015,hair);
+  const leg=new T.Group();leg.position.set(side*.101,.814,0);rig.add(leg);legs.push(leg);
+  box(leg,0,-.35,0,.172,.697,.19,pants);
+  box(leg,0,-.716,.035,.187,.140,.264,'#374743');
+  box(leg,0,-.771,.035,.194,.042,.267,'#e7e3d2');
+  const arm=new T.Group();arm.position.set(side*.248,1.327,0);rig.add(arm);arms.push(arm);
+  arm.rotation.z=side*.095;
+  box(arm,0,-.183,0,.132,.37,.151,coat);
+  box(arm,0,-.348,0,.14,.081,.16,'#7b857d');
+  piece(arm,'rock',0,-.437,.012,.068,.096,.066,skin);
+ }
+ piece(rig,'rock',0,1.526,.174,.031,.053,.030,skin);
+ block(0,1.471,.157,.061,.011,.014,'#875d50');
+ if(bag){
+  block(-.267,.95,.135,.228,.27,.12,'#b49460');
+  block(-.266,1.04,.202,.221,.119,.023,'#c7a575');
+  block(-.13,1.173,.148,.046,.36,.024,'#7b654b').rotation.z=-.72;
+ }
+ return {rig,arms,legs};
+}
 
 
 /* City Builder: persistent reading-to-production gameplay. No external services. */
@@ -4960,7 +5045,7 @@ const CITY_SITES=[
  {id:'homes',title:'Worker Homes',kind:'house',x:0,z:25,land:75,build:160,hire:0,rate:0,unlock:2,color:'#b88d6a'},
  {id:'textile',title:'Textile Factory',kind:'factory',x:-27,z:27,land:130,build:280,hire:95,rate:15,unlock:3,color:'#8196ab'},
  {id:'greenhouse',title:'Greenhouse',kind:'factory',x:16,z:27,land:210,build:460,hire:140,rate:25,unlock:4,color:'#67a28b'},
- {id:'assembly',title:'Assembly Plant',kind:'factory',x:31,z:16,land:350,build:820,hire:240,rate:43,unlock:5,color:'#879eaf'}
+ {id:'assembly',title:'Assembly Plant',kind:'factory',x:30,z:12,land:350,build:820,hire:240,rate:43,unlock:5,color:'#879eaf'}
 ];
 const CITY_LIBRARY={x:14,z:8};
 function cityBlank(){return {version:1,coins:0,xp:0,lifetime:0,books:{},sites:{},lastTick:Date.now(),manual:{}};}
@@ -5255,14 +5340,11 @@ function cityGuide(){
  '<label for="city-mouse-sensitivity">Mouse sensitivity: <strong id="city-sensitivity-value">'+Math.round(cityMouseSettings.sensitivity*1000)+'</strong></label>'+
  '<input id="city-mouse-sensitivity" type="range" min="2" max="10" step="1" value="'+Math.round(cityMouseSettings.sensitivity*1000)+'">'+
  '<label class="city-toggle"><input id="city-invert-y" type="checkbox" '+(cityMouseSettings.invertY?'checked':'')+'> Invert vertical look</label></div>'+
- '<p class="city-sub">Click Play once to capture the mouse · Esc releases cursor · Click to resume · Shift sprint · E interact · F fullscreen · G guide · M properties. Menus release the mouse for their buttons. Saves stay on this device.</p>');
+ '<p class="city-sub">Click Play to capture the mouse · Esc releases it · Shift sprints · E interacts · P opens your phone · F toggles fullscreen. Menus release the mouse for their buttons. Saves stay on this device.</p>');
 }
 function citySync(){
- const balance=byId('city-coins'),learning=byId('city-learning'),income=byId('city-income'),lands=byId('city-lands'),objective=byId('city-objective');
- if(balance)balance.textContent=cityState.coins.toLocaleString();
- if(learning)learning.textContent=cityCompleted()+'/'+CITY_BOOKS.length;
- if(income)income.textContent=cityIncome()+'/5s';
- if(lands)lands.textContent=cityLandOwned()+'/'+CITY_SITES.length;
+ if(typeof phoneSync==='function')phoneSync();
+ const objective=byId('city-objective');
  if(objective){
   objective.textContent=!cityCompleted()?'Visit the library and finish your first book':
    !cityState.sites.workshop?.owned?'Buy workshop land (20 coins)':
@@ -5295,30 +5377,16 @@ function cityMousePrompt(){
  const prompt=byId('city-mouse-prompt'),paused=Boolean(dialog.open||terminal.open);
  byId('view').classList.toggle('is-locked',locked);
  if(prompt)prompt.hidden=locked||paused;
- const status=byId('city-mouse-state');
- if(status)status.textContent=locked?'Mouse locked · Esc to release':'Mouse unlocked · Click to resume';
  if(!locked)stopMovement();
 }
 function cityInit(){
- const hud=document.createElement('div');
- hud.className='city-hud';hud.innerHTML=
- '<div class="city-chip"><small>City coins</small><strong id="city-coins">0</strong></div>'+
- '<div class="city-chip"><small>Books read</small><strong id="city-learning">0/6</strong></div>'+ 
- '<div class="city-chip"><small>Land owned</small><strong id="city-lands">0/6</strong></div>'+
- '<div class="city-chip"><small>Production</small><strong id="city-income">0/5s</strong></div>'+
- '<div class="city-hud-actions"><button type="button" id="city-help" title="City guide">Guide</button>'+ 
-  '<button type="button" id="city-portfolio" title="Land and buildings">Properties</button>'+
- '<button type="button" id="city-full" title="Fullscreen and mouse capture">⛶ Fullscreen</button></div>'+
- '<p class="city-goal" id="city-objective"></p>'+ 
- '<p class="city-mouse-state" id="city-mouse-state">Mouse unlocked · Click to resume</p>';
- byId('view').append(hud);
  const prompt=document.createElement('div');
  prompt.id='city-mouse-prompt';
  prompt.className='city-mouse-prompt';
  prompt.innerHTML='<div class="city-resume-card"><div class="city-crosshair-symbol" aria-hidden="true">✛</div>'+
-  '<h2>LUMENVALE</h2><p>Read. Build. Thrive. Look freely with the mouse—no holding or dragging.</p>'+
+  '<h2>Enter LumenVale</h2><p>Click Play to look around with your mouse.</p>'+
   '<button type="button" id="city-resume-button">▶ Click to Play</button>'+
-  '<small>WASD move · E interact · Esc releases mouse · F fullscreen</small></div>';
+  '<small>WASD move · E interact · P phone · Esc releases mouse</small></div>';
  byId('view').append(prompt);
  byId('city-resume-button').addEventListener('click',cityRequestMouseLock);
  byId('landscape').addEventListener('click',cityRequestMouseLock);
@@ -5326,9 +5394,6 @@ function cityInit(){
  document.addEventListener('pointerlockerror',()=>notice('Mouse capture failed. Click Play again.'));
  dialog.addEventListener('close',()=>requestAnimationFrame(cityMousePrompt));
  terminal.addEventListener('close',()=>requestAnimationFrame(cityMousePrompt));
- byId('city-help').addEventListener('click',cityGuide);
- byId('city-portfolio').addEventListener('click',cityPortfolio);
- byId('city-full').addEventListener('click',cityEnterFullscreen);
  document.addEventListener('input',event=>{
   if(event.target.id==='city-mouse-sensitivity'){
    cityMouseSettings.sensitivity=Number(event.target.value)/1000;
@@ -5370,10 +5435,6 @@ function cityInit(){
    turnCamera(event.movementX||0,event.movementY||0);
   }
  });
- document.addEventListener('fullscreenchange',()=>{
-  byId('city-full').textContent=document.fullscreenElement?'⤡ Windowed':'⛶ Fullscreen';
- });
-
  setInterval(()=>{
   cityTick();citySync();
   if(cityBookSession){
@@ -5558,13 +5619,6 @@ function academyTemplate(){
 }
 function academyInstall(){
  academyMount();citySync();
- const bar=document.querySelector('.walk-head');
- if(bar){
-  const b=document.createElement('button');b.type='button';b.className='top-icon lv-top-button';b.textContent='✎ Teacher';b.title='Open Teacher Studio';
-  bar.insertBefore(b,bar.lastElementChild);b.addEventListener('click',academyTeacher);
-  const p=document.createElement('button');p.type='button';p.className='top-icon lv-top-button';p.textContent='◉ Student';p.title='Open student journal';
-  bar.insertBefore(p,bar.lastElementChild);p.addEventListener('click',academyProfile);
- }
  document.addEventListener('click',event=>{
   const control=event.target.closest('[data-academy]');if(!control)return;
   const act=control.dataset.academy,id=control.dataset.id;
@@ -5617,13 +5671,13 @@ function academyInstall(){
 /* LumenVale City Systems: mail, expenses, orders, technology and citizens. */
 const LV_SYSTEMS_KEY='lumenvale-city-systems-v1';
 const LV_CHARACTERS=[
- {id:'lena',name:'Lena',title:'Civil Engineer',x:9,z:15,
+ {id:'lena',name:'Lena',title:'Civil Engineer',x:3.40,z:6.75,
   story:'Our city needs a safe road before the next shipment. Workers must inspect the route, repair broken pavement, and keep the crossing clear for pedestrians.',
   question:'What should workers do before the shipment?',choices:['Inspect and repair the road','Remove every crossing','Ignore the pavement'],answer:0,reward:36},
- {id:'omar',name:'Omar',title:'Workshop Foreman',x:-18,z:24,
+ {id:'omar',name:'Omar',title:'Workshop Foreman',x:-14.6,z:24.85,
   story:'A delivery truck arrived with five boxes of wood. Four boxes are needed for the current orders. One box can stay in the storeroom for future customers.',
   question:'How many boxes should remain in storage?',choices:['Four','One','Five'],answer:1,reward:44},
- {id:'maya',name:'Maya',title:'City Planner',x:17,z:28,
+ {id:'maya',name:'Maya',title:'City Planner',x:-1.8,z:43.6,
   story:'The new neighborhood has homes, a school, and a park. The council recommends saving electricity by using efficient lights and maintaining public spaces.',
   question:'Which choice would help this neighborhood?',choices:['Use efficient lights','Waste electricity','Close the park'],answer:0,reward:52}
 ];
@@ -5633,7 +5687,7 @@ const LV_HOME_DECOR=[
  {id:'solar',name:'Solar Roof',cost:170,desc:'Modernize your rooftop and improve city reputation.'}
 ];
 const LV_PERSONNEL=['Amina · Operator','Leo · Mechanic','Noor · Engineer','Sam · Driver','Mira · Quality Inspector','Omar · Shift Lead'];
-const LV_TREASURES=[{id:'river',x:35,z:-14,reward:50,unlock:2,clue:'Follow the road east, then search the riverside rocks.'},{id:'forest',x:-38,z:29,reward:90,unlock:3,clue:'Look by the old trees on the far western edge.'},{id:'garden',x:8,z:32,reward:140,unlock:4,clue:'Look beyond the homes and gardens at the south edge of the town.'}];
+const LV_TREASURES=[{id:'river',x:35,z:-14,reward:50,unlock:2,clue:'Follow the road east, then search the riverside rocks.'},{id:'forest',x:-38,z:29,reward:90,unlock:3,clue:'Look by the old trees on the far western edge.'},{id:'garden',x:-7.0,z:56.2,reward:140,unlock:4,clue:'Look beyond the homes and gardens at the south edge of the town.'}];
 var systemsDriving=false;
 const LV_PRODUCTS={workshop:{name:'Furniture',icon:'🪑'},lumber:{name:'Lumber',icon:'🪵'},
  textile:{name:'Fabric',icon:'🧵'},greenhouse:{name:'Produce',icon:'🌿'},assembly:{name:'Tools',icon:'🛠️'}};
@@ -5970,9 +6024,7 @@ function systemsNearby(player){
     return {id:'treasure-'+t.id,system:true,label:'Discover hidden treasure'};
  }
  for(const c of LV_CHARACTERS){if(Math.hypot(player.x-c.x,player.z-c.z)<2.1)return {id:'citizen-'+c.id,system:true,label:'Talk to '+c.name};}
- if(Math.hypot(player.x-6.15,player.z+7.0)<2.5)return {id:'mailbox',system:true,label:'Check your mailbox'};
- if(Math.hypot(player.x+7.0,player.z-13.5)<2.9)return {id:'cityhall',system:true,label:'Visit City Hall'};
- if(Math.hypot(player.x-23.5,player.z-6.0)<2.8)return {id:'depot',system:true,label:'Visit delivery warehouse'};
+ if(Math.hypot(player.x-5.1,player.z+4.12)<2.5)return {id:'mailbox',system:true,label:'Check your mailbox'};
  return null;
 }
 function systemsInteract(target){
@@ -5984,13 +6036,6 @@ function systemsInteract(target){
  else systemsPanel('overview');
 }
 function systemsInit(){
- const bar=document.querySelector('.walk-head');
- if(bar){
-  for(const [label,fn] of [['✉ Mail',systemsMailBox],['🏛 City',()=>systemsPanel('overview')]]){
-   const b=document.createElement('button');b.type='button';b.className='top-icon lv-top-button';b.textContent=label;
-   bar.insertBefore(b,bar.lastElementChild);b.addEventListener('click',fn);
-  }
- }
  document.addEventListener('click',event=>{
   const b=event.target.closest('[data-systems]');if(!b)return;
   const action=b.dataset.systems,id=b.dataset.id;
@@ -6261,7 +6306,7 @@ function campusSaveSelection(){
 }
 function campusArchitectValid(x,z,except=null){
  if(x< -38||x>38||z<0||z>32)return false;
- if(atStreet(x,z,2.8)||TOWN_PLACES.some(p=>placeOverlap(p,x,z,5.4))||
+ if(atStreet(x,z,2.8)||TOWN_PUBLIC_PLACES.some(p=>placeOverlap(p,x,z,5.4))||
  Math.hypot(x,z-11.6)<5||Math.hypot(x+37,z+7)<9||
  Math.hypot(x-23.5,z-6)<6||Math.hypot(x,z)<7)return false;
  for(const site of CITY_SITES)if(site.id!==except&&Math.abs(site.x-x)<10&&Math.abs(site.z-z)<9)return false;
@@ -6309,19 +6354,27 @@ function campusPlace(x,z){
  campusState.decor.push({kind:kind.id,x,z});campusSave();campusArchitect();drawScene();return true;
 }
 function campusMap(){
- const all=[...TOWN_PLACES.map(p=>({title:p.name,x:p.x,z:p.z})),
+ const all=[...TOWN_PUBLIC_PLACES.map(p=>({title:p.name,x:p.x,z:p.z})),
  {title:"Market Office",x:0,z:0},{title:"Lumen Park",x:-5,z:51},
  ...CITY_SITES.map(s=>({title:s.title,x:s.x,z:s.z}))];
  const mapX=x=>(x-TOWN_BOUNDS.left)/(TOWN_BOUNDS.right-TOWN_BOUNDS.left)*100;
  const mapZ=z=>(z-TOWN_BOUNDS.north)/(TOWN_BOUNDS.south-TOWN_BOUNDS.north)*100;
- const roads=STREET_PLAN.map(s=>'<i class="town-map-road '+s.axis+'" style="left:'+
-  mapX(s.axis==='x'?s.from:s.at)+'%;top:'+mapZ(s.axis==='x'?s.at:s.from)+'%;'+
-  (s.axis==='x'?'width:'+(mapX(s.to)-mapX(s.from)):'height:'+(mapZ(s.to)-mapZ(s.from)))+'%"></i>').join('');
+ const roads=STREET_PLAN.map(s=>{
+  const horizontal=s.axis==='x';
+  const [x,z]=horizontal?[s.from,s.at-s.width/2]:[s.at-s.width/2,s.from];
+  const width=horizontal?s.to-s.from:s.width;
+  const depth=horizontal?s.width:s.to-s.from;
+  return '<i class="town-map-road" title="'+esc(s.name)+'" style="left:'+mapX(x)+'%;top:'+mapZ(z)+
+   '%;width:'+mapX(TOWN_BOUNDS.left+width)+'%;height:'+mapZ(TOWN_BOUNDS.north+depth)+'%"></i>';
+ }).join('');
+ const here=districtVisit?.origin||player;
+ const marker='<span class="town-map-player" style="left:'+mapX(here.x)+'%;top:'+mapZ(here.z)+
+  '%" title="Your location" aria-label="Your location"></span>';
  const pins=all.map(x=>'<div class="wave-map-pin" style="left:'+mapX(x.x)+'%;top:'+mapZ(x.z)+'%" title="'+
  esc(x.title)+'"><span>●</span><small>'+esc(x.title)+'</small></div>').join('');
  cityPanel("LumenVale / Map","City Map",
- '<p>Explore the city without GPS. The map shows your buildings and the important places you can visit.</p>'+
- '<div class="wave-map-area"><div class="wave-map town-street-map">'+roads+pins+'</div></div>'+
+ '<p>The blue dot marks your location. Choose a district or follow the street grid to explore.</p>'+
+ '<div class="wave-map-area"><div class="wave-map town-street-map">'+roads+pins+marker+'</div></div>'+
  '<div class="city-actions"><button class="button" data-wave="school">School</button>'+
  '<button class="button" data-wave="architect">City Architect</button><button class="button" data-wave="careers">Careers</button></div>');
 }
@@ -6346,16 +6399,6 @@ function campusFactoryStaff(){
 }
 function campusInit(){
  campusInitPlotLocations();
- const top=document.querySelector(".walk-head");
- if(top){
-  for(const [label,action] of [["▦ Map",campusMap],["⌂ Build",campusArchitect],["🎓 School",campusSchool],["✦ Careers",campusCareer],["✎ Words",campusVocabulary]]){
-   const b=document.createElement("button");b.type="button";b.className="top-icon lv-top-button wave-nav";
-   b.textContent=label;top.insertBefore(b,top.lastElementChild);b.addEventListener("click",action);
-  }
- }
- // Teacher management belongs to a separately authenticated web portal.
- byId("lv-teacher-button")?.remove();
- document.querySelectorAll('[data-academy="teacher"]').forEach(el=>el.remove());
  document.addEventListener("click",event=>{
   const el=event.target.closest("[data-wave]");if(!el)return;
   const act=el.dataset.wave,id=el.dataset.id,index=Number(el.dataset.unit);
@@ -6398,7 +6441,6 @@ function campusInit(){
  window.addEventListener("keydown",event=>{
   if(event.repeat||event.target.matches?.("input,textarea,select")||dialog.open||terminal.open)return;
   if(event.key.toLowerCase()==="k")campusMap();
-  if(event.key.toLowerCase()==="p")campusSchool();
  });
  // Add a library word saver without blocking normal page navigation.
  document.addEventListener("pointerdown",event=>{
@@ -6448,25 +6490,10 @@ function createCityWorld({T,exterior,box,piece,renderer}){
   mesh.position.set(x,y,z-.075);g.add(mesh);
  }
  function person(g,x,z,shirt,hair='#443529'){
-  const rig=new T.Group();rig.position.set(x,0,z);g.add(rig);
-  const left=new T.Group(),right=new T.Group();
-  left.position.set(-.18,.78,0);right.position.set(.18,.78,0);
-  b(left,0,-.37,.0,.22,.76,.27,'#394844');
-  b(right,0,-.37,.0,.22,.76,.27,'#364643');
-  b(left,0,-.72,-.07,.26,.15,.38,'#3d3027');
-  b(right,0,-.72,-.07,.26,.15,.38,'#3d3027');
-  rig.add(left,right);
-  b(rig,0,1.08,0,.62,.67,.34,shirt);
-  const armL=new T.Group(),armR=new T.Group();
-  armL.position.set(-.38,1.3,0);armR.position.set(.38,1.3,0);
-  b(armL,0,-.25,0,.16,.56,.19,shirt);
-  b(armR,0,-.25,0,.16,.56,.19,shirt);
-  rig.add(armL,armR);
-  cylinder(rig,0,1.58,0,.13,.17,'#ba805a',7);
-  sphere(rig,0,1.87,0,.30,'#c9906b');
-  const hairMesh=sphere(rig,0,2.06,.015,.29,hair);hairMesh.scale.y=.48;
-  for(const ex of [-.105,.105])sphere(rig,ex,1.88,-.266,.025,'#2f392f');
-  return {rig,left,right,armL,armR,x,z};
+  const actor=makeTownCitizen(T,piece,box,{coat:shirt,hair,skin:'#bd8866',pants:'#495957',style:'cap'});
+  actor.rig.position.set(x,.03,z);
+  g.add(actor.rig);
+  return {rig:actor.rig,left:actor.legs[0],right:actor.legs[1],armL:actor.arms[0],armR:actor.arms[1],x,z};
  }
  function plant(g,x,z,scale=1){
   b(g,x,.24*scale,z,.44*scale,.48*scale,.44*scale,'#aa734e');
@@ -6477,33 +6504,6 @@ function createCityWorld({T,exterior,box,piece,renderer}){
     .27*scale,.72*scale,.25*scale,i%2?'#4e8d5d':'#6fa36a');
    leaf.rotation.z=Math.sin(a)*.26;
   }
- }
- // Plaza fountain and garden beds.
- const park=new T.Group();park.position.set(6.7,0,10.9);city.add(park);
- cylinder(park,0,.28,0,2.2,.45,'#a6b7ad',12);
- cylinder(park,0,.53,0,1.97,.17,'#78b0b6',12);
- cylinder(park,0,1.1,0,.28,1.0,'#ccd9cf',10);
- sphere(park,0,1.67,0,.39,'#88bfd0');
- for(let i=0;i<8;i++){
-  const a=i*PI/4;
-  plant(park,Math.cos(a)*3.3,Math.sin(a)*3.3,.65);
- }
- // Decorative lamps, benches, market awnings, and trees.
- for(const [x,z] of [[-19,15],[-34,16],[29,24],[-4,30]]){
-  cylinder(city,x,1.8,z,.095,3.6,'#56665d');
-  sphere(city,x,3.72,z,.3,'#f5d8a2');
-  cylinder(city,x,3.44,z,.30,.15,'#4b5e52');
- }
- for(const [x,z] of [[6,10],[7,28],[23,9],[-16,30]]){
-  b(city,x,.46,z,2.3,.20,.55,'#9f754f');
-  for(const a of [-.86,.86])b(city,x+a,.26,z,.13,.42,.12,'#78624d');
-  b(city,x,.91,z+.23,2.3,.75,.13,'#9f754f');
- }
- for(const [x,z] of [[-37,3],[-38,32],[-5,33],[27,33],[38,27],[37,3],[-6,4]]){
-  cylinder(city,x,1.0,z,.24,2,'#7a654c');
-  sphere(city,x,3.0,z,1.45,'#4f805b');
-  sphere(city,x-.64,2.75,z+.35,1.0,'#68986b');
-  sphere(city,x+.59,2.95,z-.27,.92,'#588f5d');
  }
  // Empty plots become real production buildings once the player spends coins.
  const buildings=new Map();
@@ -6617,15 +6617,11 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    }
   }
   active.visible=false;
+  for(const part of active.children){
+   if(part.isMesh){part.castShadow=true;part.receiveShadow=true;}
+  }
   buildings.set(site.id,{active,crane,ownedLand,landTiers,workers,motion,site,lot});
  }
- // A few town residents make the settlement feel alive before construction.
- const townspeople=[
-  person(city,8,15.4,'#b16e63','#533c32'),
-  person(city,20,15.4,'#75a18a','#2e372f'),
-  person(city,-7,24.2,'#bc9c60','#5d453a'),
-  person(city,5,27,'#9a80bb','#443b31')
- ];
  function update(saved,now){
   const time=now*.001;
   const pause=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -6650,7 +6646,6 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    // Factory machinery and people keep moving even while the player stands still.
    animatePeople(entry.workers, time, pause, id.length*.27);
   }
-  animatePeople(townspeople,time,pause,0);
  }
  function animatePeople(people,time,pause,offset){
   if(pause)return;
@@ -6679,7 +6674,7 @@ function cityCanWalk(x,z){
 
 
 /* Optional decorative district that responds to city services and the economy. */
-function createLumenWorld({T,exterior,box,renderer}){
+function createLumenWorld({T,exterior,box,piece,renderer}){
  const root=new T.Group();exterior.add(root);
  const low=Boolean(renderer?.isSoftware),palette=new Map();
  const colors={wood:'#986f4f',gold:'#e1bd76',stone:'#c9c1ae',glass:'#9cc8c7',road:'#718276'};
@@ -6724,12 +6719,12 @@ function createLumenWorld({T,exterior,box,renderer}){
   return group;
  }
  // Pedestrian mailbox at the office exit.
- const mailbox=new T.Group();mailbox.position.set(6.15,0,-7.0);root.add(mailbox);
- column(mailbox,0,1.0,0,.105,2.0,'#74634d');
- b(mailbox,0,2.03,0,.93,.73,.55,'#c25a4a');
- b(mailbox,0,2.43,0,1.0,.10,.68,'#813e37');
- b(mailbox,0,2.11,-.29,.70,.095,.035,'#f1d492');
- sign(mailbox,'MAIL',0,1.81,-.30,.74,.20);
+ const mailbox=new T.Group();mailbox.position.set(5.1,0,-4.12);root.add(mailbox);
+ column(mailbox,0,.55,0,.095,1.1,'#606e67');
+ b(mailbox,0,1.11,0,.93,.73,.55,'#c25a4a');
+ b(mailbox,0,1.51,0,1.0,.10,.68,'#813e37');
+ b(mailbox,0,1.19,-.29,.70,.095,.035,'#f1d492');
+ sign(mailbox,'MAIL',0,.92,-.30,.74,.20);
  // Cars travel along the road and change the view without a cutscene.
  const traffic=[truck('#e6ad63'),truck('#5b99a1'),truck('#c67968')];
  traffic.forEach(car=>root.add(car));
@@ -6738,14 +6733,14 @@ function createLumenWorld({T,exterior,box,renderer}){
   build(obj);return [id,obj];
  };
  const upgrades=new Map([
- addUpgrade('garden',4,3,g=>{
+ addUpgrade('garden',5.95,3.94,g=>{
   for(let i=0;i<13;i++){
    const theta=i*2.4,px=Math.cos(theta)*(1.1+i%3*.39),pz=Math.sin(theta)*(1.1+i%3*.39);
    column(g,px,.24,pz,.20,.47,'#b17f61');sphere(g,px,.66,pz,.44,i%2?'#75a66e':'#659e80');
   }
  }),
  addUpgrade('lights',0,0,g=>{
-  for(const [x,z] of [[-2,5],[9,26],[24,25],[-24,19],[30,6]]){
+  for(const [x,z] of [[-2,5],[13.4,24.65],[24,25],[-25.2,14.2],[31.5,5.4]]){
    column(g,x,1.85,z,.095,3.7,'#667e76');
    sphere(g,x,3.86,z,.36,'#f9dfaa');
   }
@@ -6761,7 +6756,7 @@ function createLumenWorld({T,exterior,box,renderer}){
    const pane=b(g,x,1.30,z,1.66,.09,1.21,'#567c9b');pane.rotation.x=-.33;
   }
  }),
- addUpgrade('office',-12,-1,g=>{
+ addUpgrade('office',-15.1,-.72,g=>{
   house(g,0,0,6.7,4.2,5.6,'#9ebbb5');
   sign(g,'HEADQUARTERS',0,3.8,-2.88,4.2,.50);
  }),
@@ -6803,22 +6798,38 @@ function createLumenWorld({T,exterior,box,renderer}){
   b(solar,x,3.52,.11,1.27,.03,.13,'#a2c4c9');
  }
  home.add(solar);homeDecor.set('solar',solar);
- const pedestrians=[];
- function figure(x,z,coat){
-  const rig=new T.Group();rig.position.set(x,0,z);root.add(rig);
-  const legs=[];
-  for(const px of [-.13,.13])legs.push(b(rig,px,.40,0,.21,.75,.23,'#42544c'));
-  b(rig,0,1.06,0,.54,.60,.29,coat);
-  sphere(rig,0,1.61,0,.23,'#d3a17a');
-  sphere(rig,0,1.76,-.01,.21,'#544034');
-  return {rig,legs,x,z};
- }
- pedestrians.push(figure(9,15,'#8ba2b8'),figure(-18,24,'#b68f78'),figure(17,28,'#b28a9f'));
+ const appearance=[
+  {coat:'#527d91',skin:'#cda381',hair:'#342c29',pants:'#4e6267',style:'long',bag:true},
+  {coat:'#ac784b',skin:'#9d624a',hair:'#352b28',pants:'#556659',style:'cap'},
+  {coat:'#a05c78',skin:'#d39f7c',hair:'#6a4b36',pants:'#47595a',style:'short',bag:true},
+  {coat:'#718654',skin:'#a16c56',hair:'#41332c',pants:'#4b6263',style:'long'},
+  {coat:'#3e8271',skin:'#d2ad8f',hair:'#775639',pants:'#455957',style:'cap',bag:true},
+  {coat:'#bd6c55',skin:'#8e5d4a',hair:'#302b29',pants:'#49596c',style:'short'},
+ ];
+ const citizens=LV_CHARACTERS.map((citizen,i)=>{
+  const member=makeTownCitizen(T,piece,box,appearance[i]);
+  member.rig.position.set(citizen.x,.08,citizen.z);
+  member.rig.rotation.y=[-1.4,.25,1.2][i];
+  root.add(member.rig);
+  return member;
+ });
+ const promenade=[
+  {x:-11.6,z:-4.02,span:.75},{x:15.5,z:-4.53,span:2.3},{x:-37.0,z:4.8,span:4.0},
+  {x:46.7,z:25.0,span:3.1},{x:-6.05,z:50.8,span:3.9},{x:49.9,z:58.1,span:3.2}
+ ];
+ const pedestrians=promenade.map((path,i)=>{
+  const member=makeTownCitizen(T,piece,box,appearance[(i+3)%appearance.length]);
+  member.rig.position.set(path.x,.074,path.z);
+  member.rig.rotation.y=Math.PI/2;
+  root.add(member.rig);
+  return {...member,...path};
+ });
+ const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
  function update(now,view){
   const phase=now*.001;
   for(let i=0;i<traffic.length;i++){
    const car=traffic[i],distance=(phase*(i+1)*1.15+i*28)%102;
-   car.position.set(i===1?55-distance:-47+distance,0,i===1?21.05:18.54);
+   car.position.set(i===1?55-distance:-47+distance,.064,i===1?21.14:18.45);
    car.rotation.y=i===1?Math.PI:0;
   }
   for(const [id,group] of upgrades)group.visible=Boolean(systemsState.upgrades[id]);
@@ -6837,13 +6848,16 @@ function createLumenWorld({T,exterior,box,renderer}){
     van.rotation.y=0;
    }
   }
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-  pedestrians.forEach((p,i)=>{
-   const walking=Math.sin(phase*(.8+i*.12)+i);
-   p.rig.position.x=p.x+walking*1.25;
-   p.rig.rotation.y=walking*.3;
-   p.legs[0].rotation.x=Math.sin(phase*3+i)*.18;
-   p.legs[1].rotation.x=-Math.sin(phase*3+i)*.18;
+  if(motion.matches)return;
+  citizens.forEach((person,i)=>{
+   person.arms[0].rotation.x=Math.sin(phase*1.2+i)*.075;
+  });
+  pedestrians.forEach((person,i)=>{
+   const travel=phase*.49+i*1.75, stride=Math.sin(phase*6+i)*.36;
+   person.rig.position.x=person.x+Math.sin(travel)*person.span;
+   person.rig.rotation.y=Math.cos(travel)>=0?Math.PI/2:-Math.PI/2;
+   person.legs.forEach((leg,side)=>{leg.rotation.x=side?stride:-stride;});
+   person.arms.forEach((arm,side)=>{arm.rotation.x=side?-stride*.72:stride*.72;});
   });
  }
  return {update};
@@ -6934,6 +6948,8 @@ function createDistrictWorld({T,scene,exterior,renderer}){
      mesh.setColorAt(i,tint.set(v.color));
     });
     mesh.computeBoundingSphere();
+    mesh.castShadow=group.userData.castsShadow===true&&form!=='light';
+    mesh.receiveShadow=form!=='light';
     group.add(mesh);
    }
   }
@@ -6946,8 +6962,8 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   const ctx=canvas.getContext('2d');
   if(!ctx)return;
   ctx.fillStyle=color;ctx.fillRect(0,0,640,140);
-  ctx.strokeStyle='#dfc783';ctx.lineWidth=3;ctx.strokeRect(6,6,628,128);
-  ctx.fillStyle='#f7ebcf';ctx.font='bold 48px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.strokeStyle='#efeed774';ctx.lineWidth=2;ctx.strokeRect(6,6,628,128);
+  ctx.fillStyle='#faf8e9';ctx.font='700 47px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillText(title,320,71,595);
   const texture=new T.CanvasTexture(canvas);texture.colorSpace=T.SRGBColorSpace;
   const mesh=new T.Mesh(new T.PlaneGeometry(width,height), new T.MeshBasicMaterial({map:texture}));
@@ -6964,33 +6980,45 @@ function createDistrictWorld({T,scene,exterior,renderer}){
  function streetWorks(){
   const k=kit();
   for(const s of STREET_PLAN){
-   streetBox(k,s,s.from-1.3,s.to+1.3,s.width+3,.004,.05,'#b8ab91');
-   streetBox(k,s,s.from,s.to,s.width,.032,.05,'#505955');
+   streetBox(k,s,s.from-2.3,s.to+2.3,s.width+4.6,.003,.050,'#c5c5bb');
+   streetBox(k,s,s.from,s.to,s.width,.030,.041,'#5e6568');
    for(const side of [-1,1]){
-    streetBox(k,s,s.from,s.to,.17,.079,.072,'#dfcdae',side*(s.width/2+.08));
-    streetBox(k,s,s.from,s.to,.054,.062,.009,'#afa997',side*(s.width/2-.27));
+    const edge=side*(s.width/2);
+    streetBox(k,s,s.from,s.to,.14,.058,.043,'#e7e6d9',edge+.08*side);
+    streetBox(k,s,s.from,s.to,.046,.056,.009,'#cecfcc',edge-.26*side);
+    for(let t=s.from+.9;t<s.to;t+=1.75){
+     const [x,z]=onRoad(s,t,edge+1.22*side);
+     if(atStreet(x,z,.06))continue;
+     k.box(x,.033,z,s.axis==='x'?.025:2.0,.008,s.axis==='x'?2.0:.025,'#b8b9b2');
+    }
    }
-   for(let t=s.from+3;t<s.to-2;t+=5){
-    const [x,z]=onRoad(s,t);
-    if(STREET_PLAN.some(other=>other.axis!==s.axis&&Math.abs(t-other.at)<4.8&&s.at>=other.from&&s.at<=other.to))continue;
-    streetBox(k,s,t-.68,t+.68,.063,.063,.008,'#ddc69b');
-    if(Math.round(t)%4===0)k.box(x,.065,z,.17,.011,.12,'#96856b');
+   for(let t=s.from+2.5;t<s.to-1;t+=4){
+    if(STREET_PLAN.some(other=>other.axis!==s.axis&&Math.abs(t-other.at)<other.width/2+1.8&&s.at>=other.from&&s.at<=other.to))continue;
+    streetBox(k,s,t-.78,t+.78,.072,.055,.009,'#f1f0e6');
    }
   }
   for(const a of STREET_PLAN.filter(x=>x.axis==='x'))for(const b of STREET_PLAN.filter(x=>x.axis==='z')){
    if(b.at<a.from||b.at>a.to||a.at<b.from||a.at>b.to)continue;
-   k.box(b.at,.066,a.at,b.width+.07,.026,a.width+.07,'#55605b');
-   for(const side of [-1,1])for(let offset=-1.8;offset<=1.81;offset+=.6){
-    k.box(b.at+offset,.084,a.at+side*(a.width/2+1.03),.28,.014,1.05,'#e9dfc4');
-    k.box(b.at+side*(b.width/2+1.03),.084,a.at+offset,1.05,.014,.28,'#e9dfc4');
+   k.box(b.at,.063,a.at,b.width+.15,.027,a.width+.15,'#5e6568');
+   for(const side of [-1,1])for(let offset=-2.7;offset<=2.71;offset+=.60){
+    if(a.at+side*(a.width/2+1.15)>b.from&&a.at+side*(a.width/2+1.15)<b.to)
+     k.box(b.at+offset,.083,a.at+side*(a.width/2+1.15),.29,.009,1.22,'#f0efe4');
+    if(b.at+side*(b.width/2+1.15)>a.from&&b.at+side*(b.width/2+1.15)<a.to)
+     k.box(b.at+side*(b.width/2+1.15),.083,a.at+offset,1.22,.009,.29,'#f0efe4');
    }
   }
   k.flush(outside);
  }
- function tree(k,x,z,s=1,fall=false){
-  k.put('trunk',x,1.36*s,z,.19*s,2.72*s,.19*s,'#705943');
-  for(const [a,b,y] of [[0,0,3.25],[.66,.24,3],[-.57,-.29,3.0],[.15,-.48,3.68]]){
-   k.put('stone',x+a*s,y*s,z+b*s,1.04*s,.89*s,1.02*s,fall?(a>0?'#b68e59':'#94734d'):(a>0?'#6b926a':'#507b61'),0,a,0);
+ function tree(k,x,z,s=1,tall=false){
+  k.put('trunk',x,1.12*s,z,.22*s,2.24*s,.21*s,'#796451');
+  k.put('stone',x+.35*s,.04,z-.23*s,1.10*s,.035,1.05*s,'#6c8d58');
+  if(tall){
+   for(const [y,w,h] of [[2.36,.88,1.17],[3.03,.70,1.34],[3.76,.44,.90]])
+    k.put('stone',x,y*s,z,w*s,h*s,w*s,'#397652',0,y,0);
+  }else{
+   for(const [a,b,y,size,tone] of [[0,0,2.95,1.01,'#75a344'],[.62,.14,2.88,.77,'#83b44c'],[-.55,-.25,2.91,.80,'#6c9f43'],[.12,-.43,3.55,.79,'#a1bd52']]){
+    k.put('stone',x+a*s,y*s,z+b*s,size*s,size*.93*s,size*s,tone,0,a,0);
+   }
   }
  }
  function bench(k,x,z){
@@ -7019,52 +7047,71 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   k.light(x+1.46,.60,z+.40,.04,.14,.19,'#e8cb94');
  }
  function publicPlaces(){
-  const k=kit();
-  for(const [x,z] of [[-48,4],[-42,5],[-33,5],[-27,4],[-17,10],[-2,7],[3,16],[10,16],[22,14],[29,13],[40,22],[56,23],[42,35],[55,35],[2,41],[-13,45],[-12,57],[11,54],[18,49],[48,60],[58,60],[-42,47]]){
+  const paving=kit(), k=kit();
+  const props=new T.Group();props.userData.castsShadow=true;outside.add(props);
+  // Hardscaped frontage and signed plazas sit between the building line and the curb.
+  for(const [x,z,w,d] of [[-5,-4.36,19,1.25],[2.55,-4.42,4.6,1.34],[15.5,-4.45,8.2,1.4],[.2,5.95,10.8,3.2],[16,4.05,13.9,2.4],[-37,2.42,18,3.1],[48.5,16.08,13.2,1.56],[48.5,24.78,12.6,1.42],[-4.3,-14.7,5.8,3.7]]){
+   paving.box(x,.03,z,w,.11,d,'#d4d2c7');
+  }
+  for(const [x,z] of [[-1.5,5.65],[3.7,5.65],[-24,-3.8],[-5.3,-4.53],[5.9,-3.6],[11.5,-4.58],[20,-4.58],[-40,3.2],[-34,3.2],[10.6,4.2],[21.6,4.2],[42.5,14.88],[54.7,14.88],[42.5,25],[54.7,25],[11.9,43.9],[-12.8,44.2],[-41.8,44.8],[42.5,58.5],[58.8,58.5]]){
    streetLamp(k,x,z);
   }
-  for(const [x,z] of [[-47,-8],[-47,8],[-30,1],[-18,1],[4,8],[9,14],[21,15],[24,12],[42,15],[54,18],[45,35],[54,34],[14,43],[55,47],[43,46],[20,59],[-26,57],[-38,61]]){
-   tree(k,x,z,.86+(Math.abs(x)%5)*.046,z>45&&z%2===1);
+  for(const [x,z,tall] of [[-15.7,-14.35,true],[-10.5,-14.35,false],[-.4,-14.4,false],[5.9,-14.55,true],[13,-14.4,false],[18.3,-14.45,false],[-44,2.6,false],[-30,2.6,false],[-3.9,6.1,true],[4.15,5.65,false],[11,3.05,true],[21.1,3.05,false],[42.3,14.7,true],[54.75,14.5,false],[43,25,false],[54.9,25.12,true],[14,44.8,false],[55,47,true],[43,46,false],[20,58.1,false],[-26,56.5,true],[-38,57.6,false]]){
+   tree(k,x,z,.78+(Math.abs(x)%4)*.055,tall);
   }
-  for(const [x,z] of [[-35,3],[-39,3],[-2,9],[4,11],[11,5],[19,5],[46,17],[51,17],[47,25],[53,25],[14,49],[16,53]]){
-   planting(k,x,z);
+  for(const [x,z] of [[-2.8,-4.46],[.5,-4.46],[13.0,-4.48],[18.1,-4.48],[-41.3,2.36],[-32.5,2.36],[-3.3,6.25],[2.65,5.75],[12,4.45],[20,4.45],[45.3,15.72],[51.7,15.72],[45.5,25.28],[51.6,25.28],[14,49],[16,53]]){
+   planting(k,x,z,1.5,.72);
   }
-  for(const [x,z] of [[-29,4],[2,12],[13,15],[45,17],[49,25],[-9,47],[0,47],[0,54]])bench(k,x,z);
-  for(const [x,z] of [[-40,3],[3,13],[41,19],[52,29],[-10,48]]){
-   k.put('trunk',x,.40,z,.25,.80,.23,'#5d6f63');
-   k.box(x,.84,z,.52,.10,.47,'#485a51');
+  for(const [x,z] of [[-38.7,3.3],[-2.35,6.52],[19.8,4.7],[44.3,16.7],[50.5,24.6],[-11.1,47],[.25,47],[.25,54]])bench(k,x,z);
+  for(const [x,z] of [[-40,3.45],[3.7,6.5],[43,16.9],[53.9,24.5],[-10,48]]){
+   k.put('trunk',x,.36,z,.22,.72,.22,'#425a55');k.box(x,.75,z,.46,.09,.49,'#3b4d52');
   }
-  parked(k,43,17,'#a77758');parked(k,52,23,'#738e89');parked(k,29,10,'#aa8c67');parked(k,-43,23,'#76868e');
-  // Park paths, lawns, the pergola and a planted reflecting pool.
-  k.box(-5,-.005,51,22,.048,19,'#779368');
-  k.box(-5,.030,51,19,.038,2,'#c4b191');k.box(-5,.032,51,2,.038,17,'#c4b191');
-  k.box(-9,.20,54,5.5,.40,4.5,'#bcad91');k.box(-9,.417,54,4.8,.038,3.8,'#669a91');
-  for(const [x,z] of [[-14,44],[-1,44],[-14,59],[-1,59],[-10,59],[1,55]])tree(k,x,z,1.0,true);
-  for(const x of [-11.2,-7.0])for(const z of [44.8,48.5])k.box(x,1.37,z,.17,2.70,.17,'#79634c');
-  for(let i=0;i<7;i++)k.box(-11.5+i*.8,2.76,46.65,.10,.15,4.2,'#8e734d');
-  // Orchard Row’s water tower marks the southeast crossing.
+  // Signed parallel bays keep cars out of sidewalks and the through lanes.
+  for(const [x,z,paint] of [[44,17.05,'#dfad51'],[51,17.05,'#568ca7'],[-44,22.68,'#be6b56'],[27.5,17.05,'#dae0da']]){
+   paving.box(x,.061,z,4.5,.02,1.84,'#696e71');
+   for(const side of [-1,1])paving.box(x+side*2.20,.074,z,.055,.012,1.89,'#edede4');
+   parked(k,x,z,paint);
+  }
+  paving.box(-5,.001,51,22,.071,17,'#8caf63');
+  paving.box(-5,.042,51,19,.04,1.85,'#dedbd0');
+  paving.box(-5,.045,51,1.75,.04,16.8,'#dedbd0');
+  k.box(-9,.20,54,5.5,.40,4.5,'#c7c2ad');k.box(-9,.417,54,4.8,.038,3.8,'#629ba8');
+  k.put('trunk',-9,.85,54,.9,1.10,.9,'#dad6c5');
+  k.put('trunk',-9,1.48,54,1.12,.17,1.12,'#e4e0d3');
+  for(const [x,z,tall] of [[-14,44,true],[-.65,44.9,false],[-14,58.95,false],[-1.8,58.4,true],[-10.8,59.1,false],[2,55.7,false]])tree(k,x,z,.95,tall);
+  paving.box(5.65,.064,52.25,8.2,.038,10.0,'#c7805d');
+  for(const x of [2.02,9.28])paving.box(x,.089,52.25,.055,.009,9.1,'#fff0d8');
+  for(const z of [47.73,52.25,56.77])paving.box(5.65,.089,z,7.29,.009,.055,'#fff0d8');
+  paving.box(5.65,.089,55.1,2.8,.012,1.9,'#538f83');
+  k.box(5.65,1.54,56.92,.12,3.0,.12,'#455453');
+  k.box(5.65,2.73,56.67,.95,.62,.065,'#f7eee0');
+  k.box(5.65,2.48,56.44,.42,.075,.39,'#a65842');
+  // Orchard Row’s water tower is visible from the surrounding blocks.
   for(const x of [30.8,34.1])for(const z of [47.3,51.1])k.box(x,3.0,z,.28,6,.28,'#687671');
   k.put('trunk',32.45,6.1,49.2,2.6,2.85,2.6,'#7b9592');
   k.put('trunk',32.45,7.63,49.2,2.76,.42,2.76,'#4c6c65');
-  k.flush(outside);
-  sign(outside,'Lumen Park',-5,1.51,42,3.25,.64,-1);
-  sign(outside,'Orchard Row',29.4,1.55,41.6,3.15,.64,-1);
-  for(const [title,x,z] of [['Learning Quarter',-44,4.5],['Civic Square',4,7],['Riverside Market',40,16],['Foundry District',-19,17]]){
-   const board=kit();board.box(x,.71,z,.12,1.40,.12,'#5a6357');board.flush(outside);
-   sign(outside,title,x,1.66,z,3.15,.62,-1);
-  }
+  paving.flush(outside); k.flush(props);
+  sign(outside,'Lumen Park',-5,1.51,44,3.25,.64,-1);
+  sign(outside,'Orchard Row',29.4,1.55,44.5,3.15,.64,-1);
  }
  function facade(place){
   const k=kit(),{x,z,w,d,h,kind,brick,trim}=place;
   const f=place.face||1, front=z+f*d/2, door=x+(place.entry||0);
-  const roof=h+.10;
-  k.box(x,.08,z,w+.62,.18,d+.61,'#a8957a');
+  const roof=h+.10, accent=place.accent||'#527b79', storefront=['shop','press','cafe'].includes(kind);
+  k.box(x,.06,z,w+.63,.13,d+.61,'#d3d0c4');
   k.box(x,h/2+.08,z,w,h,d,brick);
-  k.box(x,.37,z,w+.15,.59,d+.1,'#a29480');
-  k.box(x,roof,z,w+.50,.28,d+.38,kind==='warehouse'?'#4f6664':'#516c66');
+  k.box(x,.25,z,w+.15,.42,d+.1,'#b8b8ad');
+  k.box(x,roof,z,w+.35,.24,d+.26,kind==='warehouse'?'#788982':'#a3aaa1');
+  if(kind!=='home'){
+   for(const edge of [-1,1]){
+    k.box(x,roof+.25,z+edge*d/2,w+.38,.48,.20,trim);
+    k.box(x+edge*w/2,roof+.25,z,.20,.48,d+.20,trim);
+   }
+   k.box(x+w*.19,roof+.37,z+d*.19,w*.27,.52,d*.24,'#a4aba3');
+  }
   k.box(x,h-.22,front+f*.05,w+.20,.20,.18,trim);
   k.box(x,3.42,front+f*.055,w,.13,.13,trim);
-  k.box(door,1.25,front+f*.06,1.55,2.44,.13,'#3e5b51');
+  k.box(door,1.25,front+f*.06,1.55,2.44,.13,accent);
   k.box(door,1.64,front+f*.134,1.31,1.36,.049,'#82a9aa');
   k.box(door,1.65,front+f*.17,.063,1.40,.022,trim);
   k.box(door-.27,1.02,front+f*.175,.10,.05,.035,'#d5b778');
@@ -7073,7 +7120,8 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    const normal=side==='front'?f:-f;
    k.box(px,y,pz,ww+.18,hh+.15,.11,trim);
    k.box(px,y,pz+normal*.065,ww,hh,.049,'#506c63');
-   k.box(px,y,pz+normal*.091,ww-.14,hh-.14,.023,kind==='warehouse'?'#91a6a0':'#7fa2a3');
+   k.box(px,y,pz+normal*.091,ww-.14,hh-.14,.023,kind==='warehouse'?'#74908d':'#6e9097');
+   k.box(px,y+hh*.22,pz+normal*.105,ww-.14,hh*.32,.010,'#a3c0c5');
    k.box(px,y,pz+normal*.106,.06,hh-.08,.017,'#d6c8ab');
    k.box(px,y-.04,pz+normal*.106,ww-.08,.058,.018,'#c0b59c');
    k.box(px,y-hh/2-.11,pz+normal*.087,ww+.26,.10,.21,trim);
@@ -7081,8 +7129,9 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   const bays=Math.floor(w/2);
   for(let i=0;i<bays;i++){
    const px=x+(i-(bays-1)/2)*1.86;
-   if(Math.abs(px-door)>1.63)window(px,1.86,front+f*.062,kind==='shop'?1.40:1.09,1.53,'front');
-   if(h>=6&&kind!=='warehouse')window(px,5.24,front+f*.060,1.04,1.35,'front');
+   if(Math.abs(px-door)>1.63)window(px,1.86,front+f*.062,storefront?1.40:1.09,1.53,'front');
+   if(h>=6&&kind!=='warehouse')window(px,h>=7.2?4.87:5.03,front+f*.060,1.10,h>=7.2?1.23:1.55,'front');
+   if(h>=7.2&&kind!=='warehouse')window(px,h-.95,front+f*.060,1.03,1.14,'front');
    if(i%2===0)window(px,h>5?4.65:1.75,z-f*(d/2+.062),1.10,1.21,'back');
   }
   for(const side of [-1,1]){
@@ -7111,9 +7160,13 @@ function createDistrictWorld({T,scene,exterior,renderer}){
     k.box(x+6.15,3.89,front+f*2,.94,.53,.035,'#597b67');
    }
    planting(k,door-3.75,front+f*.76,1.10,1.04);
-  }else if(kind==='shop'){
-   k.box(x,3.34,front+f*.69,w-.59,.14,1.43,'#3e685c',f*.095);
-   for(let i=0;i<8;i++)k.box(x+(i-3.5)*1.39,3.28,front+f*1.42,1.34,.27,.10,i%2?'#d9c397':'#527968');
+  }else if(storefront){
+   const strips=Math.ceil(w/.46),stripe=(w-.66)/strips;
+   for(let i=0;i<strips;i++){
+    const px=x+(i-(strips-1)/2)*stripe, tint=i%2?'#fcf2dd':accent;
+    k.box(px,2.96,front+f*.57,stripe+.012,.10,1.13,tint,f*.18);
+    k.box(px,2.76,front+f*1.10,stripe+.012,.18,.085,tint);
+   }
    planting(k,door-3.0,front+f*1.76,1.23,.82);
   }else if(kind==='warehouse'){
    for(let i=0;i<9;i++)k.box(x-2.6,1.0+i*.22,front+f*.108,3.4,.163,.115,'#a5b0a4');
@@ -7123,8 +7176,8 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   }else{
    for(const side of [-1,1])k.box(x+side*w*.24,h+.42,z,w*.54,.20,d+.48,'#6a625a',0,0,-side*.18);
   }
-  const group=new T.Group();outside.add(group);k.flush(group);
-  if(place.name)sign(group,place.name,door,kind==='warehouse'?4.48:kind==='shop'?4.15:3.94,front+f*.18,Math.min(6.8,w-.5),.65,f);
+  const group=new T.Group();group.userData.castsShadow=true;outside.add(group);k.flush(group);
+  if(place.name)sign(group,place.name,door,kind==='warehouse'?4.48:storefront?3.55:3.94,front+f*.18,Math.min(6.8,w-.5),.65,f);
  }
  function table(k,x,z,w,d,c='#977454',y=.84){
   k.box(x,y,z,w,.15,d,c);
@@ -7176,6 +7229,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
  const rooms=new Map();
  function makeRoom(place){
   const g=new T.Group(), k=kit();
+  g.userData.castsShadow=true;
   const kind=place.kind,[w,d]=place.room;
   roomShell(g,k,place);
   k.box(0,.024,3.0,3.05,.029,7.1,kind==='library'?'#7e8e74':'#b5a68a');
@@ -7205,6 +7259,26 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    for(const x of [-2.25,0,2.25])k.box(x,.58,-6.75,1.92,1.13,2.6,'#b0936d');
    for(const x of [-5,6])table(k,x,-4.18+(x>0?8.3:0),2.6,1,'#7d7661');
    entryLabel(g,'Inventory',-5,-3.57,3.25);entryLabel(g,'Contracts',6,2.6,3.25);
+  }else if(kind==='press'){
+   for(const side of [-1,1])for(const z of [-3.35,.30,2.80])shelves(k,side*5.85,z,2.65,2.45,.87,true,true);
+   table(k,0,-4.48,5.8,1.45,'#7c8a80');
+   k.box(-.9,1.03,-4.45,1.0,.26,.64,'#566965');
+   k.box(-.9,1.185,-4.42,.76,.063,.52,'#d9e0d2');
+   for(let i=0;i<5;i++)k.box(1.32,.94+i*.035,-4.51,.53,.027,.74,i%2?'#ebe2ce':'#cfbfa5');
+   entryLabel(g,'Publishing desk',0,-3.72,4.5);
+  }else if(kind==='cafe'){
+   table(k,0,-4.62,6.9,1.45,'#ae7863',1.07);
+   k.box(-1.98,1.33,-4.55,1.25,.39,.66,'#607875');
+   k.box(-1.98,1.48,-4.19,1.11,.18,.068,'#d2d3bf');
+   for(let i=0;i<5;i++)k.put('trunk',.35+i*.34,1.22,-4.38,.13,.19,.13,'#e5e3d8');
+   for(const x of [-4,4])for(const z of [.5,4]){
+    table(k,x,z,1.7,1.25,'#ab8b69',.68);
+    for(const side of [-1,1]){
+     k.box(x+side*1.12,.38,z,.49,.09,.48,'#698a75');
+     k.box(x+side*1.31,.60,z,.09,.45,.48,'#698a75');
+    }
+   }
+   entryLabel(g,'Trade noticeboard',0,-3.88,4.5);
   }else if(kind==='factory'){
    const chosen={workshop:'#ad815c',lumber:'#a98767',textile:'#7790a3',greenhouse:'#6d9a84',assembly:'#788caa'}[place.id]||'#71877e';
    table(k,0,-6.2,6.28,2.25,chosen,1.35);
@@ -7256,7 +7330,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   return g;
  }
  streetWorks(); publicPlaces();
- for(const place of TOWN_PLACES)facade(place);
+ for(const place of TOWN_PUBLIC_PLACES)facade(place);
  TOWN_HOMES.forEach((h,i)=>facade({...h,h:4.1+(i%2)*.33,kind:'home'}));
  function update(now){
   inside.visible=Boolean(districtVisit);
@@ -7277,7 +7351,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    });
   }
  }
- return {update};
+ return {update,label:sign};
 }
 
 
@@ -7492,7 +7566,22 @@ function createOfficeView() {
   scene.add(skyLight);
   const sun = new T.DirectionalLight('#ffe3ae', 2.05);
   sun.position.set(-18, 19, 12);
-  scene.add(sun);
+  scene.add(sun, sun.target);
+  const officeFill = new T.DirectionalLight('#fff1d1', .65);
+  officeFill.position.set(2,3,-5);
+  officeFill.visible=false;
+  scene.add(officeFill);
+  const shadows = !renderer.isSoftware && renderer.shadowMap;
+  if (shadows) {
+    shadows.enabled=true;
+    shadows.autoUpdate=false;
+    sun.castShadow=true;
+    sun.shadow.mapSize.set(1024,1024);
+    Object.assign(sun.shadow.camera,{left:-24,right:24,top:24,bottom:-24,near:3,far:80});
+    sun.shadow.camera.updateProjectionMatrix();
+    sun.shadow.bias=-.00022;
+    sun.shadow.normalBias=.052;
+  }
   const camera = new T.PerspectiveCamera(70, 1, .07, 145);
   const office = new T.Group();
   const exterior = new T.Group();
@@ -7518,11 +7607,7 @@ function createOfficeView() {
   }
   const box = (group, ...shape) => piece(group, 'cube', ...shape);
 
-  box(exterior, 0, -.52, 20, 183, 1, 145, '#8b9c70');
-  box(exterior, 0, .007, -10, 48, .031, 2.5, '#c6b28a');
-  box(exterior, 2.62, .006, -6.7, 2.12, .035, 6.3, '#c8b794');
-  box(exterior, -4.32, .006, -11.74, 1.6, .034, 3.4, '#c1af89');
-  box(exterior, -5.3, .007, -13.4, 8.7, .039, 4.2, '#9dac76');
+  box(exterior, 0, -.52, 20, 183, 1, 145, '#a5b977').receiveShadow=true;
   for (const [i, x] of [-42, -24, -5, 16, 33, 53].entries()) {
     piece(exterior, 'rock', x, -2.75, -31 - (i % 3) * 3, 16, 8 + i % 4, 13, ['#9bab8c', '#8fab89', '#a5b498'][i % 3]);
   }
@@ -7540,8 +7625,7 @@ function createOfficeView() {
   exterior.add(new T.Mesh(river, new T.MeshLambertMaterial({ color: '#76aca5', side: T.DoubleSide })));
 
   const trees = [
-    [-9, -8, 2.5], [8, -9, 2.9], [11, -13, 2.1], [-14, -12, 2.8],
-    [-22, -16, 2.8], [-15, -25, 3.15], [1, -24, 2.1], [17, -22, 3.4],
+    [-22, -16.7, 2.8], [-15, -25, 3.15], [1, -24, 2.1], [17, -22, 3.4],
   ];
   let seed = 371;
   function random() {
@@ -7579,56 +7663,96 @@ function createOfficeView() {
       h * .77, h * .68, h * .73, ['#4c805a', '#588b60', '#75a06c', '#609364'][i % 4]];
   });
   instances('cone', 105, i => {
-    const x = (random() - .5) * 54, z = i % 2 ? -11.6 - random() * 3 : -17 - random();
+    const x = (random() - .5) * 71, z = -18.5 - random()*3;
     const h = .11 + random() * .45;
     return [x, h * .45, z, h * 1.41, h, h * 1.2, i % 3 ? '#82a36a' : '#b0b975'];
   });
-  for (const [x, z] of [[-9, -14], [-.5, -12.3], [-7., -16.2], [5, -13.5]]) {
-    piece(exterior, 'rock', x, .14, z, .47, .33, .44, '#a2a395');
-  }
 
-  box(office, 0, -.145, .15, 8.6, .27, 8.2, '#a98456');
+  box(office, 0, -.145, .15, 8.6, .27, 8.2, '#bbb19c');
   for (let p = -8; p <= 8; p++) {
     const x = p * .49;
-    box(office, x, -.003, .15, .014, .012, 8.16, '#927550');
-    if (p % 2 === 0) box(office, x + .245, -.003, p * .38, .49, .012, .015, '#927550');
+    box(office, x, -.003, .15, .014, .012, 8.16, '#a89e8e');
+    if (p % 2 === 0) box(office, x + .245, -.003, p * .38, .49, .012, .015, '#a89e8e');
   }
-  box(office, -4.18, 1.45, .1, .14, 2.9, 7.8, '#c2b48a');
-  box(office, 4.18, 1.45, .1, .14, 2.9, 7.8, '#c2b48a');
-  box(office, 0, 1.45, 4.10, 8.47, 2.9, .15, '#c9b68c');
-  box(office, 0, 2.935, .1, 8.5, .14, 8, '#b4a47f');
-  box(office, 0, 3.09, .1, 8.98, .18, 8.64, '#567765');
+  box(office, -4.18, 1.45, .1, .14, 2.9, 7.8, '#e5e2d7');
+  box(office, 4.18, 1.45, .1, .14, 2.9, 7.8, '#e5e2d7');
+  box(office, 0, 1.45, 4.10, 8.47, 2.9, .15, '#e5e2d7');
+  box(office, 0, 2.935, .1, 8.5, .14, 8, '#eeede4');
+
   for (const x of [-4.15,4.15]) for (let z=-3.45; z<3.7; z+=.74) {
-    box(office,x,1.56,z,.032,2.72,.016,'#a99572');
+    box(office,x,1.56,z,.032,2.72,.016,'#d4d3c8');
   }
   for (const z of [-1.10,1.84]) {
-    box(office,0,2.82,z,1.74,.08,.62,'#d6c8a0');
-    box(office,0,2.774,z,1.57,.019,.48,'#f0e2b8');
+    box(office,0,2.82,z,1.74,.08,.62,'#465c56');
+    box(office,0,2.774,z,1.57,.019,.48,'#fff1cc');
   }
-  const carpet = box(office,.02,.015,1.33,2.39,.024,1.72,'#768469');
+  const carpet = box(office,.02,.015,1.33,2.39,.024,1.72,'#819579');
   carpet.rotation.y=.01;
-  box(office, -1.34, .44, -3.73, 5.9, .88, .17, '#c6ad79');
-  box(office, -1.34, 2.79, -3.73, 5.9, .29, .17, '#c9b584');
-  box(office, -3.97, 1.76, -3.73, .54, 1.82, .18, '#c9b584');
-  box(office, 1.58, 1.74, -3.73, .76, 1.88, .18, '#c3b081');
-  box(office, 3.78, 1.45, -3.73, .85, 2.92, .18, '#c9b584');
-  box(office, 2.7, 2.72, -3.73, 1.6, .42, .18, '#c9b584');
-  for (const x of [-3.7, -1.76, .07, 1.25]) box(office, x, 1.74, -3.61, .092, 1.74, .13, '#47735d');
-  for (const y of [.93, 1.81, 2.60]) box(office, -1.24, y, -3.59, 5.08, .076, .16, '#51725b');
-  box(office, -1.23, .87, -3.55, 5.22, .09, .45, '#6a7c5a');
-  for (const x of [1.95, 3.36]) box(office, x, 1.22, -3.59, .11, 2.45, .24, '#62583b');
-  box(office, 2.65, 2.46, -3.59, 1.43, .11, .24, '#62583b');
+  box(office, -1.34, .44, -3.73, 5.9, .88, .17, '#d3d3c5');
+  box(office, -1.34, 2.79, -3.73, 5.9, .29, .17, '#ebe6d9');
+  box(office, -3.97, 1.76, -3.73, .54, 1.82, .18, '#ebe6d9');
+  box(office, 1.58, 1.74, -3.73, .76, 1.88, .18, '#ebe6d9');
+  box(office, 3.78, 1.45, -3.73, .85, 2.92, .18, '#ebe6d9');
+  box(office, 2.7, 2.72, -3.73, 1.6, .42, .18, '#ebe6d9');
+  for (const x of [-3.7, -1.76, .07, 1.25]) box(office, x, 1.74, -3.61, .092, 1.74, .13, '#415b59');
+  for (const y of [.93, 1.81, 2.60]) box(office, -1.24, y, -3.59, 5.08, .076, .16, '#415b59');
+  box(office, -1.23, .87, -3.55, 5.22, .09, .45, '#a4ada1');
+  for (const x of [1.95, 3.36]) box(office, x, 1.22, -3.59, .11, 2.45, .24, '#334c49');
+  box(office, 2.65, 2.46, -3.59, 1.43, .11, .24, '#334c49');
   const door = new T.Group();
   door.position.set(3.30, 0, -3.57);
-  box(door, -.65, 1.20, 0, 1.31, 2.38, .10, '#94704c');
-  box(door, -.65, 1.70, .064, 1.02, .76, .027, '#c4a375');
-  box(door, -.65, .70, .064, 1.02, .80, .027, '#ae8b61');
+  box(door, -.65, 1.20, 0, 1.31, 2.38, .10, '#486661');
+  box(door, -.65, 1.70, .064, 1.02, .76, .027, '#8caaad');
+  box(door, -.65, .70, .064, 1.02, .80, .027, '#5d7a76');
   piece(door, 'rock', -1.14, 1.14, .12, .066, .06, .057, '#d6aa61');
   office.add(door);
 
+  // The ground floor is the original working office, with two floors above its ceiling.
+  const officeBuilding=new T.Group();
+  officeBuilding.name='Market Office building';
+  exterior.add(officeBuilding);
+  const front=-3.74;
+  for(const floor of [3.23,5.54]){
+    box(officeBuilding,0,floor+.94,.13,8.6,1.88,8.22,'#dedfd2');
+    box(officeBuilding,0,floor-.11,.13,8.77,.24,8.39,'#f0eee3');
+    for(const x of [-3.25,-1.62,0,1.62,3.25])for(const z of [front-.26,4.28]){
+      const normal=z<0?-1:1;
+      box(officeBuilding,x,floor+.96,z,1.29,1.42,.11,'#f5f2e7');
+      box(officeBuilding,x,floor+.99,z+.067*normal,1.10,1.21,.05,'#547885');
+      box(officeBuilding,x,floor+1.32,z+.096*normal,1.08,.49,.021,'#91b5b9');
+      box(officeBuilding,x,floor+.99,z+.108*normal,.061,1.21,.018,'#dfe9e4');
+      box(officeBuilding,x,floor+.21,z,1.36,.11,.24,'#c6cfc1');
+    }
+    for(const side of [-1,1])for(const z of [-2.65,-.7,1.28,3.11]){
+      const x=side*4.324;
+      box(officeBuilding,x,floor+.94,z,.11,1.38,1.25,'#f2f0e7');
+      box(officeBuilding,x+side*.071,floor+.96,z,.058,1.2,1.06,'#62848d');
+      box(officeBuilding,x+side*.104,floor+1.24,z,.022,.51,1.05,'#98b9bd');
+    }
+  }
+  box(officeBuilding,0,7.52,.13,8.82,.28,8.48,'#929d96');
+  for(const side of [-1,1]){
+    box(officeBuilding,side*4.31,7.77,.13,.18,.47,8.49,'#e9e8df');
+    box(officeBuilding,0,7.77,.13+side*4.19,8.82,.47,.18,'#e9e8df');
+  }
+  box(officeBuilding,1.98,7.96,1.8,2.45,.70,2.25,'#b7bfb5');
+  box(officeBuilding,.02,2.98,-4.16,8.65,.18,1.19,'#587c70');
+  box(officeBuilding,.02,2.89,-4.74,8.65,.19,.105,'#40665a');
+  box(officeBuilding,-1.15,2.79,-3.86,5.46,.49,.16,'#385952');
+  for(const x of [-3.85,1.43,3.74])box(officeBuilding,x,1.48,-3.82,.17,2.92,.23,'#e5e2d1');
+  for(const x of [-2.94,-1.06,.78]){
+    box(officeBuilding,x,1.72,-3.81,1.59,1.39,.026,'#6b878a');
+    box(officeBuilding,x,2.15,-3.830,1.59,.49,.014,'#9bbabd');
+    box(officeBuilding,x,1.72,-3.844,.057,1.41,.014,'#d7e0d8');
+  }
+  box(officeBuilding,2.65,.035,-4.14,1.43,.055,1.02,'#768e80');
+  officeBuilding.traverse(mesh=>{
+    if(mesh.isMesh){mesh.castShadow=true;mesh.receiveShadow=true;}
+  });
+
   function table(x, z, width, depth) {
-    box(office, x, .77, z, width, .12, depth, '#926f48');
-    box(office, x, .84, z, width + .025, .035, depth + .02, '#ac8959');
+    box(office, x, .77, z, width, .12, depth, '#846c54');
+    box(office, x, .84, z, width + .025, .035, depth + .02, '#bba081');
     for (const a of [-1, 1]) for (const b of [-1, 1]) {
       box(office, x + a * width * .42, .36, z + b * depth * .38, .13, .72, .13, '#71513a');
     }
@@ -7669,6 +7793,30 @@ function createOfficeView() {
     leaf.rotation.x = Math.cos(a) * .49;
     leaf.rotation.z = Math.sin(a) * .51;
   }
+  // Cabinets, meeting space, receipt tray, and perimeter seating leave a clear path to the door.
+  for(const z of [.35,1.02,1.69]){
+    box(office,-3.62,.48,z,.69,.87,.65,'#b0bbb0');
+    box(office,-3.62,.94,z,.72,.067,.66,'#d3c6ab');
+    box(office,-3.255,.68,z,.036,.037,.24,'#627971');
+    box(office,-3.255,.40,z,.036,.037,.24,'#627971');
+  }
+  box(office,2.96,.095,3.48,1.43,.14,.75,'#4a645b');
+  box(office,2.96,.44,3.48,1.48,.28,.76,'#829a89');
+  box(office,2.96,.73,3.76,1.54,.46,.18,'#668477');
+  box(office,2.45,.62,3.52,.32,.25,.22,'#e0bd7e');
+  table(3.02,3.15,1.06,.49);
+  box(office,3.02,.887,3.15,.43,.045,.30,'#f8eee1');
+  box(office,2.0,.49,.4,.38,.96,.38,'#d1d5c7');
+  const indoorPlant=piece(office,'pot',2.0,.96,.4,.35,.31,.35,'#d5b59e');
+  indoorPlant.rotation.y=.40;
+  piece(office,'rock',2.0,1.24,.40,.35,.30,.31,'#77995d');
+  box(office,-3.3,1.79,4.01,1.37,.89,.09,'#687c72');
+  box(office,-3.3,1.79,3.96,1.22,.76,.03,'#e8e7d5');
+  for(const y of [1.51,1.76,2.02]) {
+    box(office,-3.52,y,3.941,.38,.026,.012,'#96a79c');
+    box(office,-3.01,y,3.941,.25,.043,.014,'#c0a16e');
+  }
+
   const kits = [];
   for (let i = 0; i < 9; i++) {
     const bin = new T.Group();
@@ -7681,15 +7829,18 @@ function createOfficeView() {
   }
 
   const stand = new T.Group();
-  stand.position.set(-4.3, 0, -12.45);
+  stand.position.set(STAND.x, 0, STAND.z);
   function buildStand() {
-    box(stand, 0, .11, 0, 2.96, .22, 2.1, '#a18962');
+    box(stand, 0, .11, 0, 2.96, .22, 2.1, '#cbc6b3');
     box(stand, 0, .55, -.2, 2.61, .94, 1.34, '#986e4b');
     box(stand, 0, 1.05, -.11, 2.79, .14, 1.45, '#cc9e68');
     for (const x of [-1.32, 1.32]) {
       for (const z of [-.83, .76]) box(stand, x, 1.2, z, .14, 2.38, .14, '#826847');
     }
-    box(stand, 0, 2.31, .22, 3.06, .13, 2.21, '#50816a').rotation.x = .13;
+    for(let i=0;i<8;i++){
+      const x=(i-3.5)*.38;
+      box(stand,x,2.31,.22,.393,.11,2.21,i%2?'#eee9d4':'#5b8876').rotation.x=.13;
+    }
     box(stand, 0, 2.12, .96, 2.95, .28, .095, '#72a78a');
     box(stand, -.39, 1.23, .05, .41, .27, .34, '#d4b78a');
     box(stand, .16, 1.25, .05, .40, .31, .35, '#d2ba8d');
@@ -7701,22 +7852,18 @@ function createOfficeView() {
   const lumenRenderer=createLumenWorld({T,exterior,box,piece,renderer});
   const campusRenderer=createCampusWorld({T,exterior,box,piece,renderer});
   const districtRenderer=createDistrictWorld({T,scene,exterior,renderer});
-  const haze={isFog:true,name:'LumenVale air',color:new T.Color('#bfcdc4'),near:38,far:124};
-  const duskColor=new T.Color('#6a7790'), dayColor=new T.Color('#c2d8d0');
+  office.traverse(mesh=>{
+    if(mesh.isMesh){mesh.receiveShadow=true;mesh.castShadow=mesh.position.y>.15&&mesh.position.y<2.7;}
+  });
+  door.traverse(mesh=>{if(mesh.isMesh)mesh.castShadow=false;});
+  const haze={isFog:true,name:'LumenVale air',color:new T.Color('#c8dbd8'),near:46,far:132};
+  const duskColor=new T.Color('#8998ae'), dayColor=new T.Color('#c6ddde');
   const eveningLight=new T.Color('#e6aa70'), daylight=new T.Color('#ffedc8');
 
-  const coatColors = { rose: '#af6760', amber: '#bc8752', blue: '#4d7982' };
+  districtRenderer.label(exterior,'Market Office',-1.17,2.79,-3.962,5.31,.40,-1,'#385952');
+  const coatColors = { rose: '#9a535a', amber: '#b38149', blue: '#4d7982' };
   function makeVisitor(tint) {
-    const group = new T.Group();
-    for (const x of [-.14, .14]) {
-      box(group, x, .45, 0, .205, .76, .21, '#454e44');
-      box(group, x, .085, .046, .23, .16, .33, '#453732');
-    }
-    box(group, 0, 1.01, 0, .50, .50, .29, tint);
-    for (const x of [-.32, .32]) box(group, x, .98, .02, .135, .46, .128, tint).rotation.z = x * .31;
-    piece(group, 'rock', 0, 1.55, .025, .232, .255, .21, '#c88e60');
-    piece(group, 'rock', 0, 1.66, -.014, .235, .155, .22, '#5b4035');
-    return group;
+    return makeTownCitizen(T,piece,box,{coat:tint,skin:'#bd895f',hair:'#4a332b',pants:'#3e4e50',style:'short'}).rig;
   }
   const guests = Object.fromEntries(Object.entries(coatColors).map(([key,tint]) => [key, makeVisitor(tint)]));
   for (const guest of Object.values(guests)) {
@@ -7725,7 +7872,7 @@ function createOfficeView() {
   }
 
   let frameId = 0, wake = 0, current = null, animation = null, lastCamera = -100;
-  let width = 0, height = 0;
+  let width = 0, height = 0, shadowSignature = '';
   const feeds = new Map(Object.entries(SECURITY_CAMERAS).map(([id,settings]) => {
     const view = new T.PerspectiveCamera(settings.horizontal,16/9,.08,125);
     view.position.set(...settings.position);
@@ -7789,26 +7936,39 @@ function createOfficeView() {
     const indoors=Boolean(districtVisit);
     exterior.visible=!indoors;
     office.visible=!indoors;
-    // Long blue-hour shadows and warm interiors have separate lighting.
-    const dayPhase=(Math.cos(now/144000)+1)*.5;
+    const enclosed=inOffice(player.x,player.z);
+    const dayPhase=.66+Math.cos(now/168000)*.24;
     scene.fog=indoors?null:haze;
+    officeFill.visible=enclosed&&!indoors;
     if(indoors){
-      skyLight.color.set('#fbe8c9');
-      skyLight.groundColor.set('#a9b1a0');
-      skyLight.intensity=1.89;
-      sun.color.set('#ffddb1');
-      sun.intensity=.91;
-      scene.background.set('#7a847e');
+      skyLight.color.set('#fff1df');
+      skyLight.groundColor.set('#b2bcaa');
+      skyLight.intensity=1.54;
+      sun.color.set('#ffe4ba');
+      sun.intensity=.84;
+      scene.background.set('#879990');
     }else{
-      skyLight.color.set('#d9e2f3');
-      skyLight.groundColor.set('#9e987b');
-      skyLight.intensity=1.08+dayPhase*.42;
+      skyLight.color.set('#e8f2ff');
+      skyLight.groundColor.set('#c6bba3');
+      skyLight.intensity=enclosed?1.47:.87;
       sun.color.copy(eveningLight).lerp(daylight,dayPhase);
-      sun.intensity=.36+dayPhase*1.68;
-      scene.background.copy(duskColor).lerp(dayColor,.24+dayPhase*.76);
+      sun.intensity=1.05+dayPhase*1.05;
+      scene.background.copy(duskColor).lerp(dayColor,.30+dayPhase*.70);
       haze.color.copy(scene.background);
     }
-    scene.userData.townLight=indoors?1.04:.73+dayPhase*.27;
+    if(shadows){
+      // Local shadow coverage follows the player in stable four-meter steps.
+      const x=indoors?0:Math.round(player.x/4)*4;
+      const z=indoors?0:Math.round(player.z/4)*4;
+      const signature=[x,z,Boolean(districtVisit),built,doorOpen,cityBuildingsBuilt()].join('/');
+      if(signature!==shadowSignature){
+        shadowSignature=signature;
+        sun.target.position.set(x,0,z);
+        sun.position.set(x-15,27,z+12);
+        shadows.needsUpdate=true;
+      }
+    }
+    scene.userData.townLight=enclosed||indoors?1.04:.90+dayPhase*.12;
     // Subtle first-person locomotion feedback; disabled for reduced-motion preferences.
     const moving=current.moving && player!==SEAT_POSITION;
     const sway=moving && !reduceMotion.matches ? Math.sin(now*(current.sprinting?.016:.011))*(current.sprinting?.048:.025) : 0;
@@ -8004,6 +8164,66 @@ function renderSecurity() {
 
 
 
+// Apps reuse the same gameplay panels and persistent data as their world locations.
+function phoneOpen(){
+ const app=(id,label,icon,color)=>'<button type="button" data-phone-app="'+id+'"><span class="phone-app-icon '+color+'"><svg aria-hidden="true"><use href="#'+icon+'"></use></svg></span>'+label+'</button>';
+ const metric=(id,name)=>'<div><span>'+name+'</span><b id="phone-'+id+'"></b></div>';
+ cityPanel('City Phone','Overview',
+  '<div class="phone-overview">'+metric('lands','Land owned')+metric('income','Production income')+
+    metric('coins','City wallet')+metric('stock','Goods in stock')+'</div>'+
+  '<p class="phone-goal" id="city-objective"></p>'+
+  '<nav class="phone-apps" aria-label="City apps">'+
+    app('property','Properties','window-icon','jade')+app('production','Production','chart-icon','gold')+
+    app('map','Map','map-icon','sage')+app('mail','Mail','mail','blue')+
+    app('architect','Build','plant','jade')+app('library','Library','book','gold')+
+    app('school','School','orders','blue')+app('careers','Careers','door-icon','sage')+
+    app('words','My Words','book','jade')+app('journal','Journal','orders','gold')+
+    app('guide','Settings','help-icon','sage')+app('fullscreen','Fullscreen','window-icon','blue')+
+  '</nav>');
+ dialog.dataset.surface='phone';
+ byId('phone-back').hidden=true;
+ citySync();
+}
+function phoneSync(){
+ if(!dialog.open||dialog.dataset.surface!=='phone')return;
+ const values={
+  lands:cityLandOwned()+' / '+CITY_SITES.length,
+  income:cityIncome().toLocaleString()+' / 5s',
+  coins:cityState.coins.toLocaleString(),
+  stock:Object.values(systemsState.inventory).reduce((total,count)=>total+count,0).toLocaleString()
+ };
+ for(const [name,value] of Object.entries(values)){
+  const stat=byId('phone-'+name);
+  if(stat.textContent!==value)stat.textContent=value;
+ }
+}
+function phoneInit(){
+ const apps={property:cityPortfolio,production:()=>systemsPanel('warehouse'),map:campusMap,mail:systemsMailBox,
+  architect:campusArchitect,library:cityBookList,school:campusSchool,careers:campusCareer,words:campusVocabulary,
+  journal:academyProfile,guide:cityGuide,fullscreen:()=>{dialog.close();cityEnterFullscreen();}};
+ byId('open-phone').addEventListener('click',phoneOpen);
+ byId('phone-back').addEventListener('click',phoneOpen);
+ dialog.addEventListener('click',event=>{
+  const id=event.target.closest('[data-phone-app]')?.dataset.phoneApp;
+  if(!id||!apps[id])return;
+  apps[id]();
+  if(dialog.open)byId('phone-back').hidden=false;
+ });
+ dialog.addEventListener('close',()=>{
+  dialog.removeAttribute('data-surface');
+  byId('phone-back').hidden=true;
+ });
+ window.addEventListener('keydown',event=>{
+  if(event.key.toLowerCase()!=='p'||event.repeat||event.altKey||event.ctrlKey||event.metaKey||
+     terminal.open||event.target.matches?.('input,textarea,select,[contenteditable="true"]'))return;
+  if(dialog.open&&dialog.dataset.surface!=='phone')return;
+  event.preventDefault();
+  if(dialog.open)dialog.close();
+  else phoneOpen();
+ });
+}
+
+
 const byId = id => document.getElementById(id);
 const esc = value => String(value).replace(/[&<>"']/g, char =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -8100,7 +8320,7 @@ function worldInteraction() {
     nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
 }
 function refreshPosition() {
-  const place = districtVisit ? districtVisit.place.name : inOffice(player.x,player.z) ? 'Shop office' :
+  const place = districtVisit ? districtVisit.place.name : inOffice(player.x,player.z) ? 'Market Office' :
     state.stand && Math.hypot(player.x-STAND.x,player.z-STAND.z)<4.5 ? 'Pickup stand' :
     player.z < -12 ? 'Riverwalk' : districtName(player.x,player.z);
   if(byId('world-location').textContent!==place)byId('world-location').textContent=place;
@@ -8319,6 +8539,7 @@ async function dictate(id, control) {
 function modal(label, title, html) {
   mousePosition = null;
   if(document.pointerLockElement)document.exitPointerLock();
+  dialog.removeAttribute('data-surface');
   byId('overlay-label').textContent = label;
   byId('overlay-body').innerHTML = '<h2 class="title" id="overlay-title" tabindex="-1">' + title + '</h2>' + html;
   if (!dialog.open) dialog.showModal();
@@ -8626,6 +8847,7 @@ cityInit();
 academyInstall();
 systemsInit();
 campusInit();
+phoneInit();
 </script>
 </body>
 </html>

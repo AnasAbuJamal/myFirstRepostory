@@ -2,11 +2,11 @@ const WALK_LIMITS = { left: -45, right: 45, north: -18, south: 36 };
 const START_POSITION = { x: .32, z: 2.2, yaw: .11, pitch: -.08 };
 const SEAT_POSITION = { x: .02, z: 1.02, yaw: .19, pitch: -.09 };
 const DOOR = { x: 2.63, z: -3.65 };
-const STAND = { x: -4.3, z: -12.45 };
+const STAND = { x: -4.3, z: -14.7 };
 
 const SECURITY_CAMERAS = {
-  front: { name: 'Front entrance', position: [6.8, 4.6, -7.5], target: [1.9, .5, -2.85], horizontal: 69 },
-  lot: { name: 'Pickup lot', position: [-11.1, 6.6, -6.9], target: [-3.7, .65, -12.85], horizontal: 67 },
+  front: { name: 'Front entrance', position: [5.5, 3.1, -6.2], target: [1.9, .5, -2.85], horizontal: 69 },
+  lot: { name: 'Pickup lot', position: [-10.5, 5.1, -8.7], target: [-4.3, .65, -14.7], horizontal: 67 },
   road: { name: 'Road and river', position: [13.2, 10.0, -7.6], target: [.2, .3, -14.8], horizontal: 74 },
 };
 
@@ -17,6 +17,7 @@ function inOffice(x,z) {
 const OFFICE_COLLIDERS = [
   [-4.26, -4.10, -3.85, 4.15], [4.10, 4.26, -3.85, 4.15],
   [-4.25, 4.25, 4.02, 4.16], [-4.25, 1.99, -3.85, -3.52], [3.29, 4.25, -3.85, -3.52],
+  [-3.95, -3.24, .05, 1.96], [2.32, 3.77, 2.9, 3.91], [1.80, 2.20, .20, .60],
   [-1.24, 1.64, -.40, .68], [-3.43, -1.74, -3.02, -2.38],
 ];
 function canWalk(x,z,{doorOpen,stand}) {

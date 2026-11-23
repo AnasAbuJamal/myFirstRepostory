@@ -1,14 +1,20 @@
 // The public street plan is shared by scenery, collision, the map and door prompts.
 const TOWN_BOUNDS={left:-58,right:69,north:-17,south:75};
 const STREET_PLAN=[
- {name:'Foundry Avenue',axis:'x',at:19.8,from:-51,to:62,width:5.6},
- {name:'Park Avenue',axis:'x',at:38.8,from:-51,to:62,width:5.8},
- {name:'Orchard Street',axis:'x',at:63,from:-25,to:62,width:5.2},
- {name:'Campus Lane',axis:'z',at:-50,from:3,to:45,width:4.6},
- {name:'Mill Street',axis:'z',at:-20,from:5,to:65,width:4.6},
- {name:'Market Street',axis:'z',at:6,from:15,to:65,width:4.6},
- {name:'Depot Road',axis:'z',at:38,from:1,to:65,width:5.2},
- {name:'Eastbank Road',axis:'z',at:62,from:3,to:65,width:4.6},
+ {name:'Market Avenue',axis:'x',at:-8.6,from:-24,to:20,width:7.8},
+ {name:'Foundry Avenue',axis:'x',at:19.8,from:-50,to:62,width:8.2},
+ {name:'Park Avenue',axis:'x',at:39,from:-50,to:62,width:8.2},
+ {name:'Orchard Street',axis:'x',at:63,from:-20,to:62,width:7.4},
+ {name:'Campus Lane',axis:'z',at:-50,from:4,to:40,width:7.0},
+ {name:'Mill Street',axis:'z',at:-20,from:-8.6,to:63,width:7.2},
+ {name:'Civic Lane',axis:'z',at:8,from:-8.6,to:2,width:7.0},
+ {name:'Market Street',axis:'z',at:8,from:16,to:63,width:7.2},
+ {name:'Depot Road',axis:'z',at:38,from:7,to:63,width:7.8},
+ {name:'Eastbank Road',axis:'z',at:62,from:4,to:63,width:7.0},
+];
+const DOWNTOWN_FRONTAGE=[
+ {id:'press',name:'Vale Press',kind:'press',room:[8,7],desks:[{x:0,z:-2.4,r:2,key:'words',label:'Open My Words at the publishing desk'}],x:-7.8,z:-.35,w:6,d:6.8,h:7.5,face:-1,brick:'#ded7c9',trim:'#faf2df',accent:'#587d87'},
+ {id:'cafe',name:'Juniper Café',kind:'cafe',room:[8,8],desks:[{x:0,z:-2.4,r:2,key:'shop',label:'Read the café trade noticeboard'}],x:15.5,z:-.65,w:7.6,d:6.2,h:8.5,face:-1,brick:'#eee4cf',trim:'#fffae9',accent:'#a96c46'},
 ];
 const TOWN_DISTRICTS=[
  {name:'Learning Quarter',x:-37,z:-5,tint:'#bca675'},
@@ -19,19 +25,20 @@ const TOWN_DISTRICTS=[
  {name:'Lumen Park',x:-5,z:51,tint:'#7b9a70'},
 ];
 const TOWN_PLACES=[
- {id:'school',name:'LumenVale School',kind:'school',x:-37,z:-4.6,w:17,d:11,h:7.8,face:1,room:[13,12],brick:'#b28163',trim:'#e4d4b4',
+ {id:'school',name:'LumenVale School',kind:'school',x:-37,z:-4.6,w:17,d:11,h:7.8,face:1,room:[13,12],brick:'#e8dfce',trim:'#f9f2e1',
   desks:[{x:-7,z:-.8,r:2,key:'school',label:'Open classes, exams and GPA'},{x:7,z:-.8,r:2,key:'careers',label:'Visit the career office'}]},
- {id:'library',name:'Reading Library',kind:'library',x:16,z:10.2,w:13,d:10,h:7.1,face:-1,room:[11,11],brick:'#c8ada0',trim:'#ead9b7',
+ {id:'library',name:'Reading Library',kind:'library',x:16,z:10.2,w:13,d:10,h:7.1,face:-1,room:[11,11],brick:'#e2ded4',trim:'#faf6ed',
   desks:[{x:0,z:-2.0,r:2.0,key:'browse',label:'Browse library books'},{x:-6,z:1.8,r:2,key:'words',label:'Open My Words'}]},
- {id:'city-hall',name:'City Hall',kind:'hall',x:-.65,z:12.2,w:10.5,d:8.8,h:7.8,face:-1,room:[10,9],brick:'#c9ba99',trim:'#f0e4c3',
+ {id:'city-hall',name:'City Hall',kind:'hall',x:-.65,z:12.2,w:10.5,d:8.8,h:7.8,face:-1,room:[10,9],brick:'#e8dfce',trim:'#f9f1db',
   desks:[{x:0,z:-2.2,r:2,key:'civic',label:'Open City Hall services'},{x:-5,z:1.5,r:2,key:'build',label:'Open City Architect'}]},
- {id:'warehouse',name:'Eastbank Warehouse',kind:'warehouse',x:25.8,z:.25,w:12.1,d:9.1,h:6.2,face:1,entry:3.25,room:[13,10],brick:'#73847f',trim:'#a9b7a4',
+ {id:'warehouse',name:'Eastbank Warehouse',kind:'warehouse',x:25.8,z:.25,w:12.1,d:9.1,h:6.2,face:1,entry:3.25,room:[13,10],brick:'#bac8c1',trim:'#e7ebe1',
   desks:[{x:-5,z:-2.7,r:2,key:'warehouse',label:'Manage warehouse inventory'},{x:6,z:2.6,r:2,key:'contracts',label:'Review city contracts'}]},
- {id:'market-shop',name:'Fern & Finch',kind:'shop',x:48.5,z:10.5,w:12.5,d:9.8,h:7.0,face:1,room:[9,8],brick:'#ac7660',trim:'#ecd5a7',
+ {id:'market-shop',name:'Fern & Finch',kind:'shop',x:48.5,z:10.5,w:12.5,d:9.8,h:7.0,face:1,room:[9,8],brick:'#eaddd4',trim:'#fcf5e8',accent:'#775484',
   desks:[{x:0,z:-2.5,r:2,key:'shop',label:'Read the market bulletin'}]},
- {id:'outfitter',name:'Eastbank Outfitters',kind:'shop',x:48.5,z:30.6,w:11.5,d:9.2,h:6.7,face:-1,room:[9,8],brick:'#8b9a8d',trim:'#e7d9b4',
+ {id:'outfitter',name:'Eastbank Outfitters',kind:'shop',x:48.5,z:30.6,w:11.5,d:9.2,h:6.7,face:-1,room:[9,8],brick:'#dedfd2',trim:'#f5f4e7',accent:'#438878',
   desks:[{x:0,z:-2.5,r:2,key:'shop',label:'Read the supply bulletin'}]},
 ];
+const TOWN_PUBLIC_PLACES=[...TOWN_PLACES,...DOWNTOWN_FRONTAGE];
 const FACTORY_ROOM={room:[14,12],kind:'factory',desks:[{x:0,z:-3.6,r:2,key:'machine',label:'Operate production machine'},
  {x:-8,z:.0,r:2,key:'staff',label:'Manage worker stations'}]};
 let districtVisit=null;
@@ -56,6 +63,8 @@ function indoorFurniture(kind){
  if(kind==='school')return [-1,1].flatMap(a=>[[a*7-1.65,a*7+1.65,-7.25,-5.95],...[a*6.15,a*8.9].flatMap(x=>[-4.3,-2.6].map(z=>[x-.6,x+.6,z-.4,z+.4]))]);
  if(kind==='hall')return [[-3.8,3.8,-5.8,-4.0],[-8,-6.3,-4.0,3.1],[6.3,8,-4.0,3.1]];
  if(kind==='warehouse')return [[-11.3,-8.3,-7.3,5.2],[8.3,11.3,-7.3,5.2],[-3,3,-8,-5.1]];
+ if(kind==='press')return [[-6.65,-5,-5.4,3.8],[5,6.65,-5.4,3.8],[-2.9,2.9,-5.25,-3.72]];
+ if(kind==='cafe')return [[-3.5,3.5,-5.35,-3.89],...[-4,4].flatMap(x=>[.5,4].map(z=>[x-.85,x+.85,z-.65,z+.65]))];
  if(kind==='factory')return [[-3.6,3.6,-7.8,-4.8],[4.8,10,-9,-3.5],[-11,-9.1,-4,4.5]];
  return [[-7.6,-6,-5.5,4],[6,7.6,-5.5,4],[-3.8,3.8,-5.6,-4],[-1.85,1.85,1.89,3.31]];
 }
@@ -66,7 +75,7 @@ function districtWalk(x,z){
    x>l-.20&&x<r+.20&&z>n-.20&&z<s+.20);
  }
  return x>=TOWN_BOUNDS.left&&x<=TOWN_BOUNDS.right&&z>=TOWN_BOUNDS.north&&z<=TOWN_BOUNDS.south&&
-  !TOWN_PLACES.some(p=>placeOverlap(p,x,z,.19))&&
+  !TOWN_PUBLIC_PLACES.some(p=>placeOverlap(p,x,z,.19))&&
   !(x>30.6&&x<34.2&&z>44.3&&z<54.5)&&
   !TOWN_HOMES.some(p=>placeOverlap(p,x,z,.19));
 }
@@ -91,7 +100,7 @@ function districtNearby(p){
   const desk=place.desks.find(d=>Math.hypot(p.x-d.x,p.z-d.z)<d.r);
   return desk?{district:true,key:desk.key,label:desk.label}:null;
  }
- for(const place of TOWN_PLACES){
+ for(const place of TOWN_PUBLIC_PLACES){
   const e=townEntrance(place);
   if(Math.hypot(p.x-e.x,p.z-e.z)<2.2)return {district:true,key:'enter',place,origin:e,label:'Enter '+place.name};
  }
