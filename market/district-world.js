@@ -94,6 +94,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    }
   }
   k.flush(outside);
+  addStreetSurfaceTextures({T,outside,streets:STREET_PLAN,low:renderer.isSoftware});
  }
  function tree(k,x,z,s=1,tall=false){
   k.put('trunk',x,1.12*s,z,.22*s,2.24*s,.21*s,'#796451');
@@ -268,6 +269,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   }
   const group=new T.Group();group.userData.castsShadow=true;outside.add(group);k.flush(group);
   if(place.name)sign(group,place.name,door,kind==='warehouse'?4.48:storefront?3.55:3.94,front+f*.18,Math.min(6.8,w-.5),.65,f);
+  if(kind==='school')decorateSchoolExterior(T,place,kit,sign,outside);
  }
  function table(k,x,z,w,d,c='#977454',y=.84){
   k.box(x,y,z,w,.15,d,c);
@@ -330,14 +332,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    entryLabel(g,'Library desk',0,-4.56);
    entryLabel(g,'My Words',-6,1.63,2.9);
   }else if(kind==='school'){
-   for(const a of [-1,1]){
-    table(k,a*7,-6.6,3.30,1.38);
-    k.box(a*7,2.2,-8.47,5.3,1.71,.18,'#476457');
-    for(const x of [a*6.15,a*8.9])for(const z of [-4.3,-2.6])table(k,x,z,1.2,.8,'#aa8b66',.70);
-    for(const x of [a*6.15,a*8.9])k.box(x,.45,-1.61,.51,.10,.55,'#617c6e');
-    planting(k,a*10.7,3.0,1.23,1.08);
-   }
-   entryLabel(g,'Classes & exams',-7,-4.55,4.85);entryLabel(g,'Careers',7,-4.55,3.4);
+   decorateSchoolInterior(T,k,g,sign,place);
   }else if(kind==='hall'){
    table(k,0,-4.9,7.1,1.64,'#7d6851');
    for(const x of [-7.2,7.2])for(const z of [-2.0,1.8])shelves(k,x,z,2.8,2.46,.95,false,true);
@@ -443,6 +438,8 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   if(!rooms.has(place.id))rooms.set(place.id,makeRoom(place));
   const room=rooms.get(place.id);
   room.visible=true;
+  if(room.userData.schoolGlobe&&!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
+   room.userData.schoolGlobe.rotation.y=now*.00043;
   const production=room.userData.production;
   if(production){
    const staff=cityState.sites[place.id]?.staff||0;

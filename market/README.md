@@ -209,3 +209,12 @@ Real-world job accreditation and paid employment are **not** granted by the game
 Once the city owner purchases **Research Laboratory** under City Upgrades, the building becomes enterable from its front door. The lab interior now has study desks, reference shelves and equipment displays. Approach the research desk to open the student Research Library or use the careers desk to view paid job qualifications. The lab is an optional immersive workplace; students can still study from the Career Center if they have not purchased the building.
 
 The Research Scientist job checks **Science ≥67%, English ≥67%, and GPA ≥2.5** before hiring. This is stricter than simply selecting the Researcher career interest. Teacher-published research projects provide one-time rewards after the student has read the text and answered all questions. Other jobs have a three-minute rest period between shifts.
+
+
+## School renovation and textured asphalt
+
+LumenVale School now has a distinctive facade, clock, landscaped entry, sheltered front steps and a new walkable six-station school interior. The player uses **E** at Academic Studies, Careers & Jobs, Qur’an Studio, Science Quest, Reading Corner or Practice Exams; the Student Information desk opens a campus guide and existing pathways, teacher JSON import, transcripts, practice classes and career options. New workstation collision footprints match their physical 3D geometry and a rotating globe can be disabled using reduced-motion settings.
+
+The **Knowledge Quest** uses `school-activities.json` and includes original English, Math, Biology and road safety questions. Each awards a one-time game reward and stores progress locally. This is practice only: teacher-verified Qur’an recitation and teacher-controlled grades cannot be replaced or granted by mini quests.
+
+Road surfaces have offline procedural asphalt textures with tiny aggregate, repairs and cracks. Textured intersections sit beneath the painted pedestrian crossings, while the software fallback keeps its low-cost road surfaces. Rebuild the standalone game with `python3 market/build.py --output dist/index.html`. School unit tests are in `market/test-school.cjs`.

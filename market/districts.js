@@ -25,7 +25,15 @@ const TOWN_DISTRICTS=[
 ];
 const TOWN_PLACES=[
  {id:'school',name:'LumenVale School',kind:'school',x:-37,z:-4.6,w:17,d:11,h:7.8,face:1,room:[13,12],brick:'#e8dfce',trim:'#f9f2e1',
-  desks:[{x:-7,z:-.8,r:2,key:'school',label:'Open classes, exams and GPA'},{x:7,z:-.8,r:2,key:'careers',label:'Visit the career office'}]},
+  desks:[
+   {x:-7,z:-4.20,r:2.15,key:'school',label:'Explore academic pathways'},
+   {x:7,z:-4.20,r:2.15,key:'careers',label:'Visit the career center'},
+   {x:-7,z:.85,r:2,key:'quran',label:'Open Qur’an memorization studio'},
+   {x:7,z:.85,r:2,key:'school-quiz',label:'Try the Knowledge Quest'},
+   {x:-7,z:3.20,r:2,key:'browse',label:'Browse reading lessons'},
+   {x:7,z:3.20,r:2,key:'school-practice',label:'Practice school lessons and exams'},
+   {x:0,z:-8.10,r:2.1,key:'school-guide',label:'Open student information desk'}
+  ]},
  {id:'library',name:'Reading Library',kind:'library',x:16,z:10.2,w:13,d:10,h:7.1,face:-1,room:[11,11],brick:'#e2ded4',trim:'#faf6ed',
   desks:[{x:0,z:-2.0,r:2.0,key:'browse',label:'Browse library books'},{x:-6,z:1.8,r:2,key:'words',label:'Open My Words'}]},
  {id:'city-hall',name:'City Hall',kind:'hall',x:-.65,z:10.9,w:10.5,d:8.8,h:7.8,face:-1,room:[10,9],brick:'#e8dfce',trim:'#f9f1db',
@@ -59,7 +67,11 @@ function townEntrance(place){
 }
 function indoorFurniture(kind){
  if(kind==='library')return [[-8,-6.55,-7,5],[6.55,8,-7,5],[-3.8,3.8,-5.9,-4.1],...[-4.2,4.2].flatMap(x=>[1,5.2].map(z=>[x-1.05,x+1.05,z-.7,z+.7]))];
- if(kind==='school')return [-1,1].flatMap(a=>[[a*7-1.65,a*7+1.65,-7.25,-5.95],...[a*6.15,a*8.9].flatMap(x=>[-4.3,-2.6].map(z=>[x-.6,x+.6,z-.4,z+.4]))]);
+ if(kind==='school')return [-1,1].flatMap(a=>[
+  [a*7-1.93,a*7+1.93,-7.20,-5.65],
+  [a*7-1.93,a*7+1.93,-1.94,-.47],
+  [a*7-1.93,a*7+1.93,4.27,5.76]
+ ]);
  if(kind==='hall')return [[-3.8,3.8,-5.8,-4.0],[-8,-6.3,-4.0,3.1],[6.3,8,-4.0,3.1]];
  if(kind==='warehouse')return [[-11.3,-8.3,-7.3,5.2],[8.3,11.3,-7.3,5.2],[-3,3,-8,-5.1]];
  if(kind==='press')return [[-6.65,-5,-5.4,3.8],[5,6.65,-5.4,3.8],[-2.9,2.9,-5.25,-3.72]];
@@ -219,6 +231,10 @@ function districtInteract(target){
  }
  switch(target.key){
  case 'school':pathwayHome();break;
+ case 'school-guide':schoolGuide();break;
+ case 'school-practice':campusSchool();break;
+ case 'school-quiz':schoolQuizPanel();break;
+ case 'quran':pathwayQuran();break;
  case 'careers':jobPanel();break;
  case 'research':jobResearchList();break;
  case 'browse':cityBookList();break;

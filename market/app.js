@@ -604,3 +604,4 @@ campusInit();
 phoneInit();
 jobInit();
 pathwayInit();
+schoolActivitiesInit();

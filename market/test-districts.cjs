@@ -12,7 +12,8 @@ var player={x:0,z:0,yaw:0,pitch:0},campusInterior=null,systemsDriving=false;
 var cityState={sites:{mill:{built:true}}}, campusState={plots:{mill:{rotation:1}}};
 var CITY_SITES=[{name:"Mill",title:"Mill",kind:"factory",id:"mill",x:-26,z:9}];
 var notice=()=>{},stopMovement=()=>{},refreshPosition=()=>{},drawScene=()=>{};
-var action=null,cityBookList=()=>action="library", campusSchool=()=>action="school";
+var action=null,cityBookList=()=>action="library", campusSchool=()=>action="practice", pathwayHome=()=>action="school";
+var jobPanel=()=>action="careers",pathwayQuran=()=>action="quran",schoolQuizPanel=()=>action="quiz",schoolGuide=()=>action="guide";
 var campusFactoryMachine=()=>action="factory", systemsPanel=tab=>action=tab;
 `,sandbox);
  return code=>vm.runInContext(code,sandbox);
@@ -56,4 +57,20 @@ test('school, library and relocated factory interiors invoke existing systems',(
  [schoolAction,libraryAction,ok,campusInterior===null]
  `);
  assert.equal(JSON.stringify(result),JSON.stringify(['school','library',true,true]));
+});
+
+test('every school workstation is on walkable floor and invokes its own activity',()=>{
+ const run=world();
+ const result=run(`
+  const school=TOWN_PLACES.find(p=>p.id==='school');
+  districtInteract(districtNearby(townEntrance(school)));
+  school.desks.map(d=>{
+   const target=districtNearby({x:d.x,z:d.z});
+   const reachable=districtWalk(d.x,d.z);
+   districtInteract(target);
+   return [target?.key===d.key,reachable,action];
+  })
+ `);
+ assert.equal(JSON.stringify(result.map(row=>row[0]&&row[1])),JSON.stringify(Array(7).fill(true)));
+ assert.equal(JSON.stringify(result.map(row=>row[2])),JSON.stringify(['school','careers','quran','quiz','library','practice','guide']));
 });
