@@ -6,7 +6,7 @@ const path=require('node:path');
 const source=name=>fs.readFileSync(path.join(__dirname,name),'utf8');
 function run(){
  const context=vm.createContext({Date,Math,Number,JSON,performance:{now:()=>10000}});
- const stubs="var trial=true;var byId=()=>null;var notice=()=>{};var modal=()=>{};var stopMovement=()=>{};var dialog={open:false};";
+ const stubs="var trial=true;var byId=()=>null;var notice=()=>{};var modal=()=>{};var stopMovement=()=>{};var dialog={open:false};var document={pointerLockElement:null};";
  vm.runInContext(stubs+'\n'+source('city.js')+'\n'+source('city-world.js'),context);
  return context;
 }
