@@ -246,6 +246,60 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
 .show-movement .touch-move{display:grid;bottom:3.9rem;right:clamp(.9rem,3.25vw,3rem)}
 .touch-move{grid-template-columns:repeat(3,2.85rem);gap:.27rem;position:absolute;right:.8rem;bottom:.85rem;z-index:2}
 .touch-move button{height:2.55rem;touch-action:none;background:#294839e8;border:1px solid #b5c29eaf;border-radius:6px;color:#fff4d5;font-size:1.18rem}
+
+/* Incremental city-building layer, added to the original office HUD. */
+.city-hud{position:absolute;right:clamp(.75rem,3.25vw,3rem);top:85px;z-index:3;width:min(300px,calc(100vw - 32px));display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.42rem;pointer-events:none}
+.city-chip{min-width:0;border:1px solid #b7c9ad85;border-radius:9px;padding:.58rem .53rem;background:#263f34e8;color:#fff7df;box-shadow:0 6px 24px #0d20175c}
+.city-chip small{display:block;font-size:.65rem;color:#d3ddc2;letter-spacing:.012em;white-space:nowrap}
+.city-chip strong{display:block;margin-top:.13rem;color:#ffe3a2;font-size:clamp(1rem,1.6vw,1.3rem);line-height:1.2;overflow:hidden;text-overflow:ellipsis}
+.city-hud-actions{grid-column:1/-1;display:flex;gap:.35rem;pointer-events:auto}
+.city-hud-actions button{flex:1;min-height:33px;border:1px solid #a9be9b8a;background:#2b4b39de;border-radius:7px;color:#fff9e8;font-weight:650;font-size:.76rem;padding:.35rem .5rem}
+.city-hud-actions button:hover{background:#446b50}
+.city-goal{grid-column:1/-1;padding:.55rem .7rem;border:1px solid #d5c58a95;border-left:3px solid #e9c27a;border-radius:7px;background:#e9e6cbeb;color:#254a35;font-size:.77rem;line-height:1.3;margin:0;box-shadow:0 5px 15px #1d2b2055}
+.city-sub{font-size:.9rem;color:#617261;line-height:1.5}
+.city-shelf{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:1.1rem 0 0}
+.city-library-stats{background:#ebefe5;border:1px solid #d6dfc8;border-radius:8px;padding:.65rem .75rem;font-size:.9rem;color:#3c6245}
+.city-book-card{display:flex;align-items:center;text-align:left;gap:.85rem;padding:.75rem;border:1px solid #c4cdba;border-radius:10px;background:#fffdf4;min-height:108px;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.city-book-card:hover{transform:translateY(-3px);box-shadow:0 7px 18px #25402a18;border-color:#64896d}
+.city-book-spine{display:flex;align-items:center;justify-content:center;flex:none;width:55px;height:77px;border-left:7px solid #8c5544;border-radius:3px 8px 8px 3px;background:linear-gradient(115deg,#648276,#a7bb8f);color:#f9efc9;font-size:2rem;box-shadow:4px 5px 9px #21352324}
+.city-book-card:nth-child(3n+2) .city-book-spine{background:linear-gradient(115deg,#a37850,#d1b477);border-left-color:#9d6d45}
+.city-book-card:nth-child(3n) .city-book-spine{background:linear-gradient(115deg,#6b84a1,#b0bdd0);border-left-color:#455c7d}
+.city-book-card small,.city-book-card em{display:block;font-size:.73rem;color:#6d7f70;font-style:normal;line-height:1.4}
+.city-book-card b{display:block;margin:.21rem 0;color:#294a36;font-size:.99rem;line-height:1.18}
+.city-book-open{max-width:650px;margin:1.1rem auto;padding:clamp(1.2rem,4vw,2.7rem);min-height:280px;background:linear-gradient(90deg,#fff9e8 0%,#f7efdc 49.5%,#efe3ce 50%,#fff7e6 52%);border:1px solid #d5c4a5;border-radius:6px 17px 17px 6px;box-shadow:inset 12px 0 20px #ad8d6740,0 13px 26px #44362820;color:#3e4035}
+.city-page-count{letter-spacing:.12em;font-size:.77rem;color:#987f61;font-weight:750}
+.city-book-open>p{font:clamp(1.13rem,2.1vw,1.42rem)/1.8 Georgia,serif;margin:1.7rem 0}
+.city-book-footer{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-top:1px solid #e1d3ba;padding-top:.8rem}
+.city-book-footer span{font-size:.82rem;color:#847866}
+.city-reading-meter{width:100%;height:6px;background:#d3dec9;overflow:hidden;border-radius:10px}
+.city-reading-fill{display:block;width:0;height:100%;background:#77a16e;transition:width .35s}
+.city-quiz{display:grid;gap:.7rem}
+.city-quiz h3{font-size:1.25rem;color:#294a38;margin:.3rem 0}
+.city-answer{display:flex;align-items:center;gap:.9rem;text-align:left;border:1px solid #b6c7b3;border-radius:9px;background:#fffef7;padding:.85rem;font-weight:620;color:#344c3d}
+.city-answer span{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:6px;color:#fef5d9;background:#406b50}
+.city-answer:hover{background:#e4eee2;border-color:#67926a}
+.city-wrong{padding:.65rem;border-radius:7px;background:#fff0df;color:#99542f}
+.city-success-medal{height:75px;width:75px;margin:1rem auto;border-radius:50%;border:4px solid #d4ad5b;background:#fff1c1;color:#9d7a2e;display:grid;place-items:center;font-size:2.8rem}
+.city-duo,.city-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin:1.1rem 0}
+.city-factory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;margin:1rem 0}
+.city-factory-grid>div{border:1px solid #cad8c7;border-radius:8px;background:#eff3e9;padding:.75rem}
+.city-factory-grid small{display:block;color:#647869;font-size:.77rem}
+.city-factory-grid b{display:block;margin-top:.15rem;color:#284a38;font-size:1.15rem}
+:fullscreen #landscape,:fullscreen .walk-world{cursor:none}
+:fullscreen .walk-world button{cursor:pointer}
+:fullscreen dialog,:fullscreen dialog *{cursor:auto}
+@media(max-width:720px){
+ .city-hud{top:76px;right:.7rem;width:min(235px,calc(100vw - 22px));gap:.3rem}
+ .city-chip{padding:.4rem .35rem}
+ .city-chip small{font-size:.55rem}
+ .city-chip strong{font-size:.9rem}
+ .city-goal{font-size:.69rem;padding:.4rem}
+ .city-hud-actions button{font-size:.65rem}
+ .city-shelf{grid-template-columns:1fr}
+ .city-book-card{min-height:90px}
+ .city-book-open{min-height:220px}
+}
+@media(prefers-reduced-motion:reduce){.city-book-card,.city-reading-fill{transition:none}}
 </style>
 </head>
 <body>
@@ -4467,6 +4521,7 @@ const OFFICE_COLLIDERS = [
   [-1.24, 1.64, -.40, .68], [-3.43, -1.74, -3.02, -2.38],
 ];
 function canWalk(x,z,{doorOpen,stand}) {
+  if(typeof cityCanWalk==='function' && !cityCanWalk(x,z))return false;
   if (x < WALK_LIMITS.left || x > WALK_LIMITS.right || z < WALK_LIMITS.north || z > WALK_LIMITS.south) return false;
   const radius = .20;
   const colliders = OFFICE_COLLIDERS.slice();
@@ -4495,6 +4550,581 @@ function nearbyInteraction({x,z}, doorOpen, pending, stand) {
   return null;
 }
 
+
+
+/* City Builder: persistent reading-to-production gameplay. No external services. */
+const CITY_SAVE_KEY='jungle-miner-city-v1';
+const CITY_TICK_MS=5000;
+const CITY_BOOKS=[
+ {id:'forest',title:'Forest Field Notes',shelf:'Nature',reward:48,xp:20,pages:[
+  'A forest is home to many living things. Tall trees give shade, while smaller plants grow below. Animals rely on the same space for food and shelter.',
+  'When people protect soil and water, the forest stays healthier. Planting a tree is helpful, but caring for it as it grows is just as important.'
+ ],question:'Why does protecting soil and water help a forest?',answers:['It makes every tree the same size','It supports a healthy habitat','It removes every animal'],correct:1},
+ {id:'tools',title:'A Workshop Guide',shelf:'Building',reward:56,xp:24,pages:[
+  'A small workshop needs a clear plan. Workers should check the materials, organize the tools, and keep walking paths open before production begins.',
+  'Good teams share duties. One worker prepares materials while another checks the finished goods. Careful work reduces mistakes and waste.'
+ ],question:'What helps a workshop reduce mistakes?',answers:['Skipping every check','Working without a plan','Checking finished products'],correct:2},
+ {id:'market',title:'The Busy Market',shelf:'Business',reward:68, xp:28,pages:[
+  'Every shop needs customers who trust it. A seller listens carefully, gives a clear price, and delivers what was promised.',
+  'When sales increase, the owner may hire another person. More workers can help, but they need training and enough supplies to complete their jobs.'
+ ],question:'Why might a shop owner hire another person?',answers:['To help with more sales','To stop serving customers','To remove all supplies'],correct:0},
+ {id:'energy',title:'Powering a Town',shelf:'Science',reward:78,xp:33,pages:[
+  'Machines need energy to work. Some factories use electricity to turn motors, move belts, or run lights inside their buildings.',
+  'A town can save energy by repairing old equipment and turning off unused machines. Efficient factories can produce more with fewer resources.'
+ ],question:'Which action can save energy?',answers:['Leave machines on overnight','Repair inefficient equipment','Run empty machines all day'],correct:1},
+ {id:'people',title:'People of the City',shelf:'Community',reward:90,xp:38,pages:[
+  'A growing city needs more than factories. Homes, shops, trees, and shared spaces make it a comfortable place to live.',
+  'People with different skills build a community together. Builders make roads, workers create goods, and teachers help others learn.'
+ ],question:'What makes a city a community?',answers:['Only taller buildings','Only busy machines','People contributing different skills'],correct:2},
+ {id:'future',title:'Plans for Tomorrow',shelf:'Innovation',reward:110,xp:45,pages:[
+  'A successful business can grow slowly and carefully. Leaders review income, listen to workers, and plan what to improve next.',
+  'A long-term plan may include a new factory, safer tools, and more places to learn. Good progress balances earning money with helping people.'
+ ],question:'What is part of a good long-term plan?',answers:['Ignoring workers','Improving safety and learning','Buying everything at once'],correct:1}
+];
+const CITY_SITES=[
+ {id:'workshop',title:'Wood Workshop',kind:'factory',x:-13,z:10,build:40,hire:20,rate:3,unlock:1,color:'#a47a51'},
+ {id:'lumber',title:'Lumber Mill',kind:'factory',x:-27,z:10,build:125,hire:50,rate:8,unlock:2,color:'#8d7255'},
+ {id:'homes',title:'Worker Homes',kind:'house',x:0,z:25,build:160,hire:0,rate:0,unlock:2,color:'#b88d6a'},
+ {id:'textile',title:'Textile Factory',kind:'factory',x:-27,z:27,build:280,hire:95,rate:15,unlock:3,color:'#8196ab'},
+ {id:'greenhouse',title:'Greenhouse',kind:'factory',x:16,z:27,build:460,hire:140,rate:25,unlock:4,color:'#67a28b'},
+ {id:'assembly',title:'Assembly Plant',kind:'factory',x:31,z:16,build:820,hire:240,rate:43,unlock:5,color:'#879eaf'}
+];
+const CITY_LIBRARY={x:14,z:8};
+function cityBlank(){return {version:1,coins:0,xp:0,lifetime:0,books:{},sites:{},lastTick:Date.now(),manual:{}};}
+function cityClean(input){
+ const v=cityBlank();
+ if(!input || input.version!==1)return v;
+ const number=(n,max)=>Number.isFinite(n)?Math.max(0,Math.min(max,Math.floor(n))):0;
+ v.coins=number(input.coins,1e12);v.xp=number(input.xp,1e9);v.lifetime=number(input.lifetime,1e12);
+ for(const book of CITY_BOOKS){const info=input.books?.[book.id];if(info)v.books[book.id]={count:number(info.count,1e5),last:number(info.last,1e15)};}
+ for(const site of CITY_SITES){const info=input.sites?.[site.id];if(info?.built)v.sites[site.id]={built:true,staff:number(info.staff,6),level:Math.max(1,number(info.level,10))};}
+ v.lastTick=number(input.lastTick,1e15)||Date.now();
+ for(const site of CITY_SITES)v.manual[site.id]=number(input.manual?.[site.id],1e15);
+ return v;
+}
+function cityReadSave(){try{return cityClean(JSON.parse(localStorage.getItem(CITY_SAVE_KEY)));}catch{return cityBlank();}}
+var cityState=cityReadSave();
+var cityBookSession=null;
+function citySave(){
+ try{if(!trial)localStorage.setItem(CITY_SAVE_KEY,JSON.stringify(cityState));}
+ catch{ /* Browser may be in private storage mode. */ }
+}
+function cityCompleted(){return CITY_BOOKS.filter(book=>cityState.books[book.id]?.count>0).length;}
+function cityPopulation(){return Object.values(cityState.sites).filter(s=>s?.built).reduce((n,s)=>n+s.staff,0);}
+function cityIncome(){
+ return CITY_SITES.reduce((total,site)=>{
+  const built=cityState.sites[site.id];
+  return total+(built?.built && site.kind==='factory' ? site.rate*built.staff*built.level : 0);
+ },0);
+}
+function cityEarn(coins,xp){
+ cityState.coins+=coins;cityState.lifetime+=coins;cityState.xp+=xp;
+ citySave();citySync();
+}
+function citySpend(amount){
+ if(cityState.coins<amount)return false;
+ cityState.coins-=amount;citySave();citySync();return true;
+}
+function cityTick(now=Date.now()){
+ const current=Number.isFinite(now)?now:Date.now();
+ let elapsed=Math.floor((current-cityState.lastTick)/CITY_TICK_MS);
+ if(elapsed<0){cityState.lastTick=current;citySave();return 0;}
+ elapsed=Math.min(elapsed,720); // At most one hour of production while away.
+ if(!elapsed)return 0;
+ cityState.lastTick=current; // No catch-up loop in the render frame.
+ const coins=elapsed*cityIncome();
+ if(coins){cityState.coins+=coins;cityState.lifetime+=coins;}
+ citySave();
+ return coins;
+}
+function cityNearby(p){
+ if(!p)return null;
+ if(Math.hypot(p.x-CITY_LIBRARY.x,p.z-CITY_LIBRARY.z)<4.3)return {id:'library',city:true,label:'Browse the library books'};
+ for(const site of CITY_SITES){
+  if(Math.hypot(p.x-site.x,p.z-(site.z-3.6))<3.1){
+   const status=cityState.sites[site.id]?.built?'Manage '+site.title:'Build '+site.title;
+   return {id:site.id,city:true,label:status};
+  }
+ }
+ return null;
+}
+function cityPanel(label,title,body){
+ if(typeof stopMovement==='function')stopMovement();
+ if(document.pointerLockElement)document.exitPointerLock();
+ modal(label,title,body);
+}
+function cityBookList(){
+ const completed=cityCompleted();
+ const cards=CITY_BOOKS.map(book=>{
+  const count=cityState.books[book.id]?.count||0;
+  return '<button class="city-book-card" type="button" data-city-action="book" data-id="'+book.id+'">'+
+  '<span class="city-book-spine" aria-hidden="true">▥</span><span><small>'+book.shelf+' · '+(count?'Completed':'New lesson')+'</small><b>'+book.title+'</b>'+
+  '<em>'+book.pages.length+' pages · '+book.reward+' coins first read</em></span></button>';
+ }).join('');
+ cityPanel('Town Library','Choose a book','<p class="city-sub">Read the short sample pages, then answer a question to earn coins. Each new book also unlocks more city buildings.</p>'+
+ '<div class="city-library-stats"><b>'+completed+' / '+CITY_BOOKS.length+'</b> unique books read · <b>'+cityState.xp+'</b> learning XP</div>'+
+ '<div class="city-shelf">'+cards+'</div>');
+}
+function cityOpenBook(id){
+ const book=CITY_BOOKS.find(b=>b.id===id);
+ if(!book)return;
+ cityBookSession={id:book.id,page:0,started:performance.now(),ready:false};
+ cityBookPage();
+}
+function cityBookPage(){
+ const session=cityBookSession;if(!session)return;
+ const book=CITY_BOOKS.find(b=>b.id===session.id);if(!book)return;
+ const page=session.page;
+ const last=page===book.pages.length-1;
+ const pageText=book.pages[page];
+ cityPanel('Library · '+book.shelf,book.title,
+ '<div class="city-book-open"><div class="city-page-count">PAGE '+(page+1)+' OF '+book.pages.length+'</div>'+
+ '<p>'+pageText+'</p><div class="city-book-footer"><span>Read carefully to unlock the next page.</span>'+
+ '<button type="button" class="button primary" data-city-action="page">'+(last?'Answer question':'Next page')+'</button></div></div>'+
+ '<div class="city-reading-meter"><span class="city-reading-fill" id="city-reading-fill"></span></div>'+
+ '<p class="city-sub" id="city-reading-hint">Read for a few seconds before continuing.</p>');
+}
+function cityNextPage(){
+ if(!cityBookSession)return;
+ const secs=(performance.now()-cityBookSession.started)/1000;
+ if(secs<4){
+  const hint=byId('city-reading-hint');
+  if(hint)hint.textContent='Keep reading for '+Math.ceil(4-secs)+' more seconds.';
+  return;
+ }
+ const book=CITY_BOOKS.find(b=>b.id===cityBookSession.id);
+ if(cityBookSession.page+1<book.pages.length){
+  cityBookSession.page++;cityBookSession.started=performance.now();cityBookPage();
+ } else cityQuiz();
+}
+function cityQuiz(error=''){
+ const book=CITY_BOOKS.find(b=>b.id===cityBookSession?.id);if(!book)return;
+ cityPanel('Reading challenge',book.title,
+ '<div class="city-quiz"><p class="city-sub">Check what you understood.</p><h3>'+book.question+'</h3>'+
+ book.answers.map((answer,i)=>'<button type="button" class="city-answer" data-city-action="answer" data-index="'+i+'">'+
+ '<span>'+String.fromCharCode(65+i)+'</span>'+answer+'</button>').join('')+
+ (error?'<p class="city-wrong">'+error+'</p>':'')+'</div>');
+}
+function cityAnswer(index){
+ const book=CITY_BOOKS.find(b=>b.id===cityBookSession?.id);if(!book)return;
+ if(Number(index)!==book.correct){cityQuiz('Not quite. Return to the passage in your mind and try another answer.');return;}
+ const old=cityState.books[book.id]||{count:0,last:0};
+ const first=old.count===0;
+ const now=Date.now();
+ if(!first && now-old.last<120000){
+  cityPanel('Library','Already practiced','<p>You finished this book recently. Choose another book, or try this one again in two minutes.</p>'+
+   '<button class="button primary" type="button" data-city-action="library">Back to shelf</button>');
+  return;
+ }
+ const earned=first?book.reward:Math.max(5,Math.floor(book.reward*.12));
+ cityState.books[book.id]={count:old.count+1,last:now};
+ cityBookSession=null;
+ cityEarn(earned,first?book.xp:5);
+ cityPanel('Reading complete','+'+earned+' coins!',
+ '<div class="city-success-medal">★</div><p>Correct! You earned <b>'+earned+' coins</b> and learning XP.</p>'+
+ '<p>You have completed <b>'+cityCompleted()+'</b> different books. Reading unlocks new factories and buildings.</p>'+
+ '<div class="city-duo"><button type="button" class="button primary" data-city-action="library">Read another book</button>'+
+ '<button type="button" class="button" data-city-action="close">Explore the city</button></div>');
+}
+function cityOpenSite(id){
+ const site=CITY_SITES.find(s=>s.id===id);if(!site)return;
+ const record=cityState.sites[id];
+ const built=record?.built;
+ const unlocked=cityCompleted()>=site.unlock;
+ const bookLine='Requires '+site.unlock+' different '+(site.unlock===1?'book':'books')+' completed · '+cityCompleted()+' read';
+ let body='';
+ if(!built){
+  body='<p>Build this '+(site.kind==='house'?'housing block':'production building')+' on your city plot.</p>'+
+   '<div class="city-factory-grid"><div><small>Construction</small><b>'+site.build+' coins</b></div>'+
+   '<div><small>Reading unlock</small><b>'+site.unlock+' books</b></div></div>'+
+   '<p class="city-sub">'+bookLine+'</p>'+
+   '<button class="button primary" type="button" data-city-action="build" data-id="'+id+'" '+(!unlocked||cityState.coins<site.build?'disabled':'')+'>Build '+site.title+'</button>';
+ }else if(site.kind==='house'){
+  body='<p>Your new homes bring workers and life to the growing settlement.</p><p><b>Built</b> · Decorative neighborhood unlocked.</p>';
+ }else{
+  const staff=record.staff;const upgrade=site.build*(record.level+1);
+  const hire=site.hire*(staff+1);
+  body='<p>Manage your machinery and workers. Hired employees generate coins automatically, including for up to one hour while away.</p>'+
+   '<div class="city-factory-grid"><div><small>Employees</small><b>'+staff+' / 6</b></div>'+
+   '<div><small>Production / 5 sec</small><b>'+(site.rate*staff*record.level)+' coins</b></div>'+
+   '<div><small>Factory level</small><b>'+record.level+'</b></div><div><small>Upgrade cost</small><b>'+upgrade+' coins</b></div></div>'+
+   '<div class="city-actions">'+
+   '<button class="button primary" type="button" data-city-action="hire" data-id="'+id+'" '+(staff>=6||cityState.coins<hire?'disabled':'')+'>Hire employee · '+hire+'</button>'+
+   '<button class="button" type="button" data-city-action="upgrade" data-id="'+id+'" '+(record.level>=10||cityState.coins<upgrade?'disabled':'')+'>Upgrade machines · '+upgrade+'</button>'+
+   '<button class="button" type="button" data-city-action="manual" data-id="'+id+'">Help produce · +'+Math.max(2,site.rate)+' coins</button></div>';
+ }
+ cityPanel('City Development',site.title,body);
+}
+function cityBuild(id){
+ const site=CITY_SITES.find(s=>s.id===id);
+ if(!site||cityState.sites[id]?.built)return;
+ if(cityCompleted()<site.unlock){notice('Read more unique books to unlock this plot.');return;}
+ if(!citySpend(site.build)){notice('Earn more coins at the library.');return;}
+ cityState.sites[id]={built:true,staff:0,level:1};
+ citySave();citySync();cityOpenSite(id);notice(site.title+' constructed! Explore it in 3D.');
+}
+function cityHire(id){
+ const site=CITY_SITES.find(s=>s.id===id),unit=cityState.sites[id];
+ if(!site||site.kind!=='factory'||!unit?.built||unit.staff>=6)return;
+ const cost=site.hire*(unit.staff+1);
+ if(!citySpend(cost))return;
+ unit.staff++;citySave();citySync();cityOpenSite(id);notice('New employee hired at '+site.title+'.');
+}
+function cityUpgrade(id){
+ const site=CITY_SITES.find(s=>s.id===id),unit=cityState.sites[id];
+ if(!site||site.kind!=='factory'||!unit?.built||unit.level>=10)return;
+ const cost=site.build*(unit.level+1);
+ if(!citySpend(cost))return;
+ unit.level++;citySave();citySync();cityOpenSite(id);notice('Machines upgraded at '+site.title+'.');
+}
+function cityManual(id){
+ const site=CITY_SITES.find(s=>s.id===id),unit=cityState.sites[id];
+ if(!site||!unit?.built||site.kind!=='factory')return;
+ const now=Date.now(),previous=cityState.manual[id]||0;
+ if(now-previous<3500){notice('The machine needs another moment.');return;}
+ cityState.manual[id]=now;
+ cityEarn(Math.max(2,site.rate)*unit.level,0);
+ cityOpenSite(id);
+ notice('You helped the production line.');
+}
+function cityInteract(target){
+ if(target?.id==='library')cityBookList();
+ else if(target?.id)cityOpenSite(target.id);
+}
+function cityGuide(){
+ const next=CITY_SITES.filter(s=>!cityState.sites[s.id]?.built).slice(0,3);
+ cityPanel('Your City · Guide','Read. Build. Hire.',
+ '<p>Walk to the library pavilion on the east side of the office. Read a book, turn its pages, and answer the question to collect coins.</p>'+
+ '<p>Then explore the marked construction plots. Press <kbd>E</kbd> near a plot to build a factory. Visit the building again to hire people, upgrade machines, or help produce goods yourself.</p>'+
+ '<div class="city-factory-grid"><div><small>City wallet</small><b>'+cityState.coins+' coins</b></div>'+
+ '<div><small>Passive production</small><b>'+cityIncome()+' / 5 sec</b></div>'+
+ '<div><small>Unique books</small><b>'+cityCompleted()+' / '+CITY_BOOKS.length+'</b></div>'+
+ '<div><small>Workers</small><b>'+cityPopulation()+'</b></div></div>'+
+ '<h3>Next buildings</h3><p>'+next.map(s=>s.title+' ('+s.build+' coins)').join(' · ')+'</p>'+
+ '<p class="city-sub">WASD to walk · E to interact · F for fullscreen · Escape unlocks mouse. Your city saves on this device.</p>');
+}
+function citySync(){
+ const balance=byId('city-coins'),learning=byId('city-learning'),income=byId('city-income'),objective=byId('city-objective');
+ if(balance)balance.textContent=cityState.coins.toLocaleString();
+ if(learning)learning.textContent=cityCompleted()+'/'+CITY_BOOKS.length;
+ if(income)income.textContent=cityIncome()+'/5s';
+ if(objective){
+  objective.textContent=!cityCompleted()?'Visit the library and finish your first book':
+   !cityState.sites.workshop?.built?'Build your first workshop (40 coins)':
+   !cityState.sites.workshop.staff?'Hire a worker at the workshop':
+   cityCompleted()<CITY_BOOKS.length?'Read more books and expand your city':'Keep growing your production city';
+ }
+}
+function cityEnterFullscreen(){
+ const root=document.documentElement;
+ if(!document.fullscreenElement){
+  const result=root.requestFullscreen?.();
+  if(result?.catch)result.catch(()=>notice('Fullscreen is not available in this browser.'));
+  try{const lock=byId('landscape').requestPointerLock?.();lock?.catch?.(()=>{});}catch{}
+ }else document.exitFullscreen?.();
+}
+function cityInit(){
+ const hud=document.createElement('div');
+ hud.className='city-hud';hud.innerHTML=
+ '<div class="city-chip"><small>City coins</small><strong id="city-coins">0</strong></div>'+
+ '<div class="city-chip"><small>Books read</small><strong id="city-learning">0/6</strong></div>'+
+ '<div class="city-chip"><small>Production</small><strong id="city-income">0/5s</strong></div>'+
+ '<div class="city-hud-actions"><button type="button" id="city-help" title="City guide">City guide</button>'+
+ '<button type="button" id="city-full" title="Fullscreen and mouse capture">⛶ Fullscreen</button></div>'+
+ '<p class="city-goal" id="city-objective"></p>';
+ byId('view').append(hud);
+ byId('city-help').addEventListener('click',cityGuide);
+ byId('city-full').addEventListener('click',cityEnterFullscreen);
+ document.addEventListener('click',event=>{
+  const b=event.target.closest('[data-city-action]');if(!b)return;
+  const id=b.dataset.id;
+  const action=b.dataset.cityAction;
+  if(action==='library')cityBookList();
+  else if(action==='book')cityOpenBook(id);
+  else if(action==='page')cityNextPage();
+  else if(action==='answer')cityAnswer(b.dataset.index);
+  else if(action==='build')cityBuild(id);
+  else if(action==='hire')cityHire(id);
+  else if(action==='upgrade')cityUpgrade(id);
+  else if(action==='manual')cityManual(id);
+  else if(action==='close')dialog.close();
+ });
+ window.addEventListener('keydown',event=>{
+  if(event.key.toLowerCase()==='f' && !event.repeat && !event.target.matches?.('input,textarea,select') && !dialog.open && !terminal.open)cityEnterFullscreen();
+ });
+ document.addEventListener('mousemove',event=>{
+  if(document.pointerLockElement===byId('landscape') && !dialog.open && !terminal.open){
+   turnCamera(event.movementX||0,event.movementY||0);
+  }
+ });
+ document.addEventListener('fullscreenchange',()=>{
+  byId('city-full').textContent=document.fullscreenElement?'⤡ Windowed':'⛶ Fullscreen';
+ });
+ byId('landscape').addEventListener('click',()=>{
+  if(document.fullscreenElement && !document.pointerLockElement && isWalking()){
+   try{byId('landscape').requestPointerLock?.();}catch{}
+  }
+ });
+ setInterval(()=>{
+  cityTick();citySync();
+  if(cityBookSession){
+   const elapsed=(performance.now()-cityBookSession.started)/1000;
+   const bar=byId('city-reading-fill');if(bar)bar.style.width=Math.min(100,Math.floor(elapsed/4*100))+'%';
+  }
+  if(typeof drawScene==='function')drawScene();
+ },1000);
+ cityTick();citySync();drawScene();
+}
+
+
+/* Detailed walkable 3D city extension for the existing Three.js scene. */
+function createCityWorld({T,exterior,box,piece,renderer}){
+ const city=new T.Group();
+ exterior.add(city);
+ const low=renderer.isSoftware;
+ const PI=Math.PI;
+ const mat=new Map();
+ function material(color){
+  if(!mat.has(color))mat.set(color,new T.MeshLambertMaterial({color,flatShading:true,side:T.DoubleSide}));
+  return mat.get(color);
+ }
+ function b(g,x,y,z,w,h,d,color){return box(g,x,y,z,w,h,d,color);}
+ function roof(g,x,y,z,w,d,color){
+  const l=b(g,x-w*.23,y,z,w*.57,.16,d+.25,color);
+  const r=b(g,x+w*.23,y,z,w*.57,.16,d+.25,color);
+  l.rotation.z=.36;r.rotation.z=-.36;
+  b(g,x,y+.19,z,.16,.16,d+.3,'#f5dca5');
+ }
+ function cylinder(g,x,y,z,r,h,color,segments=8){
+  const geo=new T.CylinderGeometry(r,r,h,segments);
+  const mesh=new T.Mesh(geo,material(color));
+  mesh.position.set(x,y,z);g.add(mesh);return mesh;
+ }
+ function sphere(g,x,y,z,r,color){
+  const mesh=new T.Mesh(new T.IcosahedronGeometry(r,low?0:1),material(color));
+  mesh.position.set(x,y,z);g.add(mesh);return mesh;
+ }
+ function sign(g,title,x,y,z,w=4,h=.7,color='#294837'){
+  b(g,x,y,z,w,h,.13,color);
+  if(low)return;
+  const canvas=document.createElement('canvas');canvas.width=512;canvas.height=128;
+  const ctx=canvas.getContext('2d');
+  if(!ctx)return;
+  ctx.fillStyle='#294837';ctx.fillRect(0,0,512,128);
+  ctx.fillStyle='#f5dbab';ctx.font='bold 38px sans-serif';ctx.textAlign='center';
+  ctx.fillText(title.toUpperCase(),256,79,495);
+  const image=new T.CanvasTexture(canvas);image.colorSpace=T.SRGBColorSpace;
+  const mesh=new T.Mesh(new T.PlaneGeometry(w-.15,h-.1),new T.MeshBasicMaterial({map:image,transparent:false,side:T.DoubleSide}));
+  mesh.position.set(x,y,z-.075);g.add(mesh);
+ }
+ function person(g,x,z,shirt,hair='#443529'){
+  const rig=new T.Group();rig.position.set(x,0,z);g.add(rig);
+  const left=new T.Group(),right=new T.Group();
+  left.position.set(-.18,.78,0);right.position.set(.18,.78,0);
+  b(left,0,-.37,.0,.22,.76,.27,'#394844');
+  b(right,0,-.37,.0,.22,.76,.27,'#364643');
+  b(left,0,-.72,-.07,.26,.15,.38,'#3d3027');
+  b(right,0,-.72,-.07,.26,.15,.38,'#3d3027');
+  rig.add(left,right);
+  b(rig,0,1.08,0,.62,.67,.34,shirt);
+  const armL=new T.Group(),armR=new T.Group();
+  armL.position.set(-.38,1.3,0);armR.position.set(.38,1.3,0);
+  b(armL,0,-.25,0,.16,.56,.19,shirt);
+  b(armR,0,-.25,0,.16,.56,.19,shirt);
+  rig.add(armL,armR);
+  cylinder(rig,0,1.58,0,.13,.17,'#ba805a',7);
+  sphere(rig,0,1.87,0,.30,'#c9906b');
+  const hairMesh=sphere(rig,0,2.06,.015,.29,hair);hairMesh.scale.y=.48;
+  for(const ex of [-.105,.105])sphere(rig,ex,1.88,-.266,.025,'#2f392f');
+  return {rig,left,right,armL,armR,x,z};
+ }
+ function plant(g,x,z,scale=1){
+  b(g,x,.24*scale,z,.44*scale,.48*scale,.44*scale,'#aa734e');
+  cylinder(g,x,.49*scale,z,.27*scale,.11*scale,'#c08b5c');
+  for(let i=0;i<5;i++){
+   const a=i*PI*2/5;
+   const leaf=piece(g,'cone',x+Math.cos(a)*.27*scale,.83*scale,z+Math.sin(a)*.27*scale,
+    .27*scale,.72*scale,.25*scale,i%2?'#4e8d5d':'#6fa36a');
+   leaf.rotation.z=Math.sin(a)*.26;
+  }
+ }
+ // Streets form a city grid and lead out from the Market Office.
+ b(city,14,-.015,18,3.9,.07,45,'#d3bb8f');
+ b(city,-11,-.02,18,57,.055,3.2,'#d0b78b');
+ b(city,31,-.016,16,3.6,.07,24,'#d0b78b');
+ b(city,-27,-.016,18,3.5,.06,29,'#d0b78b');
+ b(city,0,-.021,26,64,.055,2.2,'#e0c99f');
+ for(let x=-36;x<38;x+=4.5){
+  b(city,x,.015,18,1.8,.012,.045,'#f4e9c9');
+  b(city,x,.015,26,1.15,.012,.034,'#fff2d8');
+ }
+ for(let z=0;z<35;z+=4.6)b(city,14,.015,z,.055,.015,1.8,'#f2e9c9');
+ // Library pavilion and individual book stacks.
+ const lib=new T.Group();lib.position.set(14,0,11);city.add(lib);
+ b(lib,0,-.015,0,11.6,.08,9.7,'#d9c8a2');
+ b(lib,0,.08,0,11.2,.07,9.2,'#e3d5b7');
+ for(const x of [-5.24,5.24])for(const z of [-4.15,4.15]){
+  b(lib,x,2.04,z,.33,4,.33,'#e9d5ad');
+  b(lib,x,3.15,z,.55,.18,.55,'#c49d69');
+ }
+ b(lib,0,4.20,0,12.15,.25,10.35,'#557c64');
+ roof(lib,0,4.42,0,12.1,10.5,'#466d57');
+ b(lib,0,3.55,-4.79,5.8,1.0,.28,'#294b3f');
+ sign(lib,'THE READING LIBRARY',0,3.57,-4.94,5.5,.7);
+ // Shelves visible through the open front.
+ for(const x of [-3.7,0,3.7]){
+  const shelf=new T.Group();shelf.position.set(x,0,1.2);lib.add(shelf);
+  b(shelf,0,1.3,0,2.35,2.45,.46,'#7d583a');
+  b(shelf,0,1.40,-.31,2.22,2.22,.09,'#a17a4d');
+  for(let level=0;level<3;level++){
+   b(shelf,0,.5+level*.68,-.48,2.5,.10,.67,'#78553c');
+   for(let i=0;i<9;i++){
+    const col=['#c65f53','#c49a4a','#447b84','#967b9b','#6b9558','#c37556'][((i+level*2+Math.round(x))%6+6)%6];
+    b(shelf,-.96+i*.235,.75+level*.68,-.48,.17,.42+(i%3)*.055,.29,col).rotation.z=i%4===0?.07:0;
+   }
+  }
+ }
+ b(lib,0,.49,-2.65,4.3,.92,.66,'#ad835c');
+ b(lib,0,1.01,-2.65,4.55,.14,.83,'#c8a079');
+ for(let i=0;i<5;i++)b(lib,-1.48+i*.70,1.13,-2.65,.46,.12,.31,['#5a7d67','#b87551','#758eb4'][i%3]);
+ plant(lib,-4.7,-2.8,.75);plant(lib,4.7,-2.8,.75);
+ const librarian=person(lib,2.65,-2.7,'#6c8eac','#6b4b37');
+ const readers=[person(lib,-4.15,-.7,'#b46d62','#543b32'),person(lib,4.15,2.25,'#b99b56','#3d3530')];
+ for(const p of readers)p.rig.scale.set(.91,.91,.91);
+ // Plaza fountain and garden beds.
+ const park=new T.Group();park.position.set(0,0,11.6);city.add(park);
+ cylinder(park,0,.28,0,2.2,.45,'#a6b7ad',12);
+ cylinder(park,0,.53,0,1.97,.17,'#78b0b6',12);
+ cylinder(park,0,1.1,0,.28,1.0,'#ccd9cf',10);
+ sphere(park,0,1.67,0,.39,'#88bfd0');
+ for(let i=0;i<8;i++){
+  const a=i*PI/4;
+  plant(park,Math.cos(a)*3.3,Math.sin(a)*3.3,.65);
+ }
+ // Decorative lamps, benches, market awnings, and trees.
+ for(const [x,z] of [[7,5],[21,5],[7,20],[21,20],[-19,18],[-35,18],[29,24],[-4,30]]){
+  cylinder(city,x,1.8,z,.095,3.6,'#56665d');
+  sphere(city,x,3.72,z,.3,'#f5d8a2');
+  cylinder(city,x,3.44,z,.30,.15,'#4b5e52');
+ }
+ for(const [x,z] of [[6,10],[7,28],[23,9],[-16,30]]){
+  b(city,x,.46,z,2.3,.20,.55,'#9f754f');
+  for(const a of [-.86,.86])b(city,x+a,.26,z,.13,.42,.12,'#78624d');
+  b(city,x,.91,z+.23,2.3,.75,.13,'#9f754f');
+ }
+ for(const [x,z] of [[-37,3],[-38,32],[-5,33],[27,33],[38,27],[37,3],[-6,4]]){
+  cylinder(city,x,1.0,z,.24,2,'#7a654c');
+  sphere(city,x,3.0,z,1.45,'#4f805b');
+  sphere(city,x-.64,2.75,z+.35,1.0,'#68986b');
+  sphere(city,x+.59,2.95,z-.27,.92,'#588f5d');
+ }
+ // Empty plots become real production buildings once the player spends coins.
+ const buildings=new Map();
+ for(const site of CITY_SITES){
+  const lot=new T.Group();lot.position.set(site.x,0,site.z);city.add(lot);
+  b(lot,0,-.025,0,9.7,.085,8.4,'#b8aa84');
+  for(const x of [-4.55,4.55])for(const z of [-3.55,3.55]){
+   b(lot,x,.18,z,.16,.38,.16,'#bead7f');
+   sphere(lot,x,.39,z,.14,'#e7c99e');
+  }
+  const signboard=new T.Group();signboard.position.set(0,0,-4.5);lot.add(signboard);
+  for(const x of [-1.8,1.8])b(signboard,x,.68,0,.18,1.35,.22,'#81634b');
+  sign(signboard,site.title,0,1.22,-.10,4.7,.64,site.color);
+  const active=new T.Group();lot.add(active);
+  const workers=[];
+  const motion=[];
+  if(site.kind==='house'){
+   for(let h=0;h<3;h++){
+    const x=(h-1)*2.8;
+    b(active,x,1.6,.5,2.55,3.15,4.5,['#bd946e','#d0ad82','#b58e74'][h]);
+    roof(active,x,3.31,.5,2.75,4.9,'#6c735c');
+    b(active,x,1.05,-1.82,.72,1.6,.08,'#6c513b');
+    for(const dx of [-.72,.72])b(active,x+dx,2.25,-1.84,.51,.64,.10,'#96b5b6');
+   }
+   for(const [x,z,shirt] of [[-2.8,-2.6,'#9c755f'],[2.1,-2.55,'#6d92a0'],[0,2.0,'#aa7b81']])workers.push(person(active,x,z,shirt));
+  }else{
+   b(active,0,1.8,.5,7.25,3.58,5.6,site.color);
+   b(active,0,3.59,.5,7.7,.22,5.9,'#485e61');
+   for(const x of [-2.4,0,2.4]){
+    b(active,x,2.22,-2.36,1.30,.96,.08,'#a6c3c4');
+    b(active,x,2.20,-2.43,.10,1,.10,'#66858b');
+   }
+   b(active,0,1.1,-2.43,1.26,2.07,.14,'#6e6151');
+   b(active,0,1.98,-2.53,.94,.12,.04,'#d8ac77');
+   for(let x=-2.15;x<3;x+=1.05){
+    b(active,x,.75,3.44,.75,1.1,.47,'#a98759');
+    b(active,x,.82,3.72,.72,.11,.02,'#dfbc88');
+   }
+   for(const x of [-2.8,2.8]){
+    cylinder(active,x,1.07,2.8,.35,.75,'#657470');
+    sphere(active,x,1.58,2.8,.44,'#727d77');
+   }
+   // Conveyor and moving packages on the front platform.
+   b(active,0,.52,-3.12,5.1,.25,.9,'#566765');
+   for(let i=0;i<6;i++)cylinder(active,-2.1+i*.84,.55,-3.12,.19,.74,'#899d92').rotation.z=PI/2;
+   for(let i=0;i<4;i++)motion.push(b(active,-1.8+i*.99,.80,-3.12,.56,.45,.52,'#cba571'));
+   const chimney=cylinder(active,2.56,4.55,2.06,.52,2.05,'#987f74');
+   cylinder(active,2.56,5.62,2.06,.62,.17,'#c6ad88');
+   // Colored machinery behind the main wall for depth.
+   for(const x of [-2.3,-.8,.9]){
+    b(active,x,4.04,2.3,1.0,.48,1.6,'#5d7475');
+    sphere(active,x,4.45,2.3,.26,'#b39a77');
+   }
+   for(let i=0;i<6;i++){
+    const shirt=['#d49e59','#618da0','#ac755f'][i%3];
+    workers.push(person(active,-2.2+(i%3)*2.1,-4.0+Math.floor(i/3)*.95,shirt));
+   }
+  }
+  active.visible=false;
+  buildings.set(site.id,{active,workers,motion,site,lot});
+ }
+ // A few town residents make the settlement feel alive before construction.
+ const townspeople=[
+  person(city,8,17,'#b16e63','#533c32'),
+  person(city,20,18,'#75a18a','#2e372f'),
+  person(city,-7,20,'#bc9c60','#5d453a'),
+  person(city,5,27,'#9a80bb','#443b31')
+ ];
+ function update(saved,now){
+  const time=now*.001;
+  const pause=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  for(const [id,entry] of buildings){
+   const info=saved?.sites?.[id];
+   entry.active.visible=Boolean(info?.built);
+   if(!entry.active.visible)continue;
+   const present=entry.site.kind==='house'?entry.workers.length:Math.min(entry.workers.length,info.staff);
+   entry.workers.forEach((person,i)=>{person.rig.visible=i<present;});
+   for(let i=0;i<entry.motion.length;i++){
+    const move=pause?0:((time*.43+i*.8)%5.0);
+    entry.motion[i].position.x=-2.1+move;
+   }
+   // Factory machinery and people keep moving even while the player stands still.
+   animatePeople(entry.workers, time, pause, id.length*.27);
+  }
+  animatePeople([librarian,...readers,...townspeople],time,pause,0);
+ }
+ function animatePeople(people,time,pause,offset){
+  if(pause)return;
+  people.forEach((p,i)=>{
+   const t=time*(i%2?.63:.78)+offset+i*1.8;
+   const step=Math.sin(t*4.0);
+   p.left.rotation.x=step*.25;p.right.rotation.x=-step*.25;
+   p.armL.rotation.x=-step*.20;p.armR.rotation.x=step*.20;
+   p.rig.position.x=p.x+Math.sin(t)*.48;
+   p.rig.position.z=p.z+Math.cos(t*.8)*.31;
+   p.rig.rotation.y=Math.sin(t*.48)*.38;
+  });
+ }
+ return {update};
+}
+function cityCanWalk(x,z){
+ for(const site of CITY_SITES){
+  if(!cityState.sites[site.id]?.built)continue;
+  // Leave the construction sign and path in front accessible.
+  if(Math.abs(x-site.x)<3.72 && z>site.z-2.60 && z<site.z+3.3)return false;
+ }
+ return true;
+}
 
 
 // Draw the same Three.js meshes and cameras with Canvas when WebGL is unavailable.
@@ -4887,6 +5517,7 @@ function createOfficeView() {
   buildStand();
   stand.visible = false;
   exterior.add(stand);
+  const cityRenderer=createCityWorld({T,exterior,box,piece,renderer});
 
   const coatColors = { rose: '#af6760', amber: '#bc8752', blue: '#4d7982' };
   function makeVisitor(tint) {
@@ -4965,13 +5596,14 @@ function createOfficeView() {
     const travel=phase==='door' ? doorAmount?smooth:1-smooth : phase==='guest' && !doorOpen ? smooth : doorAmount;
     door.rotation.y=-travel*1.46;
     kits.forEach((kit,i)=>{kit.visible=i<stock;});
+    cityRenderer.update(current.city,now);
     camera.position.set(player.x,player===SEAT_POSITION?1.46:1.7,player.z);
     camera.rotation.set(player.pitch,player.yaw,0,'YXZ');
     updateCameraFeed(now);
     renderer.render(scene,camera);
     if (elapsed===1) animation=null;
     if (animation) schedule();
-    else if (current.camera) wake=setTimeout(schedule,88);
+    else if (current.camera || current.city) wake=setTimeout(schedule,current.camera?88:40);
   }
   function schedule() {
     clearTimeout(wake);
@@ -5241,16 +5873,17 @@ function drawScene(animate = '') {
     player: terminal.open ? SEAT_POSITION : player,
     camera: terminal.open && tab === 'cameras' ? securityChannel : null,
     built: state.stand, visitor: activeVisitor, waiting: VISITORS[state.step]?.style,
-    doorOpen, stock: shopTotals(state).onShelf, animate,
+    doorOpen, stock: shopTotals(state).onShelf, city:cityState, animate,
   });
 }
 let lastInteraction = '';
 function refreshPosition() {
-  const place = inOffice(player.x,player.z) ? 'Shop office' :
+  const place = cityNearby(player)?.id==='library' ? 'Town library' :
+    cityNearby(player) ? 'City development plot' : inOffice(player.x,player.z) ? 'Shop office' :
     state.stand && Math.hypot(player.x-STAND.x,player.z-STAND.z)<4.5 ? 'Pickup stand' :
     player.z < -12 ? 'Riverside' : 'Market grounds';
   if(byId('world-location').textContent!==place)byId('world-location').textContent=place;
-  const target = nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
+  const target = cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
   const name = target?.label || '';
   if (lastInteraction !== name) {
     lastInteraction=name;
@@ -5464,6 +6097,7 @@ async function dictate(id, control) {
 }
 function modal(label, title, html) {
   mousePosition = null;
+  if(document.pointerLockElement)document.exitPointerLock();
   byId('overlay-label').textContent = label;
   byId('overlay-body').innerHTML = '<h2 class="title" id="overlay-title" tabindex="-1">' + title + '</h2>' + html;
   if (!dialog.open) dialog.showModal();
@@ -5495,6 +6129,7 @@ function showExpansion() {
 }
 function sitAtComputer() {
   stopMovement();
+  if(document.pointerLockElement)document.exitPointerLock();
   terminal.showModal();
   openTab(tab, true);
 }
@@ -5503,8 +6138,9 @@ function standUp() {
 }
 function interact() {
   if (terminal.open || dialog.open) return;
-  const target = nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
+  const target = cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
   if (!target) return;
+  if (target.city) return cityInteract(target);
   if (target.id === 'seat') return sitAtComputer();
   if (target.id === 'stand') {
     return modal('Market grounds','Your pickup stand','<p>Customers can collect future orders here. The shop computer shows this stand on the Pickup lot camera.</p>');
@@ -5544,6 +6180,7 @@ byId('show-guide').addEventListener('click', () => {
     '<p><b>Reply.</b> Write to the person in your own words. They’ll ask a follow-up if they need more information.</p>' +
     '<p><b>Meet your visitors.</b> Open the office door when a customer or supplier arrives.</p>' +
     '<p><b>Grow the shop.</b> Sit at the computer to see reports and live feeds from the entrance, pickup lot, and road. The stand changes the playable grounds.</p>' +
+    '<p><b>Build a city.</b> Walk east to the new library. Read short books to earn city coins, then build factories, hire workers, and upgrade machines. Press F for fullscreen.</p>' +
     '<p>' + (trial ? 'Practice mode is separate from your saved shop.' : 'The browser saves your shop progress and drafts as you play.') + '</p>');
 });
 const actions = {
@@ -5730,7 +6367,7 @@ world.addEventListener('pointerdown',event => {
 });
 world.addEventListener('pointermove',event => {
   if (event.pointerType==='mouse') {
-    if (!isWalking() || event.target.id!=='landscape') {
+    if (document.pointerLockElement || !isWalking() || event.target.id!=='landscape') {
       mousePosition = null;
       return;
     }
@@ -5765,6 +6402,9 @@ try {
   scene = drawIllustratedView(replacement,byId('view'));
   drawScene();
 }
+
+// Initialize the city after the original first-person office is ready.
+cityInit();
 </script>
 </body>
 </html>
