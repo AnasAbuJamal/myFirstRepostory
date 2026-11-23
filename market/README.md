@@ -64,3 +64,53 @@ The default build command still produces a fully offline page with the expansion
 **Real estate progression:** Earn coins from books, **purchase land**, **construct buildings on owned land**, and **improve land quality** (four levels) to increase automated factory output. Factory machinery can be upgraded separately (ten levels), and up to six employees work at each factory. Six plots have different land prices and reading unlock requirements, and each purchase is visualized in the 3D scene with property boundaries and progressive landscaping. The Properties panel shows a portfolio with land ownership, buildings, staff, and production.
 
 **Compatibility:** Existing city saves are migrated in place: previously built factories automatically gain land ownership. The original Market Office campaign and its separate shop wallet remain unchanged. Coin totals, purchases, and upgrades stay in localStorage for offline gameplay. The City Builder does not use cloud accounts or real-money payments.
+
+## LumenVale: City of Knowledge — Learning Studio update
+
+The game has been rebranded to **LumenVale: City of Knowledge**. The playable browser game now includes these additional systems:
+
+- **Teacher Studio (local prototype):** Teacher button in the top bar or the library opens a local content dashboard. Import a JSON file (up to 2 MB), review imported books, publish/unpublish or remove them, author a basic book, and export a portable lesson pack. Each lesson can specify `title`, `genre` (also accepts `genera`), `pages` or `text`, `readingLevel`, `wordCount`, `reward`, and `questions` with `prompt`, `choices`, and zero-based `correctIndex`. A `questionCount` requests 1–10 locally generated **draft fill-in-the-blank questions** when explicit questions are absent. Teachers should review draft questions for quality and accuracy; this is not AI-generated deep comprehension assessment.
+- **Genre library:** Library books are grouped by genre, show calculated word counts and question counts, and award coins after all questions are correctly answered. Books may have several questions, and attempts are recorded for local student nicknames. The teacher dashboard summarizes books, genres, words, question totals and locally recorded student progress. An example file is at `market/example-course-pack.json`.
+- **Mailbox and city dashboard:** Visit the roadside mailbox near the office or press **N**. Read messages from citizens and business clients. Press **B** to open City Hall's overview, contracts, warehouse, employees, research, civic upgrades, newspaper, exploration clues, and achievements.
+- **Meaningful expenses and investments:** Workers generate factory income but cost wages and maintenance every production cycle. Building/land costs, research, employee training, warehouse resupply, public gardens, streetlights, power, delivery van, headquarters, home, and a laboratory all consume in-game coins. Factories make inventory; delivering contract goods provides payouts and reputation. Training and technology improve output.
+- **Expanded 3D world:** A physical mailbox, city hall, warehouse, moving vehicles, several NPCs, a day–night cycle, visible purchased upgrades, hidden treasure caches, and a basic first-person delivery van are integrated into the original world. This is an interactive prototype with procedural 3D geometry, not a full commercial-quality simulation.
+
+### Keyboard controls
+
+| Key | Action |
+|---|---|
+| Click Play | Lock the mouse for free first-person camera movement |
+| Esc | Release mouse and show cursor |
+| WASD | Walk or drive |
+| Shift | Sprint while walking |
+| E | Interact, collect discovered rewards, enter/exit nearby van |
+| F | Fullscreen |
+| G | Guide and adjustable sensitivity |
+| M | Property portfolio |
+| N | Mailbox |
+| B | Business / City Hall dashboard |
+| V | Enter/exit the delivery van (once purchased, approach the warehouse) |
+
+### Teacher JSON example
+
+```json
+{
+  "books": [
+    {
+      "title": "Our First Factory",
+      "genre": "Business",
+      "readingLevel": "Elementary",
+      "pages": ["The new factory opens near the river. Workers inspect the equipment before making products."],
+      "questions": [
+        {
+          "prompt": "What do workers do before making products?",
+          "choices": ["Inspect equipment", "Go home", "Close the road"],
+          "correctIndex": 0
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Important limitations:** Teacher and student roles are local browser views, **not secure account roles**. Teacher content and student progress are stored in this browser's local storage and **do not automatically synchronize** across students' computers. Teachers can export lesson packs and progress, but school-wide assignments, login authentication and centrally hosted records require a future backend with real account management and appropriate data protection. The example content and game are educational prototypes. Future expansions to new regions and random city events are intentionally postponed.
