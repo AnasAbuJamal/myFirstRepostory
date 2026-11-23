@@ -19,6 +19,8 @@ jobs:
       - name: Run course and transcript tests
         run: |
           node --check market/lms.js
+          node --check market/sky-textures.js
+          node --check market/school-materials.js
           node --test market/test-academics.cjs market/test-districts.cjs market/test-school.cjs market/test-lms.cjs
       - name: Install browser for gameplay test
         run: |
