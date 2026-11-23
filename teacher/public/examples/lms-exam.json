@@ -1,0 +1,23 @@
+{
+  "kind": "lumenvale.lms-exam",
+  "version": 1,
+  "courseId": "DEMO-EXAMPLE",
+  "chapterId": "intro-chapter",
+  "exam": {
+    "title": "Introduction Chapter Exam",
+    "questions": [
+      {
+        "prompt": "What is a purpose of a lesson?",
+        "choices": [
+          "To develop understanding",
+          "To replace all teachers",
+          "To delete the course"
+        ],
+        "correctIndex": 0,
+        "explanation": "Lessons organize learning around clear objectives."
+      }
+    ],
+    "timeLimitMinutes": 15,
+    "attemptLimit": 3
+  }
+}

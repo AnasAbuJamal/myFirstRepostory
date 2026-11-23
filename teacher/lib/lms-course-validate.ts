@@ -25,7 +25,7 @@ export const TeacherCourse=z.object({
  teacher:z.string().trim().min(1).max(100),
  description:z.string().trim().max(700).default(''),
  published:z.literal(true),
- modules:z.array(Chapter).min(1).max(24),
+ modules:z.array(Chapter).max(24),
  assignments:z.array(z.object({
   id:z.string().regex(/^[a-z0-9-]{2,46}$/),title:z.string().trim().min(1).max(120),
   moduleId:z.string().max(46).optional(),

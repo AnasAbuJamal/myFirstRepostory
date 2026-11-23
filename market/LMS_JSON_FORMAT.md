@@ -2,7 +2,7 @@
 
 ## Empty school at startup
 
-Students see **no preinstalled courses, exams, lessons, careers or laboratory subjects**. All official-looking curriculum must originate from a teacher JSON upload or a published share code. `lms-demo.json` is an optional downloadable test example and is never automatically installed. Existing unchanged demo seeds are migrated out of old browser learning saves.
+Students see **no preinstalled courses, exams, lessons, careers or laboratory subjects**. A teacher can publish an empty course first and add chapters later. All official-looking curriculum must originate from a teacher JSON upload or a published share code. `lms-demo.json` is an optional downloadable test example and is never automatically installed. Existing unchanged demo seeds are migrated out of old browser learning saves.
 
 The Reading Library building is no longer separate. Its 3D study area, bookshelves and interactive book station are inside LumenVale School.
 
@@ -10,9 +10,9 @@ The Reading Library building is no longer separate. Its 3D study area, bookshelv
 
 1. Visit the authenticated Teacher Studio at `/dashboard/courses` and open **AI Course + Chapter Prompt Builder**.
 2. Enter any original class name, code, subject and chapter count (1–24). Copy the generated prompt to your preferred AI assistant.
-3. Review all generated readings, flashcards and answers; upload the strict JSON file. The server validates required structure and unique chapter IDs.
+3. Review all generated readings, flashcards and answers. Choose one of three strict JSON formats: new course, additional chapter, or replacement chapter exam. The authenticated server merges chapter/exam uploads only into the teacher's own existing course and validates the entire revised course.
 4. The Teacher Studio publishes reviewed curriculum and provides a share code. Students can import it through School > Import Chapters, or import a course JSON file offline.
-5. To revise the course, update the course JSON and republish. Student reimport replaces that matching course ID in their browser without automatically deleting recorded local grades.
+5. Every publication creates a new snapshot and share code; students can import the latest full course JSON without deleting recorded local practice grades. An older code can be unpublished by its teacher.
 
 ## JSON schema
 

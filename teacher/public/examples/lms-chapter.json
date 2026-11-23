@@ -1,0 +1,40 @@
+{
+  "kind": "lumenvale.lms-chapter",
+  "version": 1,
+  "courseId": "DEMO-EXAMPLE",
+  "chapter": {
+    "id": "second-chapter",
+    "title": "Second Chapter",
+    "objectives": [
+      "Identify the main goal of a lesson"
+    ],
+    "lesson": {
+      "title": "Second Lesson",
+      "content": "A teacher may publish additional chapters after creating the original course. Each chapter can contain a reading, review cards, practice questions, and a graded practice exam."
+    },
+    "flashcards": [
+      {
+        "front": "Lesson",
+        "back": "A planned unit of study within a chapter."
+      }
+    ],
+    "practice": [],
+    "exam": {
+      "title": "Second Chapter Check",
+      "questions": [
+        {
+          "prompt": "What can a teacher add to an existing course?",
+          "choices": [
+            "A new chapter",
+            "A random road segment",
+            "A car repair"
+          ],
+          "correctIndex": 0,
+          "explanation": "The new chapter expands the course."
+        }
+      ],
+      "timeLimitMinutes": 15,
+      "attemptLimit": 3
+    }
+  }
+}
