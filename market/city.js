@@ -1,5 +1,17 @@
 /* City Builder: persistent reading-to-production gameplay. No external services. */
 const CITY_SAVE_KEY='jungle-miner-city-v1';
+const CITY_MOUSE_PREFS_KEY='jungle-miner-mouse-v1';
+function cityLoadMouseSettings(){
+ try{
+  const info=JSON.parse(localStorage.getItem(CITY_MOUSE_PREFS_KEY)||'null');
+  return {sensitivity:Math.max(.002,Math.min(.01,Number(info?.sensitivity)||.005)),
+    invertY:Boolean(info?.invertY)};
+ }catch{return {sensitivity:.005,invertY:false};}
+}
+var cityMouseSettings=cityLoadMouseSettings();
+function citySaveMouseSettings(){
+ try{localStorage.setItem(CITY_MOUSE_PREFS_KEY,JSON.stringify(cityMouseSettings));}catch{}
+}
 const CITY_TICK_MS=5000;
 const CITY_BOOKS=[
  {id:'forest',title:'Forest Field Notes',shelf:'Nature',reward:48,xp:20,pages:[
@@ -306,7 +318,11 @@ function cityGuide(){
  '<div><small>Unique books</small><b>'+cityCompleted()+' / '+CITY_BOOKS.length+'</b></div>'+
  '<div><small>Workers</small><b>'+cityPopulation()+'</b></div></div>'+
  '<h3>Next properties</h3><p>'+next.map(s=>s.title+' (land '+s.land+' · building '+s.build+' coins)').join(' · ')+'</p>'+
- '<p class="city-sub">Click Play once to capture the mouse · Esc releases the cursor · Click to resume · E interacts · F fullscreen · G guide · M properties. Menus automatically release the mouse so you can use their buttons. Saves stay on this device.</p>');
+ '<div class="city-mouse-settings"><h3>First-person mouse settings</h3>'+
+ '<label for="city-mouse-sensitivity">Mouse sensitivity: <strong id="city-sensitivity-value">'+Math.round(cityMouseSettings.sensitivity*1000)+'</strong></label>'+
+ '<input id="city-mouse-sensitivity" type="range" min="2" max="10" step="1" value="'+Math.round(cityMouseSettings.sensitivity*1000)+'">'+
+ '<label class="city-toggle"><input id="city-invert-y" type="checkbox" '+(cityMouseSettings.invertY?'checked':'')+'> Invert vertical look</label></div>'+
+ '<p class="city-sub">Click Play once to capture the mouse · Esc releases cursor · Click to resume · Shift sprint · E interact · F fullscreen · G guide · M properties. Menus release the mouse for their buttons. Saves stay on this device.</p>');
 }
 function citySync(){
  const balance=byId('city-coins'),learning=byId('city-learning'),income=byId('city-income'),lands=byId('city-lands'),objective=byId('city-objective');
@@ -380,6 +396,18 @@ function cityInit(){
  byId('city-help').addEventListener('click',cityGuide);
  byId('city-portfolio').addEventListener('click',cityPortfolio);
  byId('city-full').addEventListener('click',cityEnterFullscreen);
+ document.addEventListener('input',event=>{
+  if(event.target.id==='city-mouse-sensitivity'){
+   cityMouseSettings.sensitivity=Number(event.target.value)/1000;
+   citySaveMouseSettings();
+   const label=byId('city-sensitivity-value');if(label)label.textContent=event.target.value;
+  }
+ });
+ document.addEventListener('change',event=>{
+  if(event.target.id==='city-invert-y'){
+   cityMouseSettings.invertY=event.target.checked;citySaveMouseSettings();
+  }
+ });
  document.addEventListener('click',event=>{
   const b=event.target.closest('[data-city-action]');if(!b)return;
   const id=b.dataset.id;
