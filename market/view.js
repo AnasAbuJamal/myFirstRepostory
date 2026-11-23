@@ -459,6 +459,18 @@ function createOfficeView() {
     current=next;
     schedule();
   }
+  // Non-invasive performance information for browser regression runs.
+  // Does not alter frame cadence or allocate extra meshes.
+  update.diagnostics=()=>({
+    quality:renderer.lvBalanced?'balanced':'detailed',
+    engine:renderer.isSoftware?'software':'webgl',
+    pixelRatio:renderer.getPixelRatio(),
+    canvas:[canvas.width,canvas.height],
+    drawCalls:renderer.info?.render?.calls??null,
+    triangles:renderer.info?.render?.triangles??null,
+    geometries:renderer.info?.memory?.geometries??null,
+    textures:renderer.info?.memory?.textures??null
+  });
   new ResizeObserver(schedule).observe(viewport);
   return update;
 }
