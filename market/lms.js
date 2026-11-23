@@ -4,7 +4,8 @@
  */
 const LMS_SAVE_KEY='lumenvale-lms-v1';
 const LMS_KIND='lumenvale.lms-course';
-const LMS_PORTAL='https://lumenvale-teachers.vercel.app/dashboard/academics';
+const LMS_PORTAL='https://lumenvale-teachers.vercel.app/dashboard/courses';
+const LMS_COURSE_ENDPOINT='https://lumenvale-teachers.vercel.app/api/courses/';
 function lmsText(v,max=5000){return String(v??'').trim().slice(0,max);}
 function lmsCode(v){return /^[A-Z][A-Z0-9-]{2,30}$/.test(v);}
 function lmsSlug(v){return lmsText(v,65).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,46);}
@@ -61,20 +62,25 @@ function lmsValidateCourse(raw){
  return {kind:LMS_KIND,version:1,id,title,subject,teacher:lmsText(raw.teacher,100)||'Teacher',
   description:lmsText(raw.description,700),published:raw.published!==false,modules,assignments,announcements};
 }
-function lmsSeedCourses(){
- return Object.fromEntries(LV_LMS_DEMO.courses.map(c=>{const v=lmsValidateCourse(c);return [v.id,v];}));
-}
+// Teacher-controlled school: no built-in classes, lessons or exams at startup.
+function lmsSeedCourses(){return {};}
 function lmsInitial(){
- return {version:1,courses:lmsSeedCourses(),active:'student',learners:{
-  student:{name:'Student',enrolled:['BIO-M1'],done:{},cards:{},exams:{},submissions:{},practice:{}}}};
+ return {version:1,courses:{},active:'student',learners:{
+  student:{name:'Student',enrolled:[],done:{},cards:{},exams:{},submissions:{},practice:{}}}};
 }
 function lmsRestore(raw){
  if(!raw||raw.version!==1||!raw.courses||typeof raw.courses!=='object'||!raw.learners||typeof raw.learners!=='object')return lmsInitial();
  const data=lmsInitial(),courses={};
  for(const item of Object.values(raw.courses).slice(0,80)){
-  try{const c=lmsValidateCourse(item);courses[c.id]=c;}catch{}
+  try{
+   const c=lmsValidateCourse(item);
+   // Remove unchanged old demo seeds, preserve teacher-authored content.
+   const sample=LV_LMS_DEMO.courses.find(s=>s.id===c.id);
+   if(sample&&JSON.stringify(c)===JSON.stringify(lmsValidateCourse(sample)))continue;
+   courses[c.id]=c;
+  }catch{}
  }
- data.courses=Object.keys(courses).length?courses:data.courses;
+ data.courses=courses;
  const learners={};
  for(const [id,v] of Object.entries(raw.learners).slice(0,16)){
   if(!/^[a-z0-9-]{2,65}$/.test(id)||!v||typeof v!=='object')continue;
@@ -99,8 +105,8 @@ function lmsHeader(title,subtitle,active='student'){
  return '<div class="lms-banner"><div><span class="lms-eyebrow">LUMENVALE · LEARNING HUB</span><h2>'+esc(title)+'</h2><p>'+esc(subtitle)+'</p></div>'+
  '<div class="lms-banner-icon" aria-hidden="true">✦</div></div>'+
  '<div class="lms-nav">'+lmsC('home','My Dashboard',active==='student'?'active':'')+
- lmsC('teacher','Teacher Preview',active==='teacher'?'active':'')+lmsC('import','Import JSON')+
- lmsC('pathways','Academic Pathways')+'</div>';
+ (active==='teacher'?lmsC('teacher','Local Draft Editor','active'):'')+
+ lmsC('import','Teacher Content')+lmsC('library','School Library')+'</div>';
 }
 function lmsRender(title,subtitle,html,area='student'){
  cityPanel('School / Learning Hub',title,lmsHeader(title,subtitle,area)+html+
@@ -130,7 +136,7 @@ function lmsHome(){
   '<div class="lms-stat-grid"><div><b>'+mine.length+'</b><small>My courses</small></div><div><b>'+assignments+'</b><small>Assignments to submit</small></div>'+
   '<div><b>'+mine.reduce((n,c)=>n+c.modules.length,0)+'</b><small>Available modules</small></div></div>'+
   '<div class="lms-section-title"><h3>Available courses</h3><span>'+all.length+' published</span></div>'+
-  '<div class="lms-course-grid">'+(cards||'<p>No courses are published in this local preview.</p>')+'</div>'+
+  '<div class="lms-course-grid">'+(cards||'<div class="lms-empty-campus"><strong>No classes have been added yet.</strong><p>Your school starts empty. A teacher can create courses, chapters, exams and assignments using a validated JSON file or publication code.</p></div>')+'</div>'+
   '<div class="lms-actions">'+lmsC('import','Import teacher JSON')+
   '<a class="lms-button lms-link" href="'+LMS_PORTAL+'" target="_blank" rel="noopener noreferrer">Verified Teacher Studio ↗</a></div>');
 }
@@ -310,7 +316,7 @@ function lmsTeacherCourse(id){
  '<div class="lms-actions"><button data-lms="new-module" data-id="'+esc(id)+'" class="lms-button primary">+ Add lesson and exam</button>'+
  '<button data-lms="new-assignment" data-id="'+esc(id)+'" class="lms-button">+ Add assignment</button>'+
  '<button data-lms="new-announcement" data-id="'+esc(id)+'" class="lms-button">+ Announcement</button>'+
- '<button data-lms="export-academic" data-id="'+esc(id)+'" class="lms-button">Export for Verified Teacher Studio</button>'+
+ '<button data-lms="export-course" data-id="'+esc(id)+'" class="lms-button">Export course JSON</button>'+
  '<button data-lms="teacher" class="lms-button">Teacher dashboard</button></div>'+
  '<p class="lms-muted">Changes to a published course are immediately available to local students. Download JSON to move content between devices.</p>','teacher');
 }
@@ -392,8 +398,19 @@ function lmsImportPanel(){
  lmsRender('Import teacher content','Load a teacher-created Learning Hub JSON pack or approved academic course code.',
  '<div class="lms-warning"><b>Import is local.</b><p>JSON is checked and saved in this browser. Approved teacher publication codes use the separate Academic Pathways importer.</p></div>'+
  '<div class="lms-form"><label>Learning Hub JSON file (.json, up to 1 MB)<input id="lms-file" type="file" accept=".json,application/json"></label></div>'+
- '<div class="lms-actions">'+lmsC('template','Download sample JSON')+lmsC('pathways-import','Import verified teacher publication code')+
+ '<div class="lms-form"><label>Teacher publication code<input id="lms-share-code" maxlength="45" autocomplete="off" placeholder="Paste a teacher-provided code"></label></div>'+
+ '<div class="lms-actions">'+lmsC('import-code','Import from Teacher Studio','primary')+lmsC('template','Download JSON example')+
  lmsC('home','Back to dashboard')+'</div>');
+}
+async function lmsImportCode(){
+ const code=document.getElementById('lms-share-code')?.value?.trim()||'';
+ if(!/^[A-Za-z0-9_-]{8,45}$/.test(code))return notice('Enter a valid publication code from your teacher.');
+ try{
+  const response=await fetch(LMS_COURSE_ENDPOINT+encodeURIComponent(code),{cache:'no-store'});
+  if(!response.ok)throw Error(response.status===404?'This course is not published.':'The Teacher Studio is unavailable.');
+  const raw=await response.json(),count=lmsImportObject(raw);
+  notice(count+' teacher course(s) imported.');lmsHome();
+ }catch(e){notice('Could not import teacher content: '+(e.message||'Network error')+'. You can still import a JSON file offline.');}
 }
 function lmsImportObject(raw){
  const items=raw?.kind==='lumenvale.lms-bundle'&&raw.version===1?raw.courses:raw?.kind===LMS_KIND?[raw]:null;
@@ -418,7 +435,7 @@ function lmsNewStudent(){
  '<button class="lms-button primary">Create local profile</button></form>'+lmsC('home','Cancel'));
 }
 function lmsTeacherPrompt(){
- const example='Create original LumenVale classroom lessons, flashcards, practice questions, module exams, assignments and announcements. Output VALID JSON only. Use exactly the lumenvale.lms-course version 1 format in the downloaded example. Every question has prompt, choices (2–5 strings), and correctIndex (zero-based). Include accurate educational explanations and objectives. Do not include student personal information. A teacher must verify all answers before publishing.';
+ const example='Create one original LumenVale school class as strict valid JSON. Schema: kind=lumenvale.lms-course, version=1, id=uppercase course code, title, subject, teacher, description, published=true, modules=[chapters], assignments=[], announcements=[]. Each chapter needs a unique lowercase-hyphen id, title, objectives[], lesson:{title,content (30+ characters)}, flashcards:[{front,back}], practice:[{prompt,choices,correctIndex,explanation}], exam:{title,questions:[{prompt,choices,correctIndex,explanation}],timeLimitMinutes:15,attemptLimit:3}. Every question needs 2–5 choices and a ZERO-BASED correctIndex. Do not add preset careers, labs, student private data, real grades or fabricated sources. Review every answer before publishing. Return JSON only, no Markdown.';
  lmsRender('JSON Course Builder','Teacher content workflow',
  '<p>Download a sample course and adapt it, or use the prompt below to create a draft with an AI assistant. Review all facts and answer keys before using it.</p>'+
  '<textarea readonly class="lms-prompt" rows="7">'+esc(example)+'</textarea>'+
@@ -430,8 +447,8 @@ function lmsInit(){
   const a=el.dataset.lms,id=el.dataset.id,mid=el.dataset.module;
   if(a==='home')lmsHome();
   else if(a==='teacher')lmsTeacher();
-  else if(a==='pathways')pathwayHome();
-  else if(a==='pathways-import')pathwayImportPanel();
+  else if(a==='library')cityBookList();
+  else if(a==='import-code')lmsImportCode();
   else if(a==='import')lmsImportPanel();
   else if(a==='course')lmsCourse(id,el.dataset.section||'modules');
   else if(a==='enroll'){
