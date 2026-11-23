@@ -10828,6 +10828,18 @@ function createOfficeView() {
     current=next;
     schedule();
   }
+  // Non-invasive performance information for browser regression runs.
+  // Does not alter frame cadence or allocate extra meshes.
+  update.diagnostics=()=>({
+    quality:renderer.lvBalanced?'balanced':'detailed',
+    engine:renderer.isSoftware?'software':'webgl',
+    pixelRatio:renderer.getPixelRatio(),
+    canvas:[canvas.width,canvas.height],
+    drawCalls:renderer.info?.render?.calls??null,
+    triangles:renderer.info?.render?.triangles??null,
+    geometries:renderer.info?.memory?.geometries??null,
+    textures:renderer.info?.memory?.textures??null
+  });
   new ResizeObserver(schedule).observe(viewport);
   return update;
 }
@@ -11117,6 +11129,7 @@ function gameBackupInit(){
 const PHONE_CATEGORIES={
  learning:{label:'Learn',description:'Courses, reading, achievements and your next lesson.',apps:[
   ['continue','Continue','book','jade'],['school','My Courses','orders','blue'],
+  ['teacher-content','Teacher Lessons','book','jade'],
   ['pathways','Pathways','door-icon','jade'],['transcript','Transcript','chart-icon','gold'],
   ['library','Library','book','gold'],['words','My Words','book','jade'],
   ['journal','Reading Journal','orders','sage']
@@ -11200,7 +11213,7 @@ function phoneSync(){
 }
 function phoneInit(){
  const apps={
-  continue:phoneResumeLearning,school:lmsHome,pathways:pathwayHome,
+  continue:phoneResumeLearning,school:lmsHome,'teacher-content':pathwayImportPanel,pathways:pathwayHome,
   transcript:pathwayTranscript,library:cityBookList,words:campusVocabulary,
   journal:academyProfile,map:campusMap,property:cityPortfolio,
   production:()=>systemsPanel('warehouse'),architect:campusArchitect,
