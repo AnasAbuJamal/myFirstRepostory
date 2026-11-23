@@ -26,13 +26,13 @@ const TOWN_DISTRICTS=[
 const TOWN_PLACES=[
  {id:'school',name:'LumenVale School',kind:'school',x:-37,z:-4.6,w:17,d:11,h:7.8,face:1,room:[13,12],brick:'#e8dfce',trim:'#f9f2e1',
   desks:[
-   {x:-7,z:-4.20,r:2.15,key:'school',label:'Explore academic pathways'},
+   {x:-7,z:-4.20,r:2.15,key:'school',label:'Open interactive courses and lessons'},
    {x:7,z:-4.20,r:2.15,key:'careers',label:'Visit the career center'},
    {x:-7,z:.85,r:2,key:'quran',label:'Open Qur’an memorization studio'},
    {x:7,z:.85,r:2,key:'school-quiz',label:'Try the Knowledge Quest'},
    {x:-7,z:3.20,r:2,key:'browse',label:'Browse reading lessons'},
-   {x:7,z:3.20,r:2,key:'school-practice',label:'Practice school lessons and exams'},
-   {x:0,z:-8.10,r:2.1,key:'school-guide',label:'Open student information desk'}
+   {x:7,z:3.20,r:2,key:'school-practice',label:'Open classes, assignments, and exams'},
+   {x:0,z:-8.10,r:2.1,key:'school-guide',label:'Open Learning Hub and Teacher Studio'}
   ]},
  {id:'library',name:'Reading Library',kind:'library',x:16,z:10.2,w:13,d:10,h:7.1,face:-1,room:[11,11],brick:'#e2ded4',trim:'#faf6ed',
   desks:[{x:0,z:-2.0,r:2.0,key:'browse',label:'Browse library books'},{x:-6,z:1.8,r:2,key:'words',label:'Open My Words'}]},
@@ -230,9 +230,9 @@ function districtInteract(target){
   return;
  }
  switch(target.key){
- case 'school':pathwayHome();break;
- case 'school-guide':schoolGuide();break;
- case 'school-practice':campusSchool();break;
+ case 'school':lmsHome();break;
+ case 'school-guide':lmsHome();break;
+ case 'school-practice':lmsHome();break;
  case 'school-quiz':schoolQuizPanel();break;
  case 'quran':pathwayQuran();break;
  case 'careers':jobPanel();break;
