@@ -30,7 +30,7 @@ function canWalk(x,z,{doorOpen,stand}) {
     x > left-radius && x < right+radius && z > north-radius && z < south+radius);
 }
 function walkStep(player, forward, sideways, seconds, settings) {
-  const speed = inOffice(player.x,player.z) ? 2.8 : settings.sprint ? 7.3 : 4.15;
+  const speed = settings.driving ? 10 : inOffice(player.x,player.z) ? 2.8 : settings.sprint ? 7.3 : 4.15;
   const magnitude = Math.max(1,Math.hypot(forward,sideways));
   const scale = Math.max(0,Math.min(seconds,.045))*speed/magnitude;
   const dx = (Math.cos(player.yaw)*sideways-Math.sin(player.yaw)*forward)*scale;
