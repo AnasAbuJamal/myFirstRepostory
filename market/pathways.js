@@ -328,17 +328,18 @@ function pathwayQuran(){
  (pathwayState.quranPlans[c.id]?esc(pathwayState.quranPlans[c.id].targets.length+' memorization target(s)'):'Awaiting teacher plan')+
  '</small></div><button class="button" data-pathways="course" data-id="'+esc(c.id)+'">View</button></div>').join('')+'</div>'+
  '<p class="pathway-alert">Recite to your teacher first. Ask the teacher for the private, one-time approval code after they have evaluated your recitation.</p>'+
- '<form id="pathway-redeem-form" class="pathway-import"><label>Teacher recitation approval code<input name="code" minlength="20" maxlength="48" required placeholder="Paste your teacher’s approval code" autocomplete="off"/></label>'+
+ '<form id="pathway-redeem-form" class="pathway-import"><label>Your private classroom code<input name="studentCode" minlength="3" maxlength="40" autocomplete="off" required placeholder="Classroom code from teacher"/></label><label>Teacher recitation approval code<input name="code" minlength="20" maxlength="48" required placeholder="Paste your teacher’s approval code" autocomplete="off"/></label>'+
  '<button type="submit" class="button primary">Verify recitation & claim points</button></form>'+
  '<button class="button" data-pathways="home">Back to pathways</button>');
 }
-async function pathwayRedeemRecitation(code){
- const value=pathwayString(code,48);
+async function pathwayRedeemRecitation(code,studentCode){
+ const value=pathwayString(code,48),student=pathwayString(studentCode,40);
+ if(student.length<3){notice('Enter your private classroom code.');return;}
  if(!/^[A-Za-z0-9_-]{20,48}$/.test(value)){notice('Enter the complete teacher approval code.');return;}
  try{
   const response=await fetch('https://lumenvale-teachers.vercel.app/api/recitation/redeem',{
    method:'POST',mode:'cors',credentials:'omit',headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({code:value})
+   body:JSON.stringify({code:value,studentCode:student})
   });
   const result=await response.json();
   if(!response.ok)throw Error(result?.error||'Unable to verify recitation.');
@@ -461,7 +462,7 @@ function pathwayInit(){
  });
  document.addEventListener('submit',event=>{
   if(event.target.id==='pathway-redeem-form'){
-   event.preventDefault();pathwayRedeemRecitation(new FormData(event.target).get('code'));return;
+   event.preventDefault();const values=new FormData(event.target);pathwayRedeemRecitation(values.get('code'),values.get('studentCode'));return;
   }
   if(event.target.id!=='pathway-code-form')return;
   event.preventDefault();pathwayImportCode(new FormData(event.target).get('code'));
