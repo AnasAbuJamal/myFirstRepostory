@@ -90,6 +90,117 @@ function decorateSchoolInterior(T,k,g,sign,place){
  station(7,-1.20,'SCIENCE QUEST','#88c5c0','science');
  station(-7,5.03,'READING CORNER','#d9bc8a','library');
  station(7,5.03,'PRACTICE EXAMS','#b1bfdf','exam');
+
+ // Six recognizable rooms wrap a central corridor. Each room has a wide,
+ // unobstructed doorway matching the movement/collision plan in districts.js.
+ const roomZones=[
+  {start:-11.32,end:-3.38,door:-4.42,nameLeft:'BIOLOGY CLASS',nameRight:'CAREER STUDIO',
+   toneLeft:'#dce9d9',toneRight:'#dee7ea',trim:'#678e80'},
+  {start:-3.38,end:2.38,door:.85,nameLeft:'QURAN LEARNING',nameRight:'SCIENCE LAB',
+   toneLeft:'#efe7d3',toneRight:'#d6e7e1',trim:'#7c9b83'},
+  {start:2.38,end:9.78,door:3.65,nameLeft:'READING LIBRARY',nameRight:'EXAM CENTER',
+   toneLeft:'#eae1d0',toneRight:'#e0e2eb',trim:'#8292a0'}
+ ];
+ for(let tier=0;tier<roomZones.length;tier++){
+  const room=roomZones[tier],center=(room.start+room.end)*.5,deep=room.end-room.start;
+  for(const side of [-1,1]){
+   const x=side*7.9,name=side<0?room.nameLeft:room.nameRight;
+   k.box(x,.025,center,9.03,.015,deep-.13,side<0?room.toneLeft:room.toneRight);
+   // Corridor wall has a 2.2 m door; do not fill the opening with glass.
+   for(const [start,end] of [[room.start,room.door-1.10],[room.door+1.10,room.end]]){
+    if(end-start<.12)continue;
+    k.box(side*3.46,2.17,(start+end)/2,.19,4.30,end-start,'#eee9db');
+    k.box(side*3.30,2.0,(start+end)/2,.035,2.8,end-start,'#b3c4b8');
+    k.box(side*3.26,.20,(start+end)/2,.045,.40,end-start,room.trim);
+   }
+   k.box(side*3.46,4.14,room.door,.23,.30,2.23,room.trim);
+   for(const dz of [-1.1,1.1])k.box(side*3.46,2.09,room.door+dz,.24,4.15,.09,'#809c8b');
+   k.box(side*4.55,3.82,room.door,1.75,.56,.045,room.trim);
+   k.box(side*4.53,3.83,room.door+.035,1.56,.38,.03,'#f7f5e7');
+   sign(g,name,x,3.62,room.start+.24,5.55,.49,1,'#436958');
+   // Feature boards, artwork and high-level shelving face the room.
+   k.box(x,2.59,room.start+.33,5.35,1.75,.18,side<0?'#4e7565':'#587d79');
+   k.box(x,2.56,room.start+.44,4.93,1.38,.025,'#d9e5d4');
+   for(let i=0;i<5;i++){
+    k.box(x-2+i,2.67,room.start+.46,.68,.08,.012,i%2?'#e6d3a4':'#9ec5b2');
+    k.box(x-2+i,2.34,room.start+.47,.48,.07,.012,'#e7eee3');
+   }
+   k.box(side*11.32,1.01,center,1.10,1.60,1.20,'#8eaa9c');
+   for(const level of [.59,.98,1.36]){
+    k.box(side*11.32,level,center,1.04,.055,1.14,'#f0e1c4');
+    for(const d of [-.40,-.14,.15,.40])
+     k.box(side*11.32,level+.15,center+d,.45,.24,.08,tier===2?'#a9927a':'#7c9b9a');
+   }
+   // Worktable & two chairs in each subject room, offset from interactive station.
+   k.box(side*10.0,.77,center+1.42,2.42,.12,1.22,'#aa8968');
+   for(const dx of [-.97,.97])for(const dz of [-.46,.46])
+    k.box(side*10.0+dx,.39,center+1.42+dz,.10,.75,.12,'#556b60');
+   for(const dz of [-1.05,1.07]){
+    k.box(side*10,.48,center+1.42+dz,1.07,.12,.62,'#6b8980');
+    k.box(side*10,.93,center+1.42+dz+.25,.99,.89,.09,'#698379');
+   }
+   // Warm, recessed linear ceiling lights clarify the room boundaries.
+   k.box(x,4.70,center,5.2,.16,deep-.4,'#e9e5d9');
+   for(const lampX of [x-2.0,x+2.0])k.light(lampX,4.57,center,.41,.045,deep-1,'#fff5da');
+  }
+  if(tier<2)for(const side of [-1,1]){
+   k.box(side*8.14,2.2,room.end,9.58,4.40,.18,'#eeeadd');
+   k.box(side*8.14,.22,room.end,9.58,.43,.06,'#8eae9b');
+  }
+ }
+ // Reception and waiting lounge sit to either side of the main entry,
+ // preserving the center aisle and the exit at z=11.0.
+ k.box(-8.2,.86,10.22,4.10,.21,1.28,'#886b52');
+ k.box(-8.2,1.47,10.58,4.10,1.08,.16,'#719387');
+ k.box(-8.2,1.52,10.50,3.65,.065,.08,'#d3e5d3');
+ k.box(-8.2,.44,10.38,3.78,.69,.92,'#b59a79');
+ sign(g,'STUDENT RECEPTION',-8.2,2.75,10.91,4.48,.45,1,'#416857');
+ for(const z of [9.48,10.6]){
+  k.box(8.25,.53,z,4.12,.20,.58,'#648478');
+  k.box(8.25,.97,z+.20,4.12,.68,.13,'#607c71');
+  for(const sx of [-1.77,1.77])k.box(8.25+sx,.25,z,.16,.48,.47,'#6c776e');
+ }
+ k.box(0,.052,10.6,2.60,.025,1.18,'#efe3bd');
+ sign(g,'WELCOME · MY COURSES · GRADES',0,3.63,11.63,8.0,.44,-1,'#42685d');
+ // School timetable and accessible route markers.
+ for(const z of [-5.25,.05,5.9]){
+  k.box(0,3.31,z,2.20,.62,.10,'#4a7063');
+  k.light(0,3.34,z+.063,1.88,.40,.024,'#dceada');
+ }
+ // Additional figures: a teacher and students with low-poly animated limbs.
+ const people=[],cube=new T.BoxGeometry(1,1,1);
+ const skin=['#b98562','#e4b996','#916d56','#d4a47c','#b89b84'];
+ function schoolPerson(x,z,shirt,index,standing=false){
+  const body=new T.Group(),materials=new Map();
+  function shape(group,w,h,d,color,px,py,pz){
+   if(!materials.has(color))materials.set(color,new T.MeshLambertMaterial({color}));
+   const m=new T.Mesh(cube,materials.get(color));
+   m.scale.set(w,h,d);m.position.set(px,py,pz);group.add(m);return m;
+  }
+  shape(body,.43,.53,.28,shirt,0,standing?1.15:.98,0);
+  shape(body,.36,.17,.27,'#44535c',0,.78,0);
+  const neck=shape(body,.15,.19,.14,skin[index%skin.length],0,1.47,0);
+  const head=shape(body,.32,.37,.29,skin[index%skin.length],0,1.64,0);
+  shape(body,.33,.12,.29,index%3?'#4b3937':'#3d302d',0,1.86,-.012);
+  const arms=[],legs=[];
+  for(const side of [-1,1]){
+   const arm=new T.Group();arm.position.set(side*.28,1.32,0);
+   shape(arm,.15,.42,.17,shirt,0,-.17,0);arms.push(arm);body.add(arm);
+   const leg=new T.Group();leg.position.set(side*.115,.69,0);
+   shape(leg,.16,.49,.19,'#475d65',0,-.26,0);
+   shape(leg,.20,.11,.28,'#374b49',0,-.53,.02);legs.push(leg);body.add(leg);
+  }
+  body.position.set(x,0,z);body.rotation.y=(index%4)*Math.PI/2;
+  g.add(body);people.push({body,arms,legs,phase:index*1.11,standing});
+ }
+ schoolPerson(-9.6,-9.15,'#6a9a88',0,true);
+ schoolPerson(9.6,-9.15,'#bd986a',1,false);
+ schoolPerson(-9.6,-1.52,'#879aaf',2,false);
+ schoolPerson(9.6,-1.52,'#7ba78e',3,true);
+ schoolPerson(-9.6,7.12,'#ba8875',4,false);
+ schoolPerson(9.6,7.12,'#708f99',5,false);
+ g.userData.schoolPeople=people;
+
  // Detailed information wall with slowly rotating globe above floor height.
  sign(g,'WELCOME TO LUMENVALE',0,3.69,-11.43,6.05,.61,1,'#315e53');
  sign(g,'STUDENT INFORMATION',0,1.78,-11.43,3.44,.40,1,'#4c7166');
