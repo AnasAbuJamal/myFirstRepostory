@@ -1,0 +1,53 @@
+/* Incremental city-building layer, added to the original office HUD. */
+.city-hud{position:absolute;right:clamp(.75rem,3.25vw,3rem);top:85px;z-index:3;width:min(300px,calc(100vw - 32px));display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.42rem;pointer-events:none}
+.city-chip{min-width:0;border:1px solid #b7c9ad85;border-radius:9px;padding:.58rem .53rem;background:#263f34e8;color:#fff7df;box-shadow:0 6px 24px #0d20175c}
+.city-chip small{display:block;font-size:.65rem;color:#d3ddc2;letter-spacing:.012em;white-space:nowrap}
+.city-chip strong{display:block;margin-top:.13rem;color:#ffe3a2;font-size:clamp(1rem,1.6vw,1.3rem);line-height:1.2;overflow:hidden;text-overflow:ellipsis}
+.city-hud-actions{grid-column:1/-1;display:flex;gap:.35rem;pointer-events:auto}
+.city-hud-actions button{flex:1;min-height:33px;border:1px solid #a9be9b8a;background:#2b4b39de;border-radius:7px;color:#fff9e8;font-weight:650;font-size:.76rem;padding:.35rem .5rem}
+.city-hud-actions button:hover{background:#446b50}
+.city-goal{grid-column:1/-1;padding:.55rem .7rem;border:1px solid #d5c58a95;border-left:3px solid #e9c27a;border-radius:7px;background:#e9e6cbeb;color:#254a35;font-size:.77rem;line-height:1.3;margin:0;box-shadow:0 5px 15px #1d2b2055}
+.city-sub{font-size:.9rem;color:#617261;line-height:1.5}
+.city-shelf{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:1.1rem 0 0}
+.city-library-stats{background:#ebefe5;border:1px solid #d6dfc8;border-radius:8px;padding:.65rem .75rem;font-size:.9rem;color:#3c6245}
+.city-book-card{display:flex;align-items:center;text-align:left;gap:.85rem;padding:.75rem;border:1px solid #c4cdba;border-radius:10px;background:#fffdf4;min-height:108px;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.city-book-card:hover{transform:translateY(-3px);box-shadow:0 7px 18px #25402a18;border-color:#64896d}
+.city-book-spine{display:flex;align-items:center;justify-content:center;flex:none;width:55px;height:77px;border-left:7px solid #8c5544;border-radius:3px 8px 8px 3px;background:linear-gradient(115deg,#648276,#a7bb8f);color:#f9efc9;font-size:2rem;box-shadow:4px 5px 9px #21352324}
+.city-book-card:nth-child(3n+2) .city-book-spine{background:linear-gradient(115deg,#a37850,#d1b477);border-left-color:#9d6d45}
+.city-book-card:nth-child(3n) .city-book-spine{background:linear-gradient(115deg,#6b84a1,#b0bdd0);border-left-color:#455c7d}
+.city-book-card small,.city-book-card em{display:block;font-size:.73rem;color:#6d7f70;font-style:normal;line-height:1.4}
+.city-book-card b{display:block;margin:.21rem 0;color:#294a36;font-size:.99rem;line-height:1.18}
+.city-book-open{max-width:650px;margin:1.1rem auto;padding:clamp(1.2rem,4vw,2.7rem);min-height:280px;background:linear-gradient(90deg,#fff9e8 0%,#f7efdc 49.5%,#efe3ce 50%,#fff7e6 52%);border:1px solid #d5c4a5;border-radius:6px 17px 17px 6px;box-shadow:inset 12px 0 20px #ad8d6740,0 13px 26px #44362820;color:#3e4035}
+.city-page-count{letter-spacing:.12em;font-size:.77rem;color:#987f61;font-weight:750}
+.city-book-open>p{font:clamp(1.13rem,2.1vw,1.42rem)/1.8 Georgia,serif;margin:1.7rem 0}
+.city-book-footer{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-top:1px solid #e1d3ba;padding-top:.8rem}
+.city-book-footer span{font-size:.82rem;color:#847866}
+.city-reading-meter{width:100%;height:6px;background:#d3dec9;overflow:hidden;border-radius:10px}
+.city-reading-fill{display:block;width:0;height:100%;background:#77a16e;transition:width .35s}
+.city-quiz{display:grid;gap:.7rem}
+.city-quiz h3{font-size:1.25rem;color:#294a38;margin:.3rem 0}
+.city-answer{display:flex;align-items:center;gap:.9rem;text-align:left;border:1px solid #b6c7b3;border-radius:9px;background:#fffef7;padding:.85rem;font-weight:620;color:#344c3d}
+.city-answer span{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:6px;color:#fef5d9;background:#406b50}
+.city-answer:hover{background:#e4eee2;border-color:#67926a}
+.city-wrong{padding:.65rem;border-radius:7px;background:#fff0df;color:#99542f}
+.city-success-medal{height:75px;width:75px;margin:1rem auto;border-radius:50%;border:4px solid #d4ad5b;background:#fff1c1;color:#9d7a2e;display:grid;place-items:center;font-size:2.8rem}
+.city-duo,.city-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin:1.1rem 0}
+.city-factory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;margin:1rem 0}
+.city-factory-grid>div{border:1px solid #cad8c7;border-radius:8px;background:#eff3e9;padding:.75rem}
+.city-factory-grid small{display:block;color:#647869;font-size:.77rem}
+.city-factory-grid b{display:block;margin-top:.15rem;color:#284a38;font-size:1.15rem}
+:fullscreen #landscape,:fullscreen .walk-world{cursor:none}
+:fullscreen .walk-world button{cursor:pointer}
+:fullscreen dialog,:fullscreen dialog *{cursor:auto}
+@media(max-width:720px){
+ .city-hud{top:76px;right:.7rem;width:min(235px,calc(100vw - 22px));gap:.3rem}
+ .city-chip{padding:.4rem .35rem}
+ .city-chip small{font-size:.55rem}
+ .city-chip strong{font-size:.9rem}
+ .city-goal{font-size:.69rem;padding:.4rem}
+ .city-hud-actions button{font-size:.65rem}
+ .city-shelf{grid-template-columns:1fr}
+ .city-book-card{min-height:90px}
+ .city-book-open{min-height:220px}
+}
+@media(prefers-reduced-motion:reduce){.city-book-card,.city-reading-fill{transition:none}}
