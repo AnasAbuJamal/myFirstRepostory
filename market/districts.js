@@ -1,15 +1,15 @@
 // The public street plan is shared by scenery, collision, the map and door prompts.
 const TOWN_BOUNDS={left:-58,right:69,north:-18,south:84};
 const STREET_PLAN=[
- {name:'Market Avenue',axis:'x',at:-9.8,from:-20,to:62,width:7.8},
- {name:'Foundry Avenue',axis:'x',at:21.3,from:-50,to:62,width:8.2},
- {name:'Park Avenue',axis:'x',at:41.5,from:-50,to:62,width:8.2},
- {name:'Orchard Street',axis:'x',at:66,from:-20,to:62,width:7.4},
- {name:'Campus Lane',axis:'z',at:-50,from:4,to:41.5,width:7.0},
- {name:'Mill Street',axis:'z',at:-20,from:-9.8,to:66,width:7.2},
- {name:'Market Street',axis:'z',at:8,from:21.3,to:66,width:7.2},
- {name:'Depot Road',axis:'z',at:39,from:-9.8,to:66,width:7.8},
- {name:'Eastbank Road',axis:'z',at:62,from:-9.8,to:66,width:7.0},
+ {name:'Market Avenue',axis:'x',at:-9.8,from:-20,to:62,width:9.2},
+ {name:'Foundry Avenue',axis:'x',at:21.3,from:-50,to:62,width:10.6},
+ {name:'Park Avenue',axis:'x',at:41.5,from:-50,to:62,width:10.6},
+ {name:'Orchard Street',axis:'x',at:66,from:-20,to:62,width:9.4},
+ {name:'Campus Lane',axis:'z',at:-50,from:4,to:41.5,width:9},
+ {name:'Mill Street',axis:'z',at:-20,from:-9.8,to:66,width:9.6},
+ {name:'Market Street',axis:'z',at:8,from:21.3,to:66,width:9.2},
+ {name:'Depot Road',axis:'z',at:39,from:-9.8,to:66,width:10.2},
+ {name:'Eastbank Road',axis:'z',at:62,from:-9.8,to:66,width:9},
 ];
 const DOWNTOWN_FRONTAGE=[
  {id:'press',name:'Vale Press',kind:'press',room:[8,7],desks:[{x:0,z:-2.4,r:2,key:'words',label:'Open My Words at the publishing desk'}],x:-7.8,z:-.35,w:6,d:6.8,h:7.5,face:-1,brick:'#ded7c9',trim:'#faf2df',accent:'#587d87'},
@@ -128,7 +128,7 @@ townFurniture('lamp',[
 townFurniture('bench',[[-39.86,3.4],[13.1,3.9],[-3,4.95],[47.8,26.65],[-.2,49.1],[-.2,58.5]],2.14,.6);
 townFurniture('bin',[[-38.45,3.4],[14.55,3.9],[-5.8,5.15],[49.35,26.65],[1.25,49.1]],.5,.5);
 townFurniture('planter',[[-3.4,-5.06],[.45,-5.06],[12.8,-5.08],[18.15,-5.08],[48.6,16.07]],1.30,.62);
-const TOWN_PARKING=[[-40,18.21,'#bc725f'],[20,18.21,'#6795ad'],[49,18.21,'#dbb452']];
+// Decorative parked cars removed: keep roads open for moving traffic.
 const TOWN_WALKS=[
  {x:-11.5,z:-4.37,span:1.35},{x:24.4,z:-5.08,span:1.6},
  {x:-36.5,z:5.45,span:4.1},{x:56.35,z:26.15,span:.60},
@@ -143,7 +143,6 @@ const TOWN_RESERVED=[
 ];
 const TOWN_STREET_SOLIDS=[
  ...TOWN_FURNITURE.map(f=>f.kind==='tree'?townRect(f.x,f.z,.36,.36):f),
- ...TOWN_PARKING.map(([x,z])=>townRect(x,z,4.10,1.78)),
  PARK_FOUNTAIN,townRect(5.1,-4.12,1.0,.68)
 ];
 function streetCurbRuns(street,side){
