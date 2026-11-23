@@ -26,6 +26,26 @@ async function main(){
   assert.notEqual(startup.renderer,'illustrated','3D scene crashed into flat illustrated fallback');
   console.log('Renderer:',startup.renderer,'at',startup.initialPosition);
 
+  // Verify the exact bundled Three.js subset accepts both new material systems.
+  const textures=await page.evaluate(()=>{
+   const T=globalThis.PineboundThree,skyScene=new T.Scene();
+   const sky=createSkyAtmosphere({T,scene:skyScene,renderer:{isSoftware:false}});
+   sky.update({phase:.77,now:8000,x:0,y:1.7,z:0});
+   const group=new T.Group();
+   const surfaces=applySchoolInteriorTextures({T,group,place:{room:[13,12]},low:false});
+   return {skyName:sky.mesh?.name,skyCanvas:!!sky.mesh?.material?.map?.image,
+    skyInScene:skyScene.children.includes(sky.mesh),surfaces,
+    types:group.userData.schoolTextureTypes,allMapped:group.children.every(x=>!!x.material?.map)};
+  });
+  assert.equal(textures.skyName,'LumenVale textured atmosphere','Sky dome did not create');
+  assert.ok(textures.skyCanvas&&textures.skyInScene,'Sky texture did not attach');
+  assert.ok(textures.surfaces>=45,'Not enough textured school surfaces: '+textures.surfaces);
+  assert.ok(textures.allMapped,'A school texture mesh has no image map');
+  for(const material of ['tile','wood','carpet','plaster','ceiling','metal','cork','board']){
+   assert.ok(textures.types.includes(material),'School material missing: '+material);
+  }
+  console.log('PASS: textured sky and '+textures.surfaces+' school surface overlays');
+
   // Walk into the school using the actual enter interaction.
   const entering=await page.evaluate(()=>{
    player={...player,x:-37,z:1.78,yaw:0,pitch:0};
