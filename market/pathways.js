@@ -176,7 +176,7 @@ function pathwayHome(){
     return '<button class="pathway-course '+(status.locked?'locked':'')+'" data-pathways="course" data-id="'+esc(c.id)+'">'+
      '<strong>'+esc(c.title)+'</strong><small>'+esc(c.id)+' · '+c.credits+' game credits'+(included?' · Required for selected pathway':' · Optional')+'</small>'+
      '<span>'+(status.quran?(status.passed?'✓ Verified by teacher':'Teacher recitation'):status.passed?'✓ Passed · '+status.score+'%':
-       status.score!=null?'Exam '+status.score+'%':status.locked?'Locked':'Awaiting content / exam')+'</span></button>';
+       status.score!=null?'Exam '+status.score+'%':status.locked?'Locked':pathwayState.enrolled.includes(c.id)?'Enrolled · Awaiting content / exam':'Ready for enrollment')+'</span></button>';
    }).join('')+'</div></section>';
  }).join('');
  cityPanel('LumenVale Academy / Pathways','Choose your academic future',
@@ -199,6 +199,9 @@ function pathwayCoursePanel(id){
  const pack=pathwayState.packs[id];
  const back='<button type="button" class="button" data-pathways="home">Back to pathways</button>';
  let html='<p>'+esc(c.subject)+' · '+c.credits+' simulated course credits · '+esc(pathwayStage(c.stage).name)+'</p>'+
+ (!pathwayState.enrolled.includes(id)&&!s.locked?
+ '<button type="button" class="button primary" data-pathways="enroll" data-id="'+esc(id)+'">Enroll in this course</button>':
+ pathwayState.enrolled.includes(id)?'<p class="pathway-enrolled">✓ Enrolled in this course</p>':'')+
  '<p><strong>Prerequisites:</strong> '+(c.prerequisites.length?c.prerequisites.map(x=>esc(pathwayCourse(x)?.title||x)).join(', '):'None')+'</p>';
  if(s.locked)html+='<p class="pathway-alert">This course is locked until you pass the earlier stage and all prerequisites. You can still view its goals.</p>';
  if(quran){
@@ -223,16 +226,22 @@ function pathwayCoursePanel(id){
    (reviewed.includes(l.id)?'Review':'Study')+'</button></div>').join('')+'</div>'+
   '<p><strong>Lessons studied:</strong> '+reviewed.length+'/'+pack.lessons.length+'</p>'+
   '<button class="button primary" data-pathways="exam" data-id="'+esc(id)+'" '+
-  (s.locked||reviewed.length!==pack.lessons.length?'disabled':'')+
+  (s.locked||!pathwayState.enrolled.includes(id)||reviewed.length!==pack.lessons.length?'disabled':'')+
   '>Take graded practice exam</button>'+
   (s.score!=null?'<p>Most recent local exam: '+s.score+'% · '+(s.passed?'Pass':'Review and retry')+'</p>':'');
  }
  cityPanel('Academic Course / '+esc(c.id),esc(c.title),html+
  '<div class="city-actions">'+back+'<button class="button" data-pathways="transcript">Transcript</button></div>');
 }
+function pathwayEnroll(id){
+ const course=pathwayCourse(id);
+ if(!course||pathwayStatus(id).locked)return;
+ if(!pathwayState.enrolled.includes(id))pathwayState.enrolled.push(id);
+ pathwaySave();pathwayCoursePanel(id);notice('Enrolled in '+course.title+'.');
+}
 function pathwayStudy(id,unit){
  const pack=pathwayState.packs[id],lesson=pack?.lessons.find(l=>l.id===unit);
- if(!lesson||pathwayStatus(id).locked)return;
+ if(!lesson||pathwayStatus(id).locked||!pathwayState.enrolled.includes(id))return;
  pathwaySession={kind:'reading',courseId:id,unit,started:Date.now(),card:0};
  cityPanel('Course / '+esc(id),esc(lesson.title),
  '<div class="pathway-reading"><h4>Learning objectives</h4><p>'+esc(lesson.objectives.join(' • ')||'Understand the reading and complete practice.')+'</p>'+
@@ -267,7 +276,7 @@ function pathwayCards(id,unit,idx=0,flip=false){
 }
 function pathwayExam(id){
  const pack=pathwayState.packs[id];
- if(!pack||pathwayStatus(id).locked|| (pathwayState.study[id]||[]).length!==pack.lessons.length)return;
+ if(!pack||pathwayStatus(id).locked||!pathwayState.enrolled.includes(id)|| (pathwayState.study[id]||[]).length!==pack.lessons.length)return;
  pathwaySession={kind:'exam',courseId:id,index:0,correct:0,started:Date.now()};
  pathwayExamQuestion();
 }
@@ -434,6 +443,7 @@ function pathwayInit(){
   if(action==='home')pathwayHome();
   if(action==='goal'&&LV_DEFAULT_ACADEMICS.programs.some(x=>x.id===id)){pathwayState.goal=id;pathwaySave();pathwayHome();}
   if(action==='course')pathwayCoursePanel(id);
+  if(action==='enroll')pathwayEnroll(id);
   if(action==='lesson')pathwayStudy(id,unit);
   if(action==='studied')pathwayMarkStudied(id,unit);
   if(action==='cards')pathwayCards(id,unit);
