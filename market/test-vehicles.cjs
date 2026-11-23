@@ -7,7 +7,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const vehicleSource=fs.readFileSync(path.join(__dirname,'vehicles.js'),'utf8');
-const mock=String.raw\`
+const mock=String.raw`
 class Group{
  constructor(){
   this.children=[];
@@ -37,7 +37,7 @@ const T={Group,Color,Mesh,BufferGeometry:Geometry,Float32BufferAttribute:Attribu
  MeshLambertMaterial:Material,MeshBasicMaterial:Material,CylinderGeometry:Geometry,
  BoxGeometry:Geometry,CanvasTexture:Geometry,PlaneGeometry:Geometry,DoubleSide:'double',SRGBColorSpace:'srgb'};
 const document={createElement:()=>({width:0,height:0,getContext:()=>({clearRect(){},fillText(){}})})};
-\`;
+`;
 const api=new Function(mock+'\n'+vehicleSource+
  '\nreturn {T,LV_VEHICLE_TYPES,LV_VEHICLE_PAINTS,createLumenVehicle,animateLumenVehicle};')();
 
