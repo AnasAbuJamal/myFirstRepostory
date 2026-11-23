@@ -54,15 +54,18 @@ test('restore rolls back earlier writes if later storage write fails',()=>{
  assert.equal(h.state.get('save_key'),'{"version":1,"step":1}');
  assert.equal(h.state.get('city_save_key'),'{"version":1,"coins":22}');
 });
-test('all school interactions line up with their visual workstation centers',()=>{
+test('school interaction approaches match the workstations and remain walkable',()=>{
  const c=vm.createContext({});
  vm.runInContext(source('districts.js'),c);
- const pairs=vm.runInContext('SCHOOL_STATIONS.map(s=>({key:s.key,center:[s.x,s.z],interaction:TOWN_PLACES.find(p=>p.id==="school").desks.find(d=>d.key===s.key)}))',c);
+ const pairs=vm.runInContext('SCHOOL_STATIONS.map(s=>({key:s.key,center:[s.x,s.z],interactionZ:s.interactZ,interaction:TOWN_PLACES.find(p=>p.id==="school").desks.find(d=>d.key===s.key)}))',c);
+ vm.runInContext('districtVisit={place:TOWN_PLACES.find(p=>p.id==="school")}',c);
  assert.equal(pairs.length,6);
  for(const p of pairs){
   assert.ok(p.interaction,p.key+' has no interaction');
   assert.equal(p.interaction.x,p.center[0]);
-  assert.equal(p.interaction.z,p.center[1]);
+  assert.equal(p.interaction.z,p.interactionZ);
+  assert.ok(Math.abs(p.interaction.z-p.center[1])<=2.3,p.key+' too far from visible desk');
+  assert.equal(vm.runInContext('districtWalk('+p.interaction.x+','+p.interaction.z+')',c),true,p.key+' must be reachable');
   assert.ok(p.interaction.r>=2,p.key+' interaction too narrow');
  }
  assert.match(source('school-world.js'),/for\(const desk of SCHOOL_STATIONS\)/);
