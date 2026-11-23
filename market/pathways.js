@@ -4,7 +4,7 @@
  */
 const PATHWAYS_KEY='lumenvale-academic-v1';
 const PATHWAYS_TYPES={catalog:'lumenvale.catalog',pack:'lumenvale.academic-pack',quran:'lumenvale.quran-plan'};
-function pathwayInitial(){return {version:1,goal:'biology',ageBand:'10-13',enrolled:[],packs:{},quranPlans:{},study:{},scores:{},history:[],flashcardReviews:{},importNames:[]};}
+function pathwayInitial(){return {version:1,goal:'biology',ageBand:'10-13',enrolled:[],packs:{},quranPlans:{},study:{},scores:{},recitations:{},history:[],flashcardReviews:{},importNames:[]};}
 function pathwayString(value,max=500){return String(value??'').trim().slice(0,max);}
 function pathwayValidateQuestions(list,name,limits={min:2,max:30}){
  if(!Array.isArray(list)||list.length<limits.min||list.length>limits.max)throw Error(name+' needs '+limits.min+'–'+limits.max+' questions.');
@@ -75,6 +75,15 @@ function pathwayRestore(raw){
   const pack=state.packs[id];
   if(pack&&Array.isArray(list))state.study[id]=list.filter(x=>pack.lessons.some(l=>l.id===x)).slice(0,16);
  }
+ if(raw.recitations&&typeof raw.recitations==='object'){
+  for(const id of ['QUR-M1','QUR-H1']){
+   const review=raw.recitations[id];
+   if(review&&review.verified===true)state.recitations[id]={
+    verified:true,complete:review.complete===true,
+    verifiedAt:pathwayString(review.verifiedAt,40)
+   };
+  }
+ }
  if(raw.scores&&typeof raw.scores==='object')for(const [id,score] of Object.entries(raw.scores)){
   if(state.packs[id]&&Number.isFinite(score)&&score>=0&&score<=100)state.scores[id]=Math.round(score);
  }
@@ -95,7 +104,8 @@ function pathwayCourse(id){return LV_DEFAULT_ACADEMICS.courses.find(c=>c.id===id
 function pathwayGoal(){return LV_DEFAULT_ACADEMICS.programs.find(p=>p.id===pathwayState.goal)||LV_DEFAULT_ACADEMICS.programs[0];}
 function pathwayStage(id){return LV_DEFAULT_ACADEMICS.stages.find(s=>s.id===id);}
 function pathwayPassed(id){
- const course=pathwayCourse(id);if(!course||course.kind==='teacher-recitation')return false;
+ const course=pathwayCourse(id);if(!course)return false;
+ if(course.kind==='teacher-recitation')return pathwayState.recitations[id]?.verified===true&&pathwayState.recitations[id]?.complete===true;
  const percent=pathwayState.scores[id],policy=pathwayState.packs[id]?.gradePolicy;
  return typeof percent==='number'&&percent>=(policy?.passPercent||70);
 }
@@ -142,7 +152,7 @@ function pathwayHome(){
     const included=stage.id!=='university'||g.required.includes(c.id);
     return '<button class="pathway-course '+(status.locked?'locked':'')+'" data-pathways="course" data-id="'+esc(c.id)+'">'+
      '<strong>'+esc(c.title)+'</strong><small>'+esc(c.id)+' · '+c.credits+' game credits'+(included?' · Required for selected pathway':' · Optional')+'</small>'+
-     '<span>'+(status.quran?'Teacher recitation':status.passed?'✓ Passed · '+status.score+'%':
+     '<span>'+(status.quran?(status.passed?'✓ Verified by teacher':'Teacher recitation'):status.passed?'✓ Passed · '+status.score+'%':
        status.score!=null?'Exam '+status.score+'%':status.locked?'Locked':'Awaiting content / exam')+'</span></button>';
    }).join('')+'</div></section>';
  }).join('');
@@ -158,7 +168,7 @@ function pathwayHome(){
  '<div class="city-actions"><button class="button primary" data-pathways="transcript">Academic Transcript</button>'+
  '<button class="button" data-pathways="import">Import Teacher JSON</button>'+
  '<button class="button" data-pathways="quran">Qur’an Memorization</button></div>'+groups+
- '<p class="city-sub">For middle and high school, progression also requires live teacher verification of Qur’an recitation. Until authenticated student syncing is implemented, this cannot be completed from the local game. Browse the course plans freely.</p>');
+ '<p class="city-sub">Middle and high school progression requires teacher-verified Qur’an recitation. A private one-time teacher approval code can synchronize the verified result and game points; ordinary grades remain local practice records.</p>');
 }
 function pathwayCoursePanel(id){
  const c=pathwayCourse(id);if(!c)return;
@@ -174,7 +184,10 @@ function pathwayCoursePanel(id){
    '<div class="pathway-units">'+pathwayState.quranPlans[id].targets.map(t=>
     '<div><strong>'+esc(t.surah)+' · '+esc(t.verses)+'</strong><p>'+esc(t.notes)+'</p></div>').join('')+'</div>':
     '<p class="pathway-alert">Awaiting your teacher’s memorization targets.</p>')+
-   '<p class="city-sub">Teacher evaluation: pending. Your instructor verifies memorization, tajweed, pronunciation, and fluency separately in Teacher Studio.</p>';
+   '<p class="city-sub">Teacher evaluation: '+
+   (pathwayState.recitations[id]?.complete?'Verified complete':
+     pathwayState.recitations[id]?.verified?'Recitation verified; course still in progress':'Awaiting teacher')+
+   '. Your instructor verifies memorization, tajweed, pronunciation, and fluency in Teacher Studio.</p>';
  }else if(!pack){
   html+='<p class="pathway-alert">The syllabus is ready, but your teacher has not imported reading material and exams for this course.</p>'+
    '<p>Teachers can create and publish a compatible JSON course pack. You can import one for local practice, but it is not an authenticated official grade.</p>';
@@ -291,8 +304,31 @@ function pathwayQuran(){
  '<div class="pathway-units">'+courses.map(c=>'<div><div><strong>'+esc(c.title)+'</strong><small>'+
  (pathwayState.quranPlans[c.id]?esc(pathwayState.quranPlans[c.id].targets.length+' memorization target(s)'):'Awaiting teacher plan')+
  '</small></div><button class="button" data-pathways="course" data-id="'+esc(c.id)+'">View</button></div>').join('')+'</div>'+
- '<p class="pathway-alert">Live teacher assessment and game-point syncing are not yet connected to the student account. The game will not pretend a recitation is verified.</p>'+
+ '<p class="pathway-alert">Recite to your teacher first. Ask the teacher for the private, one-time approval code after they have evaluated your recitation.</p>'+
+ '<form id="pathway-redeem-form" class="pathway-import"><label>Teacher recitation approval code<input name="code" minlength="20" maxlength="48" required placeholder="Paste your teacher’s approval code" autocomplete="off"/></label>'+
+ '<button type="submit" class="button primary">Verify recitation & claim points</button></form>'+
  '<button class="button" data-pathways="home">Back to pathways</button>');
+}
+async function pathwayRedeemRecitation(code){
+ const value=pathwayString(code,48);
+ if(!/^[A-Za-z0-9_-]{20,48}$/.test(value)){notice('Enter the complete teacher approval code.');return;}
+ try{
+  const response=await fetch('https://lumenvale-teachers.vercel.app/api/recitation/redeem',{
+   method:'POST',mode:'cors',credentials:'omit',headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({code:value})
+  });
+  const result=await response.json();
+  if(!response.ok)throw Error(result?.error||'Unable to verify recitation.');
+  const id=result?.courseId;
+  if(!['QUR-M1','QUR-H1'].includes(id)||result?.verified!==true)throw Error('Invalid verification response.');
+  if(pathwayState.recitations[id]?.complete&&result.courseComplete){notice('This course is already verified in your game.');return;}
+  pathwayState.recitations[id]={verified:true,complete:Boolean(result.courseComplete),verifiedAt:new Date().toISOString()};
+  pathwaySave();
+  const coins=Math.max(0,Math.min(100,Number(result.coins)||0));
+  if(coins)cityEarn(coins,8);
+  notice('Teacher recitation verified! +'+coins+' coins.');
+  pathwayQuran();
+ }catch(error){notice(error.message||'Teacher verification is unavailable.');}
 }
 function pathwayImportPanel(){
  cityPanel('Academic Pathways / Content','Teacher JSON Import',
@@ -386,6 +422,9 @@ function pathwayInit(){
   }
  });
  document.addEventListener('submit',event=>{
+  if(event.target.id==='pathway-redeem-form'){
+   event.preventDefault();pathwayRedeemRecitation(new FormData(event.target).get('code'));return;
+  }
   if(event.target.id!=='pathway-code-form')return;
   event.preventDefault();pathwayImportCode(new FormData(event.target).get('code'));
  });
