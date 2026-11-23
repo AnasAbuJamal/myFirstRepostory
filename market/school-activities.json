@@ -1,0 +1,66 @@
+{
+  "kind": "lumenvale.school-activity-pack",
+  "version": 1,
+  "title": "Learning Quarter Knowledge Quest",
+  "note": "Optional game practice; never substitutes for teacher-approved academic or Qur’an records.",
+  "challenges": [
+    {
+      "id": "reading",
+      "subject": "English",
+      "title": "Reading Detective",
+      "icon": "📖",
+      "prompt": "A passage says a school library is quiet, contains many books, and lets students borrow them. What is its main idea?",
+      "choices": [
+        "Libraries help students read and learn.",
+        "All books are difficult.",
+        "Reading is only done at home."
+      ],
+      "correctIndex": 0,
+      "explanation": "The main idea summarizes what the whole passage explains."
+    },
+    {
+      "id": "math",
+      "subject": "Mathematics",
+      "title": "Math Lab",
+      "icon": "➗",
+      "prompt": "A classroom has 24 students. One quarter are in the science lab. How many students are in the lab?",
+      "choices": [
+        "4",
+        "6",
+        "8",
+        "12"
+      ],
+      "correctIndex": 1,
+      "explanation": "One quarter means divide by four: 24 ÷ 4 = 6."
+    },
+    {
+      "id": "science",
+      "subject": "Biology",
+      "title": "Science Investigator",
+      "icon": "🔬",
+      "prompt": "Which cell structure makes most ATP during aerobic cellular respiration?",
+      "choices": [
+        "Nucleus",
+        "Golgi apparatus",
+        "Mitochondrion",
+        "Ribosome"
+      ],
+      "correctIndex": 2,
+      "explanation": "Mitochondria produce most ATP during aerobic respiration."
+    },
+    {
+      "id": "safety",
+      "subject": "City Skills",
+      "title": "Safe Streets",
+      "icon": "🚦",
+      "prompt": "When crossing a busy avenue to reach school, what should you do?",
+      "choices": [
+        "Cross between parked cars.",
+        "Use a marked crossing and check for traffic.",
+        "Run across without looking."
+      ],
+      "correctIndex": 1,
+      "explanation": "Use marked crossings and check approaching traffic."
+    }
+  ]
+}
