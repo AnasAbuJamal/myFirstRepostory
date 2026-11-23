@@ -6,7 +6,11 @@ function decorateSchoolExterior(T,place,kit,sign,outside){
  k.box(x,h+.67,z,6.3,.44,3.75,'#536e61');
  k.box(x,h+1.13,z,4.3,.44,2.45,'#efe3c8');
  k.box(x,h+1.64,z,2.55,.68,1.85,'#536b62');
- k.box(x,h+1.97,front+f*.28,1.7,1.49,.19,'#f1e3c9');
+ // Rooftop clock sits on a real structural pier that overlaps the roof,
+ // rather than on an isolated floating plaque.
+ k.box(x,h+1.02,front+f*.18,2.86,2.50,.50,'#ded5c5');
+ k.box(x,h+2.34,front+f*.23,3.04,.20,.62,'#425f58');
+ k.box(x,h+1.97,front+f*.49,1.70,1.49,.19,'#f1e3c9');
  for(const a of [-1,1]){
   k.box(x+a*6.2,h*.50,front+f*.11,.25,h*.9,.28,'#faf3e3');
   // The new window-bay system is the sole front glazing layer.
@@ -19,13 +23,14 @@ function decorateSchoolExterior(T,place,kit,sign,outside){
  for(const a of [-.56,.56])k.box(x+a,1.15,front+f*.25,.05,1.98,.13,'#f1e9d8');
  k.box(x,3.70,front+f*1.45,6.25,.15,1.02,'#425e57');
  for(const q of [-2.35,2.35])k.light(x+q,3.48,front+f*1.56,.31,.19,.31,'#ffe2a6');
- sign(g,'LUMENVALE SCHOOL',x,4.44,front+f*.2,6.72,.54,f,'#315e52');
- sign(g,'LEARNING CAMPUS  ·  OPEN CURRICULUM',x,5.24,front+f*.2,6.52,.42,f,'#315e52');
+ // Put the school name on the entrance canopy, away from window bays.
+ sign(g,'LUMENVALE SCHOOL',x,3.59,front+f*1.635,4.40,.45,f,'#315e52');
+ sign(g,'LEARN · CREATE · GROW',x,3.12,front+f*1.635,3.92,.22,f,'#315e52');
  const dial=new T.Mesh(new T.CylinderGeometry(.43,.43,.035,28),new T.MeshBasicMaterial({color:'#f8edda',side:T.DoubleSide}));
- dial.position.set(x,h+1.97,front+f*.43);dial.rotation.x=Math.PI/2;if(f<0)dial.rotation.y=Math.PI;g.add(dial);
- for(let n=0;n<12;n++){const a=n*Math.PI/6;k.box(x+Math.sin(a)*.34,h+1.97+Math.cos(a)*.34,front+f*.453,.032,.053,.012,'#3f605b');}
- k.box(x,h+2.06,front+f*.47,.035,.23,.02,'#3f605b',0,0,-.4);
- k.box(x+.10,h+1.97,front+f*.47,.22,.035,.02,'#3f605b',0,0,-.2);
+ dial.position.set(x,h+1.97,front+f*.605);dial.rotation.x=Math.PI/2;if(f<0)dial.rotation.y=Math.PI;g.add(dial);
+ for(let n=0;n<12;n++){const a=n*Math.PI/6;k.box(x+Math.sin(a)*.34,h+1.97+Math.cos(a)*.34,front+f*.622,.032,.053,.012,'#3f605b');}
+ k.box(x,h+2.06,front+f*.635,.035,.23,.02,'#3f605b',0,0,-.4);
+ k.box(x+.10,h+1.97,front+f*.635,.22,.035,.02,'#3f605b',0,0,-.2);
  // Ordered downtown-scale facade inspired by urban street architecture.
  // Bay rhythm is consistent; added surfaces remain within the school parcel.
  const graphite='#293c40', bronze='#b3926e', glass='#597e8a', pale='#e6e5dc';

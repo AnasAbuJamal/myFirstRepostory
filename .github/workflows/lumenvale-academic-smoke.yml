@@ -7,6 +7,21 @@ on:
   workflow_dispatch:
 
 jobs:
+  teacher-typecheck:
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Teacher Studio dependencies
+        run: npm install --no-package-lock --prefix teacher
+      - name: Typecheck teacher-generated course tools
+        run: npm run lint --prefix teacher
+
   academic-smoke:
     permissions:
       contents: write

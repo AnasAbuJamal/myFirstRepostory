@@ -15,7 +15,7 @@ const PHONE_CATEGORIES={
  career:{label:'Work',description:'Teacher-created paths can be added in a future expansion.',apps:[]},
  tools:{label:'Tools',description:'Game settings, local backups and educator access.',apps:[
   ['guide','Help & Settings','help-icon','sage'],['backup','Save Backup','box','blue'],
-  ['teacher-portal','Teacher Portal','book','gold'],['teacher','Demo Editor','book','sage'],
+  ['teacher-portal','Teacher Portal','book','gold'],
   ['fullscreen','Fullscreen','window-icon','blue']
  ]}
 };

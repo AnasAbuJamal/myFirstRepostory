@@ -3,6 +3,7 @@
  * Approved teachers publish verified course packs on the separate Teacher Studio.
  */
 const LMS_SAVE_KEY='lumenvale-lms-v1';
+const LMS_DEMO_MIGRATION='lumenvale-school-empty-v2-migrated';
 const LMS_KIND='lumenvale.lms-course';
 const LMS_PORTAL='https://lumenvale-teachers.vercel.app/dashboard/courses';
 const LMS_COURSE_ENDPOINT='https://lumenvale-teachers.vercel.app/api/courses/';
@@ -76,7 +77,8 @@ function lmsRestore(raw){
    const c=lmsValidateCourse(item);
    // Remove unchanged old demo seeds, preserve teacher-authored content.
    const sample=LV_LMS_DEMO.courses.find(s=>s.id===c.id);
-   if(sample&&JSON.stringify(c)===JSON.stringify(lmsValidateCourse(sample)))continue;
+   if(!localStorage.getItem(LMS_DEMO_MIGRATION)&&sample&&
+     JSON.stringify(c)===JSON.stringify(lmsValidateCourse(sample)))continue;
    courses[c.id]=c;
   }catch{}
  }
@@ -93,7 +95,12 @@ function lmsRestore(raw){
  data.active=data.learners[raw.active]?raw.active:Object.keys(data.learners)[0];
  return data;
 }
-function lmsLoad(){try{return lmsRestore(JSON.parse(localStorage.getItem(LMS_SAVE_KEY)));}catch{return lmsInitial();}}
+function lmsLoad(){
+ let data;
+ try{data=lmsRestore(JSON.parse(localStorage.getItem(LMS_SAVE_KEY)));}catch{data=lmsInitial();}
+ try{localStorage.setItem(LMS_DEMO_MIGRATION,'1');}catch{}
+ return data;
+}
 var lmsState=lmsLoad(),lmsFlashSession=null,lmsPracticeSession=null,lmsExamSession=null,lmsExamTimer=0;
 function lmsSave(){try{if(!trial)localStorage.setItem(LMS_SAVE_KEY,JSON.stringify(lmsState));}catch{notice('Learning Hub could not save locally. Export your content.');}}
 function lmsLearner(){return lmsState.learners[lmsState.active];}
