@@ -151,6 +151,41 @@ function createCityWorld({T,exterior,box,piece,renderer}){
   const signboard=new T.Group();signboard.position.set(0,0,-4.5);lot.add(signboard);
   for(const x of [-1.8,1.8])b(signboard,x,.68,0,.18,1.35,.22,'#81634b');
   sign(signboard,site.title,0,1.22,-.10,4.7,.64,site.color);
+  // A purchased parcel visibly changes from a vacant lot to the player's property.
+  const ownedLand=new T.Group();
+  lot.add(ownedLand);
+  for(const z of [-3.90,3.90]){
+   b(ownedLand,0,.09,z,9.0,.17,.12,'#d4b265');
+   for(const x of [-4.40,4.40])b(ownedLand,x,.48,z,.14,.88,.14,'#c1a059');
+  }
+  for(const x of [-4.40,4.40])b(ownedLand,x,.09,0,.12,.17,7.7,'#d4b265');
+  b(ownedLand,0,.015,-2.95,2.1,.05,1.65,'#d6c293');
+  b(ownedLand,-3.2,.035,2.85,1.35,.10,.9,'#66966c');
+  b(ownedLand,3.2,.035,2.85,1.35,.10,.9,'#66966c');
+  const ownedFlag=b(ownedLand,3.95,2.18,-3.6,.64,.31,.06,'#ebc87c');
+  cylinder(ownedLand,3.95,1.22,-3.6,.045,2.42,'#646a56');
+  ownedLand.visible=false;
+  const landTiers=[];
+  const paving=new T.Group();lot.add(paving);
+  b(paving,0,.035,-2.4,3.9,.08,1.35,'#b9c6bb');
+  for(const x of [-3.6,3.6])for(const z of [-2.95,2.50])cylinder(paving,x,.45,z,.30,.86,'#9cae9e');
+  landTiers.push(paving);
+  const garden=new T.Group();lot.add(garden);
+  for(const x of [-3.6,3.6]){
+   for(const z of [-1.5,1.65])plant(garden,x,z,.65);
+   cylinder(garden,x,1.55,2.65,.075,3,'#5f715d');
+   sphere(garden,x,3.15,2.65,.25,'#f0d49a');
+  }
+  landTiers.push(garden);
+  const modern=new T.Group();lot.add(modern);
+  for(const x of [-3.2,3.2]){
+   b(modern,x,3.25,2.7,1.9,.12,1.0,'#567e82');
+   b(modern,x,3.33,2.7,1.7,.025,.81,'#85b2bb');
+   b(modern,x,1.55,2.7,.12,3.1,.12,'#9da99c');
+  }
+  landTiers.push(modern);
+  landTiers.forEach(tier=>tier.visible=false);
+
   const active=new T.Group();lot.add(active);
   const workers=[];
   const motion=[];
@@ -197,7 +232,7 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    }
   }
   active.visible=false;
-  buildings.set(site.id,{active,workers,motion,site,lot});
+  buildings.set(site.id,{active,ownedLand,landTiers,workers,motion,site,lot});
  }
  // A few town residents make the settlement feel alive before construction.
  const townspeople=[
@@ -211,6 +246,8 @@ function createCityWorld({T,exterior,box,piece,renderer}){
   const pause=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   for(const [id,entry] of buildings){
    const info=saved?.sites?.[id];
+   entry.ownedLand.visible=Boolean(info?.owned||info?.built);
+   entry.landTiers.forEach((tier,i)=>tier.visible=Boolean(info?.owned && (info.landLevel||1)>=i+2));
    entry.active.visible=Boolean(info?.built);
    if(!entry.active.visible)continue;
    const present=entry.site.kind==='house'?entry.workers.length:Math.min(entry.workers.length,info.staff);
