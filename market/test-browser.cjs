@@ -130,6 +130,7 @@ async function main(){
   await page.evaluate(()=>phoneOpen('learning'));
   assert.match(await page.locator('#overlay').innerText(),/YOUR NEXT STEP/);
   assert.equal(await page.locator('#overlay [data-phone-category]').count(),4);
+  assert.equal(await page.locator('#overlay [data-phone-app="teacher-content"]').count(),1);
   await page.locator('#overlay [data-phone-category="city"]').click();
   assert.equal(await page.locator('#overlay [data-phone-category="city"]').getAttribute('aria-pressed'),'true');
   await page.locator('#overlay [data-phone-category="tools"]').click();
@@ -143,6 +144,16 @@ async function main(){
   assert.equal(await page.locator('#overlay [data-phone-category="tools"]').getAttribute('aria-pressed'),'true');
   console.log('PASS: categorized City Phone, local backups, student and teacher navigation');
   await page.screenshot({path:'lumenvale-academic-smoke.png'});
+  const detailed=await page.evaluate(()=>scene.diagnostics?.());
+  assert.ok(detailed&&detailed.pixelRatio>0,'Rendering diagnostics unavailable');
+  console.log('Detailed rendering diagnostics:',JSON.stringify(detailed));
+  await page.evaluate(()=>{cityMouseSettings.graphics='balanced';citySaveMouseSettings();});
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>typeof scene?.diagnostics==='function',{timeout:20000});
+  const balanced=await page.evaluate(()=>scene.diagnostics());
+  assert.equal(balanced.quality,'balanced');
+  assert.ok(balanced.pixelRatio<=1.01,'Balanced pixel ratio did not reduce');
+  console.log('PASS: balanced quality mode:',JSON.stringify(balanced));
   assert.deepEqual(errors,[],'Unexpected browser JavaScript errors');
   assert.ok(!warnings.some(m=>m.includes('Using the illustrated office view')),
    'The 3D renderer failed: '+warnings.join('; '));
