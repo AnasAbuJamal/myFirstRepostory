@@ -56,3 +56,11 @@ The **City coins** HUD is a separate expansion economy from the original shop's 
 **Implementation:** Built with the existing bundled Three.js r180 renderer, with a lightweight procedural world and character rigs rather than large model downloads. Modules: city.js (reading, persistence, economy), city-world.js (3D geometry and animation), and city.css (HUD and library panels). No new runtime packages or network access are required. This is a gameplay expansion, not a completed collection of textbook lessons.
 
 The default build command still produces a fully offline page with the expansion included. Run node --test test-market.cjs test-city.cjs to check both existing office progression and city logic.
+
+## First-person controls and land ownership update
+
+**Mouse and first-person camera:** Click **Play** once to capture the mouse. Moving the mouse then rotates the 3D camera continuously without holding any button or seeing a mouse cursor. Press **Escape** to release the cursor, then click Play or the 3D canvas to recapture it. Browsers require an initial user interaction for mouse capture, and opening book/management dialogs must release the pointer so you can click their controls. Press **G** for the City Guide and adjustable mouse sensitivity, **M** for properties, **F** to toggle fullscreen, **Shift** to sprint outdoors, and **E** to interact.
+
+**Real estate progression:** Earn coins from books, **purchase land**, **construct buildings on owned land**, and **improve land quality** (four levels) to increase automated factory output. Factory machinery can be upgraded separately (ten levels), and up to six employees work at each factory. Six plots have different land prices and reading unlock requirements, and each purchase is visualized in the 3D scene with property boundaries and progressive landscaping. The Properties panel shows a portfolio with land ownership, buildings, staff, and production.
+
+**Compatibility:** Existing city saves are migrated in place: previously built factories automatically gain land ownership. The original Market Office campaign and its separate shop wallet remain unchanged. Coin totals, purchases, and upgrades stay in localStorage for offline gameplay. The City Builder does not use cloud accounts or real-money payments.
