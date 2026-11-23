@@ -49,11 +49,12 @@ function createSchoolFurnitureTable(T,variant='classroom',low=false){
     }
    }
    const out=new T.CanvasTexture(c);out.colorSpace=T.SRGBColorSpace;
-   out.wrapS=out.wrapT=T.RepeatWrapping;out.anisotropy=4;return out;
+   out.wrapS=out.wrapT=T.RepeatWrapping||1000;out.anisotropy=4;return out;
   };
-  const material=(color,map,roughness,metalness)=>new T.MeshStandardMaterial({
-   color,map,roughness,metalness
-  });
+  // The self-contained LumenVale engine includes Lambert but not Standard.
+  // Preserve the high-detail texture map even on that smaller THREE build.
+  const Material=T.MeshStandardMaterial||T.MeshLambertMaterial;
+  const material=(color,map,roughness,metalness)=>new Material({color,map,roughness,metalness});
   shared={
    geometries:{block:new T.BoxGeometry(1,1,1),bolt:new T.CylinderGeometry(.5,.5,1,12)},
    materials:{
