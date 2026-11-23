@@ -310,6 +310,7 @@ function createOfficeView() {
   const lumenRenderer=createLumenWorld({T,exterior,box,piece,renderer});
   const campusRenderer=createCampusWorld({T,exterior,box,piece,renderer});
   const districtRenderer=createDistrictWorld({T,scene,exterior,renderer});
+  const skyAtmosphere=createSkyAtmosphere({T,scene,renderer});
   office.traverse(mesh=>{
     if(mesh.isMesh){mesh.receiveShadow=true;mesh.castShadow=mesh.position.y>.15&&mesh.position.y<2.7;}
   });
@@ -438,6 +439,7 @@ function createOfficeView() {
       camera.position.set(driverX,Math.max(1.26,shape.roof-.24)+sway,driverZ);
     }else camera.position.set(player.x,player===SEAT_POSITION?1.46:1.7+sway,player.z);
     camera.rotation.set(player.pitch,player.yaw,0,'YXZ');
+    skyAtmosphere.update({phase:dayPhase,now,indoors,x:camera.position.x,y:camera.position.y,z:camera.position.z});
     updateCameraFeed(now);
     renderer.render(scene,camera);
     if (elapsed===1) animation=null;
