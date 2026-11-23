@@ -76,6 +76,35 @@ async function main(){
   await page.evaluate(()=>window.pathwayTranscript());
   const transcript=await page.evaluate(()=>(document.querySelector('#overlay')||document.querySelector('dialog'))?.textContent||'');
   assert.match(transcript,/UNVERIFIED GAME RECORD/);
+  // Canvas-style local learning portal: course navigation, lessons, exams,
+  // assignment submission and manual teacher review all run in the browser.
+  await page.evaluate(()=>lmsHome());
+  assert.match(await page.locator('#overlay').innerText(),/My Learning Dashboard/);
+  await page.locator('#overlay [data-lms="course"][data-id="BIO-M1"]').first().click();
+  assert.match(await page.locator('#overlay').innerText(),/Cell Structure/);
+  await page.locator('#overlay [data-lms="lesson"][data-id="BIO-M1"]').first().click();
+  await page.locator('#overlay [data-lms="mark"]').first().click();
+  const lessonDone=await page.evaluate(()=>lmsLearner().done['BIO-M1:cell-structures']);
+  assert.equal(lessonDone,true,'Lesson completion did not persist');
+  await page.evaluate(()=>lmsExamStart('BIO-M1','cell-structures'));
+  for(const answer of [1,0,2]){
+   await page.locator('#overlay [data-lms="exam-answer"][data-answer="'+answer+'"]').first().click();
+  }
+  assert.equal(await page.evaluate(()=>lmsLearner().exams['BIO-M1:cell-structures'].at(-1).score),100,'Exam scoring broken');
+  await page.evaluate(()=>lmsCourse('BIO-M1','assignments'));
+  await page.locator('#overlay [data-lms="assignment"]').first().click();
+  await page.locator('#lms-submission-form textarea[name="answer"]').fill('Plant cells have a cell wall and chloroplasts; both plant and animal cells have a nucleus and cell membrane.');
+  await page.locator('#lms-submission-form button[type="submit"]').click();
+  assert.match(await page.locator('#overlay').innerText(),/Submitted/);
+  await page.evaluate(()=>lmsTeacher());
+  await page.locator('#overlay .lms-grade-form input[name="score"]').first().fill('18');
+  await page.locator('#overlay .lms-grade-form textarea[name="feedback"]').first().fill('Good comparison of shared and different structures.');
+  await page.locator('#overlay .lms-grade-form button').first().click();
+  const graded=await page.evaluate(()=>lmsLearner().submissions['BIO-M1:compare-cells']);
+  assert.equal(graded.points,18,'Teacher grading did not persist');
+  await page.evaluate(()=>lmsCourse('BIO-M1','grades'));
+  assert.match(await page.locator('#overlay').innerText(),/18 \/ 20/);
+  console.log('PASS: Learning Hub enrollment, lesson, timed exam, assignment, teacher grading, gradebook');
   await page.screenshot({path:'lumenvale-academic-smoke.png'});
   assert.deepEqual(errors,[],'Unexpected browser JavaScript errors');
   assert.ok(!warnings.some(m=>m.includes('Using the illustrated office view')),
