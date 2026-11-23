@@ -21,8 +21,10 @@ const OFFICE_COLLIDERS = [
   [-1.24, 1.64, -.40, .68], [-3.43, -1.74, -3.02, -2.38],
 ];
 function canWalk(x,z,{doorOpen,stand}) {
+  // Interior coordinates are local to the visited building. They must never be
+  // tested against world-space office furniture, its walls or outdoor plots.
+  if(typeof districtVisit!=='undefined'&&districtVisit)return districtWalk(x,z);
   if(typeof districtWalk==='function'){
-    if(typeof districtVisit!=='undefined'&&districtVisit)return districtWalk(x,z);
     if(!districtWalk(x,z))return false;
   }else if(x < WALK_LIMITS.left || x > WALK_LIMITS.right || z < WALK_LIMITS.north || z > WALK_LIMITS.south)return false;
   if(typeof cityCanWalk==='function' && !cityCanWalk(x,z))return false;
