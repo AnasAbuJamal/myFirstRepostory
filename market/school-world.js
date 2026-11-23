@@ -29,6 +29,7 @@ function decorateSchoolExterior(T,place,kit,sign,outside){
  k.box(x,h+2.06,front+f*.47,.035,.23,.02,'#3f605b',0,0,-.4);
  k.box(x+.10,h+1.97,front+f*.47,.22,.035,.02,'#3f605b',0,0,-.2);
  k.flush(g);
+ applySchoolExteriorTextures({T,group:g,place,low:false});
 }
 function decorateSchoolInterior(T,k,g,sign,place){
  const wood='#a88762';
