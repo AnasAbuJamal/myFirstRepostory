@@ -1,4 +1,4 @@
-function createDistrictWorld({T,scene,exterior,renderer,visuals}){
+function createDistrictWorld({T,scene,exterior,renderer}){
  const geometries={
   block:new T.BoxGeometry(1,1,1),
   trunk:new T.CylinderGeometry(.75,1,1,8),
@@ -8,28 +8,21 @@ function createDistrictWorld({T,scene,exterior,renderer,visuals}){
  const lampPaint = new T.MeshBasicMaterial({color:'#ffffff'});
  const tint=new T.Color(), object=new T.Object3D();
  const outside=new T.Group(), inside=new T.Group();
- const indoorLights=[new T.PointLight('#ffe2b5',95,21,2),new T.PointLight('#e1eddb',58,18,2)];
- indoorLights[0].position.set(-4,4.35,-3.2);
- indoorLights[1].position.set(4,4.05,2.2);
- inside.add(...indoorLights);
  outside.name='LumenVale district plan';
  exterior.add(outside);
  scene.add(inside);
  inside.visible=false;
  function kit(){
   const shapes=new Map();
-  function put(form,x,y,z,w,h,d,color,rx=0,ry=0,rz=0,lit=false,finish=null){
-   const key=lit?'light':finish?form+':'+finish:form;
+  function put(form,x,y,z,w,h,d,color,rx=0,ry=0,rz=0,lit=false){
+   const key=lit?'light':form;
    if(!shapes.has(key))shapes.set(key,[]);
    shapes.get(key).push({x,y,z,w,h,d,color,rx,ry,rz});
   }
   function box(...v){put('block',...v);}
-  function surface(finish,x,y,z,w,h,d,color){put('block',x,y,z,w,h,d,color,0,0,0,false,finish);}
   function flush(group){
-   for(const [key,items] of shapes){
-    const [form,finish]=key.split(':');
-    const mesh=new T.InstancedMesh(geometries[form==='light'?'block':form],
-     form==='light'?lampPaint:finish?visuals.instanced(finish):paint,items.length);
+   for(const [form,items] of shapes){
+    const mesh=new T.InstancedMesh(geometries[form==='light'?'block':form],form==='light'?lampPaint:paint,items.length);
     items.forEach((v,i)=>{
      object.position.set(v.x,v.y,v.z);
      object.scale.set(v.w,v.h,v.d);
@@ -39,13 +32,13 @@ function createDistrictWorld({T,scene,exterior,renderer,visuals}){
      mesh.setColorAt(i,tint.set(v.color));
     });
     mesh.computeBoundingSphere();
-    mesh.castShadow=group.userData.castsShadow===true&&form!=='light'&&!['asphalt','concrete','wood','tile'].includes(finish);
+    mesh.castShadow=group.userData.castsShadow===true&&form!=='light';
     mesh.receiveShadow=form!=='light';
     group.add(mesh);
    }
   }
   function light(x,y,z,w,h,d,color){put('block',x,y,z,w,h,d,color,0,0,0,true);}
-  return {box,surface,put,light,flush};
+  return {box,put,light,flush};
  }
  function sign(group,title,x,y,z,width,height,face=1,color='#29433f'){
   const canvas=document.createElement('canvas');
@@ -101,16 +94,6 @@ function createDistrictWorld({T,scene,exterior,renderer,visuals}){
    }
   }
   k.flush(outside);
-  if(visuals?.enabled)for(const street of STREET_PLAN){
-   const length=street.to-street.from,[cx,cz]=onRoad(street,(street.from+street.to)/2);
-   visuals.panel(outside,'asphalt',cx,.052,cz,street.axis==='x'?length:street.width,
-    street.axis==='x'?street.width:length,'#646a6c');
-   for(const side of [-1,1]){
-    const [px,pz]=onRoad(street,(street.from+street.to)/2,side*(street.width/2+1.15));
-    visuals.panel(outside,'concrete',px,.030,pz,street.axis==='x'?length:2.25,
-     street.axis==='x'?2.25:length,'#c8c9bc');
-   }
-  }
  }
  function tree(k,x,z,s=1,tall=false){
   k.put('trunk',x,1.12*s,z,.22*s,2.24*s,.21*s,'#796451');
@@ -206,10 +189,9 @@ function createDistrictWorld({T,scene,exterior,renderer,visuals}){
   const f=place.face||1, front=z+f*d/2, door=x+(place.entry||0);
   const roof=h+.10, accent=place.accent||'#527b79', storefront=['shop','press','cafe'].includes(kind);
   k.box(x,.06,z,w+.63,.13,d+.61,'#d3d0c4');
-  k.surface(kind==='home'?'wood':kind==='warehouse'||kind==='factory'?'concrete':
-    kind==='school'||kind==='library'?'brick':'plaster',x,h/2+.08,z,w,h,d,brick);
-  k.surface('stone',x,.25,z,w+.15,.42,d+.1,'#b8b8ad');
-  k.surface('roof',x,roof,z,w+.35,.24,d+.26,kind==='warehouse'?'#788982':'#a3aaa1');
+  k.box(x,h/2+.08,z,w,h,d,brick);
+  k.box(x,.25,z,w+.15,.42,d+.1,'#b8b8ad');
+  k.box(x,roof,z,w+.35,.24,d+.26,kind==='warehouse'?'#788982':'#a3aaa1');
   if(kind!=='home'){
    for(const edge of [-1,1]){
     k.box(x,roof+.25,z+edge*d/2,w+.38,.48,.20,trim);
@@ -288,7 +270,7 @@ function createDistrictWorld({T,scene,exterior,renderer,visuals}){
   if(place.name)sign(group,place.name,door,kind==='warehouse'?4.48:storefront?3.55:3.94,front+f*.18,Math.min(6.8,w-.5),.65,f);
  }
  function table(k,x,z,w,d,c='#977454',y=.84){
-  k.surface('wood',x,y,z,w,.15,d,c);
+  k.box(x,y,z,w,.15,d,c);
   for(const a of [-1,1])for(const b of [-1,1])k.box(x+a*w*.39,y*.47,z+b*d*.35,.12,y*.90,.13,'#60594d');
  }
  function shelves(k,x,z,w,height,depth,book=false,turn=false){
@@ -311,11 +293,11 @@ function createDistrictWorld({T,scene,exterior,renderer,visuals}){
   const [w,d]=place.room, industrial=['factory','warehouse'].includes(place.kind), h=industrial?6.25:4.95;
   const wColor=industrial?'#b1b8aa':place.kind==='library'?'#d8c2a1':place.kind==='school'?'#d4cfb0':'#ddceb3';
   const floor=industrial?'#91968d':place.kind==='library'?'#af8c64':'#bca789';
-  k.surface(industrial?'concrete':kind==='school'||kind==='research'?'tile':'wood',0,-.13,0,w*2+.28,.24,d*2+.28,floor);
-  k.surface('plaster',0,h+.13,0,w*2+.27,.24,d*2+.27,'#d4ceb7');
+  k.box(0,-.13,0,w*2+.28,.24,d*2+.28,floor);
+  k.box(0,h+.13,0,w*2+.27,.24,d*2+.27,'#d4ceb7');
   for(const a of [-1,1]){
-   k.surface('plaster',a*w,h/2,0,.24,h,d*2,wColor);
-   k.surface('plaster',0,h/2,a*d,w*2,h,.24,wColor);
+   k.box(a*w,h/2,0,.24,h,d*2,wColor);
+   k.box(0,h/2,a*d,w*2,h,.24,wColor);
    k.box(a*(w-.14),.53,0,.13,1.06,d*2,'#a69980');
    k.box(0,.51,a*(d-.13),w*2,1.02,.13,'#a99d82');
   }
@@ -455,12 +437,6 @@ function createDistrictWorld({T,scene,exterior,renderer,visuals}){
  TOWN_HOMES.forEach((h,i)=>facade({...h,h:4.1+(i%2)*.33,kind:'home'}));
  function update(now){
   inside.visible=Boolean(districtVisit);
-  if(districtVisit){
-   const industrial=['factory','warehouse','research'].includes(districtVisit.place.kind);
-   indoorLights[0].color.set(industrial?'#e6eee5':'#ffe0b5');
-   indoorLights[0].intensity=industrial?105:90;
-   indoorLights[1].intensity=industrial?65:55;
-  }
   for(const room of rooms.values())room.visible=false;
   if(!districtVisit)return;
   const place=districtVisit.place;
