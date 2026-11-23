@@ -653,6 +653,112 @@ dialog[data-surface="phone"] .title{font:730 1.35rem/1.2 var(--sans);letter-spac
 @media(max-width:660px){.pathway-goals{grid-template-columns:1fr}.pathway-course-grid{grid-template-columns:1fr}.pathway-summary>div{padding:.55rem}.pathway-summary strong{font-size:1rem}}
 @media(prefers-reduced-motion:reduce){.pathway-flashcard{transition:none}}
 
+/* LumenVale Learning Hub: Canvas-inspired teaching and learning UI, original design. */
+.lms-banner{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:.1rem 0 .8rem;padding:1.15rem 1.35rem;border-radius:17px;background:linear-gradient(120deg,#1c4438,#356a5a 65%,#547c69);color:#fffdf2;box-shadow:0 9px 22px #16342b26}
+.lms-eyebrow{display:block;letter-spacing:.13em;font-size:.63rem;font-weight:800;color:#d1e7bd;margin-bottom:.45rem}
+.lms-banner h2{margin:0;font:700 clamp(1.4rem,3vw,1.98rem)/1.2 Georgia,serif;color:#fff8e8}
+.lms-banner p{font-size:.82rem;line-height:1.5;color:#d7e6d8;margin:.48rem 0 .1rem}
+.lms-banner-icon{font:700 2.5rem Georgia,serif;border:1px solid #ffffff40;border-radius:50%;height:65px;width:65px;flex:none;display:grid;place-items:center;color:#e5d298}
+.lms-nav,.lms-actions{display:flex;gap:.48rem;align-items:center;flex-wrap:wrap;margin:.8rem 0 1.2rem}
+.lms-button,.lms-nav button,.lms-tabs button{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;border:1px solid #c2d4c4;color:#315546;background:#fffcf4;padding:.58rem .83rem;min-height:37px;border-radius:9px;font:700 .8rem system-ui,sans-serif;text-align:center;cursor:pointer;text-decoration:none;transition:background .17s,border-color .17s,transform .17s}
+.lms-button:hover,.lms-nav button:hover,.lms-tabs button:hover{background:#edf5e9;border-color:#6e9c79;transform:translateY(-1px)}
+.lms-button:focus-visible,.lms-nav button:focus-visible,.lms-tabs button:focus-visible,.lms-choice:focus-visible,.lms-course-card:focus-visible{outline:3px solid #e0ae55;outline-offset:2px}
+.lms-button.primary{background:#376b54;border-color:#376b54;color:#fffdf3}
+.lms-button.primary:hover{background:#285a44}
+.lms-nav .active,.lms-tabs .active{background:#e2efe5;border-color:#5e936c;color:#205d42}
+.lms-disclaimer{font-size:.73rem;line-height:1.6;color:#758676;margin:1.2rem 0 .1rem}
+.lms-profile{display:flex;align-items:end;gap:.8rem;flex-wrap:wrap;padding:.7rem .9rem;background:#f2f5ec;border:1px solid #d7e4d8;border-radius:11px}
+.lms-profile label,.lms-form label{display:grid;gap:.35rem;color:#3d624e;font-size:.79rem;font-weight:750}
+.lms-profile select,.lms-form input,.lms-form textarea,.lms-form select,.lms-prompt{border:1px solid #b9cbbc;background:#fffef9;border-radius:9px;padding:.7rem .8rem;color:#243f32;font:400 .9rem/1.5 system-ui,sans-serif;max-width:100%;width:100%}
+.lms-profile select{min-width:175px}
+.lms-form textarea{resize:vertical;min-height:110px}
+.lms-form{display:grid;gap:.9rem;margin:1rem 0;max-width:850px}
+.lms-form button[type=submit],.lms-form button:not([type]){justify-self:start}
+.lms-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+.lms-stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin:1rem 0 1.5rem}
+.lms-stat-grid>div{background:#f2f6ed;border:1px solid #dbe6d4;padding:.88rem 1rem;border-radius:12px;display:grid;gap:.25rem}
+.lms-stat-grid b{font:700 1.65rem Georgia,serif;color:#315e49}
+.lms-stat-grid small{font-size:.72rem;color:#697f70}
+.lms-section-title{display:flex;align-items:center;justify-content:space-between;gap:.7rem;border-bottom:1px solid #d9e3d6;padding-bottom:.5rem;margin:1.35rem 0 .85rem}
+.lms-section-title h3{margin:0;color:#2a5341;font:700 1.18rem Georgia,serif}
+.lms-section-title span{font-size:.74rem;color:#6c826e}
+.lms-course-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:.7rem 0 1.2rem}
+.lms-course-card{display:flex;flex-direction:column;gap:.65rem;align-items:stretch;padding:1.1rem;border:1px solid #d0ddcf;border-radius:13px;background:#fffef9;min-height:196px;text-align:left;box-shadow:0 5px 17px #2d50321a;cursor:pointer;transition:transform .16s,box-shadow .16s,border-color .16s}
+.lms-course-card:hover{border-color:#78a186;transform:translateY(-3px);box-shadow:0 10px 22px #2d503229}
+.lms-course-card strong{font:700 1.1rem/1.35 Georgia,serif;color:#294b39}
+.lms-course-tag{display:inline-flex;align-self:flex-start;font-size:.67rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#42775e;background:#e5f0e3;border:1px solid #cbdcc8;border-radius:999px;padding:.24rem .55rem}
+.lms-muted{color:#708572;font-size:.81rem;line-height:1.5}
+.lms-course-card .lms-muted{flex:1}
+.lms-progress{width:100%;height:7px;background:#e1eadd;border-radius:99px;overflow:hidden;display:block}
+.lms-progress i{height:100%;display:block;background:linear-gradient(90deg,#56a07c,#a5bc79);border-radius:99px}
+.lms-course-meta{font-size:.72rem;font-weight:750;color:#50765a;display:flex;justify-content:space-between}
+.lms-course-meta b{font-size:1rem}
+.lms-course-overview{padding:1rem 1.1rem;background:#f3f7f1;border:1px solid #d4e3d6;border-radius:13px;display:grid;gap:.75rem}
+.lms-course-overview p{margin:0;color:#3e604b}
+.lms-course-overview small{color:#607a68;font-size:.77rem}
+.lms-completed{color:#447b59;font-size:.75rem;font-weight:800}
+.lms-tabs{display:flex;gap:.4rem;overflow-x:auto;padding:.2rem 0;margin:1.1rem 0}
+.lms-tabs button{border-radius:7px;flex:none}
+.lms-module-list,.lms-announcements,.lms-teacher-courses{display:grid;gap:.7rem}
+.lms-module{display:flex;align-items:center;gap:.9rem;padding:1rem;background:#fffcf7;border:1px solid #d5dfd0;border-radius:12px}
+.lms-module-num{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;background:#e7f0e5;color:#4d765a;font-weight:850;flex:none}
+.lms-module-body{display:grid;gap:.3rem;flex:1;min-width:0}
+.lms-module-body strong,.lms-assignment strong{color:#2b4b3a;font-size:.93rem}
+.lms-module-body small,.lms-assignment small,.lms-teacher-course small{display:block;color:#78907b;font-size:.71rem;line-height:1.55}
+.lms-module-actions{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.4rem}
+.lms-module-actions button{border:1px solid #c8d9ca;color:#3d7357;background:#f4f9ef;border-radius:7px;padding:.35rem .6rem;font-size:.73rem;cursor:pointer}
+.lms-module-actions button:hover{background:#e1f1dd}
+.lms-check{color:#5d9470;font-size:1.25rem}
+.lms-lesson{display:grid;gap:1rem}
+.lms-objectives{padding:.9rem 1.2rem;border-radius:11px;background:#eef3e8;border:1px solid #d8e4d1;color:#335442}
+.lms-objectives ul{margin:.55rem 0 .1rem;padding-left:1.25rem;line-height:1.7;font-size:.87rem}
+.lms-lesson article{white-space:pre-wrap;padding:1.4rem 1.55rem;border:1px solid #e3d9c3;background:#fffaf0;border-radius:12px;color:#394b3c;font:1.07rem/1.95 Georgia,serif}
+.lms-assignment{display:grid;gap:.65rem;border-radius:11px;border:1px solid #d9e2d7;padding:1rem;background:#fffdf8;margin:.55rem 0}
+.lms-assignment p{color:#496451;font-size:.83rem;line-height:1.65;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.lms-assignment .lms-button{justify-self:start}
+.lms-pill{justify-self:start;font-size:.73rem;color:#446b4c;background:#e8f0e4;border-radius:999px;padding:.32rem .68rem}
+.lms-announcements article{border:1px solid #d9e2d7;border-radius:11px;background:#fffdf7;padding:1rem;display:grid;gap:.4rem}
+.lms-announcements article strong{color:#2a513b}
+.lms-announcements article small{color:#829083}
+.lms-announcements article p{font-size:.84rem;line-height:1.6;margin:0;color:#496451}
+.lms-table-scroll{overflow:auto;border:1px solid #d9e3d8;border-radius:11px}
+.lms-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.lms-table th,.lms-table td{text-align:left;padding:.82rem;border-bottom:1px solid #e3eadf}
+.lms-table th{color:#346144;background:#edf4ea}
+.lms-question{display:grid;gap:.65rem;margin:1rem 0}
+.lms-question h3{font:700 1.17rem/1.55 Georgia,serif;color:#2b4837;margin:.2rem 0 .6rem}
+.lms-question small{font-size:.75rem;color:#69826e}
+.lms-choice{display:flex;gap:.85rem;align-items:center;text-align:left;background:#fffdfa;border:1px solid #c8d7c6;padding:.8rem;border-radius:9px;color:#2c5140;cursor:pointer;font:600 .87rem/1.5 system-ui,sans-serif}
+.lms-choice b{display:grid;place-items:center;border-radius:7px;background:#e7eee5;color:#345b42;width:30px;height:30px;flex:none}
+.lms-choice:hover:not(:disabled){border-color:#6da67d;background:#eef7e9}
+.lms-choice.correct{border-color:#67a77c;background:#e4f4e3}
+.lms-choice:disabled{cursor:default}
+.lms-flashcard{min-height:250px;width:100%;border:1px solid #b8d0be;border-radius:16px;background:linear-gradient(140deg,#e8f1e7,#fff9e8);display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:1.3rem;gap:1rem;text-align:center;cursor:pointer;color:#2d5542;box-shadow:0 12px 26px #264b3020}
+.lms-flashcard small,.lms-flashcard span{font-size:.76rem;color:#567b63}
+.lms-flashcard strong{font:700 1.35rem/1.5 Georgia,serif;max-width:540px}
+.lms-feedback{padding:1rem;border:1px solid #b4d6bc;background:#eaf5e9;color:#2c6142;border-radius:11px;margin:.8rem 0}
+.lms-feedback p{font-size:.88rem;line-height:1.6}
+.lms-exam-top{display:flex;justify-content:space-between;gap:.8rem;flex-wrap:wrap;background:#eaf0e7;border:1px solid #cbd9ca;padding:.8rem 1rem;border-radius:10px;color:#3c624a;font-size:.8rem;font-weight:750}
+.lms-result{display:flex;flex-direction:column;align-items:center;gap:.4rem;margin:1.2rem 0;padding:1.5rem;border-radius:13px;background:linear-gradient(120deg,#e5f1e4,#fff8e9)}
+.lms-result strong{font:700 3.4rem Georgia,serif;color:#286247}
+.lms-result span{font-size:.87rem;color:#53735e}
+.lms-warning{background:#fff7e7;border:1px solid #e1cfa9;padding:1.05rem;border-radius:12px;color:#67573a;font-size:.84rem;line-height:1.6}
+.lms-warning p{margin:.35rem 0 .9rem}
+.lms-teacher-course{display:flex;align-items:center;justify-content:space-between;gap:.8rem;background:#fffdfa;border:1px solid #d6dfd1;padding:.85rem;border-radius:11px;flex-wrap:wrap}
+.lms-teacher-course b{color:#294e3b;font-size:.9rem}
+.lms-teacher-course .lms-actions{margin:0}
+.lms-prompt{min-height:175px;resize:vertical;white-space:pre-wrap}
+.lms-form label:has(input[type="file"]){background:#eff4e8;padding:1rem;border:1px dashed #a1b99f;border-radius:10px}
+@media(max-width:680px){
+ .lms-course-grid,.lms-stat-grid{grid-template-columns:1fr}
+ .lms-two{grid-template-columns:1fr}
+ .lms-banner-icon{display:none}
+ .lms-banner{padding:1rem}
+ .lms-module{padding:.75rem;gap:.6rem}
+ .lms-module-num{width:33px;height:33px}
+ .lms-module-actions button{padding:.35rem}
+}
+@media(prefers-reduced-motion:reduce){.lms-button,.lms-course-card{transition:none}}
 </style>
 </head>
 <body>
@@ -4926,13 +5032,13 @@ const TOWN_DISTRICTS=[
 const TOWN_PLACES=[
  {id:'school',name:'LumenVale School',kind:'school',x:-37,z:-4.6,w:17,d:11,h:7.8,face:1,room:[13,12],brick:'#e8dfce',trim:'#f9f2e1',
   desks:[
-   {x:-7,z:-4.20,r:2.15,key:'school',label:'Explore academic pathways'},
+   {x:-7,z:-4.20,r:2.15,key:'school',label:'Open interactive courses and lessons'},
    {x:7,z:-4.20,r:2.15,key:'careers',label:'Visit the career center'},
    {x:-7,z:.85,r:2,key:'quran',label:'Open Qur’an memorization studio'},
    {x:7,z:.85,r:2,key:'school-quiz',label:'Try the Knowledge Quest'},
    {x:-7,z:3.20,r:2,key:'browse',label:'Browse reading lessons'},
-   {x:7,z:3.20,r:2,key:'school-practice',label:'Practice school lessons and exams'},
-   {x:0,z:-8.10,r:2.1,key:'school-guide',label:'Open student information desk'}
+   {x:7,z:3.20,r:2,key:'school-practice',label:'Open classes, assignments, and exams'},
+   {x:0,z:-8.10,r:2.1,key:'school-guide',label:'Open Learning Hub and Teacher Studio'}
   ]},
  {id:'library',name:'Reading Library',kind:'library',x:16,z:10.2,w:13,d:10,h:7.1,face:-1,room:[11,11],brick:'#e2ded4',trim:'#faf6ed',
   desks:[{x:0,z:-2.0,r:2.0,key:'browse',label:'Browse library books'},{x:-6,z:1.8,r:2,key:'words',label:'Open My Words'}]},
@@ -4967,11 +5073,27 @@ function townEntrance(place){
 }
 function indoorFurniture(kind){
  if(kind==='library')return [[-8,-6.55,-7,5],[6.55,8,-7,5],[-3.8,3.8,-5.9,-4.1],...[-4.2,4.2].flatMap(x=>[1,5.2].map(z=>[x-1.05,x+1.05,z-.7,z+.7]))];
- if(kind==='school')return [-1,1].flatMap(a=>[
-  [a*7-1.93,a*7+1.93,-7.20,-5.65],
-  [a*7-1.93,a*7+1.93,-1.94,-.47],
-  [a*7-1.93,a*7+1.93,4.27,5.76]
- ]);
+ if(kind==='school'){
+  const blockers=[...[-1,1].flatMap(a=>[
+   [a*7-1.93,a*7+1.93,-7.20,-5.65],
+   [a*7-1.93,a*7+1.93,-1.94,-.47],
+   [a*7-1.93,a*7+1.93,4.27,5.76],
+   [a*10-1.25,a*10+1.25,-7.5,-5.9],
+   [a*10-1.25,a*10+1.25,-.7,.5],
+   [a*10-1.25,a*10+1.25,5.1,6.8]
+  ])];
+  const zones=[[-11.32,-3.38,-4.42],[-3.38,2.38,.85],[2.38,9.78,3.65]];
+  for(const side of [-1,1]){
+   const x=side*3.46;
+   for(const [start,end,door] of zones)for(const [a,b] of [[start,door-1.10],[door+1.10,end]]){
+    if(b-a>.12)blockers.push([x-.13,x+.13,a,b]);
+   }
+   const left=Math.min(side*3.4,side*12.93),right=Math.max(side*3.4,side*12.93);
+   for(const z of [-3.38,2.38])blockers.push([left,right,z-.12,z+.12]);
+  }
+  blockers.push([-10.25,-6.15,9.52,10.93],[6.16,10.34,9.18,9.77],[6.16,10.34,10.28,10.93]);
+  return blockers;
+ }
  if(kind==='hall')return [[-3.8,3.8,-5.8,-4.0],[-8,-6.3,-4.0,3.1],[6.3,8,-4.0,3.1]];
  if(kind==='warehouse')return [[-11.3,-8.3,-7.3,5.2],[8.3,11.3,-7.3,5.2],[-3,3,-8,-5.1]];
  if(kind==='press')return [[-6.65,-5,-5.4,3.8],[5,6.65,-5.4,3.8],[-2.9,2.9,-5.25,-3.72]];
@@ -5130,9 +5252,9 @@ function districtInteract(target){
   return;
  }
  switch(target.key){
- case 'school':pathwayHome();break;
- case 'school-guide':schoolGuide();break;
- case 'school-practice':campusSchool();break;
+ case 'school':lmsHome();break;
+ case 'school-guide':lmsHome();break;
+ case 'school-practice':lmsHome();break;
  case 'school-quiz':schoolQuizPanel();break;
  case 'quran':pathwayQuran();break;
  case 'careers':jobPanel();break;
@@ -7842,6 +7964,7 @@ function pathwayInit(){
 }
 
 
+const LV_LMS_DEMO={"kind":"lumenvale.lms-bundle","version":1,"courses":[{"kind":"lumenvale.lms-course","version":1,"id":"BIO-M1","title":"Biology Foundations","subject":"Biology","teacher":"LumenVale Demo Faculty","description":"Explore cells, their parts, and how living things use energy.","published":true,"modules":[{"id":"cell-structures","title":"Module 1 · Cell Structure","objectives":["Identify cell membranes, cytoplasm, and nucleus","Compare plant and animal cells"],"lesson":{"title":"Inside a Living Cell","content":"A cell is the basic structural and functional unit of living organisms. The cell membrane controls what enters and leaves the cell. Cytoplasm contains structures called organelles, and the nucleus stores most of the cell's genetic information. Plant cells often contain a cell wall and chloroplasts. Animal cells do not have chloroplasts. These structures work together to help cells grow and respond to their environment."},"flashcards":[{"front":"Cell membrane","back":"A selectively permeable boundary that controls what moves in and out of a cell."},{"front":"Nucleus","back":"An organelle that contains most of a eukaryotic cell's DNA."},{"front":"Chloroplast","back":"An organelle where photosynthesis takes place in plants and algae."}],"practice":[{"prompt":"Which structure controls what enters and leaves a cell?","choices":["Cell membrane","Ribosome","Chromosome","Vacuole"],"correctIndex":0,"explanation":"The plasma membrane is selectively permeable."}],"exam":{"title":"Cell Biology Checkpoint","timeLimitMinutes":10,"attemptLimit":3,"questions":[{"prompt":"What is the basic unit of life?","choices":["An organ","A cell","A tissue","A system"],"correctIndex":1,"explanation":"Cells are the smallest units capable of performing life's basic functions."},{"prompt":"Which structure contains most eukaryotic DNA?","choices":["Nucleus","Cell membrane","Ribosome","Cytoplasm"],"correctIndex":0,"explanation":"Most eukaryotic DNA is found in the nucleus."},{"prompt":"Which structure is usually found in plant cells but not animal cells?","choices":["Mitochondrion","Cell membrane","Chloroplast","Cytoplasm"],"correctIndex":2,"explanation":"Chloroplasts are responsible for photosynthesis."}]}},{"id":"energy","title":"Module 2 · Energy in Living Things","objectives":["Distinguish photosynthesis from cellular respiration","Explain why cells need ATP"],"lesson":{"title":"How Cells Use Energy","content":"Organisms need energy to carry out life processes. During photosynthesis, plants and algae use light energy to help form glucose from carbon dioxide and water. During cellular respiration, cells break down fuel molecules to make ATP, the molecule that transfers usable energy for many cellular activities. Mitochondria play an important role in aerobic cellular respiration. Photosynthesis and respiration are connected but are not the same process."},"flashcards":[{"front":"ATP","back":"A molecule that transfers usable energy for cellular work."},{"front":"Photosynthesis","back":"A process that uses light energy to form energy-rich organic molecules."}],"practice":[{"prompt":"Which molecule transfers usable energy for many cell activities?","choices":["ATP","DNA","RNA","Chlorophyll"],"correctIndex":0,"explanation":"ATP is often called the cell's energy currency."}],"exam":{"title":"Cell Energy Checkpoint","timeLimitMinutes":10,"attemptLimit":3,"questions":[{"prompt":"In which organelle does much aerobic cellular respiration occur?","choices":["Nucleus","Mitochondrion","Golgi apparatus","Cell wall"],"correctIndex":1},{"prompt":"Which process uses light energy to produce sugar?","choices":["Diffusion","Respiration","Photosynthesis","Osmosis"],"correctIndex":2}]}}],"assignments":[{"id":"compare-cells","title":"Compare Plant and Animal Cells","moduleId":"cell-structures","prompt":"Write 4–6 sentences comparing the structures of plant and animal cells. Explain one structure they share and one difference.","points":20,"dueDate":""}],"announcements":[{"id":"welcome-bio","title":"Welcome to Biology","body":"Start with Module 1. Complete the reading and flashcards before taking the checkpoint exam.","date":"2026-11-23"}]},{"kind":"lumenvale.lms-course","version":1,"id":"ENG-M1","title":"English Reading and Writing","subject":"English","teacher":"LumenVale Demo Faculty","description":"Practice finding main ideas, supporting details, and clear explanations.","published":true,"modules":[{"id":"main-ideas","title":"Module 1 · Main Ideas","objectives":["Identify the main idea in a paragraph","Recognize supporting evidence"],"lesson":{"title":"Understanding Main Ideas","content":"A main idea is what a paragraph or passage is mostly about. Supporting details explain or prove that main idea. To find the main idea, read the whole paragraph and ask what the author wants the reader to understand. A topic is usually just a few words, but the main idea states a complete thought about the topic. Look for repeated concepts, examples, and a concluding sentence when identifying the author's main point."},"flashcards":[{"front":"Main idea","back":"The central point that a passage communicates."},{"front":"Supporting detail","back":"A fact, example, or explanation that supports the main idea."}],"practice":[{"prompt":"What does a supporting detail do?","choices":["Changes the topic","Supports the central point","Replaces the title","Makes all opinions facts"],"correctIndex":1,"explanation":"A supporting detail gives evidence or explanation for the main idea."}],"exam":{"title":"Reading Checkpoint","timeLimitMinutes":12,"attemptLimit":3,"questions":[{"prompt":"Which choice best describes a main idea?","choices":["One small example","The central point","A dictionary definition","A page number"],"correctIndex":1},{"prompt":"Which is most likely a supporting detail?","choices":["A specific example","The book's cover","The author name","The paragraph number"],"correctIndex":0}]}}],"assignments":[{"id":"write-summary","title":"Summarize a Paragraph","moduleId":"main-ideas","prompt":"Write a short paragraph explaining why it is important to identify a passage's main idea. Include a supporting example.","points":15,"dueDate":""}],"announcements":[{"id":"welcome-eng","title":"Reading Practice","body":"Use the flashcards after reading, and practice describing the main idea in your own words.","date":"2026-11-23"}]}]};
 const LV_SCHOOL_ACTIVITIES={"kind":"lumenvale.school-activity-pack","version":1,"title":"Learning Quarter Knowledge Quest","note":"Optional game practice; never substitutes for teacher-approved academic or Qur’an records.","challenges":[{"id":"reading","subject":"English","title":"Reading Detective","icon":"📖","prompt":"A passage says a school library is quiet, contains many books, and lets students borrow them. What is its main idea?","choices":["Libraries help students read and learn.","All books are difficult.","Reading is only done at home."],"correctIndex":0,"explanation":"The main idea summarizes what the whole passage explains."},{"id":"math","subject":"Mathematics","title":"Math Lab","icon":"➗","prompt":"A classroom has 24 students. One quarter are in the science lab. How many students are in the lab?","choices":["4","6","8","12"],"correctIndex":1,"explanation":"One quarter means divide by four: 24 ÷ 4 = 6."},{"id":"science","subject":"Biology","title":"Science Investigator","icon":"🔬","prompt":"Which cell structure makes most ATP during aerobic cellular respiration?","choices":["Nucleus","Golgi apparatus","Mitochondrion","Ribosome"],"correctIndex":2,"explanation":"Mitochondria produce most ATP during aerobic respiration."},{"id":"safety","subject":"City Skills","title":"Safe Streets","icon":"🚦","prompt":"When crossing a busy avenue to reach school, what should you do?","choices":["Cross between parked cars.","Use a marked crossing and check for traffic.","Run across without looking."],"correctIndex":1,"explanation":"Use marked crossings and check approaching traffic."}]};
 
 /* Small JSON-driven school quest. Never changes teacher grades or recitation records. */
@@ -7912,6 +8035,560 @@ function schoolActivitiesInit(){
  });
 }
 
+
+/* LumenVale Learning Hub — Canvas-style offline classroom prototype.
+ * This preview is deliberately NOT a real teacher authentication or shared gradebook.
+ * Approved teachers publish verified course packs on the separate Teacher Studio.
+ */
+const LMS_SAVE_KEY='lumenvale-lms-v1';
+const LMS_KIND='lumenvale.lms-course';
+const LMS_PORTAL='https://lumenvale-teachers.vercel.app/dashboard/academics';
+function lmsText(v,max=5000){return String(v??'').trim().slice(0,max);}
+function lmsCode(v){return /^[A-Z][A-Z0-9-]{2,30}$/.test(v);}
+function lmsSlug(v){return lmsText(v,65).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,46);}
+function lmsQuestions(list,label,max=40){
+ if(!Array.isArray(list)||list.length>max)throw Error(label+' must contain at most '+max+' questions.');
+ return list.map((q,i)=>{
+  const prompt=lmsText(q?.prompt,700),choices=Array.isArray(q?.choices)?q.choices.map(x=>lmsText(x,260)):[];
+  const correctIndex=Number(q?.correctIndex);
+  if(prompt.length<9||choices.length<2||choices.length>5||choices.some(x=>!x)||
+   !Number.isInteger(correctIndex)||correctIndex<0||correctIndex>=choices.length)throw Error(label+' question '+(i+1)+' has invalid answers.');
+  return {prompt,choices,correctIndex,explanation:lmsText(q.explanation,650)};
+ });
+}
+function lmsValidateCourse(raw){
+ if(!raw||raw.kind!==LMS_KIND||raw.version!==1)throw Error('Expected a lumenvale.lms-course JSON file, version 1.');
+ const id=lmsText(raw.id,32),title=lmsText(raw.title,120),subject=lmsText(raw.subject,70);
+ if(!lmsCode(id)||title.length<3||!subject)throw Error('Course needs a code (e.g. BIO-M1), title, and subject.');
+ if(!Array.isArray(raw.modules)||raw.modules.length>24)throw Error('Maximum 24 modules per course.');
+ const ids=new Set();
+ const modules=raw.modules.map((m,i)=>{
+  const mid=lmsText(m.id,46),mt=lmsText(m.title,120),lesson=m.lesson||{};
+  if(!/^[a-z0-9-]{2,46}$/.test(mid)||ids.has(mid)||mt.length<3)throw Error('Module '+(i+1)+' needs a unique ID and title.');
+  ids.add(mid);
+  const content=lmsText(lesson.content,12000);
+  if(content.length<30)throw Error('Module '+(i+1)+' requires lesson text (30+ characters).');
+  const objectives=Array.isArray(m.objectives)?m.objectives.slice(0,10).map(x=>lmsText(x,240)).filter(Boolean):[];
+  const flashcards=Array.isArray(m.flashcards)?m.flashcards.slice(0,60).map(f=>{
+   const front=lmsText(f.front,180),back=lmsText(f.back,650);
+   if(!front||!back)throw Error('Each flashcard needs a front and back.');
+   return {front,back};
+  }):[];
+  const exam=m.exam||{};
+  return {id:mid,title:mt,objectives,lesson:{title:lmsText(lesson.title,120)||mt,content},flashcards,
+   practice:lmsQuestions(m.practice||[],'Practice',25),
+   exam:{title:lmsText(exam.title,120)||'Module exam',questions:lmsQuestions(exam.questions||[],'Exam'),
+    timeLimitMinutes:Math.max(1,Math.min(90,Number(exam.timeLimitMinutes)||15)),
+    attemptLimit:Math.max(1,Math.min(5,Math.round(Number(exam.attemptLimit)||3)))}};
+ });
+ const seenA=new Set(),assignments=(raw.assignments||[]).map(a=>{
+  const aid=lmsText(a.id,46),points=Number(a.points);
+  if(!/^[a-z0-9-]{2,46}$/.test(aid)||seenA.has(aid)||!lmsText(a.title,120)||
+   !lmsText(a.prompt,3000)||!Number.isInteger(points)||points<1||points>1000)throw Error('Assignment fields or points are invalid.');
+  seenA.add(aid);
+  const dueDate=lmsText(a.dueDate,10);
+  if(dueDate&&!/^\d{4}-\d{2}-\d{2}$/.test(dueDate))throw Error('Due date must use YYYY-MM-DD.');
+  return {id:aid,title:lmsText(a.title,120),moduleId:lmsText(a.moduleId,46),
+   prompt:lmsText(a.prompt,3000),points,dueDate};
+ });
+ if(assignments.length>80)throw Error('Maximum 80 assignments.');
+ if(!Array.isArray(raw.announcements||[])||(raw.announcements||[]).length>80)throw Error('Maximum 80 announcements.');
+ const announcements=(raw.announcements||[]).map(a=>({
+  id:lmsSlug(a.id)||'news',title:lmsText(a.title,140),body:lmsText(a.body,3000),date:lmsText(a.date,10)
+ })).filter(x=>x.title&&x.body);
+ return {kind:LMS_KIND,version:1,id,title,subject,teacher:lmsText(raw.teacher,100)||'Teacher',
+  description:lmsText(raw.description,700),published:raw.published!==false,modules,assignments,announcements};
+}
+function lmsSeedCourses(){
+ return Object.fromEntries(LV_LMS_DEMO.courses.map(c=>{const v=lmsValidateCourse(c);return [v.id,v];}));
+}
+function lmsInitial(){
+ return {version:1,courses:lmsSeedCourses(),active:'student',learners:{
+  student:{name:'Student',enrolled:['BIO-M1'],done:{},cards:{},exams:{},submissions:{},practice:{}}}};
+}
+function lmsRestore(raw){
+ if(!raw||raw.version!==1||!raw.courses||typeof raw.courses!=='object'||!raw.learners||typeof raw.learners!=='object')return lmsInitial();
+ const data=lmsInitial(),courses={};
+ for(const item of Object.values(raw.courses).slice(0,80)){
+  try{const c=lmsValidateCourse(item);courses[c.id]=c;}catch{}
+ }
+ data.courses=Object.keys(courses).length?courses:data.courses;
+ const learners={};
+ for(const [id,v] of Object.entries(raw.learners).slice(0,16)){
+  if(!/^[a-z0-9-]{2,65}$/.test(id)||!v||typeof v!=='object')continue;
+  learners[id]={name:lmsText(v.name,40)||'Student',enrolled:Array.isArray(v.enrolled)?v.enrolled.filter(x=>courses[x]||data.courses[x]).slice(0,80):[],
+   done:v.done&&typeof v.done==='object'?v.done:{},cards:v.cards&&typeof v.cards==='object'?v.cards:{},
+   exams:v.exams&&typeof v.exams==='object'?v.exams:{},submissions:v.submissions&&typeof v.submissions==='object'?v.submissions:{},
+   practice:v.practice&&typeof v.practice==='object'?v.practice:{}};
+ }
+ data.learners=Object.keys(learners).length?learners:data.learners;
+ data.active=data.learners[raw.active]?raw.active:Object.keys(data.learners)[0];
+ return data;
+}
+function lmsLoad(){try{return lmsRestore(JSON.parse(localStorage.getItem(LMS_SAVE_KEY)));}catch{return lmsInitial();}}
+var lmsState=lmsLoad(),lmsFlashSession=null,lmsPracticeSession=null,lmsExamSession=null,lmsExamTimer=0;
+function lmsSave(){try{if(!trial)localStorage.setItem(LMS_SAVE_KEY,JSON.stringify(lmsState));}catch{notice('Learning Hub could not save locally. Export your content.');}}
+function lmsLearner(){return lmsState.learners[lmsState.active];}
+function lmsCourseData(id){return lmsState.courses[id];}
+function lmsModule(courseId,moduleId){return lmsCourseData(courseId)?.modules.find(m=>m.id===moduleId);}
+function lmsKey(courseId,moduleId){return courseId+':'+moduleId;}
+function lmsC(id,label,cls=''){return '<button type="button" class="lms-button '+cls+'" data-lms="'+id+'">'+esc(label)+'</button>';}
+function lmsHeader(title,subtitle,active='student'){
+ return '<div class="lms-banner"><div><span class="lms-eyebrow">LUMENVALE · LEARNING HUB</span><h2>'+esc(title)+'</h2><p>'+esc(subtitle)+'</p></div>'+
+ '<div class="lms-banner-icon" aria-hidden="true">✦</div></div>'+
+ '<div class="lms-nav">'+lmsC('home','My Dashboard',active==='student'?'active':'')+
+ lmsC('teacher','Teacher Preview',active==='teacher'?'active':'')+lmsC('import','Import JSON')+
+ lmsC('pathways','Academic Pathways')+'</div>';
+}
+function lmsRender(title,subtitle,html,area='student'){
+ cityPanel('School / Learning Hub',title,lmsHeader(title,subtitle,area)+html+
+ '<p class="lms-disclaimer">Local learning preview · Scores and feedback are saved only in this browser, not in a verified school gradebook.</p>');
+}
+function lmsProgress(c,student=lmsLearner()){
+ const total=c.modules.length,done=c.modules.filter(m=>student.done[lmsKey(c.id,m.id)]).length;
+ return {total,done,percent:total?Math.round(100*done/total):0};
+}
+function lmsHome(){
+ const student=lmsLearner(),all=Object.values(lmsState.courses).filter(c=>c.published);
+ const mine=all.filter(c=>student.enrolled.includes(c.id));
+ const assignments=mine.reduce((n,c)=>n+c.assignments.filter(a=>!student.submissions[lmsKey(c.id,a.id)]).length,0);
+ const cards=all.map(c=>{
+  const enrolled=student.enrolled.includes(c.id),p=lmsProgress(c,student);
+  return '<button class="lms-course-card" data-lms="course" data-id="'+esc(c.id)+'">'+
+   '<span class="lms-course-tag">'+esc(c.subject)+' · '+esc(c.id)+'</span>'+
+   '<strong>'+esc(c.title)+'</strong><span class="lms-muted">'+esc(c.description||'Teacher-created course content')+'</span>'+
+   '<span class="lms-progress"><i style="width:'+p.percent+'%"></i></span>'+
+   '<span class="lms-course-meta">'+(enrolled?p.done+' / '+p.total+' modules completed':'Open course · Enroll')+
+   ' <b>→</b></span></button>';
+ }).join('');
+ const picker=Object.entries(lmsState.learners).map(([key,s])=>'<option value="'+esc(key)+'" '+(key===lmsState.active?'selected':'')+'>'+esc(s.name)+'</option>').join('');
+ lmsRender('My Learning Dashboard','Lessons, assignments, exams, and teacher announcements in one place.',
+  '<div class="lms-profile"><label>Local student profile <select id="lms-student-picker">'+picker+'</select></label>'+
+  lmsC('new-student','Add student demo profile')+'</div>'+
+  '<div class="lms-stat-grid"><div><b>'+mine.length+'</b><small>My courses</small></div><div><b>'+assignments+'</b><small>Assignments to submit</small></div>'+
+  '<div><b>'+mine.reduce((n,c)=>n+c.modules.length,0)+'</b><small>Available modules</small></div></div>'+
+  '<div class="lms-section-title"><h3>Available courses</h3><span>'+all.length+' published</span></div>'+
+  '<div class="lms-course-grid">'+(cards||'<p>No courses are published in this local preview.</p>')+'</div>'+
+  '<div class="lms-actions">'+lmsC('import','Import teacher JSON')+
+  '<a class="lms-button lms-link" href="'+LMS_PORTAL+'" target="_blank" rel="noopener noreferrer">Verified Teacher Studio ↗</a></div>');
+}
+function lmsCourse(id,section='modules'){
+ const c=lmsCourseData(id),s=lmsLearner();if(!c||!c.published)return lmsHome();
+ const enrolled=s.enrolled.includes(id),progress=lmsProgress(c,s);
+ const nav=['modules','assignments','announcements','grades'].map(x=>'<button data-lms="course" data-id="'+esc(id)+'" data-section="'+x+'" class="lms-tab '+(section===x?'active':'')+'">'+x[0].toUpperCase()+x.slice(1)+'</button>').join('');
+ let html='<div class="lms-course-overview"><span class="lms-course-tag">'+esc(c.id)+' · '+esc(c.subject)+'</span>'+
+  '<p>'+esc(c.description)+'</p><small>Teacher: '+esc(c.teacher)+' · '+progress.done+'/'+progress.total+' completed modules</small>'+
+  '<span class="lms-progress"><i style="width:'+progress.percent+'%"></i></span>'+
+  (!enrolled?'<button class="lms-button primary" data-lms="enroll" data-id="'+esc(id)+'">Enroll in course</button>':'<span class="lms-completed">✓ Enrolled</span>')+'</div>';
+ if(enrolled){
+  html+='<nav class="lms-tabs">'+nav+'</nav>';
+  if(section==='modules')html+='<div class="lms-module-list">'+c.modules.map((m,i)=>{
+    const attempts=s.exams[lmsKey(id,m.id)]||[],best=attempts.length?Math.max(...attempts.map(x=>x.score)):null;
+    return '<div class="lms-module"><div class="lms-module-num">'+String(i+1).padStart(2,'0')+'</div>'+
+    '<div class="lms-module-body"><strong>'+esc(m.title)+'</strong><small>'+m.flashcards.length+' flashcards · '+m.practice.length+' practice questions · '+
+    m.exam.questions.length+' exam questions</small><div class="lms-module-actions">'+
+    '<button data-lms="lesson" data-id="'+esc(id)+'" data-module="'+esc(m.id)+'">Open lesson</button>'+
+    (m.flashcards.length?'<button data-lms="flash" data-id="'+esc(id)+'" data-module="'+esc(m.id)+'">Flashcards</button>':'')+
+    (m.practice.length?'<button data-lms="practice" data-id="'+esc(id)+'" data-module="'+esc(m.id)+'">Practice</button>':'')+
+    (m.exam.questions.length?'<button data-lms="exam" data-id="'+esc(id)+'" data-module="'+esc(m.id)+'">Exam'+(best!==null?' · '+best+'%':'')+'</button>':'')+'</div></div>'+
+    '<span class="lms-check">'+(s.done[lmsKey(id,m.id)]?'✓':'○')+'</span></div>';
+   }).join('')+'</div>';
+  if(section==='assignments')html+='<div class="lms-module-list">'+(c.assignments.map(a=>{
+   const sub=s.submissions[lmsKey(id,a.id)];
+   return '<div class="lms-assignment"><strong>'+esc(a.title)+'</strong><small>'+a.points+' points'+(a.dueDate?' · Due '+esc(a.dueDate):'')+'</small>'+
+    '<p>'+esc(a.prompt)+'</p><span class="lms-pill">'+(sub?sub.points==null?'Submitted · Awaiting review':'Graded · '+sub.points+'/'+a.points:'Not submitted')+'</span>'+
+    '<button class="lms-button" data-lms="assignment" data-id="'+esc(id)+'" data-assignment="'+esc(a.id)+'">'+(sub?'View submission':'Write submission')+'</button></div>';
+   }).join('')||'<p>No assignments published yet.</p>')+'</div>';
+  if(section==='announcements')html+='<div class="lms-announcements">'+(c.announcements.slice().reverse().map(a=>
+   '<article><small>'+esc(a.date||'Announcement')+'</small><strong>'+esc(a.title)+'</strong><p>'+esc(a.body)+'</p></article>'
+   ).join('')||'<p>No announcements yet.</p>')+'</div>';
+  if(section==='grades')html+=lmsGradebookHTML(c,s);
+ }
+ lmsRender(c.title,'Course · '+c.subject,html+'<div class="lms-actions">'+lmsC('home','All courses')+'</div>');
+}
+function lmsLesson(id,mid){
+ const c=lmsCourseData(id),m=lmsModule(id,mid);if(!c||!m)return lmsHome();
+ const done=lmsLearner().done[lmsKey(id,mid)];
+ lmsRender(m.lesson.title,c.title+' / '+m.title,
+  '<div class="lms-lesson"><div class="lms-objectives"><b>Learning objectives</b><ul>'+
+  m.objectives.map(o=>'<li>'+esc(o)+'</li>').join('')+'</ul></div>'+
+  '<article>'+esc(m.lesson.content)+'</article></div>'+
+  '<div class="lms-actions"><button data-lms="mark" data-id="'+esc(id)+'" data-module="'+esc(mid)+'" class="lms-button primary">'+(done?'✓ Lesson completed':'Mark lesson completed')+'</button>'+
+  (m.flashcards.length?'<button data-lms="flash" data-id="'+esc(id)+'" data-module="'+esc(mid)+'" class="lms-button">Study flashcards</button>':'')+
+  (m.practice.length?'<button data-lms="practice" data-id="'+esc(id)+'" data-module="'+esc(mid)+'" class="lms-button">Practice questions</button>':'')+
+  '<button data-lms="course" data-id="'+esc(id)+'" class="lms-button">Back to course</button></div>');
+}
+function lmsFlash(id,mid,index=0,flipped=false){
+ const m=lmsModule(id,mid);if(!m?.flashcards.length)return lmsCourse(id);
+ const card=m.flashcards[Math.max(0,Math.min(index,m.flashcards.length-1))],idx=m.flashcards.indexOf(card);
+ lmsFlashSession={id,mid,index:idx,flipped};
+ lmsRender('Flashcards',lmsCourseData(id).title+' · '+m.title,
+ '<button type="button" class="lms-flashcard" data-lms="flip"><small>Card '+(idx+1)+' / '+m.flashcards.length+' · Click to flip</small>'+
+ '<strong>'+esc(flipped?card.back:card.front)+'</strong><span>'+(flipped?'Answer':'Question')+'</span></button>'+
+ '<div class="lms-actions">'+lmsC('previous-card','← Previous')+lmsC('next-card','Reviewed / Next →')+
+ '<button data-lms="course" data-id="'+esc(id)+'" class="lms-button">Back to course</button></div>');
+}
+function lmsPractice(id,mid,index=0,reveal=false){
+ const m=lmsModule(id,mid);if(!m?.practice.length)return lmsCourse(id);
+ const q=m.practice[index];if(!q)return lmsCourse(id);
+ lmsPracticeSession={id,mid,index,reveal};
+ const feedback=reveal?'<div class="lms-feedback"><b>'+esc(q.explanation||'Review the lesson before continuing.')+'</b></div>':'';
+ lmsRender('Practice questions',lmsCourseData(id).title+' · '+m.title,
+ '<p class="lms-muted">Practice is ungraded. You can try again until you understand each question.</p>'+
+ '<div class="lms-question"><small>Question '+(index+1)+' / '+m.practice.length+'</small><h3>'+esc(q.prompt)+'</h3>'+
+ q.choices.map((v,i)=>'<button class="lms-choice '+(reveal&&i===q.correctIndex?'correct':'')+'" data-lms="practice-answer" data-answer="'+i+'" '+(reveal?'disabled':'')+'><b>'+String.fromCharCode(65+i)+'</b>'+esc(v)+'</button>').join('')+'</div>'+feedback+
+ '<div class="lms-actions">'+(reveal?lmsC('practice-next',index+1<m.practice.length?'Next question':'Finish practice','primary'):'')+
+ '<button data-lms="lesson" data-id="'+esc(id)+'" data-module="'+esc(mid)+'" class="lms-button">Back to reading</button></div>');
+}
+function lmsExamStart(id,mid){
+ const m=lmsModule(id,mid),learner=lmsLearner(),c=lmsCourseData(id);if(!c||!m?.exam.questions.length)return lmsCourse(id);
+ const key=lmsKey(id,mid),attempts=learner.exams[key]||[];
+ if(attempts.length>=m.exam.attemptLimit){notice('Exam attempt limit reached in this local practice.');return lmsCourse(id);}
+ if(lmsExamTimer)clearInterval(lmsExamTimer);
+ lmsExamSession={id,mid,index:0,answers:[],started:Date.now(),deadline:Date.now()+m.exam.timeLimitMinutes*60000};
+ lmsExamTimer=setInterval(()=>{
+  if(!lmsExamSession){clearInterval(lmsExamTimer);lmsExamTimer=0;return;}
+  const remaining=Math.max(0,Math.ceil((lmsExamSession.deadline-Date.now())/1000)),node=document.getElementById('lms-time-left');
+  if(node)node.textContent=Math.floor(remaining/60)+':'+String(remaining%60).padStart(2,'0');
+  if(remaining<=0)lmsExamFinish(true);
+ },1000);
+ lmsExamScreen();
+}
+function lmsExamScreen(){
+ const s=lmsExamSession;if(!s)return;
+ if(Date.now()>=s.deadline)return lmsExamFinish(true);
+ const c=lmsCourseData(s.id),m=lmsModule(s.id,s.mid),q=m.exam.questions[s.index];
+ const left=Math.max(0,Math.ceil((s.deadline-Date.now())/1000));
+ lmsRender(m.exam.title,c.title+' · '+m.title,
+ '<div class="lms-exam-top"><span>Question '+(s.index+1)+' / '+m.exam.questions.length+'</span><span>Time left: <b id="lms-time-left">'+Math.floor(left/60)+':'+String(left%60).padStart(2,'0')+'</b></span></div>'+
+ '<p class="lms-muted">Answers are final. This is a timed local practice exam, not a secure proctored assessment.</p>'+
+ '<div class="lms-question"><h3>'+esc(q.prompt)+'</h3>'+
+ q.choices.map((v,i)=>'<button class="lms-choice" data-lms="exam-answer" data-answer="'+i+'"><b>'+String.fromCharCode(65+i)+'</b>'+esc(v)+'</button>').join('')+'</div>'+
+ '<p class="lms-disclaimer">Closing the screen does not pause the timer.</p>');
+}
+function lmsExamAnswer(answer){
+ const s=lmsExamSession;if(!s)return;
+ if(Date.now()>=s.deadline)return lmsExamFinish(true);
+ const m=lmsModule(s.id,s.mid),q=m?.exam.questions[s.index],num=Number(answer);
+ if(!q||!Number.isInteger(num)||num<0||num>=q.choices.length)return;
+ s.answers.push(num);s.index++;
+ if(s.index<m.exam.questions.length)return lmsExamScreen();
+ lmsExamFinish(false);
+}
+function lmsExamFinish(expired){
+ const s=lmsExamSession;if(!s)return;
+ lmsExamSession=null;if(lmsExamTimer)clearInterval(lmsExamTimer);lmsExamTimer=0;
+ const m=lmsModule(s.id,s.mid),questions=m.exam.questions;
+ const correct=questions.reduce((n,q,i)=>n+Number(s.answers[i]===q.correctIndex),0);
+ const score=Math.round(correct/questions.length*100),key=lmsKey(s.id,s.mid),student=lmsLearner();
+ if(!Array.isArray(student.exams[key]))student.exams[key]=[];
+ student.exams[key].push({score,correct,total:questions.length,expired,date:new Date().toISOString()});
+ lmsSave();
+ lmsRender('Exam result',lmsCourseData(s.id).title+' · '+m.title,
+ '<div class="lms-result"><strong>'+score+'%</strong><span>'+correct+' of '+questions.length+' correct'+(expired?' · Time expired':'')+'</span></div>'+
+ '<p>Your local practice score was saved. You can review the lesson and use any remaining attempts to improve.</p>'+
+ '<div class="lms-actions"><button class="lms-button primary" data-lms="course" data-id="'+esc(s.id)+'" data-section="grades">Gradebook</button>'+
+ '<button class="lms-button" data-lms="lesson" data-id="'+esc(s.id)+'" data-module="'+esc(s.mid)+'">Review lesson</button></div>');
+}
+function lmsAssignment(id,assignmentId){
+ const c=lmsCourseData(id),a=c?.assignments.find(x=>x.id===assignmentId);if(!a)return lmsCourse(id);
+ const learner=lmsLearner(),key=lmsKey(id,assignmentId),sub=learner.submissions[key];
+ lmsRender(a.title,c.title+' · Written assignment · '+a.points+' points',
+ '<div class="lms-assignment"><p>'+esc(a.prompt)+'</p><small>'+(a.dueDate?'Due '+esc(a.dueDate):'No due date')+'</small></div>'+
+ (sub?.points!=null?'<div class="lms-feedback"><b>Teacher score: '+sub.points+' / '+a.points+'</b><p>'+esc(sub.feedback||'No additional comments')+'</p></div>':
+ '<form id="lms-submission-form" class="lms-form"><input type="hidden" name="course" value="'+esc(id)+'">'+
+ '<input type="hidden" name="assignment" value="'+esc(assignmentId)+'"><label>Your response<textarea name="answer" required minlength="15" maxlength="5000" rows="8" placeholder="Write your answer here...">'+esc(sub?.answer||'')+'</textarea></label>'+
+ '<button class="lms-button primary" type="submit">'+(sub?'Update submission':'Submit assignment')+'</button></form>')+
+ '<div class="lms-actions"><button class="lms-button" data-lms="course" data-id="'+esc(id)+'" data-section="assignments">Back to assignments</button></div>');
+}
+function lmsGradebookHTML(c,student){
+ const rows=c.modules.flatMap(m=>(student.exams[lmsKey(c.id,m.id)]||[]).length?
+ ['<tr><td>'+esc(m.title)+' · Exam</td><td>'+Math.max(...student.exams[lmsKey(c.id,m.id)].map(x=>x.score))+'%</td><td>Auto-graded practice</td></tr>']:[]);
+ rows.push(...c.assignments.map(a=>{
+  const sub=student.submissions[lmsKey(c.id,a.id)];
+  return '<tr><td>'+esc(a.title)+'</td><td>'+(sub?.points!=null?sub.points+' / '+a.points:'—')+
+  '</td><td>'+(sub?.points!=null?'Teacher-reviewed (local)':sub?'Submitted':'Not submitted')+'</td></tr>';
+ }));
+ return '<div class="lms-table-scroll"><table class="lms-table"><thead><tr><th>Activity</th><th>Score</th><th>Status</th></tr></thead><tbody>'+
+ (rows.join('')||'<tr><td colspan="3">No activity yet.</td></tr>')+'</tbody></table></div>'+
+ '<p class="lms-disclaimer">This gradebook is a local game practice record; it does not affect your Academic Pathways transcript or an actual school grade.</p>';
+}
+function lmsTeacher(){
+ const courses=Object.values(lmsState.courses);
+ const pending=Object.entries(lmsState.learners).flatMap(([studentId,s])=>Object.entries(s.submissions||{})
+  .filter(([,v])=>v&&v.points==null).map(([key,v])=>({studentId,student:s.name,key,sub:v})));
+ const rows=courses.map(c=>'<div class="lms-teacher-course"><div><b>'+esc(c.title)+'</b><small>'+esc(c.id)+' · '+c.modules.length+' modules · '+c.assignments.length+' assignments · '+(c.published?'Published locally':'Draft')+'</small></div>'+
+ '<div class="lms-actions"><button class="lms-button" data-lms="teacher-course" data-id="'+esc(c.id)+'">Edit content</button>'+
+ '<button class="lms-button" data-lms="toggle-publish" data-id="'+esc(c.id)+'">'+(c.published?'Unpublish':'Publish')+'</button>'+
+ '<button class="lms-button" data-lms="export-course" data-id="'+esc(c.id)+'">Export JSON</button></div></div>').join('');
+ lmsRender('Teacher Workspace','Build lessons, assignments, exams, and announcements in the local preview.',
+ '<div class="lms-warning"><strong>Local teacher preview — not an authenticated account.</strong><p>Anyone with access to this browser can use these editing tools. For verified teacher accounts and shareable academic courses, use the secure Teacher Studio.</p>'+
+ '<a href="'+LMS_PORTAL+'" target="_blank" rel="noopener noreferrer" class="lms-button primary lms-link">Open verified Teacher Studio ↗</a></div>'+
+ '<div class="lms-stat-grid"><div><b>'+courses.length+'</b><small>Courses</small></div><div><b>'+Object.keys(lmsState.learners).length+'</b><small>Local student profiles</small></div>'+
+ '<div><b>'+pending.length+'</b><small>Submissions to grade</small></div></div>'+
+ '<div class="lms-section-title"><h3>Course library</h3><span>Teacher tools</span></div>'+
+ '<div class="lms-teacher-courses">'+rows+'</div>'+
+ '<div class="lms-actions">'+lmsC('new-course','+ Create course','primary')+lmsC('import','Import JSON')+lmsC('export-all','Export all courses')+lmsC('prompt','JSON prompt template')+'</div>'+
+ '<div class="lms-section-title"><h3>Assignments awaiting feedback</h3></div>'+
+ (pending.length?pending.map(p=>{
+  const [id,aid]=p.key.split(':'),c=lmsCourseData(id),a=c?.assignments.find(x=>x.id===aid);
+  return '<div class="lms-assignment"><b>'+esc(p.student)+' — '+esc(a?.title||aid)+'</b><p>'+esc(p.sub.answer)+'</p>'+
+  '<form class="lms-form lms-grade-form"><input type="hidden" name="student" value="'+esc(p.studentId)+'">'+
+  '<input type="hidden" name="course" value="'+esc(id)+'"><input type="hidden" name="assignment" value="'+esc(aid)+'">'+
+  '<label>Score / '+(a?.points||100)+' <input name="score" type="number" min="0" max="'+(a?.points||100)+'" step="1" required></label>'+
+  '<label>Feedback <textarea name="feedback" maxlength="1200" placeholder="Explain the score and how to improve"></textarea></label>'+
+  '<button class="lms-button primary">Save feedback</button></form></div>';
+ }).join(''):'<p class="lms-muted">No ungraded local submissions.</p>'),'teacher');
+}
+function lmsTeacherCourse(id){
+ const c=lmsCourseData(id);if(!c)return lmsTeacher();
+ const moduleRows=c.modules.map(m=>'<div class="lms-teacher-course"><div><b>'+esc(m.title)+'</b><small>'+m.flashcards.length+' flashcards · '+m.practice.length+' practice questions · '+m.exam.questions.length+' exam questions</small></div></div>').join('');
+ lmsRender('Edit '+c.title,'Teacher preview · '+c.id,
+ '<div class="lms-section-title"><h3>Modules</h3><span>'+c.modules.length+'</span></div>'+moduleRows+
+ '<div class="lms-actions"><button data-lms="new-module" data-id="'+esc(id)+'" class="lms-button primary">+ Add lesson and exam</button>'+
+ '<button data-lms="new-assignment" data-id="'+esc(id)+'" class="lms-button">+ Add assignment</button>'+
+ '<button data-lms="new-announcement" data-id="'+esc(id)+'" class="lms-button">+ Announcement</button>'+
+ '<button data-lms="export-academic" data-id="'+esc(id)+'" class="lms-button">Export for Verified Teacher Studio</button>'+
+ '<button data-lms="teacher" class="lms-button">Teacher dashboard</button></div>'+
+ '<p class="lms-muted">Changes to a published course are immediately available to local students. Download JSON to move content between devices.</p>','teacher');
+}
+function lmsForm(title,courseId,form){
+ lmsRender(title,courseId?'Teacher preview · '+lmsCourseData(courseId)?.title:'Teacher preview · Local draft editor',
+ form+'<div class="lms-actions"><button data-lms="'+(courseId?'teacher-course':'teacher')+'" data-id="'+esc(courseId||'')+'" class="lms-button">Cancel</button></div>','teacher');
+}
+function lmsNewCourse(){
+ lmsForm('Create a course','',
+ '<form class="lms-form" id="lms-course-form"><label>Course code<input name="id" required maxlength="31" placeholder="BIO-M1 or MY-SCIENCE"></label>'+
+ '<label>Course title<input name="title" required maxlength="120" placeholder="Biology Foundations"></label>'+
+ '<label>Subject<input name="subject" required maxlength="70" placeholder="Biology"></label>'+
+ '<label>Teacher display name<input name="teacher" maxlength="100" value="LumenVale Teacher"></label>'+
+ '<label>Description<textarea name="description" maxlength="700" rows="3" placeholder="What will students learn?"></textarea></label>'+
+ '<button type="submit" class="lms-button primary">Create course</button></form>');
+}
+function lmsNewModule(id){
+ const c=lmsCourseData(id);if(!c)return lmsTeacher();
+ lmsForm('Add module',id,
+ '<form class="lms-form" id="lms-module-form"><input type="hidden" name="course" value="'+esc(id)+'">'+
+ '<label>Module title<input name="title" required maxlength="120" placeholder="Cell Structure and Function"></label>'+
+ '<label>Lesson reading <textarea name="content" required minlength="30" maxlength="12000" rows="9" placeholder="Write the student lesson (35+ words recommended)..."></textarea></label>'+
+ '<label>Learning objectives (one per line)<textarea name="objectives" rows="3" placeholder="Identify the cell membrane&#10;Compare plant and animal cells"></textarea></label>'+
+ '<label>Flashcards: term | definition (one per line)<textarea name="flashcards" rows="4" placeholder="Cell | Basic unit of life&#10;Nucleus | Stores most of the DNA"></textarea></label>'+
+ '<label>Practice questions: prompt | choice A | choice B | choice C | correct index<textarea name="practice" rows="4" placeholder="Which structure stores DNA? | Nucleus | Membrane | Wall | 0"></textarea></label>'+
+ '<label>Exam questions: prompt | choice A | choice B | choice C | correct index<textarea name="exam" rows="5" placeholder="What is a cell? | A tissue | Unit of life | Organ | 1"></textarea></label>'+
+ '<div class="lms-two"><label>Exam time (minutes)<input name="minutes" type="number" min="1" max="90" value="15"></label>'+
+ '<label>Max attempts<input name="attempts" type="number" min="1" max="5" value="3"></label></div>'+
+ '<button class="lms-button primary">Publish module locally</button></form>');
+}
+function lmsNewAssignment(id){
+ lmsForm('Add assignment',id,
+ '<form class="lms-form" id="lms-assignment-form"><input name="course" type="hidden" value="'+esc(id)+'">'+
+ '<label>Assignment title<input name="title" required maxlength="120"></label>'+
+ '<label>Instructions<textarea name="prompt" required maxlength="3000" rows="6" placeholder="Explain what students should submit..."></textarea></label>'+
+ '<div class="lms-two"><label>Total points<input name="points" type="number" min="1" max="1000" value="100" required></label>'+
+ '<label>Due date (optional)<input name="dueDate" type="date"></label></div>'+
+ '<button class="lms-button primary">Create assignment</button></form>');
+}
+function lmsNewAnnouncement(id){
+ lmsForm('New announcement',id,
+ '<form class="lms-form" id="lms-announcement-form"><input name="course" type="hidden" value="'+esc(id)+'">'+
+ '<label>Title<input name="title" required maxlength="140"></label>'+
+ '<label>Message<textarea name="body" required maxlength="3000" rows="6"></textarea></label>'+
+ '<button class="lms-button primary">Post announcement</button></form>');
+}
+function lmsParsePairs(raw,label,max){
+ const value=lmsText(raw,12000);if(!value)return[];
+ const lines=value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ if(lines.length>max)throw Error(label+' has too many entries.');
+ return lines.map((line,i)=>{
+  const parts=line.split('|').map(x=>x.trim());
+  if(label==='flashcards'){
+   if(parts.length!==2||!parts[0]||!parts[1])throw Error('Flashcard line '+(i+1)+' needs term | definition.');
+   return {front:parts[0],back:parts[1]};
+  }
+  const correctIndex=Number(parts.at(-1));
+  const q={prompt:parts[0],choices:parts.slice(1,-1),correctIndex};
+  return lmsQuestions([q],label,1)[0];
+ });
+}
+function lmsDownload(filename,value){
+ const blob=new Blob([JSON.stringify(value,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function lmsAcademicPack(c){
+ const catalog=LV_DEFAULT_ACADEMICS.courses.find(x=>x.id===c.id&&x.kind==='academic');
+ if(!catalog)throw Error('Use a course ID from Academic Pathways to publish through Verified Teacher Studio.');
+ const pack={kind:'lumenvale.academic-pack',version:1,courseId:c.id,title:c.title,author:c.teacher,
+  lessons:c.modules.map(m=>({id:m.id,title:m.lesson.title,reading:m.lesson.content,objectives:m.objectives,
+   flashcards:m.flashcards,practice:m.practice.map(q=>({prompt:q.prompt,choices:q.choices,correctIndex:q.correctIndex}))})),
+  exam:{title:c.title+' · Final Examination',
+   questions:c.modules.flatMap(m=>m.exam.questions).slice(0,40).map(q=>({prompt:q.prompt,choices:q.choices,correctIndex:q.correctIndex}))},
+  gradePolicy:{passPercent:70}};
+ return pathwayValidatePack(pack);
+}
+function lmsImportPanel(){
+ lmsRender('Import teacher content','Load a teacher-created Learning Hub JSON pack or approved academic course code.',
+ '<div class="lms-warning"><b>Import is local.</b><p>JSON is checked and saved in this browser. Approved teacher publication codes use the separate Academic Pathways importer.</p></div>'+
+ '<div class="lms-form"><label>Learning Hub JSON file (.json, up to 1 MB)<input id="lms-file" type="file" accept=".json,application/json"></label></div>'+
+ '<div class="lms-actions">'+lmsC('template','Download sample JSON')+lmsC('pathways-import','Import verified teacher publication code')+
+ lmsC('home','Back to dashboard')+'</div>');
+}
+function lmsImportObject(raw){
+ const items=raw?.kind==='lumenvale.lms-bundle'&&raw.version===1?raw.courses:raw?.kind===LMS_KIND?[raw]:null;
+ if(!Array.isArray(items)||!items.length||items.length>30)throw Error('Expected a lumenvale.lms-course or lms-bundle, version 1.');
+ const courses=items.map(lmsValidateCourse),ids=new Set(courses.map(c=>c.id));
+ if(ids.size!==courses.length)throw Error('Duplicate course IDs in file.');
+ const next={...lmsState.courses};
+ for(const c of courses)next[c.id]=c;
+ if(Object.keys(next).length>80)throw Error('Maximum 80 local courses.');
+ lmsState.courses=next;lmsSave();return courses.length;
+}
+function lmsAddLearner(name){
+ const label=lmsText(name,40);if(label.length<2)throw Error('Enter a student name (at least 2 characters).');
+ const id='learner-'+Date.now().toString(36)+'-'+Math.floor(Math.random()*999).toString(36);
+ if(Object.keys(lmsState.learners).length>=16)throw Error('Maximum 16 local demo learners.');
+ lmsState.learners[id]={name:label,enrolled:[],done:{},cards:{},exams:{},submissions:{},practice:{}};
+ lmsState.active=id;lmsSave();lmsHome();
+}
+function lmsNewStudent(){
+ lmsRender('New local student','This creates a demo profile in this browser; it is not a secure student account.',
+ '<form class="lms-form" id="lms-profile-form"><label>Student nickname<input name="name" required minlength="2" maxlength="40" placeholder="Student 2"></label>'+
+ '<button class="lms-button primary">Create local profile</button></form>'+lmsC('home','Cancel'));
+}
+function lmsTeacherPrompt(){
+ const example='Create original LumenVale classroom lessons, flashcards, practice questions, module exams, assignments and announcements. Output VALID JSON only. Use exactly the lumenvale.lms-course version 1 format in the downloaded example. Every question has prompt, choices (2–5 strings), and correctIndex (zero-based). Include accurate educational explanations and objectives. Do not include student personal information. A teacher must verify all answers before publishing.';
+ lmsRender('JSON Course Builder','Teacher content workflow',
+ '<p>Download a sample course and adapt it, or use the prompt below to create a draft with an AI assistant. Review all facts and answer keys before using it.</p>'+
+ '<textarea readonly class="lms-prompt" rows="7">'+esc(example)+'</textarea>'+
+ '<div class="lms-actions">'+lmsC('copy-prompt','Copy prompt')+lmsC('template','Download example JSON')+lmsC('teacher','Back')+'</div>','teacher');
+}
+function lmsInit(){
+ document.addEventListener('click',event=>{
+  const el=event.target.closest('[data-lms]');if(!el)return;
+  const a=el.dataset.lms,id=el.dataset.id,mid=el.dataset.module;
+  if(a==='home')lmsHome();
+  else if(a==='teacher')lmsTeacher();
+  else if(a==='pathways')pathwayHome();
+  else if(a==='pathways-import')pathwayImportPanel();
+  else if(a==='import')lmsImportPanel();
+  else if(a==='course')lmsCourse(id,el.dataset.section||'modules');
+  else if(a==='enroll'){
+   const c=lmsCourseData(id);if(c?.published&&!lmsLearner().enrolled.includes(id)){lmsLearner().enrolled.push(id);lmsSave();}
+   lmsCourse(id);
+  }else if(a==='lesson')lmsLesson(id,mid);
+  else if(a==='mark'){
+   lmsLearner().done[lmsKey(id,mid)]=true;lmsSave();lmsLesson(id,mid);
+  }else if(a==='flash')lmsFlash(id,mid);
+  else if(a==='flip'&&lmsFlashSession){
+   const s=lmsFlashSession;lmsFlash(s.id,s.mid,s.index,!s.flipped);
+  }else if((a==='previous-card'||a==='next-card')&&lmsFlashSession){
+   const s=lmsFlashSession,m=lmsModule(s.id,s.mid);
+   if(a==='next-card'){const key=lmsKey(s.id,s.mid);lmsLearner().cards[key]=(lmsLearner().cards[key]||0)+1;lmsSave();}
+   lmsFlash(s.id,s.mid,a==='previous-card'?Math.max(0,s.index-1):Math.min(m.flashcards.length-1,s.index+1));
+  }else if(a==='practice')lmsPractice(id,mid);
+  else if(a==='practice-answer'&&lmsPracticeSession&&!lmsPracticeSession.reveal){
+   const s=lmsPracticeSession,q=lmsModule(s.id,s.mid).practice[s.index];
+   if(Number(el.dataset.answer)===q.correctIndex)lmsPractice(s.id,s.mid,s.index,true);
+   else notice('Not yet. Review the lesson and try again.');
+  }else if(a==='practice-next'&&lmsPracticeSession){
+   const s=lmsPracticeSession,m=lmsModule(s.id,s.mid);
+   if(s.index+1<m.practice.length)lmsPractice(s.id,s.mid,s.index+1);
+   else{lmsLearner().practice[lmsKey(s.id,s.mid)]=true;lmsSave();lmsCourse(s.id);}
+  }else if(a==='exam')lmsExamStart(id,mid);
+  else if(a==='exam-answer')lmsExamAnswer(el.dataset.answer);
+  else if(a==='assignment')lmsAssignment(id,el.dataset.assignment);
+  else if(a==='teacher-course')lmsTeacherCourse(id);
+  else if(a==='toggle-publish'){
+   const c=lmsCourseData(id);if(c){c.published=!c.published;lmsSave();lmsTeacher();}
+  }else if(a==='new-course')lmsNewCourse();
+  else if(a==='new-module')lmsNewModule(id);
+  else if(a==='new-assignment')lmsNewAssignment(id);
+  else if(a==='new-announcement')lmsNewAnnouncement(id);
+  else if(a==='export-all')lmsDownload('lumenvale-classroom-courses.json',{kind:'lumenvale.lms-bundle',version:1,courses:Object.values(lmsState.courses)});
+  else if(a==='export-course'){
+   const c=lmsCourseData(id);if(c)lmsDownload(c.id+'-lms-course.json',c);
+  }else if(a==='export-academic'){
+   try{const pack=lmsAcademicPack(lmsCourseData(id));lmsDownload(id+'-academic-pack.json',pack);notice('Academic pack ready for the verified teacher portal.');}
+   catch(e){notice('Cannot export: '+e.message);}
+  }else if(a==='new-student')lmsNewStudent();
+  else if(a==='template')lmsDownload('lumenvale-lms-example.json',LV_LMS_DEMO);
+  else if(a==='prompt')lmsTeacherPrompt();
+  else if(a==='copy-prompt'){
+   const t=document.querySelector('.lms-prompt')?.value;
+   if(t)navigator.clipboard?.writeText(t).then(()=>notice('Prompt copied.')).catch(()=>notice('Select the text and copy it manually.'));
+  }
+ });
+ document.addEventListener('change',async event=>{
+  if(event.target.id==='lms-student-picker'){
+   const id=event.target.value;if(lmsState.learners[id]){lmsState.active=id;lmsSave();lmsHome();}
+  }else if(event.target.id==='lms-file'){
+   const file=event.target.files?.[0];if(!file)return;
+   try{if(file.size<2||file.size>1024*1024)throw Error('JSON file must be under 1 MB.');
+    const count=lmsImportObject(JSON.parse(await file.text()));notice(count+' teacher-created course(s) imported.');lmsHome();}
+   catch(e){notice('Import failed: '+e.message);}
+  }
+ });
+ document.addEventListener('submit',event=>{
+  const form=event.target,id=form.id;
+  if(!['lms-course-form','lms-module-form','lms-assignment-form','lms-announcement-form',
+   'lms-profile-form','lms-submission-form'].includes(id)&&!form.matches('.lms-grade-form'))return;
+  event.preventDefault();const v=new FormData(form);
+  try{
+   if(id==='lms-profile-form'){lmsAddLearner(v.get('name'));return;}
+   if(id==='lms-course-form'){
+    const code=lmsText(v.get('id'),32).toUpperCase();
+    if(lmsState.courses[code])throw Error('Course code already exists.');
+    const c=lmsValidateCourse({kind:LMS_KIND,version:1,id:code,title:v.get('title'),subject:v.get('subject'),
+     teacher:v.get('teacher'),description:v.get('description'),published:false,modules:[],assignments:[],announcements:[]});
+    lmsState.courses[c.id]=c;lmsSave();lmsTeacherCourse(c.id);return;
+   }
+   if(id==='lms-module-form'){
+    const cid=lmsText(v.get('course'),32),c=lmsCourseData(cid);
+    if(!c)throw Error('Course not found.');
+    const title=lmsText(v.get('title'),120),base=lmsSlug(title);let mid=base,n=2;
+    while(c.modules.some(m=>m.id===mid)){mid=base+'-'+n++;}
+    const qs=lmsParsePairs(v.get('exam'),'Exam',40);
+    const m={id:mid,title,objectives:lmsText(v.get('objectives'),1500).split(/\r?\n/).filter(Boolean),
+     lesson:{title,content:v.get('content')},flashcards:lmsParsePairs(v.get('flashcards'),'flashcards',60),
+     practice:lmsParsePairs(v.get('practice'),'Practice',25),
+     exam:{title:title+' Exam',questions:qs,timeLimitMinutes:Number(v.get('minutes')),attemptLimit:Number(v.get('attempts'))}};
+    const changed=lmsValidateCourse({...c,modules:[...c.modules,m]});
+    lmsState.courses[cid]=changed;lmsSave();lmsTeacherCourse(cid);return;
+   }
+   if(id==='lms-assignment-form'){
+    const cid=lmsText(v.get('course'),32),c=lmsCourseData(cid);if(!c)throw Error('Course not found.');
+    const title=lmsText(v.get('title'),120),base=lmsSlug(title);let aid=base,n=2;
+    while(c.assignments.some(a=>a.id===aid)){aid=base+'-'+n++;}
+    lmsState.courses[cid]=lmsValidateCourse({...c,assignments:[...c.assignments,{
+     id:aid,title,prompt:v.get('prompt'),points:Number(v.get('points')),dueDate:v.get('dueDate')}]});
+    lmsSave();lmsTeacherCourse(cid);return;
+   }
+   if(id==='lms-announcement-form'){
+    const cid=lmsText(v.get('course'),32),c=lmsCourseData(cid);if(!c)throw Error('Course not found.');
+    const title=lmsText(v.get('title'),140);
+    lmsState.courses[cid]=lmsValidateCourse({...c,announcements:[...c.announcements,{
+     id:lmsSlug(title)+'-'+Date.now().toString(36),title,body:v.get('body'),date:new Date().toISOString().slice(0,10)}]});
+    lmsSave();lmsTeacherCourse(cid);return;
+   }
+   if(id==='lms-submission-form'){
+    const cid=lmsText(v.get('course'),32),aid=lmsText(v.get('assignment'),46),answer=lmsText(v.get('answer'),5000);
+    const c=lmsCourseData(cid),a=c?.assignments.find(a=>a.id===aid);
+    if(!a||!lmsLearner().enrolled.includes(cid)||answer.length<15)throw Error('Enroll and write at least 15 characters.');
+    const key=lmsKey(cid,aid),old=lmsLearner().submissions[key];
+    if(old?.points!=null)throw Error('Teacher already graded this submission.');
+    lmsLearner().submissions[key]={answer,submittedAt:new Date().toISOString(),points:null,feedback:''};
+    lmsSave();lmsCourse(cid,'assignments');notice('Assignment submitted for local teacher review.');return;
+   }
+   if(form.matches('.lms-grade-form')){
+    const student=lmsState.learners[lmsText(v.get('student'),65)],cid=lmsText(v.get('course'),32),aid=lmsText(v.get('assignment'),46);
+    const c=lmsCourseData(cid),a=c?.assignments.find(x=>x.id===aid),sub=student?.submissions[lmsKey(cid,aid)],score=Number(v.get('score'));
+    if(!a||!sub||!Number.isInteger(score)||score<0||score>a.points)throw Error('Enter a valid score within the assignment points.');
+    sub.points=score;sub.feedback=lmsText(v.get('feedback'),1200);sub.gradedAt=new Date().toISOString();
+    lmsSave();lmsTeacher();notice('Local grading feedback saved.');return;
+   }
+  }catch(e){notice(e.message||'Could not save this item.');}
+ });
+}
 
 /* Detailed, accessible school. All furniture follows the floor-plan collision rectangles. */
 function decorateSchoolExterior(T,place,kit,sign,outside){
@@ -8005,6 +8682,117 @@ function decorateSchoolInterior(T,k,g,sign,place){
  station(7,-1.20,'SCIENCE QUEST','#88c5c0','science');
  station(-7,5.03,'READING CORNER','#d9bc8a','library');
  station(7,5.03,'PRACTICE EXAMS','#b1bfdf','exam');
+
+ // Six recognizable rooms wrap a central corridor. Each room has a wide,
+ // unobstructed doorway matching the movement/collision plan in districts.js.
+ const roomZones=[
+  {start:-11.32,end:-3.38,door:-4.42,nameLeft:'BIOLOGY CLASS',nameRight:'CAREER STUDIO',
+   toneLeft:'#dce9d9',toneRight:'#dee7ea',trim:'#678e80'},
+  {start:-3.38,end:2.38,door:.85,nameLeft:'QURAN LEARNING',nameRight:'SCIENCE LAB',
+   toneLeft:'#efe7d3',toneRight:'#d6e7e1',trim:'#7c9b83'},
+  {start:2.38,end:9.78,door:3.65,nameLeft:'READING LIBRARY',nameRight:'EXAM CENTER',
+   toneLeft:'#eae1d0',toneRight:'#e0e2eb',trim:'#8292a0'}
+ ];
+ for(let tier=0;tier<roomZones.length;tier++){
+  const room=roomZones[tier],center=(room.start+room.end)*.5,deep=room.end-room.start;
+  for(const side of [-1,1]){
+   const x=side*7.9,name=side<0?room.nameLeft:room.nameRight;
+   k.box(x,.025,center,9.03,.015,deep-.13,side<0?room.toneLeft:room.toneRight);
+   // Corridor wall has a 2.2 m door; do not fill the opening with glass.
+   for(const [start,end] of [[room.start,room.door-1.10],[room.door+1.10,room.end]]){
+    if(end-start<.12)continue;
+    k.box(side*3.46,2.17,(start+end)/2,.19,4.30,end-start,'#eee9db');
+    k.box(side*3.30,2.0,(start+end)/2,.035,2.8,end-start,'#b3c4b8');
+    k.box(side*3.26,.20,(start+end)/2,.045,.40,end-start,room.trim);
+   }
+   k.box(side*3.46,4.14,room.door,.23,.30,2.23,room.trim);
+   for(const dz of [-1.1,1.1])k.box(side*3.46,2.09,room.door+dz,.24,4.15,.09,'#809c8b');
+   k.box(side*4.55,3.82,room.door,1.75,.56,.045,room.trim);
+   k.box(side*4.53,3.83,room.door+.035,1.56,.38,.03,'#f7f5e7');
+   sign(g,name,x,3.62,room.start+.24,5.55,.49,1,'#436958');
+   // Feature boards, artwork and high-level shelving face the room.
+   k.box(x,2.59,room.start+.33,5.35,1.75,.18,side<0?'#4e7565':'#587d79');
+   k.box(x,2.56,room.start+.44,4.93,1.38,.025,'#d9e5d4');
+   for(let i=0;i<5;i++){
+    k.box(x-2+i,2.67,room.start+.46,.68,.08,.012,i%2?'#e6d3a4':'#9ec5b2');
+    k.box(x-2+i,2.34,room.start+.47,.48,.07,.012,'#e7eee3');
+   }
+   k.box(side*11.32,1.01,center,1.10,1.60,1.20,'#8eaa9c');
+   for(const level of [.59,.98,1.36]){
+    k.box(side*11.32,level,center,1.04,.055,1.14,'#f0e1c4');
+    for(const d of [-.40,-.14,.15,.40])
+     k.box(side*11.32,level+.15,center+d,.45,.24,.08,tier===2?'#a9927a':'#7c9b9a');
+   }
+   // Worktable & two chairs in each subject room, offset from interactive station.
+   k.box(side*10.0,.77,center+1.42,2.42,.12,1.22,'#aa8968');
+   for(const dx of [-.97,.97])for(const dz of [-.46,.46])
+    k.box(side*10.0+dx,.39,center+1.42+dz,.10,.75,.12,'#556b60');
+   for(const dz of [-1.05,1.07]){
+    k.box(side*10,.48,center+1.42+dz,1.07,.12,.62,'#6b8980');
+    k.box(side*10,.93,center+1.42+dz+.25,.99,.89,.09,'#698379');
+   }
+   // Warm, recessed linear ceiling lights clarify the room boundaries.
+   k.box(x,4.70,center,5.2,.16,deep-.4,'#e9e5d9');
+   for(const lampX of [x-2.0,x+2.0])k.light(lampX,4.57,center,.41,.045,deep-1,'#fff5da');
+  }
+  if(tier<2)for(const side of [-1,1]){
+   k.box(side*8.14,2.2,room.end,9.58,4.40,.18,'#eeeadd');
+   k.box(side*8.14,.22,room.end,9.58,.43,.06,'#8eae9b');
+  }
+ }
+ // Reception and waiting lounge sit to either side of the main entry,
+ // preserving the center aisle and the exit at z=11.0.
+ k.box(-8.2,.86,10.22,4.10,.21,1.28,'#886b52');
+ k.box(-8.2,1.47,10.58,4.10,1.08,.16,'#719387');
+ k.box(-8.2,1.52,10.50,3.65,.065,.08,'#d3e5d3');
+ k.box(-8.2,.44,10.38,3.78,.69,.92,'#b59a79');
+ sign(g,'STUDENT RECEPTION',-8.2,2.75,10.91,4.48,.45,1,'#416857');
+ for(const z of [9.48,10.6]){
+  k.box(8.25,.53,z,4.12,.20,.58,'#648478');
+  k.box(8.25,.97,z+.20,4.12,.68,.13,'#607c71');
+  for(const sx of [-1.77,1.77])k.box(8.25+sx,.25,z,.16,.48,.47,'#6c776e');
+ }
+ k.box(0,.052,10.6,2.60,.025,1.18,'#efe3bd');
+ sign(g,'WELCOME · MY COURSES · GRADES',0,3.63,11.63,8.0,.44,-1,'#42685d');
+ // School timetable and accessible route markers.
+ for(const z of [-5.25,.05,5.9]){
+  k.box(0,3.31,z,2.20,.62,.10,'#4a7063');
+  k.light(0,3.34,z+.063,1.88,.40,.024,'#dceada');
+ }
+ // Additional figures: a teacher and students with low-poly animated limbs.
+ const people=[],cube=new T.BoxGeometry(1,1,1);
+ const skin=['#b98562','#e4b996','#916d56','#d4a47c','#b89b84'];
+ function schoolPerson(x,z,shirt,index,standing=false){
+  const body=new T.Group(),materials=new Map();
+  function shape(group,w,h,d,color,px,py,pz){
+   if(!materials.has(color))materials.set(color,new T.MeshLambertMaterial({color}));
+   const m=new T.Mesh(cube,materials.get(color));
+   m.scale.set(w,h,d);m.position.set(px,py,pz);group.add(m);return m;
+  }
+  shape(body,.43,.53,.28,shirt,0,standing?1.15:.98,0);
+  shape(body,.36,.17,.27,'#44535c',0,.78,0);
+  const neck=shape(body,.15,.19,.14,skin[index%skin.length],0,1.47,0);
+  const head=shape(body,.32,.37,.29,skin[index%skin.length],0,1.64,0);
+  shape(body,.33,.12,.29,index%3?'#4b3937':'#3d302d',0,1.86,-.012);
+  const arms=[],legs=[];
+  for(const side of [-1,1]){
+   const arm=new T.Group();arm.position.set(side*.28,1.32,0);
+   shape(arm,.15,.42,.17,shirt,0,-.17,0);arms.push(arm);body.add(arm);
+   const leg=new T.Group();leg.position.set(side*.115,.69,0);
+   shape(leg,.16,.49,.19,'#475d65',0,-.26,0);
+   shape(leg,.20,.11,.28,'#374b49',0,-.53,.02);legs.push(leg);body.add(leg);
+  }
+  body.position.set(x,0,z);body.rotation.y=(index%4)*Math.PI/2;
+  g.add(body);people.push({body,arms,legs,phase:index*1.11,standing});
+ }
+ schoolPerson(-9.6,-9.15,'#6a9a88',0,true);
+ schoolPerson(9.6,-9.15,'#bd986a',1,false);
+ schoolPerson(-9.6,-1.52,'#879aaf',2,false);
+ schoolPerson(9.6,-1.52,'#7ba78e',3,true);
+ schoolPerson(-9.6,7.12,'#ba8875',4,false);
+ schoolPerson(9.6,7.12,'#708f99',5,false);
+ g.userData.schoolPeople=people;
+
  // Detailed information wall with slowly rotating globe above floor height.
  sign(g,'WELCOME TO LUMENVALE',0,3.69,-11.43,6.05,.61,1,'#315e53');
  sign(g,'STUDENT INFORMATION',0,1.78,-11.43,3.44,.40,1,'#4c7166');
@@ -9000,8 +9788,16 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   if(!rooms.has(place.id))rooms.set(place.id,makeRoom(place));
   const room=rooms.get(place.id);
   room.visible=true;
-  if(room.userData.schoolGlobe&&!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
-   room.userData.schoolGlobe.rotation.y=now*.00043;
+  const schoolMotion=!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  if(room.userData.schoolGlobe&&schoolMotion)room.userData.schoolGlobe.rotation.y=now*.00043;
+  for(const person of room.userData.schoolPeople||[]){
+   const move=schoolMotion?Math.sin(now*.0015+person.phase):0;
+   person.body.position.y=person.standing?Math.abs(move)*.019:0;
+   person.arms[0].rotation.x=-.18+move*.14;
+   person.arms[1].rotation.x=-.18-move*.14;
+   person.legs[0].rotation.x=person.standing?move*.07:0;
+   person.legs[1].rotation.x=person.standing?-move*.07:0;
+  }
   const production=room.userData.production;
   if(production){
    const staff=cityState.sites[place.id]?.staff||0;
@@ -9844,7 +10640,7 @@ function phoneOpen(){
     app('property','Properties','window-icon','jade')+app('production','Production','chart-icon','gold')+app('garage','Garage','door-icon','sage')+
     app('map','Map','map-icon','sage')+app('mail','Mail','mail','blue')+
     app('architect','Build','plant','jade')+app('library','Library','book','gold')+
-    app('school','School','orders','blue')+app('pathways','Pathways','book','jade')+app('transcript','Transcript','orders','gold')+app('careers','Careers','door-icon','sage')+app('jobs','Jobs','orders','gold')+
+    app('school','School LMS','orders','blue')+app('teacher','Teacher','book','gold')+app('pathways','Pathways','book','jade')+app('transcript','Transcript','orders','gold')+app('careers','Careers','door-icon','sage')+app('jobs','Jobs','orders','gold')+
     app('words','My Words','book','jade')+app('journal','Journal','orders','gold')+
     app('guide','Settings','help-icon','sage')+app('fullscreen','Fullscreen','window-icon','blue')+
   '</nav>');
@@ -9867,7 +10663,7 @@ function phoneSync(){
 }
 function phoneInit(){
  const apps={property:cityPortfolio,production:()=>systemsPanel('warehouse'),garage:()=>systemsPanel('garage'),map:campusMap,mail:systemsMailBox,
-  architect:campusArchitect,library:cityBookList,school:pathwayHome,pathways:pathwayHome,transcript:pathwayTranscript,careers:campusCareer,jobs:jobPanel,words:campusVocabulary,
+  architect:campusArchitect,library:cityBookList,school:lmsHome,teacher:lmsTeacher,pathways:pathwayHome,transcript:pathwayTranscript,careers:campusCareer,jobs:jobPanel,words:campusVocabulary,
   journal:academyProfile,guide:cityGuide,fullscreen:()=>{dialog.close();cityEnterFullscreen();}};
  byId('open-phone').addEventListener('click',phoneOpen);
  byId('phone-back').addEventListener('click',phoneOpen);
@@ -10499,6 +11295,7 @@ phoneInit();
 jobInit();
 pathwayInit();
 schoolActivitiesInit();
+lmsInit();
 
 </script>
 </body>
