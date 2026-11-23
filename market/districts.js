@@ -218,7 +218,7 @@ function districtInteract(target){
   return;
  }
  switch(target.key){
- case 'school':campusSchool();break;
+ case 'school':pathwayHome();break;
  case 'careers':jobPanel();break;
  case 'research':jobResearchList();break;
  case 'browse':cityBookList();break;
