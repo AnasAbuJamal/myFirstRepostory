@@ -83,7 +83,7 @@ function drawScene(animate = '') {
     player: terminal.open ? SEAT_POSITION : player,
     camera: terminal.open && tab === 'cameras' ? securityChannel : null,
     built: state.stand, visitor: activeVisitor, waiting: VISITORS[state.step]?.style,
-    doorOpen, stock: shopTotals(state).onShelf, city:cityState, animate,
+    doorOpen, stock: shopTotals(state).onShelf, city:cityState, moving:moveKeys.has('w')||moveKeys.has('s')||moveKeys.has('a')||moveKeys.has('d'), sprinting:moveKeys.has('Shift'), animate,
   });
 }
 let lastInteraction = '';
@@ -486,7 +486,7 @@ document.addEventListener('submit', event => {
 });
 
 const moveKeys = new Set();
-const movementKeys = ['w','a','s','d','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
+const movementKeys = ['w','a','s','d','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Shift'];
 let moveFrame = 0;
 let lastMove = 0;
 let mousePosition = null;
@@ -515,7 +515,7 @@ function stepMovement(time) {
   const forward=pressed('w')-pressed('s'), side=pressed('d')-pressed('a');
   if (forward||side) {
     const intervals=Math.max(1,Math.ceil(elapsed/.04));
-    for(let i=0;i<intervals;i++)player=walkStep(player,forward,side,elapsed/intervals,{doorOpen,stand:state.stand});
+    for(let i=0;i<intervals;i++)player=walkStep(player,forward,side,elapsed/intervals,{doorOpen,stand:state.stand,sprint:moveKeys.has('Shift')});
   }
   refreshPosition();
   drawScene();
@@ -566,8 +566,10 @@ for (const control of document.querySelectorAll('[data-move]')) {
 
 function turnCamera(dx,dy) {
   if (!dx && !dy) return;
-  player.yaw -= dx*.005;
-  player.pitch = Math.max(-1.12,Math.min(.96,player.pitch-dy*.0046));
+  const sensitivity=cityMouseSettings?.sensitivity||.005;
+  player.yaw -= dx*sensitivity;
+  const vertical=cityMouseSettings?.invertY?-1:1;
+  player.pitch = Math.max(-1.12,Math.min(.96,player.pitch-vertical*dy*sensitivity*.92));
   drawScene();
 }
 world.addEventListener('pointerdown',event => {
