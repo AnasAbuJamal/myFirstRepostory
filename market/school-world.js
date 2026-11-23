@@ -23,8 +23,8 @@ function decorateSchoolExterior(T,place,kit,sign,outside){
  for(const q of [-2.35,2.35])k.light(x+q,3.48,front+f*1.56,.31,.19,.31,'#ffe2a6');
  sign(g,'SCHOOL OF KNOWLEDGE',x,4.44,front+f*.2,6.72,.54,f,'#315e52');
  sign(g,'LEARN  ·  CREATE  ·  GROW',x,5.24,front+f*.2,6.52,.42,f,'#315e52');
- const dial=new T.Mesh(new T.CircleGeometry(.43,28),new T.MeshBasicMaterial({color:'#f8edda',side:T.DoubleSide}));
- dial.position.set(x,h+1.97,front+f*.43);if(f<0)dial.rotation.y=Math.PI;g.add(dial);
+ const dial=new T.Mesh(new T.CylinderGeometry(.43,.43,.035,28),new T.MeshBasicMaterial({color:'#f8edda',side:T.DoubleSide}));
+ dial.position.set(x,h+1.97,front+f*.43);dial.rotation.x=Math.PI/2;if(f<0)dial.rotation.y=Math.PI;g.add(dial);
  for(let n=0;n<12;n++){const a=n*Math.PI/6;k.box(x+Math.sin(a)*.34,h+1.97+Math.cos(a)*.34,front+f*.453,.032,.053,.012,'#3f605b');}
  k.box(x,h+2.06,front+f*.47,.035,.23,.02,'#3f605b',0,0,-.4);
  k.box(x+.10,h+1.97,front+f*.47,.22,.035,.02,'#3f605b',0,0,-.2);
@@ -98,10 +98,14 @@ function decorateSchoolInterior(T,k,g,sign,place){
   for(const y of [.60,1.10,1.65])k.box(x,y,-10.29,1.21,.08,.75,'#e5cc9b');
  }
  const globe=new T.Group();
- globe.add(new T.Mesh(new T.SphereGeometry(.50,16,12),
+ globe.add(new T.Mesh(new T.IcosahedronGeometry(.50,2),
   new T.MeshLambertMaterial({color:'#5399a8',flatShading:true})));
- const ring=new T.Mesh(new T.TorusGeometry(.63,.032,7,28),
-  new T.MeshLambertMaterial({color:'#d8bd7d'}));
+ const circle=[];for(let i=0;i<36;i++){
+  const a=i*Math.PI*2/36;circle.push(Math.cos(a)*.63,Math.sin(a)*.63,0);
+ }
+ const ringGeometry=new T.BufferGeometry();
+ ringGeometry.setAttribute('position',new T.Float32BufferAttribute(circle,3));
+ const ring=new T.LineLoop(ringGeometry,new T.LineBasicMaterial({color:'#d8bd7d'}));
  ring.rotation.x=.4;globe.add(ring);
  globe.position.set(0,2.57,-10.83);g.add(globe);g.userData.schoolGlobe=globe;
 }
