@@ -5,7 +5,7 @@ function phoneOpen(){
  cityPanel('City Phone','Overview',
   '<div class="phone-overview">'+metric('lands','Land owned')+metric('income','Production income')+
     metric('coins','City wallet')+metric('stock','Goods in stock')+'</div>'+
-  '<p class="phone-goal" id="city-objective"></p>'+
+  '<p class="phone-goal">'+esc(missions[state.step])+'</p>'+
   '<nav class="phone-apps" aria-label="City apps">'+
     app('property','Properties','window-icon','jade')+app('production','Production','chart-icon','gold')+
     app('map','Map','map-icon','sage')+app('mail','Mail','mail','blue')+

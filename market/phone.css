@@ -1,15 +1,5 @@
 /* The viewport shows direction and the current task. Management lives on the phone. */
-.walk-head{inset:18px auto auto 20px;min-height:0;padding:8px 11px 8px 8px;gap:.55rem;border-radius:12px;border:1px solid #f1f5e741;background:#182b2cec;box-shadow:0 4px 18px #172d2630}
-.walk-head .brand{gap:.62rem}
-.walk-head .brand h1{font:720 1.13rem/1 var(--sans);letter-spacing:.005em;color:#fff}
-.walk-head .brand-mark,.terminal-brand .brand-mark{height:30px;width:30px;border-radius:7px;color:#243a34;background:#d7e5b7}
-.walk-head .brand-mark svg{width:18px;height:18px}
-.walk-head .top-icon,.walk-head .top-date{display:none}
-.place-marker{left:20px;top:75px;background:#182b2cd9;border-color:#eeffe14d;font-size:.74rem;color:#f4f8ee}
-.quest{width:min(310px,52vw);left:20px;bottom:20px;padding:.66rem .78rem;border:1px solid #ecf7e444;border-radius:10px;background:#182b2ce8;color:#f4f8ee}
-.quest h2,.quest .timeline,.quest-meta #step-number{display:none}
-.quest-meta{font-size:.68rem;letter-spacing:.035em;color:#d6e4b8}
-.quest p{margin:.23rem 0 0;color:#f4f8ee;font-size:.85rem;line-height:1.34}
+.place-marker{left:18px;top:18px;background:#182b2cd9;border-color:#eeffe14d;font-size:.76rem;color:#f4f8ee}
 .phone-trigger{position:absolute;right:20px;bottom:20px;display:flex;gap:.47rem;align-items:center;padding:.57rem .63rem;background:#182b2cec;border:1px solid #eaf6dc68;border-radius:10px;color:#fff;font:650 .83rem/1.1 var(--sans);z-index:6;min-height:42px}
 .phone-trigger:hover{background:#30453b}
 .phone-trigger svg,.phone-apps svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -37,8 +27,8 @@ dialog[data-surface="phone"] .title{font:730 1.35rem/1.2 var(--sans);letter-spac
 .phone-app-icon.blue{background:#dce9f3;color:#385973}
 @media(pointer:coarse){.phone-trigger{bottom:110px}.phone-trigger kbd{display:none}}
 @media(max-width:600px){
- .walk-head{left:10px;top:10px}.place-marker{top:63px;left:10px}
- .quest{left:10px;bottom:10px}.phone-trigger{right:10px}
+ .place-marker{top:10px;left:10px}
+ .phone-trigger{right:10px}
  .walk-hints{right:10px}.walk-hints>kbd,.walk-hints>span{display:none}
  dialog[data-surface="phone"]{inset:auto 8px 8px auto;width:min(386px,calc(100vw - 16px));max-height:calc(100dvh - 16px)}
 }

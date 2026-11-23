@@ -40,12 +40,12 @@ const CITY_BOOKS=[
  ],question:'What is part of a good long-term plan?',answers:['Ignoring workers','Improving safety and learning','Buying everything at once'],correct:1}
 ];
 const CITY_SITES=[
- {id:'workshop',title:'Wood Workshop',kind:'factory',x:-13,z:10,land:20,build:40,hire:20,rate:3,unlock:1,color:'#a47a51'},
- {id:'lumber',title:'Lumber Mill',kind:'factory',x:-27,z:10,land:65,build:125,hire:50,rate:8,unlock:2,color:'#8d7255'},
- {id:'homes',title:'Worker Homes',kind:'house',x:0,z:25,land:75,build:160,hire:0,rate:0,unlock:2,color:'#b88d6a'},
- {id:'textile',title:'Textile Factory',kind:'factory',x:-27,z:27,land:130,build:280,hire:95,rate:15,unlock:3,color:'#8196ab'},
- {id:'greenhouse',title:'Greenhouse',kind:'factory',x:16,z:27,land:210,build:460,hire:140,rate:25,unlock:4,color:'#67a28b'},
- {id:'assembly',title:'Assembly Plant',kind:'factory',x:30,z:12,land:350,build:820,hire:240,rate:43,unlock:5,color:'#879eaf'}
+ {id:'workshop',title:'Wood Workshop',kind:'factory',x:-11.4,z:10,land:20,build:40,hire:20,rate:3,unlock:1,color:'#a47a51'},
+ {id:'lumber',title:'Lumber Mill',kind:'factory',x:-30,z:10,land:65,build:125,hire:50,rate:8,unlock:2,color:'#8d7255'},
+ {id:'homes',title:'Worker Homes',kind:'house',x:-1,z:31,land:75,build:160,hire:0,rate:0,unlock:2,color:'#b88d6a'},
+ {id:'textile',title:'Textile Factory',kind:'factory',x:-30,z:31,land:130,build:280,hire:95,rate:15,unlock:3,color:'#8196ab'},
+ {id:'greenhouse',title:'Greenhouse',kind:'factory',x:19,z:31,land:210,build:460,hire:140,rate:25,unlock:4,color:'#67a28b'},
+ {id:'assembly',title:'Assembly Plant',kind:'factory',x:28,z:12.65,land:350,build:820,hire:240,rate:43,unlock:5,color:'#879eaf'}
 ];
 const CITY_LIBRARY={x:14,z:8};
 function cityBlank(){return {version:1,coins:0,xp:0,lifetime:0,books:{},sites:{},lastTick:Date.now(),manual:{}};}
@@ -340,18 +340,11 @@ function cityGuide(){
  '<label for="city-mouse-sensitivity">Mouse sensitivity: <strong id="city-sensitivity-value">'+Math.round(cityMouseSettings.sensitivity*1000)+'</strong></label>'+
  '<input id="city-mouse-sensitivity" type="range" min="2" max="10" step="1" value="'+Math.round(cityMouseSettings.sensitivity*1000)+'">'+
  '<label class="city-toggle"><input id="city-invert-y" type="checkbox" '+(cityMouseSettings.invertY?'checked':'')+'> Invert vertical look</label></div>'+
- '<p class="city-sub">Click Play to capture the mouse · Esc releases it · Shift sprints · E interacts · P opens your phone · F toggles fullscreen. Menus release the mouse for their buttons. Saves stay on this device.</p>');
+ '<p class="city-sub">Click Mouse look to capture the mouse · Esc releases it · Shift sprints · E interacts · P opens your phone · F toggles fullscreen. Menus release the mouse for their buttons. Saves stay on this device.</p>');
 }
 function citySync(){
  if(typeof phoneSync==='function')phoneSync();
- const objective=byId('city-objective');
- if(objective){
-  objective.textContent=!cityCompleted()?'Visit the library and finish your first book':
-   !cityState.sites.workshop?.owned?'Buy workshop land (20 coins)':
-   !cityState.sites.workshop?.built?'Build your first workshop (40 coins)':
-   !cityState.sites.workshop.staff?'Hire a worker at the workshop':
-   cityCompleted()<CITY_BOOKS.length?'Read more books and expand your city':'Keep growing your production city';
- }
+
 }
 // Browser pointer lock captures all mouse motion until Esc or a focused UI opens.
 // Browser security requires a user click for the initial capture and every recapture.
@@ -361,7 +354,7 @@ function cityRequestMouseLock(){
  if(!canvas?.requestPointerLock){notice('Use a desktop browser with Pointer Lock support.');return;}
  try{
   const request=canvas.requestPointerLock();
-  request?.catch?.(()=>notice('Mouse lock was blocked. Click Play again.'));
+  request?.catch?.(()=>notice('Mouse lock was blocked. Click Mouse look again.'));
  }catch{notice('Mouse lock needs another click.');}
 }
 function cityEnterFullscreen(){
@@ -383,15 +376,12 @@ function cityInit(){
  const prompt=document.createElement('div');
  prompt.id='city-mouse-prompt';
  prompt.className='city-mouse-prompt';
- prompt.innerHTML='<div class="city-resume-card"><div class="city-crosshair-symbol" aria-hidden="true">✛</div>'+
-  '<h2>Enter LumenVale</h2><p>Click Play to look around with your mouse.</p>'+
-  '<button type="button" id="city-resume-button">▶ Click to Play</button>'+
-  '<small>WASD move · E interact · P phone · Esc releases mouse</small></div>';
+ prompt.innerHTML='<button type="button" id="city-resume-button" aria-label="Enable mouse look">Mouse look</button>';
  byId('view').append(prompt);
  byId('city-resume-button').addEventListener('click',cityRequestMouseLock);
  byId('landscape').addEventListener('click',cityRequestMouseLock);
  document.addEventListener('pointerlockchange',cityMousePrompt);
- document.addEventListener('pointerlockerror',()=>notice('Mouse capture failed. Click Play again.'));
+ document.addEventListener('pointerlockerror',()=>notice('Mouse capture failed. Click Mouse look again.'));
  dialog.addEventListener('close',()=>requestAnimationFrame(cityMousePrompt));
  terminal.addEventListener('close',()=>requestAnimationFrame(cityMousePrompt));
  document.addEventListener('input',event=>{

@@ -83,10 +83,35 @@ function campusPropertyPosition(site){
  return pos||{x:site.x,z:site.z,rotation:0};
 }
 function campusInitPlotLocations(){
+ // Resolve old layouts against the new roads. Ownership, staff and upgrades stay attached to IDs.
+ const original=JSON.stringify([campusState.plots,campusState.decor]);
+ const oldDecor=campusState.decor;
+ campusState.decor=[];
  for(const site of CITY_SITES){
-  const p=campusState.plots[site.id];
-  if(p){site.x=p.x;site.z=p.z;}
+  const saved=campusState.plots[site.id];
+  if(!saved)continue;
+  const point=nearestBuildPosition(saved,site.id);
+  if(point){
+   Object.assign(site,point);
+   Object.assign(saved,point);
+  }
  }
+ for(const item of oldDecor){
+  const point=nearestBuildPosition(item,null);
+  if(point)campusState.decor.push({...item,...point});
+ }
+ if(original!==JSON.stringify([campusState.plots,campusState.decor]))campusSave();
+}
+function nearestBuildPosition(preferred,siteId){
+ if(campusArchitectValid(preferred.x,preferred.z,siteId))return {x:preferred.x,z:preferred.z};
+ let best=null,bestDistance=Infinity;
+ for(let z=-14;z<=80;z+=2)for(let x=-54;x<=64;x+=2){
+  const distance=(x-preferred.x)**2+(z-preferred.z)**2;
+  if(distance<bestDistance&&campusArchitectValid(x,z,siteId)){
+   bestDistance=distance;best={x,z};
+  }
+ }
+ return best;
 }
 function campusSchool(){
  const grade=campusGPA();
@@ -241,11 +266,14 @@ function campusSaveSelection(){
  if(campusSaveWord(selected,"",CITY_BOOKS.find(x=>x.id===cityBookSession?.id)?.title||"Library"))notice("Saved "+selected+" to My Words.");
 }
 function campusArchitectValid(x,z,except=null){
- if(x< -38||x>38||z<0||z>32)return false;
- if(atStreet(x,z,2.8)||TOWN_PUBLIC_PLACES.some(p=>placeOverlap(p,x,z,5.4))||
- Math.hypot(x,z-11.6)<5||Math.hypot(x+37,z+7)<9||
- Math.hypot(x-23.5,z-6)<6||Math.hypot(x,z)<7)return false;
- for(const site of CITY_SITES)if(site.id!==except&&Math.abs(site.x-x)<10&&Math.abs(site.z-z)<9)return false;
+ const size=except?9.8:3.8;
+ const item=townRect(x,z,size,size);
+ if(x-size/2<TOWN_BOUNDS.left||x+size/2>TOWN_BOUNDS.right||z-size/2<TOWN_BOUNDS.north||z+size/2>TOWN_BOUNDS.south)return false;
+ if(TOWN_ROAD_BEDS.some(road=>townIntersects(item,road,2.30)))return false;
+ if(TOWN_RESERVED.some(parcel=>townIntersects(item,parcel,.35)))return false;
+ if(CITY_SITES.some(site=>site.id!==except&&townIntersects(item,townRect(site.x,site.z,9.8,9.8),.35)))return false;
+ if(campusState.decor.some(d=>townIntersects(item,townRect(d.x,d.z,3.8,3.8),.1)))return false;
+ if([...LV_CHARACTERS,...LV_TREASURES].some(p=>townIntersects(item,townRect(p.x,p.z,1.4,1.4),.4)))return false;
  return true;
 }
 function campusArchitect(){
@@ -256,7 +284,7 @@ function campusArchitect(){
  body+='<div class="wave-builder-tools">'+plots.map(site=>'<span class="wave-plot-tools"><button type="button" class="'+(campusMoveChoice===site.id?'selected':'')+
  '" data-wave="move-choice" data-id="'+site.id+'">Move '+esc(site.title)+'</button><button type="button" data-wave="rotate" data-id="'+site.id+'">↻ Rotate</button></span>').join('')+'</div>';
  body+='<p class="city-sub">Move a purchased plot for 20 coins. Decorative roads are visual paths; full road-navigation AI is a future upgrade.</p>';
- const markers=CITY_SITES.map(site=>'<span class="wave-grid-plot" style="left:'+((site.x+45)/90*100)+'%;top:'+((site.z+18)/54*100)+'%" title="'+
+ const markers=townMapGeometry()+CITY_SITES.map(site=>'<span class="wave-grid-plot" style="left:'+townMapX(site.x)+'%;top:'+townMapZ(site.z)+'%" title="'+
  esc(site.title)+'"></span>').join('');
  body+='<div class="wave-map-area"><div id="wave-builder-map" class="wave-builder-map" role="grid" aria-label="Choose a construction location">'+markers+'</div></div>';
  body+='<div class="wave-builder-footer">Selection: <b>'+esc(campusMoveChoice?CITY_SITES.find(x=>x.id===campusMoveChoice)?.title||'Plot':
@@ -289,30 +317,46 @@ function campusPlace(x,z){
  if(!citySpend(kind.price))return false;
  campusState.decor.push({kind:kind.id,x,z});campusSave();campusArchitect();drawScene();return true;
 }
+function townMapX(x){return (x-TOWN_BOUNDS.left)/(TOWN_BOUNDS.right-TOWN_BOUNDS.left)*100;}
+function townMapZ(z){return (z-TOWN_BOUNDS.north)/(TOWN_BOUNDS.south-TOWN_BOUNDS.north)*100;}
+function townMapGeometry(){
+ function layer(p,kind){
+  const w=p.w/(TOWN_BOUNDS.right-TOWN_BOUNDS.left)*100;
+  const h=p.d/(TOWN_BOUNDS.south-TOWN_BOUNDS.north)*100;
+  return '<i aria-hidden="true" class="map-surface '+kind+'" style="left:'+townMapX(p.x-p.w/2)+
+   '%;top:'+townMapZ(p.z-p.d/2)+'%;width:'+w+'%;height:'+h+'%"></i>';
+ }
+ return TOWN_ROAD_BEDS.map(r=>layer(r,'street')).join('')+
+  [...TOWN_PUBLIC_PLACES,MARKET_OFFICE,...TOWN_HOMES].map(p=>layer(p,'building')).join('')+
+  layer(townRect(-6.5,54.6,19.2,17.9),'park')+layer(PARK_COURT,'court');
+}
 function campusMap(){
  const all=[...TOWN_PUBLIC_PLACES.map(p=>({title:p.name,x:p.x,z:p.z})),
  {title:"Market Office",x:0,z:0},{title:"Lumen Park",x:-5,z:51},
  ...CITY_SITES.map(s=>({title:s.title,x:s.x,z:s.z}))];
- const mapX=x=>(x-TOWN_BOUNDS.left)/(TOWN_BOUNDS.right-TOWN_BOUNDS.left)*100;
- const mapZ=z=>(z-TOWN_BOUNDS.north)/(TOWN_BOUNDS.south-TOWN_BOUNDS.north)*100;
- const roads=STREET_PLAN.map(s=>{
-  const horizontal=s.axis==='x';
-  const [x,z]=horizontal?[s.from,s.at-s.width/2]:[s.at-s.width/2,s.from];
-  const width=horizontal?s.to-s.from:s.width;
-  const depth=horizontal?s.width:s.to-s.from;
-  return '<i class="town-map-road" title="'+esc(s.name)+'" style="left:'+mapX(x)+'%;top:'+mapZ(z)+
-   '%;width:'+mapX(TOWN_BOUNDS.left+width)+'%;height:'+mapZ(TOWN_BOUNDS.north+depth)+'%"></i>';
- }).join('');
+ const mapX=townMapX,mapZ=townMapZ,roads=townMapGeometry();
  const here=districtVisit?.origin||player;
  const marker='<span class="town-map-player" style="left:'+mapX(here.x)+'%;top:'+mapZ(here.z)+
   '%" title="Your location" aria-label="Your location"></span>';
- const pins=all.map(x=>'<div class="wave-map-pin" style="left:'+mapX(x.x)+'%;top:'+mapZ(x.z)+'%" title="'+
- esc(x.title)+'"><span>●</span><small>'+esc(x.title)+'</small></div>').join('');
+ const pins=all.map((place,i)=>'<button type="button" class="town-pin" data-pin="'+i+'" style="left:'+mapX(place.x)+
+  '%;top:'+mapZ(place.z)+'%" aria-label="'+esc(place.title)+'" title="'+esc(place.title)+'">'+(i+1)+'</button>').join('');
+ const options=all.map((place,i)=>'<option value="'+i+'">'+(i+1)+' · '+esc(place.title)+'</option>').join('');
  cityPanel("LumenVale / Map","City Map",
- '<p>The blue dot marks your location. Choose a district or follow the street grid to explore.</p>'+
- '<div class="wave-map-area"><div class="wave-map town-street-map">'+roads+pins+marker+'</div></div>'+
- '<div class="city-actions"><button class="button" data-wave="school">School</button>'+
- '<button class="button" data-wave="architect">City Architect</button><button class="button" data-wave="careers">Careers</button></div>');
+  '<label class="town-map-select">Find a place<select id="town-place">'+options+'</select></label>'+
+  '<div class="wave-map-area"><div class="wave-map town-street-map">'+roads+pins+marker+'</div></div>'+
+  '<p class="city-sub">The blue dot shows where you are.</p>');
+ const select=byId('town-place'),map=dialog.querySelector('.town-street-map');
+ function highlight(id){
+  select.value=id;
+  for(const pin of map.querySelectorAll('[data-pin]'))pin.setAttribute('aria-pressed',String(pin.dataset.pin===id));
+ }
+ highlight(String(Math.max(0,all.findIndex(p=>p.title===(districtVisit?.place.name||'Market Office')))));
+ select.addEventListener('change',()=>highlight(select.value));
+ map.addEventListener('click',event=>{
+  const pin=event.target.closest('[data-pin]');
+  if(pin)highlight(pin.dataset.pin);
+ });
+
 }
 function campusFactoryMachine(){
  const site=CITY_SITES.find(x=>x.id===campusInterior?.id),unit=cityState.sites[site?.id];
@@ -370,8 +414,8 @@ function campusInit(){
  document.addEventListener("click",event=>{
   const map=event.target.closest("#wave-builder-map");if(!map)return;
   const bounds=map.getBoundingClientRect();
-  const x=-45+((event.clientX-bounds.left)/bounds.width)*90;
-  const z=-18+((event.clientY-bounds.top)/bounds.height)*54;
+  const x=TOWN_BOUNDS.left+((event.clientX-bounds.left)/bounds.width)*(TOWN_BOUNDS.right-TOWN_BOUNDS.left);
+  const z=TOWN_BOUNDS.north+((event.clientY-bounds.top)/bounds.height)*(TOWN_BOUNDS.south-TOWN_BOUNDS.north);
   campusPlace(x,z);
  });
  window.addEventListener("keydown",event=>{

@@ -110,14 +110,7 @@ function renderStatus() {
   const totals = shopTotals(state);
   byId('coins').textContent = totals.coins + ' coins';
   byId('stock').textContent = totals.onShelf + ' kits';
-  byId('top-date').textContent = DAYS[state.step];
-  byId('step-number').textContent = state.step < FINAL_STEP ? state.step + 1 + ' of 7' : 'Complete';
-  byId('timeline').innerHTML = CHAPTERS.map((step,i) => '<li class="' + (
-    i < state.step ? 'done' : i === state.step ? 'active' : '') + '" title="' + step.label +
-    '" aria-label="' + step.label + (i < state.step ? ', complete' : i === state.step ? ', current' : ', upcoming') + '"></li>').join('');
-  byId('objective').textContent = missions[state.step];
   byId('inbox-count').textContent = Object.values(MAIL).filter(m => m.minStep <= state.step).length;
-  byId('scene-detail').textContent = state.step === FINAL_STEP ? 'Level 1 complete' : 'Level 1';
   refreshPosition();
 }
 function render(animate = '') {
@@ -377,10 +370,6 @@ byId('tabs').addEventListener('click', event => {
 });
 byId('interact').addEventListener('click',interact);
 byId('stand-up').addEventListener('click',standUp);
-byId('move-toggle').addEventListener('click',event => {
-  const on=world.classList.toggle('show-movement');
-  event.currentTarget.setAttribute('aria-expanded',String(on));
-});
 terminal.addEventListener('close',() => {
   stopDictating();
   byId('landscape').focus({preventScroll:true});
@@ -391,15 +380,6 @@ dialog.addEventListener('close',() => {
   stopDictating();
   activeVisitor = '';
   drawScene();
-});
-byId('show-guide').addEventListener('click', () => {
-  stopMovement();
-  modal('Shop guide', 'How to play', '<p><b>Explore.</b> Use WASD to walk, move your mouse or use the arrow keys to look, and E to use the desk or door. You can walk around the office and out onto the grounds.</p><p><b>Read.</b> Find the pickup day, quantity, and other details in the customer’s email.</p>' +
-    '<p><b>Reply.</b> Write to the person in your own words. They’ll ask a follow-up if they need more information.</p>' +
-    '<p><b>Meet your visitors.</b> Open the office door when a customer or supplier arrives.</p>' +
-    '<p><b>Grow the shop.</b> Sit at the computer to see reports and live feeds from the entrance, pickup lot, and road. The stand changes the playable grounds.</p>' +
-    '<p><b>Build a city.</b> Walk east to the new library. Read short books to earn city coins, then build factories, hire workers, and upgrade machines. Press F for fullscreen.</p>' +
-    '<p>' + (trial ? 'Practice mode is separate from your saved shop.' : 'The browser saves your shop progress and drafts as you play.') + '</p>');
 });
 const actions = {
   mail(id) {

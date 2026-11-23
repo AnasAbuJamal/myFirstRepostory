@@ -2,11 +2,11 @@ const WALK_LIMITS = { left: -45, right: 45, north: -18, south: 36 };
 const START_POSITION = { x: .32, z: 2.2, yaw: .11, pitch: -.08 };
 const SEAT_POSITION = { x: .02, z: 1.02, yaw: .19, pitch: -.09 };
 const DOOR = { x: 2.63, z: -3.65 };
-const STAND = { x: -4.3, z: -14.7 };
+const STAND = { x: -4.3, z: -16.0 };
 
 const SECURITY_CAMERAS = {
   front: { name: 'Front entrance', position: [5.5, 3.1, -6.2], target: [1.9, .5, -2.85], horizontal: 69 },
-  lot: { name: 'Pickup lot', position: [-10.5, 5.1, -8.7], target: [-4.3, .65, -14.7], horizontal: 67 },
+  lot: { name: 'Pickup lot', position: [-10.5, 5.1, -8.7], target: [-4.3, .65, -16.0], horizontal: 67 },
   road: { name: 'Road and river', position: [13.2, 10.0, -7.6], target: [.2, .3, -14.8], horizontal: 74 },
 };
 

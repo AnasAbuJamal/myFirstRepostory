@@ -68,8 +68,10 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    streetBox(k,s,s.from,s.to,s.width,.030,.041,'#5e6568');
    for(const side of [-1,1]){
     const edge=side*(s.width/2);
-    streetBox(k,s,s.from,s.to,.14,.058,.043,'#e7e6d9',edge+.08*side);
-    streetBox(k,s,s.from,s.to,.046,.056,.009,'#cecfcc',edge-.26*side);
+    for(const [start,end] of streetCurbRuns(s,side)){
+     streetBox(k,s,start,end,.14,.058,.043,'#e7e6d9',edge+.08*side);
+     streetBox(k,s,start,end,.046,.056,.009,'#cecfcc',edge-.26*side);
+    }
     for(let t=s.from+.9;t<s.to;t+=1.75){
      const [x,z]=onRoad(s,t,edge+1.22*side);
      if(atStreet(x,z,.06))continue;
@@ -133,50 +135,67 @@ function createDistrictWorld({T,scene,exterior,renderer}){
  function publicPlaces(){
   const paving=kit(), k=kit();
   const props=new T.Group();props.userData.castsShadow=true;outside.add(props);
-  // Hardscaped frontage and signed plazas sit between the building line and the curb.
-  for(const [x,z,w,d] of [[-5,-4.36,19,1.25],[2.55,-4.42,4.6,1.34],[15.5,-4.45,8.2,1.4],[.2,5.95,10.8,3.2],[16,4.05,13.9,2.4],[-37,2.42,18,3.1],[48.5,16.08,13.2,1.56],[48.5,24.78,12.6,1.42],[-4.3,-14.7,5.8,3.7]]){
-   paving.box(x,.03,z,w,.11,d,'#d4d2c7');
+  // Front walks follow their building when its parcel moves.
+  for(const p of TOWN_PUBLIC_PLACES){
+   const apron=p.kind==='school'?5:2.1;
+   paving.box(p.x,.025,p.z+p.face*(p.d/2+apron/2),p.w+.48,.07,apron,'#d6d5ca');
   }
-  for(const [x,z] of [[-1.5,5.65],[3.7,5.65],[-24,-3.8],[-5.3,-4.53],[5.9,-3.6],[11.5,-4.58],[20,-4.58],[-40,3.2],[-34,3.2],[10.6,4.2],[21.6,4.2],[42.5,14.88],[54.7,14.88],[42.5,25],[54.7,25],[11.9,43.9],[-12.8,44.2],[-41.8,44.8],[42.5,58.5],[58.8,58.5]]){
-   streetLamp(k,x,z);
+  paving.box(.05,.03,-4.85,8.65,.07,1.95,'#d8d5c8');
+  paving.box(STAND.x,.01,STAND.z,5.8,.065,3.4,'#c9c6b8');
+  // A continuous civic walk links school, hall and library, with a break at Mill Street.
+  for(const [left,right] of [[-46,-23.65],[-16.35,19.1]]){
+   paving.box((left+right)/2,.018,4.98,right-left,.055,1.55,'#d4cfc2');
   }
-  for(const [x,z,tall] of [[-15.7,-14.35,true],[-10.5,-14.35,false],[-.4,-14.4,false],[5.9,-14.55,true],[13,-14.4,false],[18.3,-14.45,false],[-44,2.6,false],[-30,2.6,false],[-3.9,6.1,true],[4.15,5.65,false],[11,3.05,true],[21.1,3.05,false],[42.3,14.7,true],[54.75,14.5,false],[43,25,false],[54.9,25.12,true],[14,44.8,false],[55,47,true],[43,46,false],[20,58.1,false],[-26,56.5,true],[-38,57.6,false]]){
-   tree(k,x,z,.78+(Math.abs(x)%4)*.055,tall);
+  for(const home of TOWN_HOMES){
+   // Lawn and doorstep path distinguish the residential lots from the public pavements.
+   paving.box(home.x,-.015,home.z,home.w+1.8,.055,home.d+1.8,'#a4b782');
+   paving.box(home.x,.028,home.z+home.d/2+1.04,1.58,.064,2.07,'#d3cdc0');
   }
-  for(const [x,z] of [[-2.8,-4.46],[.5,-4.46],[13.0,-4.48],[18.1,-4.48],[-41.3,2.36],[-32.5,2.36],[-3.3,6.25],[2.65,5.75],[12,4.45],[20,4.45],[45.3,15.72],[51.7,15.72],[45.5,25.28],[51.6,25.28],[14,49],[16,53]]){
-   planting(k,x,z,1.5,.72);
+  for(const f of TOWN_FURNITURE){
+   if(f.kind==='tree'){
+    paving.box(f.x,.07,f.z,1.10,.09,1.10,'#b4b49d');
+    paving.box(f.x,.121,f.z,.93,.022,.93,'#786f58');
+    tree(k,f.x,f.z,.82,Math.round(f.x)%3===0);
+   }else if(f.kind==='lamp')streetLamp(k,f.x,f.z);
+   else if(f.kind==='bench')bench(k,f.x,f.z);
+   else if(f.kind==='planter')planting(k,f.x,f.z,f.w,f.d);
+   else{
+    k.put('trunk',f.x,.36,f.z,.22,.72,.22,'#425a55');
+    k.box(f.x,.75,f.z,.46,.09,.49,'#3b4d52');
+   }
   }
-  for(const [x,z] of [[-38.7,3.3],[-2.35,6.52],[19.8,4.7],[44.3,16.7],[50.5,24.6],[-11.1,47],[.25,47],[.25,54]])bench(k,x,z);
-  for(const [x,z] of [[-40,3.45],[3.7,6.5],[43,16.9],[53.9,24.5],[-10,48]]){
-   k.put('trunk',x,.36,z,.22,.72,.22,'#425a55');k.box(x,.75,z,.46,.09,.49,'#3b4d52');
-  }
-  // Signed parallel bays keep cars out of sidewalks and the through lanes.
-  for(const [x,z,paint] of [[44,17.05,'#dfad51'],[51,17.05,'#568ca7'],[-44,22.68,'#be6b56'],[27.5,17.05,'#dae0da']]){
-   paving.box(x,.061,z,4.5,.02,1.84,'#696e71');
-   for(const side of [-1,1])paving.box(x+side*2.20,.074,z,.055,.012,1.89,'#edede4');
+  for(const [x,z,paint] of TOWN_PARKING){
+   paving.box(x,.061,z,4.45,.02,1.72,'#686f71');
+   for(const side of [-1,1])paving.box(x+side*2.19,.074,z,.06,.012,1.72,'#edede4');
    parked(k,x,z,paint);
   }
-  paving.box(-5,.001,51,22,.071,17,'#8caf63');
-  paving.box(-5,.042,51,19,.04,1.85,'#dedbd0');
-  paving.box(-5,.045,51,1.75,.04,16.8,'#dedbd0');
-  k.box(-9,.20,54,5.5,.40,4.5,'#c7c2ad');k.box(-9,.417,54,4.8,.038,3.8,'#629ba8');
-  k.put('trunk',-9,.85,54,.9,1.10,.9,'#dad6c5');
-  k.put('trunk',-9,1.48,54,1.12,.17,1.12,'#e4e0d3');
-  for(const [x,z,tall] of [[-14,44,true],[-.65,44.9,false],[-14,58.95,false],[-1.8,58.4,true],[-10.8,59.1,false],[2,55.7,false]])tree(k,x,z,.95,tall);
-  paving.box(5.65,.064,52.25,8.2,.038,10.0,'#c7805d');
-  for(const x of [2.02,9.28])paving.box(x,.089,52.25,.055,.009,9.1,'#fff0d8');
-  for(const z of [47.73,52.25,56.77])paving.box(5.65,.089,z,7.29,.009,.055,'#fff0d8');
-  paving.box(5.65,.089,55.1,2.8,.012,1.9,'#538f83');
-  k.box(5.65,1.54,56.92,.12,3.0,.12,'#455453');
-  k.box(5.65,2.73,56.67,.95,.62,.065,'#f7eee0');
-  k.box(5.65,2.48,56.44,.42,.075,.39,'#a65842');
+  // One park block, with an axial footpath between the playing court and fountain garden.
+  paving.box(-6.5,.005,54.6,19.2,.052,17.9,'#99b76c');
+  paving.box(-4.37,.047,54.5,1.7,.034,18.0,'#dedaca');
+  for(const z of [47.1,61.85])paving.box(-6.45,.048,z,18.8,.036,1.27,'#ddd9c9');
+  paving.box(-1.6,.050,52.1,4.1,.032,1.05,'#dedaca');
+  const court=PARK_COURT,cx=court.x,cz=court.z;
+  paving.box(cx,.064,cz,court.w,.04,court.d,'#c48161');
+  for(const dx of [-3.65,3.65])paving.box(cx+dx,.089,cz,.06,.012,9.14,'#fff2d9');
+  for(const dz of [-4.55,0,4.55])paving.box(cx,.089,cz+dz,7.34,.012,.06,'#fff2d9');
+  for(const side of [-1,1]){
+   paving.box(cx,.089,cz+side*3.63,2.5,.012,1.7,'#518d82');
+   k.box(cx,1.54,cz+side*4.86,.12,3,.12,'#455453');
+   k.box(cx,2.73,cz+side*4.64,.95,.62,.07,'#f5eee3');
+   k.box(cx,2.48,cz+side*4.45,.40,.065,.32,'#ad624b');
+  }
+  const pool=PARK_FOUNTAIN;
+  k.box(pool.x,.20,pool.z,pool.w,.40,pool.d,'#c3bba6');
+  k.box(pool.x,.419,pool.z,pool.w-.46,.045,pool.d-.46,'#6aabb4');
+  k.put('trunk',pool.x,.87,pool.z,.52,.96,.52,'#d0c9b9');
+  k.put('trunk',pool.x,1.41,pool.z,.88,.15,.88,'#e5dfd0');
   // Orchard Row’s water tower is visible from the surrounding blocks.
   for(const x of [30.8,34.1])for(const z of [47.3,51.1])k.box(x,3.0,z,.28,6,.28,'#687671');
   k.put('trunk',32.45,6.1,49.2,2.6,2.85,2.6,'#7b9592');
   k.put('trunk',32.45,7.63,49.2,2.76,.42,2.76,'#4c6c65');
   paving.flush(outside); k.flush(props);
-  sign(outside,'Lumen Park',-5,1.51,44,3.25,.64,-1);
-  sign(outside,'Orchard Row',29.4,1.55,44.5,3.15,.64,-1);
+  sign(outside,'Lumen Park',-6.3,1.51,46.6,3.25,.64,-1);
+  sign(outside,'Orchard Row',29.4,1.55,46.6,3.15,.64,-1);
  }
  function facade(place){
   const k=kit(),{x,z,w,d,h,kind,brick,trim}=place;
@@ -251,7 +270,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
     k.box(px,2.96,front+f*.57,stripe+.012,.10,1.13,tint,f*.18);
     k.box(px,2.76,front+f*1.10,stripe+.012,.18,.085,tint);
    }
-   planting(k,door-3.0,front+f*1.76,1.23,.82);
+
   }else if(kind==='warehouse'){
    for(let i=0;i<9;i++)k.box(x-2.6,1.0+i*.22,front+f*.108,3.4,.163,.115,'#a5b0a4');
    k.box(x-2.6,.22,front+f*.96,4.26,.40,1.85,'#979887');

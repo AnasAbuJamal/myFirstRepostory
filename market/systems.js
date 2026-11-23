@@ -1,13 +1,13 @@
 /* LumenVale City Systems: mail, expenses, orders, technology and citizens. */
 const LV_SYSTEMS_KEY='lumenvale-city-systems-v1';
 const LV_CHARACTERS=[
- {id:'lena',name:'Lena',title:'Civil Engineer',x:3.40,z:6.75,
+ {id:'lena',name:'Lena',title:'Civil Engineer',x:2.7,z:5.55,
   story:'Our city needs a safe road before the next shipment. Workers must inspect the route, repair broken pavement, and keep the crossing clear for pedestrians.',
   question:'What should workers do before the shipment?',choices:['Inspect and repair the road','Remove every crossing','Ignore the pavement'],answer:0,reward:36},
- {id:'omar',name:'Omar',title:'Workshop Foreman',x:-14.6,z:24.85,
+ {id:'omar',name:'Omar',title:'Workshop Foreman',x:-13.4,z:26.7,
   story:'A delivery truck arrived with five boxes of wood. Four boxes are needed for the current orders. One box can stay in the storeroom for future customers.',
   question:'How many boxes should remain in storage?',choices:['Four','One','Five'],answer:1,reward:44},
- {id:'maya',name:'Maya',title:'City Planner',x:-1.8,z:43.6,
+ {id:'maya',name:'Maya',title:'City Planner',x:-2.2,z:47.9,
   story:'The new neighborhood has homes, a school, and a park. The council recommends saving electricity by using efficient lights and maintaining public spaces.',
   question:'Which choice would help this neighborhood?',choices:['Use efficient lights','Waste electricity','Close the park'],answer:0,reward:52}
 ];
@@ -17,7 +17,7 @@ const LV_HOME_DECOR=[
  {id:'solar',name:'Solar Roof',cost:170,desc:'Modernize your rooftop and improve city reputation.'}
 ];
 const LV_PERSONNEL=['Amina · Operator','Leo · Mechanic','Noor · Engineer','Sam · Driver','Mira · Quality Inspector','Omar · Shift Lead'];
-const LV_TREASURES=[{id:'river',x:35,z:-14,reward:50,unlock:2,clue:'Follow the road east, then search the riverside rocks.'},{id:'forest',x:-38,z:29,reward:90,unlock:3,clue:'Look by the old trees on the far western edge.'},{id:'garden',x:-7.0,z:56.2,reward:140,unlock:4,clue:'Look beyond the homes and gardens at the south edge of the town.'}];
+const LV_TREASURES=[{id:'river',x:35,z:-16,reward:50,unlock:2,clue:'Follow the road east, then search the riverside rocks.'},{id:'forest',x:-49.7,z:55,reward:90,unlock:3,clue:'Look by the old trees on the far western edge.'},{id:'garden',x:1.95,z:56.8,reward:140,unlock:4,clue:'Look beyond the homes and gardens at the south edge of the town.'}];
 var systemsDriving=false;
 const LV_PRODUCTS={workshop:{name:'Furniture',icon:'🪑'},lumber:{name:'Lumber',icon:'🪵'},
  textile:{name:'Fabric',icon:'🧵'},greenhouse:{name:'Produce',icon:'🌿'},assembly:{name:'Tools',icon:'🛠️'}};
@@ -342,13 +342,13 @@ function systemsTreasure(id){
 }
 function systemsVehicle(){
  if(!systemsState.upgrades.delivery){notice('Buy the delivery van from City Hall first.');return;}
- if(!systemsDriving&&Math.hypot(player.x-23.5,player.z-9)>5){notice('Visit the delivery van at the warehouse to drive.');return;}
+ if(!systemsDriving&&Math.hypot(player.x-CITY_UPGRADE_LOTS.delivery.x,player.z-CITY_UPGRADE_LOTS.delivery.z)>5){notice('Visit the delivery van at the warehouse to drive.');return;}
  systemsDriving=!systemsDriving;
  notice(systemsDriving?'Driving delivery van · WASD steer · V or E to exit':'Exited the delivery van.');
 }
 function systemsNearby(player){
  if(systemsDriving)return {id:'vehicle',system:true,label:'Exit delivery van'};
- if(systemsState.upgrades.delivery&&Math.hypot(player.x-23.5,player.z-9)<3)return {id:'vehicle',system:true,label:'Drive your delivery van'};
+ if(systemsState.upgrades.delivery&&Math.hypot(player.x-CITY_UPGRADE_LOTS.delivery.x,player.z-CITY_UPGRADE_LOTS.delivery.z)<3)return {id:'vehicle',system:true,label:'Drive your delivery van'};
  for(const t of LV_TREASURES){
   if(cityCompleted()>=t.unlock&&!systemsState.treasures.includes(t.id)&&Math.hypot(player.x-t.x,player.z-t.z)<2.8)
     return {id:'treasure-'+t.id,system:true,label:'Discover hidden treasure'};

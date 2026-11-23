@@ -66,3 +66,16 @@
 .town-map-road {position:absolute;display:block;background:#71817c;opacity:.8;pointer-events:none}
 .town-map-road.x {height:4px}
 .town-map-road.z {width:4px}
+
+#wave-builder-map,.wave-map.town-street-map{background:#d9e2d0;isolation:isolate;overflow:hidden}
+.map-surface{position:absolute;display:block;pointer-events:none}
+.map-surface.street{background:#88928d}
+.map-surface.building{background:#d1bd9e;border:1px solid #a7967f}
+.map-surface.park{background:#9bbb7c}
+.map-surface.court{background:#c6886c}
+
+.town-pin{position:absolute;transform:translate(-50%,-50%);border:1px solid #f3f6e9;border-radius:50%;background:#375849;color:#fff;line-height:1;font-size:.65rem;font-weight:700;padding:0;width:18px;height:18px}
+.town-pin[aria-pressed=true]{z-index:2;background:#865027;outline:2px solid #fff;outline-offset:1px}
+.town-map-select{display:flex;align-items:center;gap:.7rem;color:#365a44;font-weight:650}
+.town-map-select select{flex:1;min-width:0;border:1px solid #afbfac;border-radius:6px;background:#fffdf7;padding:.45rem;font:inherit}
+@media(max-width:500px){.town-pin{width:15px;height:15px;font-size:.59rem}}

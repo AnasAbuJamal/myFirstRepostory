@@ -53,44 +53,45 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
  // Cars travel along the road and change the view without a cutscene.
  const traffic=[truck('#e6ad63'),truck('#5b99a1'),truck('#c67968')];
  traffic.forEach(car=>root.add(car));
- const addUpgrade=(id,x,z,build)=>{
+ const addUpgrade=(id,build)=>{
+  const {x,z}=CITY_UPGRADE_LOTS[id]||{x:0,z:0};
   const obj=new T.Group();obj.position.set(x,0,z);root.add(obj);obj.visible=false;
   build(obj);return [id,obj];
  };
  const upgrades=new Map([
- addUpgrade('garden',5.95,3.94,g=>{
+ addUpgrade('garden',g=>{
   for(let i=0;i<13;i++){
    const theta=i*2.4,px=Math.cos(theta)*(1.1+i%3*.39),pz=Math.sin(theta)*(1.1+i%3*.39);
    column(g,px,.24,pz,.20,.47,'#b17f61');sphere(g,px,.66,pz,.44,i%2?'#75a66e':'#659e80');
   }
  }),
- addUpgrade('lights',0,0,g=>{
-  for(const [x,z] of [[-2,5],[13.4,24.65],[24,25],[-25.2,14.2],[31.5,5.4]]){
+ addUpgrade('lights',g=>{
+  for(const [x,z] of [[-11,45.95],[.15,46.25],[32.5,60.4],[-43.5,15.35],[32.5,5.45]]){
    column(g,x,1.85,z,.095,3.7,'#667e76');
    sphere(g,x,3.86,z,.36,'#f9dfaa');
   }
  }),
- addUpgrade('home',25,32,g=>{
+ addUpgrade('home',g=>{
   house(g,0,0,6.1,3.2,4.8,'#d1aa83');
   sign(g,'MY HOME',0,2.85,-2.49,2.8,.37);
  }),
- addUpgrade('delivery',23,9,g=>g.add(truck('#d4cb9f'))),
- addUpgrade('power',-39,30,g=>{
+ addUpgrade('delivery',g=>g.add(truck('#d4cb9f'))),
+ addUpgrade('power',g=>{
   for(const x of [-2,0,2])for(const z of [-2,0,2]){
    column(g,x,.65,z,.12,1.28,'#84908b');
    const pane=b(g,x,1.30,z,1.66,.09,1.21,'#567c9b');pane.rotation.x=-.33;
   }
  }),
- addUpgrade('office',-15.1,-.72,g=>{
+ addUpgrade('office',g=>{
   house(g,0,0,6.7,4.2,5.6,'#9ebbb5');
   sign(g,'HEADQUARTERS',0,3.8,-2.88,4.2,.50);
  }),
- addUpgrade('research',36,-3,g=>{
+ addUpgrade('research',g=>{
   house(g,0,0,6.9,4.0,5.6,'#bccdc9');
   sphere(g,0,4.54,0,.5,'#a5d5d6');
   sign(g,'RESEARCH LAB',0,3.57,-2.91,4.1,.50);
  }),
- addUpgrade('train',-2,33,g=>{
+ addUpgrade('train',g=>{
   house(g,0,0,5.4,2.9,3.3,'#a4b5a5');
   sign(g,'TRAINING',0,2.60,-1.72,3.1,.45);
  })
@@ -138,11 +139,7 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
   root.add(member.rig);
   return member;
  });
- const promenade=[
-  {x:-11.6,z:-4.02,span:.75},{x:15.5,z:-4.53,span:2.3},{x:-37.0,z:4.8,span:4.0},
-  {x:46.7,z:25.0,span:3.1},{x:-6.05,z:50.8,span:3.9},{x:49.9,z:58.1,span:3.2}
- ];
- const pedestrians=promenade.map((path,i)=>{
+ const pedestrians=TOWN_WALKS.map((path,i)=>{
   const member=makeTownCitizen(T,piece,box,appearance[(i+3)%appearance.length]);
   member.rig.position.set(path.x,.074,path.z);
   member.rig.rotation.y=Math.PI/2;
@@ -153,9 +150,9 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
  function update(now,view){
   const phase=now*.001;
   for(let i=0;i<traffic.length;i++){
-   const car=traffic[i],distance=(phase*(i+1)*1.15+i*28)%102;
-   car.position.set(i===1?55-distance:-47+distance,.064,i===1?21.14:18.45);
-   car.rotation.y=i===1?Math.PI:0;
+   const car=traffic[i],distance=(phase*2.8+i*30)%102;
+   car.position.set(i===1?55-distance:-47+distance,.064,i===1?22.65:20.12);
+   car.rotation.y=i===1?0:Math.PI;
   }
   for(const [id,group] of upgrades)group.visible=Boolean(systemsState.upgrades[id]);
   for(const [id,group] of homeDecor)group.visible=Boolean(systemsState.homeDecor?.[id]);
@@ -169,7 +166,7 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
     van.position.set(view.player.x,0,view.player.z);
     van.rotation.y=view.player.yaw+Math.PI/2;
    }else{
-    van.position.set(23,0,9);
+    van.position.set(CITY_UPGRADE_LOTS.delivery.x,0,CITY_UPGRADE_LOTS.delivery.z);
     van.rotation.y=0;
    }
   }

@@ -63,9 +63,9 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    b(lot,x,.18,z,.16,.38,.16,'#bead7f');
    sphere(lot,x,.39,z,.14,'#e7c99e');
   }
-  const signboard=new T.Group();signboard.position.set(0,0,-4.5);lot.add(signboard);
-  for(const x of [-1.8,1.8])b(signboard,x,.68,0,.18,1.35,.22,'#81634b');
-  sign(signboard,site.title,0,1.22,-.10,4.7,.64,site.color);
+  const signboard=new T.Group();signboard.position.set(-3.25,0,-3.9);lot.add(signboard);
+  for(const x of [-.68,.68])b(signboard,x,.68,0,.18,1.35,.22,'#81634b');
+  sign(signboard,site.title,0,1.22,-.10,2.15,.52,site.color);
   // A purchased parcel visibly changes from a vacant lot to the player's property.
   const ownedLand=new T.Group();
   lot.add(ownedLand);
