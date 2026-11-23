@@ -7,7 +7,7 @@ function phoneOpen(){
     metric('coins','City wallet')+metric('stock','Goods in stock')+'</div>'+
   '<p class="phone-goal">'+esc(missions[state.step])+'</p>'+
   '<nav class="phone-apps" aria-label="City apps">'+
-    app('property','Properties','window-icon','jade')+app('production','Production','chart-icon','gold')+
+    app('property','Properties','window-icon','jade')+app('production','Production','chart-icon','gold')+app('garage','Garage','door-icon','sage')+
     app('map','Map','map-icon','sage')+app('mail','Mail','mail','blue')+
     app('architect','Build','plant','jade')+app('library','Library','book','gold')+
     app('school','School','orders','blue')+app('careers','Careers','door-icon','sage')+
@@ -32,7 +32,7 @@ function phoneSync(){
  }
 }
 function phoneInit(){
- const apps={property:cityPortfolio,production:()=>systemsPanel('warehouse'),map:campusMap,mail:systemsMailBox,
+ const apps={property:cityPortfolio,production:()=>systemsPanel('warehouse'),garage:()=>systemsPanel('garage'),map:campusMap,mail:systemsMailBox,
   architect:campusArchitect,library:cityBookList,school:campusSchool,careers:campusCareer,words:campusVocabulary,
   journal:academyProfile,guide:cityGuide,fullscreen:()=>{dialog.close();cityEnterFullscreen();}};
  byId('open-phone').addEventListener('click',phoneOpen);
