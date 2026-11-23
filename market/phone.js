@@ -3,9 +3,8 @@
 const PHONE_CATEGORIES={
  learning:{label:'Learn',description:'Courses, reading, achievements and your next lesson.',apps:[
   ['continue','Continue','book','jade'],['school','My Courses','orders','blue'],
-  ['teacher-content','Teacher Lessons','book','jade'],
-  ['pathways','Pathways','door-icon','jade'],['transcript','Transcript','chart-icon','gold'],
-  ['library','Library','book','gold'],['words','My Words','book','jade'],
+  ['teacher-content','Import Teacher JSON','book','jade'],
+  ['library','School Library','book','gold'],['words','My Words','book','jade'],
   ['journal','Reading Journal','orders','sage']
  ]},
  city:{label:'City',description:'Explore districts and manage your growing town.',apps:[
@@ -13,9 +12,7 @@ const PHONE_CATEGORIES={
   ['production','Production','chart-icon','gold'],['architect','Build','plant','jade'],
   ['garage','Garage','door-icon','sage'],['mail','Mail','mail','blue']
  ]},
- career:{label:'Work',description:'Turn your learning into jobs, research and experience.',apps:[
-  ['careers','Career Paths','door-icon','jade'],['jobs','Jobs','orders','gold']
- ]},
+ career:{label:'Work',description:'Teacher-created paths can be added in a future expansion.',apps:[]},
  tools:{label:'Tools',description:'Game settings, local backups and educator access.',apps:[
   ['guide','Help & Settings','help-icon','sage'],['backup','Save Backup','box','blue'],
   ['teacher-portal','Teacher Portal','book','gold'],['teacher','Demo Editor','book','sage'],
@@ -46,7 +43,7 @@ function phoneLearningSummary(){
   '<div><b>'+assignments+'</b><small>Work to submit</small></div></div>'+
   '<p class="phone-next-task"><span>YOUR NEXT STEP</span>'+
   (upcoming?'<strong>'+esc(upcoming.module.title)+'</strong><small>'+esc(upcoming.course.title)+'</small>':
-   '<strong>Explore your courses</strong><small>Choose a lesson or enroll in a class</small>')+'</p>';
+   '<strong>Awaiting teacher courses</strong><small>Import a JSON file or class code from your teacher</small>')+'</p>';
 }
 function phoneOpen(category=phoneCategory){
  // Existing callers may attach phoneOpen directly as a DOM event listener.
@@ -64,7 +61,7 @@ function phoneOpen(category=phoneCategory){
   (category==='learning'?phoneLearningSummary():
    category==='city'?'<div class="phone-overview">'+metric('lands','Land owned')+metric('income','Production / 5s')+
     metric('coins','City wallet')+metric('stock','Goods in stock')+'</div>':
-   category==='career'?'<p class="phone-goal">Study, qualify, apply and complete tasks to earn wages.</p>':
+   category==='career'?'<p class="phone-goal">No career paths have been assigned. School classes are added by teachers; career curriculum can be introduced later.</p>':
    '<p class="phone-goal">Progress is currently saved in this browser. Back it up before clearing browser data or switching devices.</p>')+
   '<nav class="phone-apps" aria-label="'+esc(info.label)+' apps">'+content+'</nav>'+
   (category==='city'?'<p class="phone-goal">'+esc(missions[state.step])+'</p>':''));
