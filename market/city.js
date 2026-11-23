@@ -306,13 +306,14 @@ function cityGuide(){
  '<div><small>Unique books</small><b>'+cityCompleted()+' / '+CITY_BOOKS.length+'</b></div>'+
  '<div><small>Workers</small><b>'+cityPopulation()+'</b></div></div>'+
  '<h3>Next properties</h3><p>'+next.map(s=>s.title+' (land '+s.land+' · building '+s.build+' coins)').join(' · ')+'</p>'+
- '<p class="city-sub">WASD to walk · E to interact · F for fullscreen · Escape unlocks mouse. Your city saves on this device.</p>');
+ '<p class="city-sub">Click Play once to capture the mouse · Esc releases the cursor · Click to resume · E interacts · F fullscreen · G guide · M properties. Menus automatically release the mouse so you can use their buttons. Saves stay on this device.</p>');
 }
 function citySync(){
- const balance=byId('city-coins'),learning=byId('city-learning'),income=byId('city-income'),objective=byId('city-objective');
+ const balance=byId('city-coins'),learning=byId('city-learning'),income=byId('city-income'),lands=byId('city-lands'),objective=byId('city-objective');
  if(balance)balance.textContent=cityState.coins.toLocaleString();
  if(learning)learning.textContent=cityCompleted()+'/'+CITY_BOOKS.length;
  if(income)income.textContent=cityIncome()+'/5s';
+ if(lands)lands.textContent=cityLandOwned()+'/'+CITY_SITES.length;
  if(objective){
   objective.textContent=!cityCompleted()?'Visit the library and finish your first book':
    !cityState.sites.workshop?.owned?'Buy workshop land (20 coins)':
@@ -353,7 +354,8 @@ function cityInit(){
  const hud=document.createElement('div');
  hud.className='city-hud';hud.innerHTML=
  '<div class="city-chip"><small>City coins</small><strong id="city-coins">0</strong></div>'+
- '<div class="city-chip"><small>Books read</small><strong id="city-learning">0/6</strong></div>'+
+ '<div class="city-chip"><small>Books read</small><strong id="city-learning">0/6</strong></div>'+ 
+ '<div class="city-chip"><small>Land owned</small><strong id="city-lands">0/6</strong></div>'+
  '<div class="city-chip"><small>Production</small><strong id="city-income">0/5s</strong></div>'+
  '<div class="city-hud-actions"><button type="button" id="city-help" title="City guide">Guide</button>'+ 
   '<button type="button" id="city-portfolio" title="Land and buildings">Properties</button>'+
