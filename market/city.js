@@ -5,8 +5,8 @@ function cityLoadMouseSettings(){
  try{
   const info=JSON.parse(localStorage.getItem(CITY_MOUSE_PREFS_KEY)||'null');
   return {sensitivity:Math.max(.002,Math.min(.01,Number(info?.sensitivity)||.005)),
-    invertY:Boolean(info?.invertY)};
- }catch{return {sensitivity:.005,invertY:false};}
+    invertY:Boolean(info?.invertY),graphics:info?.graphics==='balanced'?'balanced':'detailed'};
+ }catch{return {sensitivity:.005,invertY:false,graphics:'detailed'};}
 }
 var cityMouseSettings=cityLoadMouseSettings();
 function citySaveMouseSettings(){
@@ -339,7 +339,11 @@ function cityGuide(){
  '<div class="city-mouse-settings"><h3>First-person mouse settings</h3>'+
  '<label for="city-mouse-sensitivity">Mouse sensitivity: <strong id="city-sensitivity-value">'+Math.round(cityMouseSettings.sensitivity*1000)+'</strong></label>'+
  '<input id="city-mouse-sensitivity" type="range" min="2" max="10" step="1" value="'+Math.round(cityMouseSettings.sensitivity*1000)+'">'+
- '<label class="city-toggle"><input id="city-invert-y" type="checkbox" '+(cityMouseSettings.invertY?'checked':'')+'> Invert vertical look</label></div>'+
+ '<label class="city-toggle"><input id="city-invert-y" type="checkbox" '+(cityMouseSettings.invertY?'checked':'')+'> Invert vertical look</label>'+ 
+ '<label for="city-graphics-quality">Graphics quality</label>'+ 
+ '<select id="city-graphics-quality"><option value="detailed" '+(cityMouseSettings.graphics==='detailed'?'selected':'')+'>Detailed · 3D materials and shadows</option>'+ 
+ '<option value="balanced" '+(cityMouseSettings.graphics==='balanced'?'selected':'')+'>Balanced · faster rendering</option></select>'+ 
+ '<small>Changing graphics quality reloads the game. Local progress is preserved.</small></div>'+
  '<p class="city-sub">Click Mouse look to capture the mouse · Esc releases it · Shift sprints · E interacts · P opens your phone · F toggles fullscreen. Menus release the mouse for their buttons. Saves stay on this device.</p>');
 }
 function citySync(){
@@ -394,6 +398,11 @@ function cityInit(){
  document.addEventListener('change',event=>{
   if(event.target.id==='city-invert-y'){
    cityMouseSettings.invertY=event.target.checked;citySaveMouseSettings();
+  }else if(event.target.id==='city-graphics-quality'){
+   const choice=event.target.value;
+   if(!['balanced','detailed'].includes(choice))return;
+   cityMouseSettings.graphics=choice;citySaveMouseSettings();
+   location.reload();
   }
  });
  document.addEventListener('click',event=>{
