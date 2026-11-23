@@ -101,7 +101,7 @@ function academyLibrary(){
  cityPanel('LumenVale / Library','The Knowledge Library',
  '<p>Explore books by genre. Read, complete questions, and earn the coins used to build your city.</p>'+
  '<div class="lv-library-tools"><input id="lv-search" type="search" placeholder="Search books" value="'+esc(academy.query)+'">'+
- '<button class="button" data-academy="teacher" type="button">Teacher Studio</button></div>'+
+ '<button class="button" data-wave="vocab" type="button">My Words</button></div>'+ 
  '<div class="lv-genres">'+filters+'</div><div class="lv-book-grid">'+(cards||'<p>No books in this section.</p>')+'</div>');
 }
 function academyProfile(){
