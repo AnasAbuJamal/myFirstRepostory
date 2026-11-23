@@ -321,13 +321,33 @@ function citySync(){
    cityCompleted()<CITY_BOOKS.length?'Read more books and expand your city':'Keep growing your production city';
  }
 }
+// Browser pointer lock captures all mouse motion until Esc or a focused UI opens.
+// Browser security requires a user click for the initial capture and every recapture.
+function cityRequestMouseLock(){
+ if(!isWalking()||document.pointerLockElement===byId('landscape'))return;
+ const canvas=byId('landscape');
+ if(!canvas?.requestPointerLock){notice('Use a desktop browser with Pointer Lock support.');return;}
+ try{
+  const request=canvas.requestPointerLock();
+  request?.catch?.(()=>notice('Mouse lock was blocked. Click Play again.'));
+ }catch{notice('Mouse lock needs another click.');}
+}
 function cityEnterFullscreen(){
  const root=document.documentElement;
  if(!document.fullscreenElement){
-  const result=root.requestFullscreen?.();
-  if(result?.catch)result.catch(()=>notice('Fullscreen is not available in this browser.'));
-  try{const lock=byId('landscape').requestPointerLock?.();lock?.catch?.(()=>{});}catch{}
+  const request=root.requestFullscreen?.();
+  request?.catch?.(()=>notice('Fullscreen unavailable. Mouse look still works in windowed mode.'));
+  cityRequestMouseLock();
  }else document.exitFullscreen?.();
+}
+function cityMousePrompt(){
+ const locked=document.pointerLockElement===byId('landscape');
+ const prompt=byId('city-mouse-prompt'),paused=Boolean(dialog.open||terminal.open);
+ byId('view').classList.toggle('is-locked',locked);
+ if(prompt)prompt.hidden=locked||paused;
+ const status=byId('city-mouse-state');
+ if(status)status.textContent=locked?'Mouse locked · Esc to release':'Mouse unlocked · Click to resume';
+ if(!locked)stopMovement();
 }
 function cityInit(){
  const hud=document.createElement('div');
@@ -338,8 +358,23 @@ function cityInit(){
  '<div class="city-hud-actions"><button type="button" id="city-help" title="City guide">Guide</button>'+ 
   '<button type="button" id="city-portfolio" title="Land and buildings">Properties</button>'+
  '<button type="button" id="city-full" title="Fullscreen and mouse capture">⛶ Fullscreen</button></div>'+
- '<p class="city-goal" id="city-objective"></p>';
+ '<p class="city-goal" id="city-objective"></p>'+ 
+ '<p class="city-mouse-state" id="city-mouse-state">Mouse unlocked · Click to resume</p>';
  byId('view').append(hud);
+ const prompt=document.createElement('div');
+ prompt.id='city-mouse-prompt';
+ prompt.className='city-mouse-prompt';
+ prompt.innerHTML='<div class="city-resume-card"><div class="city-crosshair-symbol" aria-hidden="true">✛</div>'+
+  '<h2>Jungle Miner</h2><p>Move the mouse to look around. No holding or dragging needed.</p>'+
+  '<button type="button" id="city-resume-button">▶ Click to Play</button>'+
+  '<small>WASD move · E interact · Esc releases mouse · F fullscreen</small></div>';
+ byId('view').append(prompt);
+ byId('city-resume-button').addEventListener('click',cityRequestMouseLock);
+ byId('landscape').addEventListener('click',cityRequestMouseLock);
+ document.addEventListener('pointerlockchange',cityMousePrompt);
+ document.addEventListener('pointerlockerror',()=>notice('Mouse capture failed. Click Play again.'));
+ dialog.addEventListener('close',()=>requestAnimationFrame(cityMousePrompt));
+ terminal.addEventListener('close',()=>requestAnimationFrame(cityMousePrompt));
  byId('city-help').addEventListener('click',cityGuide);
  byId('city-portfolio').addEventListener('click',cityPortfolio);
  byId('city-full').addEventListener('click',cityEnterFullscreen);
@@ -361,7 +396,11 @@ function cityInit(){
   else if(action==='close')dialog.close();
  });
  window.addEventListener('keydown',event=>{
-  if(event.key.toLowerCase()==='f' && !event.repeat && !event.target.matches?.('input,textarea,select') && !dialog.open && !terminal.open)cityEnterFullscreen();
+  if(event.repeat||event.target.matches?.('input,textarea,select')||dialog.open||terminal.open)return;
+  const key=event.key.toLowerCase();
+  if(key==='f'){event.preventDefault();cityEnterFullscreen();}
+  if(key==='m'){event.preventDefault();cityPortfolio();}
+  if(key==='g'){event.preventDefault();cityGuide();}
  });
  document.addEventListener('mousemove',event=>{
   if(document.pointerLockElement===byId('landscape') && !dialog.open && !terminal.open){
@@ -371,11 +410,7 @@ function cityInit(){
  document.addEventListener('fullscreenchange',()=>{
   byId('city-full').textContent=document.fullscreenElement?'⤡ Windowed':'⛶ Fullscreen';
  });
- byId('landscape').addEventListener('click',()=>{
-  if(document.fullscreenElement && !document.pointerLockElement && isWalking()){
-   try{byId('landscape').requestPointerLock?.();}catch{}
-  }
- });
+
  setInterval(()=>{
   cityTick();citySync();
   if(cityBookSession){
@@ -385,4 +420,5 @@ function cityInit(){
   if(typeof drawScene==='function')drawScene();
  },1000);
  cityTick();citySync();drawScene();
+ cityMousePrompt();
 }
