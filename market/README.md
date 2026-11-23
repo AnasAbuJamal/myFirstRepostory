@@ -124,3 +124,17 @@ The game has been rebranded to **LumenVale: City of Knowledge**. The playable br
 - **Vehicle and hidden chests:** Purchase the delivery van from City Hall and approach it near the warehouse to drive. Read books to unlock exploration clues and collect one-time treasure rewards.
 
 The local teacher course-pack example is available at `market/example-course-pack.json`; its files are never uploaded to a server by the game itself.
+
+## Campus, City Architect, and separate teacher portal
+
+**Student game:** The student can open **School** in the top navigation or walk to the school building in the western district. The player chooses classes in English, Math, Science, and Business, completes three lessons per course, and takes final exams. Latest course exam percentages determine a game-only 4.0 GPA. Students can explore four career paths; passing the matching subject unlocks a career. **Words** is a local vocabulary journal, and the reading book view supports selecting a word and saving it.
+
+**City Architect:** The **Build** button opens a top-down town grid. Players can spend in-game coins to place trees, parks, roads, lamps, and small houses, or move purchased factory plots. Buildings can rotate in quarter turns. All objects render in the Three.js world and persist in localStorage. The **Map** is a pin map of world buildings, not geographic GPS.
+
+**Factory interiors:** Built factories have entry interactions that load a shared 3D walkable factory interior with machine and worker stations. Enter with E near the factory front, walk using the FPS controls, and exit at the marked doorway. Factory machinery can be helped/upgraded, and workers hired from the interior.
+
+**Authenticated educator portal:** The teacher interface is **not inside the game**. A separate Next.js application lives in `teacher/`, using Neon Auth and a PostgreSQL teacher-membership allowlist checked on the server. It contains courses, classes, JSON lesson imports, assignments, student roster, and a gradebook. Signing up does not grant teacher privileges. An administrator must verify and approve each account's auth user ID. The portal requires a secure `DATABASE_URL` Vercel environment variable before it can connect to school records. These credentials must never be committed or shared through the game.
+
+**Current limitations:** Player saves and GPA are local to their browser and do not yet synchronize to the teacher database. Classes and exams are fictional educational content; they are not accredited courses. City Architect uses a bounded grid and decorative road pieces, not a full traffic pathfinding simulation. Factory interiors are an initial interactive interior, shared by factory types, rather than unique full industrial layouts.
+
+The original main branch remains untouched. No banking, loans, world expansion, or random events were introduced.
