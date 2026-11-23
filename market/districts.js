@@ -143,7 +143,7 @@ const TOWN_RESERVED=[
 ];
 const TOWN_STREET_SOLIDS=[
  ...TOWN_FURNITURE.map(f=>f.kind==='tree'?townRect(f.x,f.z,.36,.36):f),
- ...TOWN_PARKING.map(([x,z])=>townRect(x,z,2.92,1.48)),
+ ...TOWN_PARKING.map(([x,z])=>townRect(x,z,4.10,1.78)),
  PARK_FOUNTAIN,townRect(5.1,-4.12,1.0,.68)
 ];
 function streetCurbRuns(street,side){
