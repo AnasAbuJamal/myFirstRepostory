@@ -183,6 +183,16 @@ function districtNearby(p){
   const e=townEntrance(place);
   if(Math.hypot(p.x-e.x,p.z-e.z)<2.2)return {district:true,key:'enter',place,origin:e,label:'Enter '+place.name};
  }
+ // The upgraded Research Laboratory also becomes enterable.
+ if(typeof systemsState!=='undefined'&&systemsState.upgrades.research){
+  const lot=CITY_UPGRADE_LOTS.research;
+  const lab={id:'career-research-lab',name:'Research Laboratory',kind:'research',
+   x:lot.x,z:lot.z,w:lot.w,d:lot.d,face:1,room:[10,9],
+   desks:[{x:0,z:-2.2,r:2.3,key:'research',label:'Study teacher research projects'},
+    {x:-6,z:2.1,r:2,key:'careers',label:'Explore qualified jobs'}]};
+  const door=townEntrance(lab);
+  if(Math.hypot(p.x-door.x,p.z-door.z)<2)return {district:true,key:'enter',place:lab,origin:door,label:'Enter Research Laboratory'};
+ }
  if(typeof CITY_SITES!=='undefined')for(const site of CITY_SITES){
   if(site.kind!=='factory'||!cityState.sites[site.id]?.built)continue;
   const origin=factoryEntrance(site,campusState.plots?.[site.id]?.rotation||0);
@@ -210,6 +220,7 @@ function districtInteract(target){
  switch(target.key){
  case 'school':campusSchool();break;
  case 'careers':jobPanel();break;
+ case 'research':jobResearchList();break;
  case 'browse':cityBookList();break;
  case 'words':campusVocabulary();break;
  case 'civic':systemsPanel('overview');break;
