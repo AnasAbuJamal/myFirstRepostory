@@ -83,7 +83,7 @@ function drawScene(animate = '') {
     player: terminal.open ? SEAT_POSITION : player,
     camera: terminal.open && tab === 'cameras' ? securityChannel : null,
     built: state.stand, visitor: activeVisitor, waiting: VISITORS[state.step]?.style,
-    doorOpen, stock: shopTotals(state).onShelf, city:cityState, moving:moveKeys.has('w')||moveKeys.has('s')||moveKeys.has('a')||moveKeys.has('d'), sprinting:moveKeys.has('Shift'), animate,
+    doorOpen, stock: shopTotals(state).onShelf, city:cityState, moving:moveKeys.has('w')||moveKeys.has('s')||moveKeys.has('a')||moveKeys.has('d'), sprinting:moveKeys.has('Shift'), driving:systemsDriving, animate,
   });
 }
 let lastInteraction = '';
@@ -516,7 +516,7 @@ function stepMovement(time) {
   const forward=pressed('w')-pressed('s'), side=pressed('d')-pressed('a');
   if (forward||side) {
     const intervals=Math.max(1,Math.ceil(elapsed/.04));
-    for(let i=0;i<intervals;i++)player=walkStep(player,forward,side,elapsed/intervals,{doorOpen,stand:state.stand,sprint:moveKeys.has('Shift')});
+    for(let i=0;i<intervals;i++)player=walkStep(player,forward,side,elapsed/intervals,{doorOpen,stand:state.stand,sprint:moveKeys.has('Shift'),driving:systemsDriving});
   }
   refreshPosition();
   drawScene();
