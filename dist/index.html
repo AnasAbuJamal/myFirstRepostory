@@ -5034,6 +5034,16 @@ function districtNearby(p){
   const e=townEntrance(place);
   if(Math.hypot(p.x-e.x,p.z-e.z)<2.2)return {district:true,key:'enter',place,origin:e,label:'Enter '+place.name};
  }
+ // The upgraded Research Laboratory also becomes enterable.
+ if(typeof systemsState!=='undefined'&&systemsState.upgrades.research){
+  const lot=CITY_UPGRADE_LOTS.research;
+  const lab={id:'career-research-lab',name:'Research Laboratory',kind:'research',
+   x:lot.x,z:lot.z,w:lot.w,d:lot.d,face:1,room:[10,9],
+   desks:[{x:0,z:-2.2,r:2.3,key:'research',label:'Study teacher research projects'},
+    {x:-6,z:2.1,r:2,key:'careers',label:'Explore qualified jobs'}]};
+  const door=townEntrance(lab);
+  if(Math.hypot(p.x-door.x,p.z-door.z)<2)return {district:true,key:'enter',place:lab,origin:door,label:'Enter Research Laboratory'};
+ }
  if(typeof CITY_SITES!=='undefined')for(const site of CITY_SITES){
   if(site.kind!=='factory'||!cityState.sites[site.id]?.built)continue;
   const origin=factoryEntrance(site,campusState.plots?.[site.id]?.rotation||0);
@@ -5061,6 +5071,7 @@ function districtInteract(target){
  switch(target.key){
  case 'school':campusSchool();break;
  case 'careers':jobPanel();break;
+ case 'research':jobResearchList();break;
  case 'browse':cityBookList();break;
  case 'words':campusVocabulary();break;
  case 'civic':systemsPanel('overview');break;
@@ -8078,7 +8089,20 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    table(k,-4.65,3.9,2.67,1.26);
    planting(k,4.79,4.4,1.20,1.08);
    entryLabel(g,'City services',0,-4.15);entryLabel(g,'City Architect',-5,1.5,3.5);
-  }else if(kind==='warehouse'){
+  }else if(kind==='research'){
+    table(k,0,-5.1,6.8,1.65,'#91aaa1',1.16);
+    table(k,-6.1,1.95,4.05,1.5,'#9aada6',1.12);
+    table(k,6.1,1.95,4.05,1.5,'#9aada6',1.12);
+    for(const x of [-8,8])for(const z of [-4.1,-.8,2.9])shelves(k,x,z,2.7,2.55,.76,true,true);
+    for(const x of [-4,-1,2,5]){
+     k.box(x,1.30,-5.20,.44,.11,.45,'#5c747b');
+     k.put('trunk',x,1.62,-5.25,.095,.55,.095,'#b7c7bc');
+     k.box(x,1.75,-5.25,.31,.07,.30,'#b6d5cc');
+    }
+    k.box(0,2.18,-8.22,4.3,1.45,.12,'#426c69');
+    entryLabel(g,'Research study desk',0,-4.47,5.3);
+    entryLabel(g,'Research careers',-6,2.07,4.4);
+   }else if(kind==='warehouse'){
    for(const x of [-9.8,9.8])for(const z of [-5.5,-1.55,2.40])shelves(k,x,z,3.8,4.0,2.0,false,true);
    for(const x of [-2.25,0,2.25])k.box(x,.58,-6.75,1.92,1.13,2.6,'#b0936d');
    for(const x of [-5,6])table(k,x,-4.18+(x>0?8.3:0),2.6,1,'#7d7661');
