@@ -89,7 +89,7 @@ function campusInitPlotLocations(){
 }
 function campusNearby(player){
  if(campusInterior){
-  if(Math.hypot(player.x,player.z+77)<2.3)return {id:"factory-exit",campus:true,label:"Exit factory"};
+  if(Math.hypot(player.x,player.z+79)<2.0)return {id:"factory-exit",campus:true,label:"Exit factory"};
   if(Math.hypot(player.x-3.0,player.z+73.0)<2.4)return {id:"factory-machine",campus:true,label:"Operate production machine"};
   if(Math.hypot(player.x+3.0,player.z+73.0)<2.4)return {id:"factory-staff",campus:true,label:"Manage worker stations"};
   return null;
@@ -308,7 +308,7 @@ function campusEnterFactory(id){
  const site=CITY_SITES.find(x=>x.id===id),unit=cityState.sites[id];
  if(!site||site.kind!=="factory"||!unit?.built)return;
  campusInterior={id,returnX:site.x,returnZ:site.z-5.9};
- player={...player,x:0,z:-75,yaw:0,pitch:-.08};
+ player={...player,x:0,z:-70,yaw:0,pitch:-.08};
  cityMousePrompt();refreshPosition();drawScene();
  notice("Inside "+site.title+". Explore the machine and employee stations.");
 }
