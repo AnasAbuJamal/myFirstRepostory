@@ -17,6 +17,21 @@ jobs:
           node-version: '22'
       - name: Build single-file game
         run: python3 market/build.py --output dist/index.html
+      - name: Verify distributed HTML matches current source
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,sys
+          generated=Path('dist/index.html').read_bytes()
+          committed=subprocess.check_output(['git','show','HEAD:dist/index.html'])
+          if generated!=committed:
+           i=next((n for n,(a,b) in enumerate(zip(generated,committed)) if a!=b),min(len(generated),len(committed)))
+           print('Outdated dist/index.html: difference at byte',i)
+           print('Generated:',repr(generated[max(0,i-50):i+80]))
+           print('Committed:',repr(committed[max(0,i-50):i+80]))
+           sys.exit(1)
+          print('Standalone HTML exactly matches the source build')
+          PY
       - name: Run course and transcript tests
         run: |
           node --check market/lms.js
