@@ -61,3 +61,8 @@
 .wave-plot-tools{display:inline-flex;gap:.25rem;background:#eef4ed;border-radius:8px;padding:.2rem}
 .wave-plot-tools button{border-radius:7px!important;padding:.45rem .5rem!important}
 .wave-plot-tools button:hover{background:#dcebdc}
+
+.town-street-map {background:#dae2cf}
+.town-map-road {position:absolute;display:block;background:#71817c;opacity:.8;pointer-events:none}
+.town-map-road.x {height:4px}
+.town-map-road.z {width:4px}

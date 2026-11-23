@@ -69,51 +69,8 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    leaf.rotation.z=Math.sin(a)*.26;
   }
  }
- // Streets form a city grid and lead out from the Market Office.
- b(city,14,-.015,18,3.9,.07,45,'#d3bb8f');
- b(city,-11,-.02,18,57,.055,3.2,'#d0b78b');
- b(city,31,-.016,16,3.6,.07,24,'#d0b78b');
- b(city,-27,-.016,18,3.5,.06,29,'#d0b78b');
- b(city,0,-.021,26,64,.055,2.2,'#e0c99f');
- for(let x=-36;x<38;x+=4.5){
-  b(city,x,.015,18,1.8,.012,.045,'#f4e9c9');
-  b(city,x,.015,26,1.15,.012,.034,'#fff2d8');
- }
- for(let z=0;z<35;z+=4.6)b(city,14,.015,z,.055,.015,1.8,'#f2e9c9');
- // Library pavilion and individual book stacks.
- const lib=new T.Group();lib.position.set(14,0,11);city.add(lib);
- b(lib,0,-.015,0,11.6,.08,9.7,'#d9c8a2');
- b(lib,0,.08,0,11.2,.07,9.2,'#e3d5b7');
- for(const x of [-5.24,5.24])for(const z of [-4.15,4.15]){
-  b(lib,x,2.04,z,.33,4,.33,'#e9d5ad');
-  b(lib,x,3.15,z,.55,.18,.55,'#c49d69');
- }
- b(lib,0,4.20,0,12.15,.25,10.35,'#557c64');
- roof(lib,0,4.42,0,12.1,10.5,'#466d57');
- b(lib,0,3.55,-4.79,5.8,1.0,.28,'#294b3f');
- sign(lib,'THE READING LIBRARY',0,3.57,-4.94,5.5,.7);
- // Shelves visible through the open front.
- for(const x of [-3.7,0,3.7]){
-  const shelf=new T.Group();shelf.position.set(x,0,1.2);lib.add(shelf);
-  b(shelf,0,1.3,0,2.35,2.45,.46,'#7d583a');
-  b(shelf,0,1.40,-.31,2.22,2.22,.09,'#a17a4d');
-  for(let level=0;level<3;level++){
-   b(shelf,0,.5+level*.68,-.48,2.5,.10,.67,'#78553c');
-   for(let i=0;i<9;i++){
-    const col=['#c65f53','#c49a4a','#447b84','#967b9b','#6b9558','#c37556'][((i+level*2+Math.round(x))%6+6)%6];
-    b(shelf,-.96+i*.235,.75+level*.68,-.48,.17,.42+(i%3)*.055,.29,col).rotation.z=i%4===0?.07:0;
-   }
-  }
- }
- b(lib,0,.49,-2.65,4.3,.92,.66,'#ad835c');
- b(lib,0,1.01,-2.65,4.55,.14,.83,'#c8a079');
- for(let i=0;i<5;i++)b(lib,-1.48+i*.70,1.13,-2.65,.46,.12,.31,['#5a7d67','#b87551','#758eb4'][i%3]);
- plant(lib,-4.7,-2.8,.75);plant(lib,4.7,-2.8,.75);
- const librarian=person(lib,2.65,-2.7,'#6c8eac','#6b4b37');
- const readers=[person(lib,-4.15,-.7,'#b46d62','#543b32'),person(lib,4.15,2.25,'#b99b56','#3d3530')];
- for(const p of readers)p.rig.scale.set(.91,.91,.91);
  // Plaza fountain and garden beds.
- const park=new T.Group();park.position.set(0,0,11.6);city.add(park);
+ const park=new T.Group();park.position.set(6.7,0,10.9);city.add(park);
  cylinder(park,0,.28,0,2.2,.45,'#a6b7ad',12);
  cylinder(park,0,.53,0,1.97,.17,'#78b0b6',12);
  cylinder(park,0,1.1,0,.28,1.0,'#ccd9cf',10);
@@ -123,7 +80,7 @@ function createCityWorld({T,exterior,box,piece,renderer}){
   plant(park,Math.cos(a)*3.3,Math.sin(a)*3.3,.65);
  }
  // Decorative lamps, benches, market awnings, and trees.
- for(const [x,z] of [[7,5],[21,5],[7,20],[21,20],[-19,18],[-35,18],[29,24],[-4,30]]){
+ for(const [x,z] of [[-19,15],[-34,16],[29,24],[-4,30]]){
   cylinder(city,x,1.8,z,.095,3.6,'#56665d');
   sphere(city,x,3.72,z,.3,'#f5d8a2');
   cylinder(city,x,3.44,z,.30,.15,'#4b5e52');
@@ -205,8 +162,21 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    }
    for(const [x,z,shirt] of [[-2.8,-2.6,'#9c755f'],[2.1,-2.55,'#6d92a0'],[0,2.0,'#aa7b81']])workers.push(person(active,x,z,shirt));
   }else{
-   b(active,0,1.8,.5,7.25,3.58,5.6,site.color);
-   b(active,0,3.59,.5,7.7,.22,5.9,'#485e61');
+   b(active,0,2.45,.5,7.6,4.90,5.65,site.color);
+   b(active,0,4.88,.5,8.0,.26,6.16,'#485e61');
+   b(active,0,.37,-2.35,7.65,.67,.14,'#92928b');
+   b(active,0,3.58,-2.39,7.67,.15,.20,'#d0b79b');
+   for(const x of [-2.63,0,2.63]){
+    b(active,x,4.17,-2.41,1.70,.70,.12,'#597477');
+    for(const a of [-.82,.82])b(active,x+a,4.17,-2.49,.09,.78,.08,'#a6b3a7');
+   }
+   for(const side of [-1,1])for(const z of [-1.42,.46,2.25]){
+    b(active,side*3.82,3.7,z,.16,1.45,1.38,'#c0b89c');
+    b(active,side*3.92,3.7,z,.06,1.27,1.20,'#83999b');
+   }
+   b(active,0,2.59,-2.72,2.13,.16,.70,'#526d66');
+   sign(active,site.title,0,2.96,-2.74,3.6,.46);
+
    for(const x of [-2.4,0,2.4]){
     b(active,x,2.22,-2.36,1.30,.96,.08,'#a6c3c4');
     b(active,x,2.20,-2.43,.10,1,.10,'#66858b');
@@ -225,12 +195,12 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    b(active,0,.52,-3.12,5.1,.25,.9,'#566765');
    for(let i=0;i<6;i++)cylinder(active,-2.1+i*.84,.55,-3.12,.19,.74,'#899d92').rotation.z=PI/2;
    for(let i=0;i<4;i++)motion.push(b(active,-1.8+i*.99,.80,-3.12,.56,.45,.52,'#cba571'));
-   const chimney=cylinder(active,2.56,4.55,2.06,.52,2.05,'#987f74');
-   cylinder(active,2.56,5.62,2.06,.62,.17,'#c6ad88');
+   cylinder(active,2.56,5.68,2.06,.52,2.05,'#987f74');
+   cylinder(active,2.56,6.82,2.06,.62,.17,'#c6ad88');
    // Colored machinery behind the main wall for depth.
    for(const x of [-2.3,-.8,.9]){
-    b(active,x,4.04,2.3,1.0,.48,1.6,'#5d7475');
-    sphere(active,x,4.45,2.3,.26,'#b39a77');
+    b(active,x,5.16,2.3,1.0,.48,1.6,'#5d7475');
+    sphere(active,x,5.53,2.3,.26,'#b39a77');
    }
    for(let i=0;i<6;i++){
     const shirt=['#d49e59','#618da0','#ac755f'][i%3];
@@ -242,9 +212,9 @@ function createCityWorld({T,exterior,box,piece,renderer}){
  }
  // A few town residents make the settlement feel alive before construction.
  const townspeople=[
-  person(city,8,17,'#b16e63','#533c32'),
-  person(city,20,18,'#75a18a','#2e372f'),
-  person(city,-7,20,'#bc9c60','#5d453a'),
+  person(city,8,15.4,'#b16e63','#533c32'),
+  person(city,20,15.4,'#75a18a','#2e372f'),
+  person(city,-7,24.2,'#bc9c60','#5d453a'),
   person(city,5,27,'#9a80bb','#443b31')
  ];
  function update(saved,now){
@@ -271,7 +241,7 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    // Factory machinery and people keep moving even while the player stands still.
    animatePeople(entry.workers, time, pause, id.length*.27);
   }
-  animatePeople([librarian,...readers,...townspeople],time,pause,0);
+  animatePeople(townspeople,time,pause,0);
  }
  function animatePeople(people,time,pause,offset){
   if(pause)return;
@@ -290,8 +260,10 @@ function createCityWorld({T,exterior,box,piece,renderer}){
 function cityCanWalk(x,z){
  for(const site of CITY_SITES){
   if(!cityState.sites[site.id]?.built)continue;
-  // Leave the construction sign and path in front accessible.
-  if(Math.abs(x-site.x)<3.72 && z>site.z-2.60 && z<site.z+3.3)return false;
+  const turns=typeof campusState!=='undefined'?campusState.plots?.[site.id]?.rotation||0:0;
+  const a=turns*Math.PI/2, dx=x-site.x, dz=z-site.z;
+  const localX=dx*Math.cos(a)-dz*Math.sin(a), localZ=dx*Math.sin(a)+dz*Math.cos(a);
+  if(Math.abs(localX)<4.0&&localZ>-2.55&&localZ<3.53)return false;
  }
  return true;
 }

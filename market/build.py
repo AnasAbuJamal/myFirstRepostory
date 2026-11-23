@@ -16,7 +16,7 @@ def build():
         '/* GAME STYLES */': source('style.css') + '\n' + source('walking.css') + '\n' + source('city.css') + '\n' + source('academy.css') + '\n' + source('systems.css') + '\n' + source('campus.css'),
         '/* GAME ENGINE */': inside_script('/*\n' + source('vendor/THREE-LICENSE.txt') + '*/\n' + source('vendor/three.js')),
         '/* GAME CODE */': inside_script(
-            '\n\n'.join(source(name) for name in ('story.js', 'rules.js', 'walk.js', 'city.js', 'academy.js', 'systems.js', 'campus.js', 'city-world.js', 'systems-world.js', 'campus-world.js', 'software.js', 'view.js', 'reports.js', 'app.js'))
+            '\n\n'.join(source(name) for name in ('story.js', 'rules.js', 'walk.js', 'districts.js', 'city.js', 'academy.js', 'systems.js', 'campus.js', 'city-world.js', 'systems-world.js', 'campus-world.js', 'district-world.js', 'software.js', 'view.js', 'reports.js', 'app.js'))
         ),
     }
     page = source('template.html')

@@ -87,13 +87,18 @@ function drawScene(animate = '') {
   });
 }
 let lastInteraction = '';
+function worldInteraction() {
+  if (districtVisit) return districtNearby(player);
+  if (systemsDriving) return systemsNearby(player);
+  return districtNearby(player) || systemsNearby(player) || cityNearby(player) ||
+    nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
+}
 function refreshPosition() {
-  const place = cityNearby(player)?.id==='library' ? 'Town library' :
-    cityNearby(player) ? 'City development plot' : inOffice(player.x,player.z) ? 'Shop office' :
+  const place = districtVisit ? districtVisit.place.name : inOffice(player.x,player.z) ? 'Shop office' :
     state.stand && Math.hypot(player.x-STAND.x,player.z-STAND.z)<4.5 ? 'Pickup stand' :
-    player.z < -12 ? 'Riverside' : 'Market grounds';
+    player.z < -12 ? 'Riverwalk' : districtName(player.x,player.z);
   if(byId('world-location').textContent!==place)byId('world-location').textContent=place;
-  const target = campusNearby(player) || campusNearby(player) || systemsNearby(player) || cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
+  const target = worldInteraction();
   const name = target?.label || '';
   if (lastInteraction !== name) {
     lastInteraction=name;
@@ -348,9 +353,9 @@ function standUp() {
 }
 function interact() {
   if (terminal.open || dialog.open) return;
-  const target = systemsNearby(player) || cityNearby(player) || nearbyInteraction(player,doorOpen,VISITORS[state.step],state.stand);
+  const target = worldInteraction();
   if (!target) return;
-  if (target.campus) return campusInteract(target);
+  if (target.district) return districtInteract(target);
   if (target.system) return systemsInteract(target);
   if (target.city) return cityInteract(target);
   if (target.id === 'seat') return sitAtComputer();

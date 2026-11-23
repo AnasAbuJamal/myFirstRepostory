@@ -88,29 +88,6 @@ function campusInitPlotLocations(){
   if(p){site.x=p.x;site.z=p.z;}
  }
 }
-function campusNearby(player){
- if(campusInterior){
-  if(Math.hypot(player.x,player.z+79)<2.0)return {id:"factory-exit",campus:true,label:"Exit factory"};
-  if(Math.hypot(player.x-3.0,player.z+73.0)<2.4)return {id:"factory-machine",campus:true,label:"Operate production machine"};
-  if(Math.hypot(player.x+3.0,player.z+73.0)<2.4)return {id:"factory-staff",campus:true,label:"Manage worker stations"};
-  return null;
- }
- if(Math.hypot(player.x+37,player.z+7)<3.3)return {id:"school",campus:true,label:"Enter LumenVale School"};
- for(const site of CITY_SITES){
-  const u=cityState.sites[site.id];
-  if(site.kind==="factory"&&u?.built&&Math.hypot(player.x-site.x,player.z-(site.z-3.2))<1.9)
-   return {id:"enter-"+site.id,campus:true,label:"Enter "+site.title};
- }
- return null;
-}
-function campusInteract(target){
- const id=target?.id;
- if(id==="school")campusSchool();
- else if(id==="factory-exit")campusExitFactory();
- else if(id==="factory-machine")campusFactoryMachine();
- else if(id==="factory-staff")campusFactoryStaff();
- else if(id?.startsWith("enter-"))campusEnterFactory(id.slice(6));
-}
 function campusSchool(){
  const grade=campusGPA();
  const cards=CAMPUS_SUBJECTS.map(sub=>{
@@ -265,7 +242,7 @@ function campusSaveSelection(){
 }
 function campusArchitectValid(x,z,except=null){
  if(x< -38||x>38||z<0||z>32)return false;
- if(Math.hypot(x-14,z-11)<10||Math.hypot(x+7,z-13.5)<6||
+ if(atStreet(x,z,2.8)||TOWN_PLACES.some(p=>placeOverlap(p,x,z,5.4))||
  Math.hypot(x,z-11.6)<5||Math.hypot(x+37,z+7)<9||
  Math.hypot(x-23.5,z-6)<6||Math.hypot(x,z)<7)return false;
  for(const site of CITY_SITES)if(site.id!==except&&Math.abs(site.x-x)<10&&Math.abs(site.z-z)<9)return false;
@@ -313,28 +290,21 @@ function campusPlace(x,z){
  campusState.decor.push({kind:kind.id,x,z});campusSave();campusArchitect();drawScene();return true;
 }
 function campusMap(){
- const all=[{title:"School",x:-37,z:-7},{title:"Library",x:14,z:11},{title:"City Hall",x:-7,z:13.5},
- {title:"Mail",x:6,z:-7},{title:"Warehouse",x:23.5,z:6},...CITY_SITES.map(s=>({title:s.title,x:s.x,z:s.z}))];
- const pins=all.map(x=>'<div class="wave-map-pin" style="left:'+((x.x+45)/90*100)+'%;top:'+((x.z+18)/54*100)+'%" title="'+
+ const all=[...TOWN_PLACES.map(p=>({title:p.name,x:p.x,z:p.z})),
+ {title:"Market Office",x:0,z:0},{title:"Lumen Park",x:-5,z:51},
+ ...CITY_SITES.map(s=>({title:s.title,x:s.x,z:s.z}))];
+ const mapX=x=>(x-TOWN_BOUNDS.left)/(TOWN_BOUNDS.right-TOWN_BOUNDS.left)*100;
+ const mapZ=z=>(z-TOWN_BOUNDS.north)/(TOWN_BOUNDS.south-TOWN_BOUNDS.north)*100;
+ const roads=STREET_PLAN.map(s=>'<i class="town-map-road '+s.axis+'" style="left:'+
+  mapX(s.axis==='x'?s.from:s.at)+'%;top:'+mapZ(s.axis==='x'?s.at:s.from)+'%;'+
+  (s.axis==='x'?'width:'+(mapX(s.to)-mapX(s.from)):'height:'+(mapZ(s.to)-mapZ(s.from)))+'%"></i>').join('');
+ const pins=all.map(x=>'<div class="wave-map-pin" style="left:'+mapX(x.x)+'%;top:'+mapZ(x.z)+'%" title="'+
  esc(x.title)+'"><span>●</span><small>'+esc(x.title)+'</small></div>').join('');
  cityPanel("LumenVale / Map","City Map",
  '<p>Explore the city without GPS. The map shows your buildings and the important places you can visit.</p>'+
- '<div class="wave-map-area"><div class="wave-map">'+pins+'</div></div>'+
+ '<div class="wave-map-area"><div class="wave-map town-street-map">'+roads+pins+'</div></div>'+
  '<div class="city-actions"><button class="button" data-wave="school">School</button>'+
  '<button class="button" data-wave="architect">City Architect</button><button class="button" data-wave="careers">Careers</button></div>');
-}
-function campusEnterFactory(id){
- const site=CITY_SITES.find(x=>x.id===id),unit=cityState.sites[id];
- if(!site||site.kind!=="factory"||!unit?.built)return;
- campusInterior={id,returnX:site.x,returnZ:site.z-5.9};
- player={...player,x:0,z:-70,yaw:0,pitch:-.08};
- cityMousePrompt();refreshPosition();drawScene();
- notice("Inside "+site.title+". Explore the machine and employee stations.");
-}
-function campusExitFactory(){
- if(!campusInterior)return;
- player={...player,x:campusInterior.returnX,z:campusInterior.returnZ,yaw:0,pitch:0};
- campusInterior=null;refreshPosition();drawScene();
 }
 function campusFactoryMachine(){
  const site=CITY_SITES.find(x=>x.id===campusInterior?.id),unit=cityState.sites[site?.id];

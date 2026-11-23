@@ -54,7 +54,10 @@ function createSoftwareRenderer(T, canvas) {
       buffers.set(key,{image,pixels:new Uint32Array(image.data.buffer),depth:new Float32Array(w*h)});
     }
     const {image,pixels,depth}=buffers.get(key);
-    pixels.fill(0xffd5dac2);
+    const sky=scene.background?.getHex?.()??0xc2dad5;
+    pixels.fill((255<<24)|((sky&255)<<16)|(sky&65280)|(sky>>>16));
+    const exposure=scene.userData.townLight||1;
+    const labels=[];
     depth.fill(0);
     function triangleFill(a,b,c,ink) {
       const minX=Math.max(0,Math.ceil(Math.min(a[0],b[0],c[0])-.5));
@@ -90,6 +93,12 @@ function createSoftwareRenderer(T, canvas) {
       if (!object.isMesh || !object.geometry || !object.material?.color) return;
       const {positions,index,points}=getGeometry(object.geometry);
       const material=object.material;
+      const sign=object.userData.citySign;
+      if(sign){
+        const position=new T.Vector3().setFromMatrixPosition(object.matrixWorld).applyMatrix4(matrix);
+        const d=-position.z;
+        if(d>near&&d<42)labels.push({x:halfX+position.x*scale/d,y:halfY-position.y*scale/d,d,sign});
+      }
       view.multiplyMatrices(matrix,object.matrixWorld);
       const models=object.isInstancedMesh?object.count:1;
       for (let model=0;model<models;model++) {
@@ -100,6 +109,7 @@ function createSoftwareRenderer(T, canvas) {
         } else {
           modelView.copy(view);
           color.copy(material.color);
+          if(sign)color.set(sign.color);
         }
         const m=modelView.elements;
         if (object.isInstancedMesh) {
@@ -134,7 +144,7 @@ function createSoftwareRenderer(T, canvas) {
           const nx=uy*vz-uz*vy, ny=uz*vx-ux*vz, nz=ux*vy-uy*vx;
           const length=Math.hypot(nx,ny,nz)||1;
           const incidence=Math.max(0,(nx*light.x+ny*light.y+nz*light.z)/length);
-          const shade=material.isMeshBasicMaterial?1:.65+.40*incidence+.14*Math.max(0,ny/length);
+          const shade=material.isMeshBasicMaterial?1:exposure*(.65+.40*incidence+.14*Math.max(0,ny/length));
           const distance=(a[2]+b[2]+c[2])/3;
           const fog=Math.min(.48,Math.max(0,(distance-20)*.009));
           const r8=tone(color.r*shade*(1-fog)+.54*fog);
@@ -145,7 +155,21 @@ function createSoftwareRenderer(T, canvas) {
         }
       }
     });
-    ctx.putImageData(image,Math.floor(left*ratio),canvas.height-Math.floor(bottom*ratio)-h);
+    const leftPx=Math.floor(left*ratio),topPx=canvas.height-Math.floor(bottom*ratio)-h;
+    ctx.putImageData(image,leftPx,topPx);
+    ctx.save();
+    ctx.beginPath();ctx.rect(leftPx,topPx,w,h);ctx.clip();
+    ctx.fillStyle='#fff1cb';ctx.textAlign='center';ctx.textBaseline='middle';
+    for(const {x,y,d,sign} of labels){
+      if(x<2||y<2||x>w-2||y>h-2)continue;
+      const actual=depth[Math.floor(y)*w+Math.floor(x)];
+      if(actual===0||Math.abs(actual-1/d)>.012)continue;
+      const font=sign.height*scale/d*.49;
+      if(font<6)continue;
+      ctx.font='600 '+Math.min(56,font)+'px Georgia';
+      ctx.fillText(sign.text,leftPx+x,topPx+y,sign.width*scale/d*.88);
+    }
+    ctx.restore();
   }
   return {
     isSoftware:true, setSize, render,

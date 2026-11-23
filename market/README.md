@@ -138,3 +138,21 @@ The local teacher course-pack example is available at `market/example-course-pac
 **Current limitations:** Player saves and GPA are local to their browser and do not yet synchronize to the teacher database. Classes and exams are fictional educational content; they are not accredited courses. City Architect uses a bounded grid and decorative road pieces, not a full traffic pathfinding simulation. Factory interiors are an initial interactive interior, shared by factory types, rather than unique full industrial layouts.
 
 The original main branch remains untouched. No banking, loans, world expansion, or random events were introduced.
+
+## Districts and interiors
+
+The city now has a shared street plan used by the first-person world, door
+interactions, collision checks, and City Map. Learn at the west campus, do
+business at Civic Square or the east market, and follow Park Avenue south to
+Lumen Park and Orchard Row. Existing factory plot coordinates and saved plot
+placements remain compatible.
+
+Approach a signed entrance and press **E**. The school contains class and career
+stations, the library has reading and vocabulary desks, City Hall has city
+services and City Architect, and Eastbank Warehouse has inventory and
+contracts. Fern & Finch and Eastbank Outfitters have trade noticeboards.
+Factories gain production floors and worker stations when built. Find the
+marked exit to return to the same door. The teacher portal remains a separate
+app under teacher/.
+
+Run `node --test market/test-*.cjs` from the repository root.

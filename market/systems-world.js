@@ -50,22 +50,6 @@ function createLumenWorld({T,exterior,box,renderer}){
  b(mailbox,0,2.43,0,1.0,.10,.68,'#813e37');
  b(mailbox,0,2.11,-.29,.70,.095,.035,'#f1d492');
  sign(mailbox,'MAIL',0,1.81,-.30,.74,.20);
- // City Hall - permanent municipal hub.
- const hall=new T.Group();hall.position.set(-7,0,13.5);root.add(hall);
- b(hall,0,.21,0,6.5,.40,5.4,'#d5c4a3');
- b(hall,0,2.25,.25,5.9,3.9,4.8,'#b7a187');
- b(hall,0,4.28,.25,6.5,.22,5.25,'#527466');
- for(const x of [-2.48,-.83,.83,2.48])column(hall,x,1.9,-2.2,.19,3.1,'#e2d9c2');
- b(hall,0,1.19,-2.24,1.13,2.0,.14,'#85634d');
- sign(hall,'CITY HALL',0,3.74,-2.35,3.3,.52);
- // Business warehouse and goods loading bay.
- const depot=new T.Group();depot.position.set(23.5,0,6.0);root.add(depot);
- b(depot,0,1.5,1.4,7.4,3.0,5.4,'#9baca5');
- b(depot,0,3.03,1.4,7.75,.23,5.75,'#617a74');
- b(depot,-1.75,1.30,-1.36,2.78,2.3,.12,'#536c65');
- b(depot,1.8,1.30,-1.36,2.3,2.3,.12,'#c5b9a0');
- for(let i=0;i<5;i++){b(depot,-2.75+i*1.25,.43,-2.6,.94,.78,.66,'#ad875b');}
- sign(depot,'CITY WAREHOUSE',0,2.67,-1.49,4.7,.47);
  // Cars travel along the road and change the view without a cutscene.
  const traffic=[truck('#e6ad63'),truck('#5b99a1'),truck('#c67968')];
  traffic.forEach(car=>root.add(car));
@@ -153,8 +137,8 @@ function createLumenWorld({T,exterior,box,renderer}){
  function update(now,view){
   const phase=now*.001;
   for(let i=0;i<traffic.length;i++){
-   const car=traffic[i],distance=(phase*(i+1)*1.15+i*23)%78;
-   car.position.set(-37+distance,0,i===1?26:18);
+   const car=traffic[i],distance=(phase*(i+1)*1.15+i*28)%102;
+   car.position.set(i===1?55-distance:-47+distance,0,i===1?21.05:18.54);
    car.rotation.y=i===1?Math.PI:0;
   }
   for(const [id,group] of upgrades)group.visible=Boolean(systemsState.upgrades[id]);

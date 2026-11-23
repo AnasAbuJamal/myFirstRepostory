@@ -20,9 +20,11 @@ const OFFICE_COLLIDERS = [
   [-1.24, 1.64, -.40, .68], [-3.43, -1.74, -3.02, -2.38],
 ];
 function canWalk(x,z,{doorOpen,stand}) {
-  if(typeof campusInterior!=='undefined'&&campusInterior)return x>-7.7&&x<7.7&&z>-80.4&&z< -65.3;
+  if(typeof districtWalk==='function'){
+    if(typeof districtVisit!=='undefined'&&districtVisit)return districtWalk(x,z);
+    if(!districtWalk(x,z))return false;
+  }else if(x < WALK_LIMITS.left || x > WALK_LIMITS.right || z < WALK_LIMITS.north || z > WALK_LIMITS.south)return false;
   if(typeof cityCanWalk==='function' && !cityCanWalk(x,z))return false;
-  if (x < WALK_LIMITS.left || x > WALK_LIMITS.right || z < WALK_LIMITS.north || z > WALK_LIMITS.south) return false;
   const radius = .20;
   const colliders = OFFICE_COLLIDERS.slice();
   if (!doorOpen) colliders.push([1.98, 3.3, -3.78, -3.52]);
@@ -31,7 +33,7 @@ function canWalk(x,z,{doorOpen,stand}) {
     x > left-radius && x < right+radius && z > north-radius && z < south+radius);
 }
 function walkStep(player, forward, sideways, seconds, settings) {
-  const speed = settings.driving ? 10 : inOffice(player.x,player.z) ? 2.8 : settings.sprint ? 7.3 : 4.15;
+  const speed = settings.driving ? 10 : ((typeof districtVisit!=='undefined'&&districtVisit)||inOffice(player.x,player.z)) ? 3.15 : settings.sprint ? 7.3 : 4.15;
   const magnitude = Math.max(1,Math.hypot(forward,sideways));
   const scale = Math.max(0,Math.min(seconds,.045))*speed/magnitude;
   const dx = (Math.cos(player.yaw)*sideways-Math.sin(player.yaw)*forward)*scale;

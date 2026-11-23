@@ -20,9 +20,10 @@ function createOfficeView() {
 
   const scene = new T.Scene();
   scene.background = new T.Color('#c2dad5');
-  scene.add(new T.HemisphereLight('#fff0d0', '#a1ad82', 1.48));
+  const skyLight = new T.HemisphereLight('#e3ebff', '#9f9980', 1.55);
+  scene.add(skyLight);
   const sun = new T.DirectionalLight('#ffe3ae', 2.05);
-  sun.position.set(-9, 12, -8);
+  sun.position.set(-18, 19, 12);
   scene.add(sun);
   const camera = new T.PerspectiveCamera(70, 1, .07, 145);
   const office = new T.Group();
@@ -49,7 +50,7 @@ function createOfficeView() {
   }
   const box = (group, ...shape) => piece(group, 'cube', ...shape);
 
-  box(exterior, 0, -.52, -13, 106, 1, 87, '#879e65');
+  box(exterior, 0, -.52, 20, 183, 1, 145, '#8b9c70');
   box(exterior, 0, .007, -10, 48, .031, 2.5, '#c6b28a');
   box(exterior, 2.62, .006, -6.7, 2.12, .035, 6.3, '#c8b794');
   box(exterior, -4.32, .006, -11.74, 1.6, .034, 3.4, '#c1af89');
@@ -231,6 +232,10 @@ function createOfficeView() {
   const cityRenderer=createCityWorld({T,exterior,box,piece,renderer});
   const lumenRenderer=createLumenWorld({T,exterior,box,piece,renderer});
   const campusRenderer=createCampusWorld({T,exterior,box,piece,renderer});
+  const districtRenderer=createDistrictWorld({T,scene,exterior,renderer});
+  const haze={isFog:true,name:'LumenVale air',color:new T.Color('#bfcdc4'),near:38,far:124};
+  const duskColor=new T.Color('#6a7790'), dayColor=new T.Color('#c2d8d0');
+  const eveningLight=new T.Color('#e6aa70'), daylight=new T.Color('#ffedc8');
 
   const coatColors = { rose: '#af6760', amber: '#bc8752', blue: '#4d7982' };
   function makeVisitor(tint) {
@@ -312,10 +317,30 @@ function createOfficeView() {
     cityRenderer.update(current.city,now);
     lumenRenderer.update(now,current);
     campusRenderer.update(now);
-    // Slow day-and-night lighting, independent of random events.
-    const sunPhase=Math.max(.05,(Math.sin(now/115000)+1)/2);
-    sun.intensity=.42+1.55*sunPhase;
-    scene.background.set(sunPhase>.50?'#bedbd7':sunPhase>.25?'#819ba0':'#3b5973');
+    districtRenderer.update(now);
+    const indoors=Boolean(districtVisit);
+    exterior.visible=!indoors;
+    office.visible=!indoors;
+    // Long blue-hour shadows and warm interiors have separate lighting.
+    const dayPhase=(Math.cos(now/144000)+1)*.5;
+    scene.fog=indoors?null:haze;
+    if(indoors){
+      skyLight.color.set('#fbe8c9');
+      skyLight.groundColor.set('#a9b1a0');
+      skyLight.intensity=1.89;
+      sun.color.set('#ffddb1');
+      sun.intensity=.91;
+      scene.background.set('#7a847e');
+    }else{
+      skyLight.color.set('#d9e2f3');
+      skyLight.groundColor.set('#9e987b');
+      skyLight.intensity=1.08+dayPhase*.42;
+      sun.color.copy(eveningLight).lerp(daylight,dayPhase);
+      sun.intensity=.36+dayPhase*1.68;
+      scene.background.copy(duskColor).lerp(dayColor,.24+dayPhase*.76);
+      haze.color.copy(scene.background);
+    }
+    scene.userData.townLight=indoors?1.04:.73+dayPhase*.27;
     // Subtle first-person locomotion feedback; disabled for reduced-motion preferences.
     const moving=current.moving && player!==SEAT_POSITION;
     const sway=moving && !reduceMotion.matches ? Math.sin(now*(current.sprinting?.016:.011))*(current.sprinting?.048:.025) : 0;
@@ -325,8 +350,8 @@ function createOfficeView() {
     renderer.render(scene,camera);
     if (elapsed===1) animation=null;
     if (animation) schedule();
-    else if (current.city && document.pointerLockElement===canvas && !reduceMotion.matches) schedule();
-    else if (current.camera || current.city) wake=setTimeout(schedule,current.camera?88:40);
+    else if (current.city && (current.moving || document.pointerLockElement===canvas) && !reduceMotion.matches && !renderer.isSoftware) schedule();
+    else if (current.camera || current.city) wake=setTimeout(schedule,current.camera?88:renderer.isSoftware?85:50);
   }
   function schedule() {
     clearTimeout(wake);
