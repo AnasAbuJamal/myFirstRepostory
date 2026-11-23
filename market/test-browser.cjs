@@ -48,7 +48,7 @@ async function main(){
   console.log('PASS: textured sky and '+textures.surfaces+' school surface overlays');
 
   // Capture the school's street elevation before entering.
-  await page.evaluate(()=>{player={...player,x:-37,z:6.7,yaw:0,pitch:-.09};refreshPosition();drawScene();});
+  await page.evaluate(()=>{player={...player,x:-37,z:14,yaw:0,pitch:0};refreshPosition();drawScene();});
   await page.screenshot({path:'lumenvale-school-exterior.png'});
   // Walk into the school using the actual enter interaction.
   const entering=await page.evaluate(()=>{
@@ -90,6 +90,16 @@ async function main(){
   const moved=await page.evaluate(()=>player.z);
   assert.ok(moved<previous-.15,'W key did not move player forward in school: '+previous+' -> '+moved);
   await page.screenshot({path:'lumenvale-school-smoke.png'});
+  // A second perspective checks that the reading library is part of school.
+  const libraryView=await page.evaluate(()=>{
+   const canEnter=canWalk(-7,8.0,{doorOpen:false,stand:false});
+   player={...player,x:-7,z:8.0,yaw:Math.PI/2,pitch:0};
+   refreshPosition();drawScene();
+   return {canEnter,inside:districtVisit?.place?.id};
+  });
+  assert.equal(libraryView.inside,'school');
+  assert.ok(libraryView.canEnter,'The school library approach is blocked');
+  await page.screenshot({path:'lumenvale-school-library.png'});
   console.log('School keyboard navigation:',previous.toFixed(2),'->',moved.toFixed(2));
 
   await page.evaluate(()=>window.pathwayHome());

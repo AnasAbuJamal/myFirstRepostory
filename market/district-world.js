@@ -220,9 +220,10 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   const bays=Math.floor(w/2);
   for(let i=0;i<bays;i++){
    const px=x+(i-(bays-1)/2)*1.86;
-   if(Math.abs(px-door)>1.63)window(px,1.86,front+f*.062,storefront?1.40:1.09,1.53,'front');
-   if(h>=6&&kind!=='warehouse')window(px,h>=7.2?4.87:5.03,front+f*.060,1.10,h>=7.2?1.23:1.55,'front');
-   if(h>=7.2&&kind!=='warehouse')window(px,h-.95,front+f*.060,1.03,1.14,'front');
+   // School glazing is drawn by its own facade kit to avoid double windows.
+   if(kind!=='school'&&Math.abs(px-door)>1.63)window(px,1.86,front+f*.062,storefront?1.40:1.09,1.53,'front');
+   if(kind!=='school'&&h>=6&&kind!=='warehouse')window(px,h>=7.2?4.87:5.03,front+f*.060,1.10,h>=7.2?1.23:1.55,'front');
+   if(kind!=='school'&&h>=7.2&&kind!=='warehouse')window(px,h-.95,front+f*.060,1.03,1.14,'front');
    if(i%2===0)window(px,h>5?4.65:1.75,z-f*(d/2+.062),1.10,1.21,'back');
   }
   for(const side of [-1,1]){

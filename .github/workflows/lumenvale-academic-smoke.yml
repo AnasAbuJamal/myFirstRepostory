@@ -62,6 +62,7 @@ jobs:
             lumenvale-academic-smoke.png
             lumenvale-school-smoke.png
             lumenvale-school-exterior.png
+            lumenvale-school-library.png
           if-no-files-found: ignore
       - name: Synchronize tested build on design branch
         if: (github.ref_name == 'gamedev-skills-polish-2026-11-23' || github.ref_name == 'market-office-first-person') && success()

@@ -9,9 +9,7 @@ function decorateSchoolExterior(T,place,kit,sign,outside){
  k.box(x,h+1.97,front+f*.28,1.7,1.49,.19,'#f1e3c9');
  for(const a of [-1,1]){
   k.box(x+a*6.2,h*.50,front+f*.11,.25,h*.9,.28,'#faf3e3');
-  k.box(x+a*5.3,1.46,front+f*.17,1.3,1.78,.12,'#668d8a');
-  k.box(x+a*5.3,1.46,front+f*.24,.065,1.8,.04,'#f6eddc');
-  k.box(x+a*5.3,1.46,front+f*.25,1.29,.063,.04,'#f6eddc');
+  // The new window-bay system is the sole front glazing layer.
   k.box(x+a*7.25,5.32,front+f*.20,.79,1.75,.08,a<0?'#ba865a':'#618c85');
   k.box(x+a*6.4,.27,front+f*2.57,1.85,.54,1.21,'#c0a88b');
   k.box(x+a*6.4,.56,front+f*2.57,1.67,.09,1.02,'#678961');
@@ -202,8 +200,9 @@ function decorateSchoolInterior(T,k,g,sign,place){
  sign(g,'WELCOME · MY COURSES · GRADES',0,3.63,11.63,8.0,.44,-1,'#42685d');
  // School timetable and accessible route markers.
  for(const [z,label] of [[-5.25,'FUTURE CLASSROOMS'],[.05,'COURSES · ASSESSMENTS'],[5.9,'LIBRARY · STUDY']]){
-  k.box(0,3.31,z,2.20,.62,.10,'#35584d');
-  sign(g,label,0,3.33,z+.079,2.08,.42,1,'#35584d');
+  // Wayfinding lives above eye height and never dominates the corridor.
+  k.box(0,4.13,z,1.67,.34,.10,'#35584d');
+  sign(g,label,0,4.14,z+.079,1.53,.24,1,'#35584d');
  }
  // Additional figures: a teacher and students with low-poly animated limbs.
  const people=[],cube=new T.BoxGeometry(1,1,1);
