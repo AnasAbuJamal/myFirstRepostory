@@ -188,7 +188,7 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
    const van=upgrades.get('delivery');
    if(systemsDriving&&view?.player){
     van.position.set(view.player.x,.09,view.player.z);
-    van.rotation.y=view.player.yaw+Math.PI/2;
+    van.rotation.y=Math.PI/2-view.player.yaw;
     animateLumenVehicle(personalVehicle,phase*9.5);
    }else{
     van.position.set(CITY_UPGRADE_LOTS.delivery.x,.09,CITY_UPGRADE_LOTS.delivery.z);
