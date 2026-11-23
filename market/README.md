@@ -114,3 +114,13 @@ The game has been rebranded to **LumenVale: City of Knowledge**. The playable br
 ```
 
 **Important limitations:** Teacher and student roles are local browser views, **not secure account roles**. Teacher content and student progress are stored in this browser's local storage and **do not automatically synchronize** across students' computers. Teachers can export lesson packs and progress, but school-wide assignments, login authentication and centrally hosted records require a future backend with real account management and appropriate data protection. The example content and game are educational prototypes. Future expansions to new regions and random city events are intentionally postponed.
+
+### Additional interactive city features
+
+- **NPC reading conversations:** Three named citizens explain a city problem, ask a short comprehension question, and offer a one-time coin reward for a correct answer.
+- **Factory supply chains:** A staffed lumber mill supplies lumber used by a staffed workshop to produce additional furniture. The City Hall overview tracks combined production.
+- **Personal home customization:** Once the home is purchased, spend coins on flower planters, patio seating, or solar-roof decorations. Purchased objects appear in the 3D world.
+- **Construction animation:** New factories show a short crane and building-growth animation when first constructed. Previously owned buildings persist and remain visible.
+- **Vehicle and hidden chests:** Purchase the delivery van from City Hall and approach it near the warehouse to drive. Read books to unlock exploration clues and collect one-time treasure rewards.
+
+The local teacher course-pack example is available at `market/example-course-pack.json`; its files are never uploaded to a server by the game itself.
