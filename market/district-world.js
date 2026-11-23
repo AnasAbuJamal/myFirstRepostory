@@ -124,14 +124,6 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   k.box(x,.42,z,dx-.13,.05,dz-.13,'#685e49');
   for(let j=0;j<4;j++)k.put('stone',x+dx*(j-1.5)*.20,.53+(j%2)*.10,z,.25,.32,.31,j%2?'#6c8e57':'#4c715c');
  }
- function parked(k,x,z,body){
-  k.box(x,.54,z,2.9,.61,1.29,body);
-  k.box(x-.37,1.06,z,1.35,.56,1.19,'#6c8786');
-  k.box(x-.37,1.38,z,1.33,.10,1.22,body);
-  for(const a of [-1.02,1.02])for(const side of [-1,1])k.box(x+a,.29,z+side*.66,.49,.48,.17,'#353d3c');
-  k.light(x+1.46,.60,z-.40,.04,.14,.19,'#e8cb94');
-  k.light(x+1.46,.60,z+.40,.04,.14,.19,'#e8cb94');
- }
  function publicPlaces(){
   const paving=kit(), k=kit();
   const props=new T.Group();props.userData.castsShadow=true;outside.add(props);
@@ -164,10 +156,16 @@ function createDistrictWorld({T,scene,exterior,renderer}){
     k.box(f.x,.75,f.z,.46,.09,.49,'#3b4d52');
    }
   }
-  for(const [x,z,paint] of TOWN_PARKING){
-   paving.box(x,.061,z,4.45,.02,1.72,'#686f71');
-   for(const side of [-1,1])paving.box(x+side*2.19,.074,z,.06,.012,1.72,'#edede4');
-   parked(k,x,z,paint);
+  for(const [i,[x,z,tint]] of TOWN_PARKING.entries()){
+   paving.box(x,.061,z,4.45,.02,2.04,'#686f71');
+   for(const side of [-1,1])paving.box(x+side*2.19,.074,z,.06,.012,2.04,'#edede4');
+   const classes=['sedan','suv','coupe'];
+   const car=createLumenVehicle(T,classes[i%classes.length],{paint:tint,low:renderer.isSoftware});
+   car.group.position.set(x,.09,z);
+   car.group.rotation.y=i%2===0?0:Math.PI;
+   car.group.scale.setScalar(i===1?.89:.92);
+   car.group.name='Parked '+car.group.name;
+   outside.add(car.group);
   }
   // One park block, with an axial footpath between the playing court and fountain garden.
   paving.box(-6.5,.005,54.6,19.2,.052,17.9,'#99b76c');
