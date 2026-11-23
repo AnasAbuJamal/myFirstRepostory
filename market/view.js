@@ -228,6 +228,7 @@ function createOfficeView() {
   buildStand();
   stand.visible = false;
   exterior.add(stand);
+  const cityRenderer=createCityWorld({T,exterior,box,piece,renderer});
 
   const coatColors = { rose: '#af6760', amber: '#bc8752', blue: '#4d7982' };
   function makeVisitor(tint) {
@@ -306,13 +307,14 @@ function createOfficeView() {
     const travel=phase==='door' ? doorAmount?smooth:1-smooth : phase==='guest' && !doorOpen ? smooth : doorAmount;
     door.rotation.y=-travel*1.46;
     kits.forEach((kit,i)=>{kit.visible=i<stock;});
+    cityRenderer.update(current.city,now);
     camera.position.set(player.x,player===SEAT_POSITION?1.46:1.7,player.z);
     camera.rotation.set(player.pitch,player.yaw,0,'YXZ');
     updateCameraFeed(now);
     renderer.render(scene,camera);
     if (elapsed===1) animation=null;
     if (animation) schedule();
-    else if (current.camera) wake=setTimeout(schedule,88);
+    else if (current.camera || current.city) wake=setTimeout(schedule,current.camera?88:40);
   }
   function schedule() {
     clearTimeout(wake);
