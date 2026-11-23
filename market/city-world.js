@@ -1,5 +1,5 @@
 /* Detailed walkable 3D city extension for the existing Three.js scene. */
-function createCityWorld({T,exterior,box,piece,renderer}){
+function createCityWorld({T,exterior,box,piece,renderer,visuals}){
  const city=new T.Group();
  exterior.add(city);
  const low=renderer.isSoftware;
@@ -10,9 +10,14 @@ function createCityWorld({T,exterior,box,piece,renderer}){
   return mat.get(color);
  }
  function b(g,x,y,z,w,h,d,color){return box(g,x,y,z,w,h,d,color);}
+ function surface(g,finish,x,y,z,w,h,d,color){
+  const mesh=b(g,x,y,z,w,h,d,color);
+  if(visuals?.enabled)mesh.material=visuals.surface(finish,color,w,d);
+  return mesh;
+ }
  function roof(g,x,y,z,w,d,color){
-  const l=b(g,x-w*.23,y,z,w*.57,.16,d+.25,color);
-  const r=b(g,x+w*.23,y,z,w*.57,.16,d+.25,color);
+  const l=surface(g,'roof',x-w*.23,y,z,w*.57,.16,d+.25,color);
+  const r=surface(g,'roof',x+w*.23,y,z,w*.57,.16,d+.25,color);
   l.rotation.z=.36;r.rotation.z=-.36;
   b(g,x,y+.19,z,.16,.16,d+.3,'#f5dca5');
  }
@@ -58,7 +63,7 @@ function createCityWorld({T,exterior,box,piece,renderer}){
  const buildings=new Map();
  for(const site of CITY_SITES){
   const lot=new T.Group();lot.position.set(site.x,0,site.z);city.add(lot);
-  b(lot,0,-.025,0,9.7,.085,8.4,'#b8aa84');
+  surface(lot,'concrete',0,-.025,0,9.7,.085,8.4,'#b8aa84');
   for(const x of [-4.55,4.55])for(const z of [-3.55,3.55]){
    b(lot,x,.18,z,.16,.38,.16,'#bead7f');
    sphere(lot,x,.39,z,.14,'#e7c99e');
@@ -113,15 +118,15 @@ function createCityWorld({T,exterior,box,piece,renderer}){
   if(site.kind==='house'){
    for(let h=0;h<3;h++){
     const x=(h-1)*2.8;
-    b(active,x,1.6,.5,2.55,3.15,4.5,['#bd946e','#d0ad82','#b58e74'][h]);
+    surface(active,h%2?'brick':'plaster',x,1.6,.5,2.55,3.15,4.5,['#bd946e','#d0ad82','#b58e74'][h]);
     roof(active,x,3.31,.5,2.75,4.9,'#6c735c');
     b(active,x,1.05,-1.82,.72,1.6,.08,'#6c513b');
     for(const dx of [-.72,.72])b(active,x+dx,2.25,-1.84,.51,.64,.10,'#96b5b6');
    }
    for(const [x,z,shirt] of [[-2.8,-2.6,'#9c755f'],[2.1,-2.55,'#6d92a0'],[0,2.0,'#aa7b81']])workers.push(person(active,x,z,shirt));
   }else{
-   b(active,0,2.45,.5,7.6,4.90,5.65,site.color);
-   b(active,0,4.88,.5,8.0,.26,6.16,'#485e61');
+   surface(active,'concrete',0,2.45,.5,7.6,4.90,5.65,site.color);
+   surface(active,'roof',0,4.88,.5,8.0,.26,6.16,'#485e61');
    b(active,0,.37,-2.35,7.65,.67,.14,'#92928b');
    b(active,0,3.58,-2.39,7.67,.15,.20,'#d0b79b');
    for(const x of [-2.63,0,2.63]){
