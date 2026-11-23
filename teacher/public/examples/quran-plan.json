@@ -1,0 +1,19 @@
+{
+  "kind": "lumenvale.quran-plan",
+  "version": 1,
+  "courseId": "QUR-M1",
+  "title": "Memorization Foundation — Teacher-Led",
+  "teacher": "Your approved Qur'an instructor",
+  "targets": [
+    {
+      "surah": "Al-Fatihah",
+      "verses": "1–7",
+      "notes": "Recite directly to the teacher. Teacher evaluates accuracy, pronunciation, tajweed and fluency."
+    },
+    {
+      "surah": "Al-Ikhlas",
+      "verses": "1–4",
+      "notes": "Teacher provides feedback and schedules muraja'ah (review)."
+    }
+  ]
+}
