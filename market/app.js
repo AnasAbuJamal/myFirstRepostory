@@ -577,15 +577,8 @@ world.addEventListener('pointerdown',event => {
 });
 world.addEventListener('pointermove',event => {
   if (event.pointerType==='mouse') {
-    if (document.pointerLockElement || !isWalking() || event.target.id!=='landscape') {
-      mousePosition = null;
-      return;
-    }
-    const previous=mousePosition;
-    mousePosition={x:event.clientX,y:event.clientY};
-    const dx=previous ? event.clientX-previous.x : (event.movementX || 0);
-    const dy=previous ? event.clientY-previous.y : (event.movementY || 0);
-    turnCamera(dx,dy);
+    // Native Pointer Lock owns mouse-look. No cursor-follow rotation or double input.
+    mousePosition=null;
     return;
   }
   if (!isWalking() || touchLook?.id!==event.pointerId) return;
