@@ -143,7 +143,7 @@ function createDistrictWorld({T,scene,exterior,renderer}){
    paving.box(home.x,-.015,home.z,home.w+1.8,.055,home.d+1.8,'#a4b782');
    paving.box(home.x,.028,home.z+home.d/2+1.04,1.58,.064,2.07,'#d3cdc0');
   }
-  for(const f of TOWN_FURNITURE){
+  for(const f of TOWN_SAFE_FURNITURE){
    if(f.kind==='tree'){
     paving.box(f.x,.07,f.z,1.10,.09,1.10,'#b4b49d');
     paving.box(f.x,.121,f.z,.93,.022,.93,'#786f58');
