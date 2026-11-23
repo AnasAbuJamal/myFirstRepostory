@@ -28,12 +28,12 @@ const CITY_BOOKS=[
  ],question:'What is part of a good long-term plan?',answers:['Ignoring workers','Improving safety and learning','Buying everything at once'],correct:1}
 ];
 const CITY_SITES=[
- {id:'workshop',title:'Wood Workshop',kind:'factory',x:-13,z:10,build:40,hire:20,rate:3,unlock:1,color:'#a47a51'},
- {id:'lumber',title:'Lumber Mill',kind:'factory',x:-27,z:10,build:125,hire:50,rate:8,unlock:2,color:'#8d7255'},
- {id:'homes',title:'Worker Homes',kind:'house',x:0,z:25,build:160,hire:0,rate:0,unlock:2,color:'#b88d6a'},
- {id:'textile',title:'Textile Factory',kind:'factory',x:-27,z:27,build:280,hire:95,rate:15,unlock:3,color:'#8196ab'},
- {id:'greenhouse',title:'Greenhouse',kind:'factory',x:16,z:27,build:460,hire:140,rate:25,unlock:4,color:'#67a28b'},
- {id:'assembly',title:'Assembly Plant',kind:'factory',x:31,z:16,build:820,hire:240,rate:43,unlock:5,color:'#879eaf'}
+ {id:'workshop',title:'Wood Workshop',kind:'factory',x:-13,z:10,land:20,build:40,hire:20,rate:3,unlock:1,color:'#a47a51'},
+ {id:'lumber',title:'Lumber Mill',kind:'factory',x:-27,z:10,land:65,build:125,hire:50,rate:8,unlock:2,color:'#8d7255'},
+ {id:'homes',title:'Worker Homes',kind:'house',x:0,z:25,land:75,build:160,hire:0,rate:0,unlock:2,color:'#b88d6a'},
+ {id:'textile',title:'Textile Factory',kind:'factory',x:-27,z:27,land:130,build:280,hire:95,rate:15,unlock:3,color:'#8196ab'},
+ {id:'greenhouse',title:'Greenhouse',kind:'factory',x:16,z:27,land:210,build:460,hire:140,rate:25,unlock:4,color:'#67a28b'},
+ {id:'assembly',title:'Assembly Plant',kind:'factory',x:31,z:16,land:350,build:820,hire:240,rate:43,unlock:5,color:'#879eaf'}
 ];
 const CITY_LIBRARY={x:14,z:8};
 function cityBlank(){return {version:1,coins:0,xp:0,lifetime:0,books:{},sites:{},lastTick:Date.now(),manual:{}};}
@@ -43,7 +43,16 @@ function cityClean(input){
  const number=(n,max)=>Number.isFinite(n)?Math.max(0,Math.min(max,Math.floor(n))):0;
  v.coins=number(input.coins,1e12);v.xp=number(input.xp,1e9);v.lifetime=number(input.lifetime,1e12);
  for(const book of CITY_BOOKS){const info=input.books?.[book.id];if(info)v.books[book.id]={count:number(info.count,1e5),last:number(info.last,1e15)};}
- for(const site of CITY_SITES){const info=input.sites?.[site.id];if(info?.built)v.sites[site.id]={built:true,staff:number(info.staff,6),level:Math.max(1,number(info.level,10))};}
+ for(const site of CITY_SITES){
+  const info=input.sites?.[site.id];
+  // Preserve existing city saves: previously constructed buildings already own their land.
+  if(info?.owned||info?.built)v.sites[site.id]={
+   owned:true,built:Boolean(info.built),
+   staff:info.built&&site.kind==='factory'?number(info.staff,6):0,
+   level:info.built?Math.max(1,number(info.level,10)):1,
+   landLevel:Math.max(1,Math.min(4,number(info.landLevel,4)||1))
+  };
+ }
  v.lastTick=number(input.lastTick,1e15)||Date.now();
  for(const site of CITY_SITES)v.manual[site.id]=number(input.manual?.[site.id],1e15);
  return v;
@@ -57,12 +66,18 @@ function citySave(){
 }
 function cityCompleted(){return CITY_BOOKS.filter(book=>cityState.books[book.id]?.count>0).length;}
 function cityPopulation(){return Object.values(cityState.sites).filter(s=>s?.built).reduce((n,s)=>n+s.staff,0);}
-function cityIncome(){
- return CITY_SITES.reduce((total,site)=>{
-  const built=cityState.sites[site.id];
-  return total+(built?.built && site.kind==='factory' ? site.rate*built.staff*built.level : 0);
- },0);
+function cityLandCost(site){return site.land;}
+function cityLandImproveCost(site,landLevel){return site.land*(landLevel+1)*2;}
+function cityProduction(site,record){
+ if(!record?.built || site.kind!=='factory')return 0;
+ const landLevel=Math.max(1,Math.min(4,record.landLevel||1));
+ return Math.floor(site.rate*record.staff*record.level*(1+.25*(landLevel-1)));
 }
+function cityIncome(){
+ return CITY_SITES.reduce((total,site)=>total+cityProduction(site,cityState.sites[site.id]),0);
+}
+function cityLandOwned(){return CITY_SITES.filter(site=>cityState.sites[site.id]?.owned).length;}
+function cityBuildingsBuilt(){return CITY_SITES.filter(site=>cityState.sites[site.id]?.built).length;}
 function cityEarn(coins,xp){
  cityState.coins+=coins;cityState.lifetime+=coins;cityState.xp+=xp;
  citySave();citySync();
@@ -88,7 +103,8 @@ function cityNearby(p){
  if(Math.hypot(p.x-CITY_LIBRARY.x,p.z-CITY_LIBRARY.z)<4.3)return {id:'library',city:true,label:'Browse the library books'};
  for(const site of CITY_SITES){
   if(Math.hypot(p.x-site.x,p.z-(site.z-3.6))<3.1){
-   const status=cityState.sites[site.id]?.built?'Manage '+site.title:'Build '+site.title;
+   const unit=cityState.sites[site.id];
+   const status=unit?.built?'Manage '+site.title:unit?.owned?'Build on your land':'Buy '+site.title+' land';
    return {id:site.id,city:true,label:status};
   }
  }
@@ -174,40 +190,75 @@ function cityAnswer(index){
 }
 function cityOpenSite(id){
  const site=CITY_SITES.find(s=>s.id===id);if(!site)return;
- const record=cityState.sites[id];
- const built=record?.built;
+ const unit=cityState.sites[id];
+ const owned=Boolean(unit?.owned),built=Boolean(unit?.built);
  const unlocked=cityCompleted()>=site.unlock;
- const bookLine='Requires '+site.unlock+' different '+(site.unlock===1?'book':'books')+' completed · '+cityCompleted()+' read';
+ const reading='Read '+site.unlock+' different '+(site.unlock===1?'book':'books')+' to unlock · '+cityCompleted()+' completed';
+ const landLevel=unit?.landLevel||1;
+ const landUpgrade=cityLandImproveCost(site,landLevel);
+ const landButton=owned && landLevel<4?
+  '<button class="button" type="button" data-city-action="improve-land" data-id="'+id+'" '+(cityState.coins<landUpgrade?'disabled':'')+'>Improve land to level '+(landLevel+1)+' · '+landUpgrade+' coins</button>':'';
+ const overview='<div class="city-property-heading"><span>'+(built?'OPERATING PROPERTY':owned?'YOUR LAND':'LAND FOR SALE')+'</span><b>'+cityState.coins.toLocaleString()+' coins available</b></div>';
  let body='';
- if(!built){
-  body='<p>Build this '+(site.kind==='house'?'housing block':'production building')+' on your city plot.</p>'+
-   '<div class="city-factory-grid"><div><small>Construction</small><b>'+site.build+' coins</b></div>'+
-   '<div><small>Reading unlock</small><b>'+site.unlock+' books</b></div></div>'+
-   '<p class="city-sub">'+bookLine+'</p>'+
-   '<button class="button primary" type="button" data-city-action="build" data-id="'+id+'" '+(!unlocked||cityState.coins<site.build?'disabled':'')+'>Build '+site.title+'</button>';
+ if(!owned){
+  body='<p>Buy this plot to own the property. You must purchase the land before construction begins.</p>'+
+   '<div class="city-factory-grid"><div><small>Land price</small><b>'+site.land+' coins</b></div>'+
+   '<div><small>Construction afterward</small><b>'+site.build+' coins</b></div>'+
+   '<div><small>Reading requirement</small><b>'+site.unlock+' books</b></div><div><small>Current books</small><b>'+cityCompleted()+'</b></div></div>'+
+   '<p class="city-sub">'+reading+'</p>'+
+   '<button class="button primary" type="button" data-city-action="buy-land" data-id="'+id+'" '+(!unlocked||cityState.coins<site.land?'disabled':'')+'>Purchase land · '+site.land+' coins</button>';
+ }else if(!built){
+  body='<p><b>Land purchased.</b> This property is now yours. Develop the land, then construct your '+(site.kind==='house'?'homes':'factory')+'.</p>'+
+   '<div class="city-factory-grid"><div><small>Land development</small><b>Level '+landLevel+' / 4</b></div>'+
+   '<div><small>Building cost</small><b>'+site.build+' coins</b></div></div>'+
+   '<div class="city-actions"><button class="button primary" type="button" data-city-action="build" data-id="'+id+'" '+(cityState.coins<site.build?'disabled':'')+'>Construct '+site.title+' · '+site.build+' coins</button>'+landButton+'</div>';
  }else if(site.kind==='house'){
-  body='<p>Your new homes bring workers and life to the growing settlement.</p><p><b>Built</b> · Decorative neighborhood unlocked.</p>';
+  body='<p>Your homes make the settlement feel alive. Improving the property adds landscaped grounds and paths.</p>'+
+   '<div class="city-factory-grid"><div><small>Land development</small><b>Level '+landLevel+' / 4</b></div>'+
+   '<div><small>Buildings</small><b>3 homes</b></div></div><div class="city-actions">'+landButton+'</div>';
  }else{
-  const staff=record.staff;const upgrade=site.build*(record.level+1);
-  const hire=site.hire*(staff+1);
-  body='<p>Manage your machinery and workers. Hired employees generate coins automatically, including for up to one hour while away.</p>'+
+  const staff=unit.staff,upgrade=site.build*(unit.level+1),hire=site.hire*(staff+1);
+  body='<p>Hire employees, upgrade machines, and invest in your land. Each land improvement increases factory output by 25% of its base rate.</p>'+
    '<div class="city-factory-grid"><div><small>Employees</small><b>'+staff+' / 6</b></div>'+
-   '<div><small>Production / 5 sec</small><b>'+(site.rate*staff*record.level)+' coins</b></div>'+
-   '<div><small>Factory level</small><b>'+record.level+'</b></div><div><small>Upgrade cost</small><b>'+upgrade+' coins</b></div></div>'+
+   '<div><small>Coins / 5 seconds</small><b>'+cityProduction(site,unit)+'</b></div>'+
+   '<div><small>Factory level</small><b>'+unit.level+' / 10</b></div>'+
+   '<div><small>Land development</small><b>'+landLevel+' / 4</b></div></div>'+
    '<div class="city-actions">'+
-   '<button class="button primary" type="button" data-city-action="hire" data-id="'+id+'" '+(staff>=6||cityState.coins<hire?'disabled':'')+'>Hire employee · '+hire+'</button>'+
-   '<button class="button" type="button" data-city-action="upgrade" data-id="'+id+'" '+(record.level>=10||cityState.coins<upgrade?'disabled':'')+'>Upgrade machines · '+upgrade+'</button>'+
-   '<button class="button" type="button" data-city-action="manual" data-id="'+id+'">Help produce · +'+Math.max(2,site.rate)+' coins</button></div>';
+   '<button class="button primary" type="button" data-city-action="hire" data-id="'+id+'" '+(staff>=6||cityState.coins<hire?'disabled':'')+'>Hire worker · '+hire+' coins</button>'+
+   '<button class="button" type="button" data-city-action="upgrade" data-id="'+id+'" '+(unit.level>=10||cityState.coins<upgrade?'disabled':'')+'>Upgrade machinery · '+upgrade+' coins</button>'+
+   landButton+
+   '<button class="button" type="button" data-city-action="manual" data-id="'+id+'">Help production · +'+Math.max(2,site.rate)*unit.level+' coins</button></div>';
  }
- cityPanel('City Development',site.title,body);
+ cityPanel('City Real Estate',site.title,overview+body);
+}
+function cityBuyLand(id){
+ const site=CITY_SITES.find(s=>s.id===id);
+ if(!site||cityState.sites[id]?.owned)return false;
+ if(cityCompleted()<site.unlock){notice('Read more books to unlock this property.');return false;}
+ if(!citySpend(cityLandCost(site))){notice('Not enough coins to buy land.');return false;}
+ cityState.sites[id]={owned:true,built:false,staff:0,level:1,landLevel:1};
+ citySave();citySync();cityOpenSite(id);
+ notice('Land purchased! Develop it, then build.');
+ return true;
+}
+function cityImproveLand(id){
+ const site=CITY_SITES.find(s=>s.id===id),unit=cityState.sites[id];
+ if(!site||!unit?.owned||unit.landLevel>=4)return false;
+ const cost=cityLandImproveCost(site,unit.landLevel);
+ if(!citySpend(cost)){notice('Not enough coins to improve land.');return false;}
+ unit.landLevel++;citySave();citySync();cityOpenSite(id);
+ notice('Land upgraded to level '+unit.landLevel+'.');
+ return true;
 }
 function cityBuild(id){
- const site=CITY_SITES.find(s=>s.id===id);
- if(!site||cityState.sites[id]?.built)return;
- if(cityCompleted()<site.unlock){notice('Read more unique books to unlock this plot.');return;}
- if(!citySpend(site.build)){notice('Earn more coins at the library.');return;}
- cityState.sites[id]={built:true,staff:0,level:1};
- citySave();citySync();cityOpenSite(id);notice(site.title+' constructed! Explore it in 3D.');
+ const site=CITY_SITES.find(s=>s.id===id),unit=cityState.sites[id];
+ if(!site||!unit?.owned||unit.built)return false;
+ if(cityCompleted()<site.unlock)return false;
+ if(!citySpend(site.build)){notice('Earn more coins before construction.');return false;}
+ unit.built=true;unit.level=1;unit.staff=0;
+ citySave();citySync();cityOpenSite(id);
+ notice(site.title+' constructed! Hire staff to begin production.');
+ return true;
 }
 function cityHire(id){
  const site=CITY_SITES.find(s=>s.id===id),unit=cityState.sites[id];
@@ -237,16 +288,24 @@ function cityInteract(target){
  if(target?.id==='library')cityBookList();
  else if(target?.id)cityOpenSite(target.id);
 }
+function cityPortfolio(){
+ const cards=CITY_SITES.map(site=>{
+  const unit=cityState.sites[site.id];const status=unit?.built?'Operating · level '+unit.level:unit?.owned?'Owned · ready to build':'Available · '+site.land+' coins';
+  return '<button class="city-portfolio-item" type="button" data-city-action="site" data-id="'+site.id+'"><span><b>'+site.title+'</b><small>'+status+'</small></span><strong>'+cityProduction(site,unit)+' / 5s</strong></button>';
+ }).join('');
+ cityPanel('Property Portfolio','Your city properties','<p>Buy land first, build on it, and improve each plot. Owned land is outlined in gold in the 3D world.</p>'+ 
+ '<div class="city-factory-grid"><div><small>Owned plots</small><b>'+cityLandOwned()+' / '+CITY_SITES.length+'</b></div><div><small>Buildings</small><b>'+cityBuildingsBuilt()+'</b></div><div><small>Production</small><b>'+cityIncome()+' / 5s</b></div><div><small>Employees</small><b>'+cityPopulation()+'</b></div></div><div class="city-portfolio-list">'+cards+'</div>');
+}
 function cityGuide(){
  const next=CITY_SITES.filter(s=>!cityState.sites[s.id]?.built).slice(0,3);
  cityPanel('Your City · Guide','Read. Build. Hire.',
  '<p>Walk to the library pavilion on the east side of the office. Read a book, turn its pages, and answer the question to collect coins.</p>'+
- '<p>Then explore the marked construction plots. Press <kbd>E</kbd> near a plot to build a factory. Visit the building again to hire people, upgrade machines, or help produce goods yourself.</p>'+
+ '<p>Then explore the marked construction plots. Press <kbd>E</kbd> near a plot to buy land first, then construct a factory. Return to hire people and upgrade both your land and machinery.</p>'+
  '<div class="city-factory-grid"><div><small>City wallet</small><b>'+cityState.coins+' coins</b></div>'+
  '<div><small>Passive production</small><b>'+cityIncome()+' / 5 sec</b></div>'+
  '<div><small>Unique books</small><b>'+cityCompleted()+' / '+CITY_BOOKS.length+'</b></div>'+
  '<div><small>Workers</small><b>'+cityPopulation()+'</b></div></div>'+
- '<h3>Next buildings</h3><p>'+next.map(s=>s.title+' ('+s.build+' coins)').join(' · ')+'</p>'+
+ '<h3>Next properties</h3><p>'+next.map(s=>s.title+' (land '+s.land+' · building '+s.build+' coins)').join(' · ')+'</p>'+
  '<p class="city-sub">WASD to walk · E to interact · F for fullscreen · Escape unlocks mouse. Your city saves on this device.</p>');
 }
 function citySync(){
@@ -256,6 +315,7 @@ function citySync(){
  if(income)income.textContent=cityIncome()+'/5s';
  if(objective){
   objective.textContent=!cityCompleted()?'Visit the library and finish your first book':
+   !cityState.sites.workshop?.owned?'Buy workshop land (20 coins)':
    !cityState.sites.workshop?.built?'Build your first workshop (40 coins)':
    !cityState.sites.workshop.staff?'Hire a worker at the workshop':
    cityCompleted()<CITY_BOOKS.length?'Read more books and expand your city':'Keep growing your production city';
@@ -275,17 +335,22 @@ function cityInit(){
  '<div class="city-chip"><small>City coins</small><strong id="city-coins">0</strong></div>'+
  '<div class="city-chip"><small>Books read</small><strong id="city-learning">0/6</strong></div>'+
  '<div class="city-chip"><small>Production</small><strong id="city-income">0/5s</strong></div>'+
- '<div class="city-hud-actions"><button type="button" id="city-help" title="City guide">City guide</button>'+
+ '<div class="city-hud-actions"><button type="button" id="city-help" title="City guide">Guide</button>'+ 
+  '<button type="button" id="city-portfolio" title="Land and buildings">Properties</button>'+
  '<button type="button" id="city-full" title="Fullscreen and mouse capture">⛶ Fullscreen</button></div>'+
  '<p class="city-goal" id="city-objective"></p>';
  byId('view').append(hud);
  byId('city-help').addEventListener('click',cityGuide);
+ byId('city-portfolio').addEventListener('click',cityPortfolio);
  byId('city-full').addEventListener('click',cityEnterFullscreen);
  document.addEventListener('click',event=>{
   const b=event.target.closest('[data-city-action]');if(!b)return;
   const id=b.dataset.id;
   const action=b.dataset.cityAction;
   if(action==='library')cityBookList();
+  else if(action==='site')cityOpenSite(id);
+  else if(action==='buy-land')cityBuyLand(id);
+  else if(action==='improve-land')cityImproveLand(id);
   else if(action==='book')cityOpenBook(id);
   else if(action==='page')cityNextPage();
   else if(action==='answer')cityAnswer(b.dataset.index);
