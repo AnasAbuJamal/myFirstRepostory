@@ -1,0 +1,48 @@
+/* LumenVale teacher studio and reading-library redesign. */
+.lv-top-button{white-space:nowrap;font:600 .78rem system-ui,sans-serif;min-width:72px;border:1px solid #8caa9180;border-radius:7px;margin-inline:.1rem;padding:.58rem .5rem}
+.lv-top-button:hover{background:#50715b}
+.lv-library-tools{display:flex;gap:.75rem;align-items:center;margin:1rem 0;flex-wrap:wrap}
+.lv-library-tools input{border:1px solid #b9cdb9;border-radius:9px;background:#fffef6;padding:.7rem .9rem;min-width:180px;flex:1}
+.lv-genres{display:flex;gap:.4rem;overflow-x:auto;padding:.25rem 0 .8rem;scrollbar-width:thin}
+.lv-filter{white-space:nowrap;padding:.43rem .75rem;border:1px solid #d0d8c5;border-radius:40px;background:#f3f5ec;color:#416350;font-size:.83rem;font-weight:700}
+.lv-filter:hover,.lv-filter.active{background:#315b46;color:#fff6dc;border-color:#315b46}
+.lv-book-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:.9rem;margin:1rem 0}
+.lv-library-book{display:flex;gap:.85rem;min-width:0;min-height:152px;text-align:left;align-items:stretch;padding:.66rem;border:1px solid #c5d2bc;border-radius:13px;background:#fffdf4;transition:transform .18s,box-shadow .18s;box-shadow:0 3px 14px #21352c10}
+.lv-library-book:hover{transform:translateY(-3px);box-shadow:0 12px 22px #183c2b23;border-color:#719a78}
+.lv-book-cover{display:flex;flex-direction:column;align-items:center;justify-content:space-between;flex:none;width:95px;border-radius:4px 12px 12px 4px;padding:.7rem .38rem .6rem;text-align:center;color:#f4e9c9;background:linear-gradient(145deg,#304a65,#4a7b6f 70%,#789b72);border-left:9px solid #1d3747;box-shadow:4px 3px 5px #24352930;overflow:hidden}
+.lv-library-book:nth-child(3n+2) .lv-book-cover{background:linear-gradient(145deg,#8c5d4d,#b89069);border-left-color:#62443c}
+.lv-library-book:nth-child(3n) .lv-book-cover{background:linear-gradient(145deg,#665c82,#9e8f9f);border-left-color:#494261}
+.lv-book-cover small{font-size:.47rem;letter-spacing:.11em}
+.lv-book-cover strong{font:600 .92rem/1.15 Georgia,serif;overflow-wrap:anywhere}
+.lv-book-details{display:flex;flex-direction:column;align-items:flex-start;gap:.48rem;padding:.42rem 0;min-width:0;flex:1}
+.lv-book-details small{font-size:.75rem;color:#69816b}
+.lv-book-details b{font:700 1.13rem/1.2 Georgia,serif;color:#294a3a}
+.lv-book-details em{font-size:.78rem;line-height:1.4;color:#4e654f;font-style:normal}
+.lv-book-details small:last-child{color:#3f8a53;font-weight:700;margin-top:auto}
+.lv-teacher-notice{padding:.85rem 1rem;border-left:4px solid #c49756;background:#f3ebd8;color:#514e37;border-radius:8px;margin:.8rem 0 1.25rem}
+.lv-teacher-notice p{margin:.25rem 0 0;font-size:.86rem}
+.lv-form{display:grid;gap:.8rem;margin:1rem 0;padding:1rem;border:1px solid #d4dbc9;border-radius:11px;background:#f9fbf5}
+.lv-form label{display:grid;gap:.3rem;font-size:.84rem;font-weight:690;color:#455d4b}
+.lv-form input,.lv-form textarea,.lv-import input{padding:.7rem;border:1px solid #bbcbbc;border-radius:8px;background:white;max-width:100%;color:#263d31;font-family:inherit}
+.lv-form textarea{min-height:100px;resize:vertical;line-height:1.65}
+.lv-form input:focus-visible,.lv-form textarea:focus-visible,.lv-import input:focus-visible{outline:2px solid #629574;outline-offset:2px}
+.lv-import{display:flex;align-items:center;flex-wrap:wrap;gap:.75rem;padding:.9rem;background:#edf4eb;border:1px dashed #9bb89a;border-radius:10px}
+.lv-import input[type=file]{min-width:180px;flex:1}
+.lv-import label{display:flex;align-items:center;gap:.35rem;font-size:.8rem;font-weight:700}
+.lv-import input[type=number]{width:72px;min-width:0}
+.lv-teacher-books{display:grid;gap:.55rem;margin:.8rem 0 1.5rem}
+.lv-teacher-book{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.65rem;padding:.78rem .85rem;border:1px solid #cdd8c9;border-radius:9px;background:#fffdfa}
+.lv-teacher-book span:first-child{display:grid;gap:.15rem;min-width:0}
+.lv-teacher-book b{color:#315a43}
+.lv-teacher-book small{color:#6c846b;font-size:.77rem}
+.lv-teacher-book span:last-child{display:flex;gap:.4rem}
+.lv-teacher-book .button{font-size:.8rem;padding:.43rem .6rem}
+.lv-table-scroll{max-width:100%;overflow-x:auto}
+.lv-table{width:100%;border-collapse:collapse;font-size:.88rem;background:#fffdf6;margin:.8rem 0 1rem}
+.lv-table th,.lv-table td{padding:.68rem .8rem;text-align:left;border-bottom:1px solid #d8e1d3}
+.lv-table th{background:#e8eee3;color:#315943}
+.lv-progress{border-radius:9px;border:1px solid #d8e2d1;padding:.45rem .9rem;background:#f4f7ed}
+.lv-progress p{margin:.5rem 0;font-size:.88rem}
+@media(max-width:790px){.lv-top-button{font-size:.68rem;min-width:0;padding:.4rem}.lv-book-grid{grid-template-columns:1fr}.lv-book-cover{width:82px}.lv-library-book{min-height:130px}}
+@media(max-width:540px){.lv-top-button{font-size:.56rem}.lv-form,.lv-import{padding:.65rem}.lv-book-details b{font-size:.99rem}}
+@media(prefers-reduced-motion:reduce){.lv-library-book{transition:none}}
