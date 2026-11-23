@@ -214,12 +214,12 @@ function campusCareer(){
   (!qualified||chosen?'disabled':'')+'>'+(chosen?'Selected career':'Choose this career')+'</button></article>';
  }).join('');
  cityPanel("LumenVale / Careers","Choose Your Career",
- '<p>Finish a relevant school course before selecting a career. Your career is a long-term path, not a paid purchase.</p>'+
+ '<p>Choose a long-term career direction here. To earn wages, apply for qualified jobs and complete real work tasks at the Employment Center.</p>'+
  '<div class="wave-school-stats"><div><small>Selected career</small><b>'+
  esc(CAMPUS_CAREERS.find(x=>x.id===campusState.career)?.title||'Not chosen')+'</b></div>'+
  '<div><small>Career level</small><b>'+campusState.careerLevel+'</b></div><div><small>GPA</small><b>'+
  (gpa?gpa.gpa.toFixed(2):'—')+'</b></div></div><div class="wave-career-grid">'+cards+'</div>'+
- (campusState.career?'<button class="button primary" data-wave="career-task">Complete a career mission</button>':''));
+ '<div class="city-actions"><button type="button" class="button primary" data-jobs="jobs">Apply for paid jobs</button></div>');
 }
 function campusChooseCareer(id){
  const choice=CAMPUS_CAREERS.find(c=>c.id===id),scores=campusSubjectStatus(choice?.subject).exams;
@@ -391,7 +391,7 @@ function campusInit(){
   if(act==="exam-answer")campusExamAnswer(el.dataset.answer);
   if(act==="careers")campusCareer();
   if(act==="career-choose")campusChooseCareer(id);
-  if(act==="career-task")campusCareerTask();
+  if(act==="career-task")jobPanel();
   if(act==="career-answer")campusCareerAnswer(el.dataset.answer);
   if(act==="vocab")campusVocabulary();
   if(act==="delete-word"){campusState.words.splice(Number(el.dataset.index),1);campusSave();campusVocabulary();}
