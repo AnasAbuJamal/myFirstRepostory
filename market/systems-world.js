@@ -31,18 +31,6 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
   b(g,x-.85,h*.54,z-d/2-.05,.75,.8,.06,colors.glass);
   b(g,x+.78,h*.40,z-d/2-.05,.8,1.55,.06,'#806149');
  }
- function truck(color){
-  const group=new T.Group();
-  b(group,0,.65,0,2.75,.74,1.42,color);
-  b(group,-.56,1.18,0,1.20,.77,1.34,color);
-  b(group,-.75,1.23,-.70,.70,.48,.05,colors.glass);
-  b(group,1.03,1.16,0,.58,.95,1.3,'#c6b698');
-  for(const x of [-.92,.95])for(const z of [-.73,.73]){
-   const tire=column(group,x,.37,z,.32,.16,'#293532');tire.rotation.x=Math.PI/2;
-  }
-  b(group,-1.39,.72,-.49,.1,.18,.22,'#f8e3b0');
-  return group;
- }
  // Pedestrian mailbox at the office exit.
  const mailbox=new T.Group();mailbox.position.set(5.1,0,-4.12);root.add(mailbox);
  column(mailbox,0,.55,0,.095,1.1,'#606e67');
@@ -50,9 +38,19 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
  b(mailbox,0,1.51,0,1.0,.10,.68,'#813e37');
  b(mailbox,0,1.19,-.29,.70,.095,.035,'#f1d492');
  sign(mailbox,'MAIL',0,.92,-.30,.74,.20);
- // Cars travel along the road and change the view without a cutscene.
- const traffic=[truck('#e6ad63'),truck('#5b99a1'),truck('#c67968')];
- traffic.forEach(car=>root.add(car));
+ // Purpose-built 3D traffic, each vehicle with independent wheels and glass.
+ const fleet=[
+  {type:'compact',paint:'amber',speed:4.3,offset:3,direction:1,road:'Foundry Avenue',z:20.00},
+  {type:'sedan',paint:'navy',speed:3.7,offset:34,direction:-1,road:'Foundry Avenue',z:22.75},
+  {type:'suv',paint:'jade',speed:3.1,offset:72,direction:1,road:'Foundry Avenue',z:20.05},
+  {type:'coupe',paint:'coral',speed:4.5,offset:49,direction:-1,road:'Park Avenue',z:42.65},
+  {type:'pickup',paint:'charcoal',speed:3.0,offset:14,direction:1,road:'Park Avenue',z:40.27},
+  {type:'bus',paint:'cream',speed:2.6,offset:82,direction:1,road:'Market Avenue',z:-11.25}
+ ].map(def=>{
+  const model=createLumenVehicle(T,def.type,{paint:def.paint,low});
+  root.add(model.group);return {...def,model};
+ });
+ const personalVehicle=createLumenVehicle(T,'van',{paint:'cream',low});
  const addUpgrade=(id,build)=>{
   const {x,z}=CITY_UPGRADE_LOTS[id]||{x:0,z:0};
   const obj=new T.Group();obj.position.set(x,0,z);root.add(obj);obj.visible=false;
@@ -75,7 +73,7 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
   house(g,0,0,6.1,3.2,4.8,'#d1aa83');
   sign(g,'MY HOME',0,2.85,-2.49,2.8,.37);
  }),
- addUpgrade('delivery',g=>g.add(truck('#d4cb9f'))),
+ addUpgrade('delivery',g=>g.add(personalVehicle.group)),
  addUpgrade('power',g=>{
   for(const x of [-2,0,2])for(const z of [-2,0,2]){
    column(g,x,.65,z,.12,1.28,'#84908b');
@@ -149,10 +147,14 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
  const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
  function update(now,view){
   const phase=now*.001;
-  for(let i=0;i<traffic.length;i++){
-   const car=traffic[i],distance=(phase*2.8+i*30)%102;
-   car.position.set(i===1?55-distance:-47+distance,.064,i===1?22.65:20.12);
-   car.rotation.y=i===1?0:Math.PI;
+  for(const car of fleet){
+   const road=STREET_PLAN.find(s=>s.name===car.road);
+   const start=road?.from??-50,end=road?.to??60,length=end-start;
+   const distance=motion.matches?car.offset:phase*car.speed+car.offset;
+   const travel=((distance%length)+length)%length;
+   car.model.group.position.set(car.direction===1?start+travel:end-travel,.09,car.z);
+   car.model.group.rotation.y=car.direction===1?0:Math.PI;
+   animateLumenVehicle(car.model,distance*car.direction);
   }
   for(const [id,group] of upgrades)group.visible=Boolean(systemsState.upgrades[id]);
   for(const [id,group] of homeDecor)group.visible=Boolean(systemsState.homeDecor?.[id]);
@@ -163,11 +165,13 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
   if(upgrades.get('delivery').visible){
    const van=upgrades.get('delivery');
    if(systemsDriving&&view?.player){
-    van.position.set(view.player.x,0,view.player.z);
+    van.position.set(view.player.x,.09,view.player.z);
     van.rotation.y=view.player.yaw+Math.PI/2;
+    animateLumenVehicle(personalVehicle,phase*9.5);
    }else{
-    van.position.set(CITY_UPGRADE_LOTS.delivery.x,0,CITY_UPGRADE_LOTS.delivery.z);
+    van.position.set(CITY_UPGRADE_LOTS.delivery.x,.09,CITY_UPGRADE_LOTS.delivery.z);
     van.rotation.y=0;
+    animateLumenVehicle(personalVehicle,0);
    }
   }
   if(motion.matches)return;
