@@ -122,9 +122,17 @@ function academyTeacher(){
  '<span><button class="button" type="button" data-academy="publish" data-id="'+esc(b.id)+'">'+(b.published?'Unpublish':'Publish')+'</button>'+
  '<button class="button" type="button" data-academy="delete" data-id="'+esc(b.id)+'">Delete</button></span></div>').join('');
  const students=Object.entries(academy.progress);
+ const totalWords=academy.books.reduce((n,b)=>n+b.wordCount,0);
+ const totalQuestions=academy.books.reduce((n,b)=>n+b.questions.length,0);
+ const genres=[...new Set(academy.books.map(x=>x.genre))];
+ const genreTotals=genres.map(genre=>({genre,count:academy.books.filter(b=>b.genre===genre).length}));
+ const chart=genreTotals.map(g=>'<div class="lv-genre-chart-row"><span>'+esc(g.genre)+'</span><div><i style="width:'+Math.round(100*g.count/Math.max(1,academy.books.length))+'%"></i></div><b>'+g.count+'</b></div>').join('');
  cityPanel('Teacher Role','Teacher Content Studio',
  '<div class="lv-teacher-notice"><b>Local teacher dashboard</b><p>No password protection or cloud synchronization yet. Import and export course packs to move content between computers.</p></div>'+
- '<div class="city-factory-grid"><div><small>Teacher books</small><b>'+academy.books.length+'</b></div>'+
+ '<div class="city-factory-grid"><div><small>Teacher books</small><b>'+academy.books.length+'</b></div>'+ 
+ '<div><small>Total words</small><b>'+totalWords.toLocaleString()+'</b></div>'+
+ '<div><small>Questions available</small><b>'+totalQuestions+'</b></div>'+
+ '<div><small>Genres</small><b>'+genres.length+'</b></div>'+
  '<div><small>Reading profiles</small><b>'+students.length+'</b></div></div>'+
  '<h3>Import lesson JSON</h3><p>A lesson may have genre (or genera), title, pages/text, wordCount and questions. If questions are omitted, the game generates draft fill-in questions; please review them before assigning.</p>'+
  '<div class="lv-import"><input type="file" id="lv-import-json" accept=".json,application/json">'+
@@ -140,9 +148,11 @@ function academyTeacher(){
  '<label>Reading passage<textarea name="text" rows="4" required maxlength="12000"></textarea></label>'+
  '<button class="button primary" type="submit">Create book</button></form>'+
  '<h3>Manage published books</h3><div class="lv-teacher-books">'+(rows||'<p>No imported books yet.</p>')+'</div>'+
- '<h3>Student progress on this device</h3><div class="lv-table-scroll"><table class="lv-table"><thead><tr><th>Nickname</th><th>Books</th><th>XP</th></tr></thead><tbody>'+
- (students.map(([name,data])=>'<tr><td>'+esc(name)+'</td><td>'+Object.keys(data.books||{}).length+'</td><td>'+data.xp+'</td></tr>').join('')||
- '<tr><td colspan="3">No reading data recorded yet.</td></tr>')+'</tbody></table></div>'+
+ '<h3>Reading by genre</h3><div class="lv-genre-chart">'+(chart||'<p>No imported genres yet.</p>')+'</div>'+ 
+ '<h3>Student progress on this device</h3><div class="lv-table-scroll"><table class="lv-table"><thead><tr><th>Nickname</th><th>Books</th><th>Words</th><th>Questions</th><th>Corrections</th><th>XP</th></tr></thead><tbody>'+
+ (students.map(([name,data])=>{const books=Object.values(data.books||{});return '<tr><td>'+esc(name)+'</td><td>'+books.length+'</td><td>'+books.reduce((n,x)=>n+(x.wordCount||0),0)+
+ '</td><td>'+books.reduce((n,x)=>n+(x.questions||0),0)+'</td><td>'+books.reduce((n,x)=>n+(x.mistakes||0),0)+'</td><td>'+data.xp+'</td></tr>';}).join('')||
+ '<tr><td colspan="6">No reading data recorded yet.</td></tr>')+'</tbody></table></div>'+
  '<button class="button" data-academy="student">Switch to student view</button>');
 }
 function academyExport(filename,data){
@@ -207,6 +217,7 @@ function academyInstall(){
   if(event.target.id==='lv-profile-form'){
    event.preventDefault();const data=new FormData(event.target);
    const nickname=academyStr(data.get('nickname'),30).replace(/[<>"]/g,'');
+   if(['__proto__','constructor','prototype'].includes(nickname.toLowerCase())){notice('Choose another nickname.');return;}
    if(!nickname)return;
    academy.profile.nickname=nickname;academySave();academyProfile();
   }
