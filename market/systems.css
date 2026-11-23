@@ -1,0 +1,49 @@
+/* LumenVale business management, mailbox, and economy. */
+.lv-city-nav{display:flex;flex-wrap:wrap;gap:.38rem;align-items:center;padding:.4rem 0 .9rem;border-bottom:1px solid #d9e2d4}
+.lv-city-nav button{border:1px solid #ccd9c9;background:#f1f5ed;color:#41654e;border-radius:6px;font-size:.79rem;font-weight:700;padding:.53rem .65rem}
+.lv-city-nav button:hover,.lv-city-nav button.active{background:#315a45;border-color:#315a45;color:#fff7d8}
+.lv-city-content{padding:1rem 0 0;min-height:210px}
+.lv-city-content h3{font-size:1.03rem;margin:.95rem 0 .7rem;color:#284d3a}
+.lv-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin:1.2rem 0}
+.lv-kpis>div{background:#eaf1e9;border:1px solid #ceddcd;border-radius:10px;padding:.84rem}
+.lv-kpis small{display:block;color:#607966;font-size:.76rem}
+.lv-kpis strong{display:block;color:#325b3f;font:750 clamp(1.15rem,2vw,1.55rem)/1.35 system-ui;margin-top:.3rem}
+.lv-ledger{display:flex;justify-content:space-between;gap:.9rem;align-items:baseline;border-bottom:1px solid #dfe7da;padding:.5rem 0;font-size:.86rem;margin:0}
+.lv-ledger b{white-space:nowrap}
+.lv-ledger .positive{color:#286c46}.lv-ledger .negative{color:#ac6049}
+.lv-contract{border:1px solid #d4decf;border-radius:11px;background:#fffdf6;padding:1rem;display:grid;gap:.47rem;margin:.7rem 0}
+.lv-contract small{font-size:.78rem;color:#6e826d}
+.lv-contract h3{font-size:1.12rem;margin:0;color:#345c43}
+.lv-contract p{margin:0;font-size:.88rem;color:#536c58}
+.lv-contract>b{color:#8b6b3c;font-size:.9rem}
+.lv-contract .button{justify-self:start;margin-top:.3rem}
+.lv-contract .button:disabled{opacity:.6}
+.lv-warehouse{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.7rem;margin:.85rem 0}
+.lv-warehouse>div{display:grid;gap:.6rem;justify-items:start;padding:.9rem;background:#f5f8f1;border:1px solid #d9e2d1;border-radius:9px}
+.lv-warehouse b{color:#315841}.lv-warehouse strong{font-size:1.3rem;color:#446149}.lv-warehouse .button{font-size:.78rem}
+.lv-upgrade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.7rem;margin:.85rem 0}
+.lv-upgrade{display:grid;align-content:start;gap:.65rem;padding:1rem;border:1px solid #d5decf;border-radius:10px;background:#fffdf6}
+.lv-upgrade h3{margin:0!important;color:#355d49}
+.lv-upgrade p{margin:0;color:#617766;font-size:.84rem;line-height:1.48}
+.lv-upgrade small{font-size:.76rem;color:#9a754b}
+.lv-upgrade .button{justify-self:start;margin-top:auto}
+.lv-upgrade>b{color:#477a52}
+.lv-mailbox{display:grid;grid-template-columns:1fr;gap:.6rem;margin-top:1rem}
+.lv-mail{display:flex;align-items:center;gap:.9rem;padding:.89rem 1rem;border:1px solid #d5e0d0;background:#fffef8;border-radius:10px;text-align:left}
+.lv-mail:hover{background:#eaf1e5;border-color:#a2c2a7}
+.lv-mail-icon{font-size:1.45rem;display:grid;place-items:center;width:42px;height:42px;border-radius:9px;background:#315e47;color:#f6d7a4;flex:none}
+.lv-mail>span:last-child{display:grid;gap:.1rem}
+.lv-mail small{color:#617c66;font-size:.78rem}
+.lv-mail strong{font-size:.98rem;color:#315842}
+.lv-mail em{font-size:.7rem;color:#a26b3b;font-style:normal}
+.lv-letter{padding:1.4rem;border:1px solid #e0d8c5;background:#fffaf0;border-radius:9px;font:1.05rem/1.65 Georgia,serif}
+.lv-letter small{color:#887b62;font:700 .75rem system-ui}
+.lv-letter p{font-size:1.05rem;line-height:1.7}
+.lv-newspaper{padding:clamp(1rem,3vw,2.5rem);background:#f7f0df;border:1px solid #ded0b2;color:#403c2d;box-shadow:0 4px 18px #402d171a}
+.lv-newspaper small{display:block;text-align:center;letter-spacing:.09em;color:#7f6f55;font-size:.7rem;border-block:1px solid #c7b795;padding:.5rem}
+.lv-newspaper h2{text-align:center;font:700 clamp(1.35rem,4vw,2.45rem)/1.15 Georgia,serif;margin:1.1rem 0}
+.lv-newspaper h3{font:700 1.17rem Georgia,serif;border-bottom:1px solid #caba9a;padding-bottom:.4rem}
+.lv-newspaper p{font:1rem/1.7 Georgia,serif}
+.lv-achievement{display:flex;align-items:center;gap:.8rem;margin:.45rem 0;padding:.69rem;background:#f0f5ec;border:1px solid #d5e3d1;border-radius:9px}
+.lv-achievement span{font-size:1.2rem}.lv-achievement b{margin-left:auto;color:#5e7a55;font-size:.8rem}
+@media(max-width:620px){.lv-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.lv-city-nav button{font-size:.7rem;padding:.4rem .5rem}.lv-mail{padding:.66rem}.lv-letter{padding:1rem}}
