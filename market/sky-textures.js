@@ -43,11 +43,11 @@ function createSkyAtmosphere({T,scene,renderer}){
    for(let layer=0;layer<cloud.layers;layer++){
     const xx=cx+(layer-(cloud.layers-1)/2)*cloud.w*.46,yy=cloud.y+(layer%2)*2.3;
     const w=cloud.w*(.70+layer*.07),h=cloud.h*(.88+(layer%3)*.10);
-    const shadow=x.createRadialGradient(xx,yy+h*.27,2,xx,yy+h*.27,w*.70);
+    const shadow=x.createRadialGradient(0,h*.27,2,0,h*.27,w*.70);
     shadow.addColorStop(0,under);shadow.addColorStop(1,'rgba(80,116,146,0)');
     x.save();x.translate(xx,yy);x.scale(1,h/w);
     x.fillStyle=shadow;x.beginPath();x.arc(0,4,w*.69,0,Math.PI*2);x.fill();x.restore();
-    const g=x.createRadialGradient(xx,yy,0,xx,yy,w*.62);
+    const g=x.createRadialGradient(0,0,0,0,0,w*.62);
     const alpha=.21+cloud.shade*.12;
     g.addColorStop(0,'rgba(255,255,253,'+alpha.toFixed(3)+')');
     g.addColorStop(.57,'rgba(255,255,255,'+(alpha*.65).toFixed(3)+')');
