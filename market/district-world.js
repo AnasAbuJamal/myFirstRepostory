@@ -438,8 +438,16 @@ function createDistrictWorld({T,scene,exterior,renderer}){
   if(!rooms.has(place.id))rooms.set(place.id,makeRoom(place));
   const room=rooms.get(place.id);
   room.visible=true;
-  if(room.userData.schoolGlobe&&!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
-   room.userData.schoolGlobe.rotation.y=now*.00043;
+  const schoolMotion=!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  if(room.userData.schoolGlobe&&schoolMotion)room.userData.schoolGlobe.rotation.y=now*.00043;
+  for(const person of room.userData.schoolPeople||[]){
+   const move=schoolMotion?Math.sin(now*.0015+person.phase):0;
+   person.body.position.y=person.standing?Math.abs(move)*.019:0;
+   person.arms[0].rotation.x=-.18+move*.14;
+   person.arms[1].rotation.x=-.18-move*.14;
+   person.legs[0].rotation.x=person.standing?move*.07:0;
+   person.legs[1].rotation.x=person.standing?-move*.07:0;
+  }
   const production=room.userData.production;
   if(production){
    const staff=cityState.sites[place.id]?.staff||0;
