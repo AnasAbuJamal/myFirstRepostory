@@ -1,0 +1,269 @@
+{
+  "kind": "lumenvale.lms-bundle",
+  "version": 1,
+  "courses": [
+    {
+      "kind": "lumenvale.lms-course",
+      "version": 1,
+      "id": "BIO-M1",
+      "title": "Biology Foundations",
+      "subject": "Biology",
+      "teacher": "LumenVale Demo Faculty",
+      "description": "Explore cells, their parts, and how living things use energy.",
+      "published": true,
+      "modules": [
+        {
+          "id": "cell-structures",
+          "title": "Module 1 · Cell Structure",
+          "objectives": [
+            "Identify cell membranes, cytoplasm, and nucleus",
+            "Compare plant and animal cells"
+          ],
+          "lesson": {
+            "title": "Inside a Living Cell",
+            "content": "A cell is the basic structural and functional unit of living organisms. The cell membrane controls what enters and leaves the cell. Cytoplasm contains structures called organelles, and the nucleus stores most of the cell's genetic information. Plant cells often contain a cell wall and chloroplasts. Animal cells do not have chloroplasts. These structures work together to help cells grow and respond to their environment."
+          },
+          "flashcards": [
+            {
+              "front": "Cell membrane",
+              "back": "A selectively permeable boundary that controls what moves in and out of a cell."
+            },
+            {
+              "front": "Nucleus",
+              "back": "An organelle that contains most of a eukaryotic cell's DNA."
+            },
+            {
+              "front": "Chloroplast",
+              "back": "An organelle where photosynthesis takes place in plants and algae."
+            }
+          ],
+          "practice": [
+            {
+              "prompt": "Which structure controls what enters and leaves a cell?",
+              "choices": [
+                "Cell membrane",
+                "Ribosome",
+                "Chromosome",
+                "Vacuole"
+              ],
+              "correctIndex": 0,
+              "explanation": "The plasma membrane is selectively permeable."
+            }
+          ],
+          "exam": {
+            "title": "Cell Biology Checkpoint",
+            "timeLimitMinutes": 10,
+            "attemptLimit": 3,
+            "questions": [
+              {
+                "prompt": "What is the basic unit of life?",
+                "choices": [
+                  "An organ",
+                  "A cell",
+                  "A tissue",
+                  "A system"
+                ],
+                "correctIndex": 1,
+                "explanation": "Cells are the smallest units capable of performing life's basic functions."
+              },
+              {
+                "prompt": "Which structure contains most eukaryotic DNA?",
+                "choices": [
+                  "Nucleus",
+                  "Cell membrane",
+                  "Ribosome",
+                  "Cytoplasm"
+                ],
+                "correctIndex": 0,
+                "explanation": "Most eukaryotic DNA is found in the nucleus."
+              },
+              {
+                "prompt": "Which structure is usually found in plant cells but not animal cells?",
+                "choices": [
+                  "Mitochondrion",
+                  "Cell membrane",
+                  "Chloroplast",
+                  "Cytoplasm"
+                ],
+                "correctIndex": 2,
+                "explanation": "Chloroplasts are responsible for photosynthesis."
+              }
+            ]
+          }
+        },
+        {
+          "id": "energy",
+          "title": "Module 2 · Energy in Living Things",
+          "objectives": [
+            "Distinguish photosynthesis from cellular respiration",
+            "Explain why cells need ATP"
+          ],
+          "lesson": {
+            "title": "How Cells Use Energy",
+            "content": "Organisms need energy to carry out life processes. During photosynthesis, plants and algae use light energy to help form glucose from carbon dioxide and water. During cellular respiration, cells break down fuel molecules to make ATP, the molecule that transfers usable energy for many cellular activities. Mitochondria play an important role in aerobic cellular respiration. Photosynthesis and respiration are connected but are not the same process."
+          },
+          "flashcards": [
+            {
+              "front": "ATP",
+              "back": "A molecule that transfers usable energy for cellular work."
+            },
+            {
+              "front": "Photosynthesis",
+              "back": "A process that uses light energy to form energy-rich organic molecules."
+            }
+          ],
+          "practice": [
+            {
+              "prompt": "Which molecule transfers usable energy for many cell activities?",
+              "choices": [
+                "ATP",
+                "DNA",
+                "RNA",
+                "Chlorophyll"
+              ],
+              "correctIndex": 0,
+              "explanation": "ATP is often called the cell's energy currency."
+            }
+          ],
+          "exam": {
+            "title": "Cell Energy Checkpoint",
+            "timeLimitMinutes": 10,
+            "attemptLimit": 3,
+            "questions": [
+              {
+                "prompt": "In which organelle does much aerobic cellular respiration occur?",
+                "choices": [
+                  "Nucleus",
+                  "Mitochondrion",
+                  "Golgi apparatus",
+                  "Cell wall"
+                ],
+                "correctIndex": 1
+              },
+              {
+                "prompt": "Which process uses light energy to produce sugar?",
+                "choices": [
+                  "Diffusion",
+                  "Respiration",
+                  "Photosynthesis",
+                  "Osmosis"
+                ],
+                "correctIndex": 2
+              }
+            ]
+          }
+        }
+      ],
+      "assignments": [
+        {
+          "id": "compare-cells",
+          "title": "Compare Plant and Animal Cells",
+          "moduleId": "cell-structures",
+          "prompt": "Write 4–6 sentences comparing the structures of plant and animal cells. Explain one structure they share and one difference.",
+          "points": 20,
+          "dueDate": ""
+        }
+      ],
+      "announcements": [
+        {
+          "id": "welcome-bio",
+          "title": "Welcome to Biology",
+          "body": "Start with Module 1. Complete the reading and flashcards before taking the checkpoint exam.",
+          "date": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "kind": "lumenvale.lms-course",
+      "version": 1,
+      "id": "ENG-M1",
+      "title": "English Reading and Writing",
+      "subject": "English",
+      "teacher": "LumenVale Demo Faculty",
+      "description": "Practice finding main ideas, supporting details, and clear explanations.",
+      "published": true,
+      "modules": [
+        {
+          "id": "main-ideas",
+          "title": "Module 1 · Main Ideas",
+          "objectives": [
+            "Identify the main idea in a paragraph",
+            "Recognize supporting evidence"
+          ],
+          "lesson": {
+            "title": "Understanding Main Ideas",
+            "content": "A main idea is what a paragraph or passage is mostly about. Supporting details explain or prove that main idea. To find the main idea, read the whole paragraph and ask what the author wants the reader to understand. A topic is usually just a few words, but the main idea states a complete thought about the topic. Look for repeated concepts, examples, and a concluding sentence when identifying the author's main point."
+          },
+          "flashcards": [
+            {
+              "front": "Main idea",
+              "back": "The central point that a passage communicates."
+            },
+            {
+              "front": "Supporting detail",
+              "back": "A fact, example, or explanation that supports the main idea."
+            }
+          ],
+          "practice": [
+            {
+              "prompt": "What does a supporting detail do?",
+              "choices": [
+                "Changes the topic",
+                "Supports the central point",
+                "Replaces the title",
+                "Makes all opinions facts"
+              ],
+              "correctIndex": 1,
+              "explanation": "A supporting detail gives evidence or explanation for the main idea."
+            }
+          ],
+          "exam": {
+            "title": "Reading Checkpoint",
+            "timeLimitMinutes": 12,
+            "attemptLimit": 3,
+            "questions": [
+              {
+                "prompt": "Which choice best describes a main idea?",
+                "choices": [
+                  "One small example",
+                  "The central point",
+                  "A dictionary definition",
+                  "A page number"
+                ],
+                "correctIndex": 1
+              },
+              {
+                "prompt": "Which is most likely a supporting detail?",
+                "choices": [
+                  "A specific example",
+                  "The book's cover",
+                  "The author name",
+                  "The paragraph number"
+                ],
+                "correctIndex": 0
+              }
+            ]
+          }
+        }
+      ],
+      "assignments": [
+        {
+          "id": "write-summary",
+          "title": "Summarize a Paragraph",
+          "moduleId": "main-ideas",
+          "prompt": "Write a short paragraph explaining why it is important to identify a passage's main idea. Include a supporting example.",
+          "points": 15,
+          "dueDate": ""
+        }
+      ],
+      "announcements": [
+        {
+          "id": "welcome-eng",
+          "title": "Reading Practice",
+          "body": "Use the flashcards after reading, and practice describing the main idea in your own words.",
+          "date": "2026-11-23"
+        }
+      ]
+    }
+  ]
+}
