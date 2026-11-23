@@ -34,7 +34,7 @@ function decorateSchoolExterior(T,place,kit,sign,outside){
 function decorateSchoolInterior(T,k,g,sign,place){
  const wood='#a88762';
  // Central clear route from entry to information; side rooms never block it.
- k.box(0,.048,-.15,2.65,.022,19.6,'#bed0c4');
+ k.box(0,.048,-.15,6.52,.022,19.6,'#e1e4db');
  for(let z=-8;z<=8;z+=2.5)k.box(0,.063,z,2.58,.014,.05,'#f0e8ce');
  for(const side of [-1,1]){
   k.box(side*3.35,.052,-.2,.08,.018,17.7,'#e4be83');
@@ -164,9 +164,9 @@ function decorateSchoolInterior(T,k,g,sign,place){
  k.box(0,.052,10.6,2.60,.025,1.18,'#efe3bd');
  sign(g,'WELCOME · MY COURSES · GRADES',0,3.63,11.63,8.0,.44,-1,'#42685d');
  // School timetable and accessible route markers.
- for(const z of [-5.25,.05,5.9]){
-  k.box(0,3.31,z,2.20,.62,.10,'#4a7063');
-  k.light(0,3.34,z+.063,1.88,.40,.024,'#dceada');
+ for(const [z,label] of [[-5.25,'CLASSROOMS'],[.05,'LIBRARY · LAB'],[5.9,'STUDENT HUB']]){
+  k.box(0,3.31,z,2.20,.62,.10,'#35584d');
+  sign(g,label,0,3.33,z+.079,2.08,.42,1,'#35584d');
  }
  // Additional figures: a teacher and students with low-poly animated limbs.
  const people=[],cube=new T.BoxGeometry(1,1,1);
