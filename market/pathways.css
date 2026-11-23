@@ -1,0 +1,45 @@
+/* Formal Academic Pathways — separate from open Library exploration */
+.pathway-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin:1.1rem 0}
+.pathway-summary>div{background:#eaf1e9;border:1px solid #d4e3d7;padding:.9rem;border-radius:11px;display:grid;gap:.3rem}
+.pathway-summary small{font-size:.73rem;color:#6a7e70}
+.pathway-summary strong{font:700 1.22rem Georgia,serif;color:#315843}
+.pathway-goals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin:.85rem 0 1.4rem}
+.pathway-goal{padding:1.05rem .8rem;text-align:left;background:#fffef9;color:#2f513e;border:1px solid #d0dbc9;border-radius:11px;display:grid;gap:.5rem}
+.pathway-goal strong{font:700 1.03rem Georgia,serif}
+.pathway-goal small{color:#6d8472;font-size:.77rem;line-height:1.5}
+.pathway-goal.selected{border:2px solid #52866a;background:#e9f2e7}
+.pathway-stage{border-top:1px solid #ced8c9;margin-top:1.4rem;padding-top:.8rem}
+.pathway-stage header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.pathway-stage h3{font:700 1.28rem Georgia,serif;color:#2c5740;margin:.4rem 0}
+.pathway-stage header small{font-size:.75rem;color:#85917f}
+.pathway-course-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin:.9rem 0}
+.pathway-course{display:grid;gap:.4rem;text-align:left;border:1px solid #d2dece;background:#fffefa;border-radius:10px;padding:.85rem}
+.pathway-course strong{font-size:.87rem;color:#34583f}
+.pathway-course small{font-size:.7rem;color:#7a917c}
+.pathway-course span{color:#518163;font-size:.75rem;font-weight:700}
+.pathway-course.locked{opacity:.75;background:#f1f3ed}
+.pathway-course.locked span{color:#956e48}
+.pathway-age-label{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;font-size:.88rem;font-weight:700}
+.pathway-age-label select{padding:.54rem;border:1px solid #bdccbe;border-radius:8px;background:#fff}
+.pathway-alert{background:#fff3df;border:1px solid #e5ccac;color:#876747;padding:.9rem 1rem;border-radius:9px;font-size:.86rem;line-height:1.55}
+.pathway-units{display:grid;gap:.5rem;margin:1.2rem 0}
+.pathway-units>div{display:flex;align-items:center;justify-content:space-between;gap:.8rem;background:#f3f6ef;border:1px solid #d9e4d8;border-radius:9px;padding:.8rem .9rem}
+.pathway-units span{font-size:.87rem;font-weight:750;color:#315e43}
+.pathway-units p,.pathway-units small{color:#6a816d;font-size:.8rem;display:block}
+.pathway-reading{padding:1rem 1.2rem;background:#fbf8ec;border:1px solid #ded9c8;border-radius:11px;margin:1rem 0}
+.pathway-reading h4{color:#406c4b;margin:.2rem 0}
+.pathway-reading>p{color:#6b846e}
+.pathway-reading article{white-space:pre-wrap;font:1.13rem/1.85 Georgia,serif;color:#333f34;margin:1rem 0}
+.pathway-flashcard{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:1rem;min-height:230px;width:100%;padding:1.5rem;border:1px solid #b8cdbb;border-radius:15px;background:linear-gradient(135deg,#edf2e8,#fdf9e8);box-shadow:0 15px 30px #244c3020}
+.pathway-flashcard small{letter-spacing:.12em;font-size:.72rem;color:#648166;font-weight:800}
+.pathway-flashcard strong{font:700 1.34rem/1.5 Georgia,serif;color:#31523c;max-width:500px}
+.pathway-flashcard span{font-size:.78rem;color:#64836a}
+.pathway-scroll{overflow:auto;max-width:100%;border:1px solid #d6e1d3;border-radius:9px;margin:1.1rem 0}
+.pathway-transcript{width:100%;border-collapse:collapse;background:#fffdfa;font-size:.82rem}
+.pathway-transcript th,.pathway-transcript td{padding:.72rem .5rem;text-align:left;border-bottom:1px solid #e5ebdf}
+.pathway-transcript th{background:#e9f0e5;color:#3e644b}
+.pathway-import{padding:1rem;border:1px solid #bdd4c0;border-radius:11px;background:#f1f6ef;display:grid;gap:1rem;margin:1rem 0}
+.pathway-import label,.pathway-import form{display:grid;gap:.45rem;color:#3e654c;font-size:.85rem;font-weight:750}
+.pathway-import input{width:100%;padding:.7rem;border:1px solid #c2d1c2;border-radius:8px;background:#fff}
+@media(max-width:660px){.pathway-goals{grid-template-columns:1fr}.pathway-course-grid{grid-template-columns:1fr}.pathway-summary>div{padding:.55rem}.pathway-summary strong{font-size:1rem}}
+@media(prefers-reduced-motion:reduce){.pathway-flashcard{transition:none}}
