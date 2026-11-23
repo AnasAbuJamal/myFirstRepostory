@@ -86,7 +86,8 @@ function cityLandImproveCost(site,landLevel){return site.land*(landLevel+1)*2;}
 function cityProduction(site,record){
  if(!record?.built || site.kind!=='factory')return 0;
  const landLevel=Math.max(1,Math.min(4,record.landLevel||1));
- return Math.floor(site.rate*record.staff*record.level*(1+.25*(landLevel-1)));
+ const training=typeof systemsState!=='undefined'?Math.max(0,systemsState.training?.[site.id]||0):0;
+ return Math.floor(site.rate*record.staff*record.level*(1+.25*(landLevel-1))*(1+.06*training));
 }
 function cityIncome(){
  return CITY_SITES.reduce((total,site)=>total+cityProduction(site,cityState.sites[site.id]),0);
