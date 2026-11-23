@@ -88,6 +88,9 @@ function indoorFurniture(kind){
    const left=Math.min(side*3.4,side*12.93),right=Math.max(side*3.4,side*12.93);
    for(const z of [-3.38,2.38])blockers.push([left,right,z-.12,z+.12]);
   }
+  // Library bookshelves are tucked against the west perimeter and now have
+  // a matching collision strip; the reading aisle and tables remain separate.
+  blockers.push([-12.65,-11.72,3.20,8.15]);
   blockers.push([-10.25,-6.15,9.52,10.93],[6.16,10.34,9.18,9.77],[6.16,10.34,10.28,10.93]);
   return blockers;
  }

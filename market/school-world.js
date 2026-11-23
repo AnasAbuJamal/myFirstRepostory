@@ -184,12 +184,12 @@ function decorateSchoolInterior(T,k,g,sign,place,low=false){
  // the existing bookcase collision boundary and preserve accessible aisles.
  for(let rack=0;rack<3;rack++){
   const z=3.90+rack*1.60;
-  k.box(-11.38,1.44,z,.76,2.16,1.25,'#6c5947');
+  k.box(-12.20,1.44,z,.76,2.16,1.25,'#6c5947');
   for(const yy of [.71,1.30,1.87]){
-   k.box(-10.98,yy,z,.86,.075,1.26,'#b38f68');
+   k.box(-11.80,yy,z,.86,.075,1.26,'#b38f68');
    for(let index=0;index<8;index++){
     const zz=z-.49+index*.135;
-    k.box(-10.94,yy+.18,zz,.35,.35+(index%3)*.045,.095,
+    k.box(-11.76,yy+.18,zz,.35,.35+(index%3)*.045,.095,
      ['#5f8390','#bb8e63','#6a977d','#a27e91'][index%4]);
    }
   }
@@ -245,8 +245,8 @@ function decorateSchoolInterior(T,k,g,sign,place,low=false){
  schoolPerson(9.6,-9.15,'#bd986a',1,false);
  schoolPerson(-9.6,-1.52,'#879aaf',2,false);
  schoolPerson(9.6,-1.52,'#7ba78e',3,true);
- schoolPerson(-9.6,7.12,'#ba8875',4,false);
- schoolPerson(9.6,7.12,'#708f99',5,false);
+ // Leave the library and study tables free of seated character meshes.
+ // Previously these two figures intersected the new full-size walnut slabs.
  g.userData.schoolPeople=people;
 
  // Architectural detail pass: trim and wayfinding, not more visual noise.

@@ -59,3 +59,12 @@ test('school table models are bundled and replace only six generic worktables',(
  assert.match(furniture,/new T\.CanvasTexture/);
  assert.match(furniture,/T\.MeshStandardMaterial\|\|T\.MeshLambertMaterial/);
 });
+
+test('library bookcases and characters do not intersect premium table footprints',()=>{
+ const src=fs.readFileSync(path.join(__dirname,'school-world.js'),'utf8');
+ const district=fs.readFileSync(path.join(__dirname,'districts.js'),'utf8');
+ assert.match(src,/k\.box\(-12\.20,1\.44,z/);
+ assert.doesNotMatch(src,/schoolPerson\(-9\.6,7\.12/);
+ assert.doesNotMatch(src,/schoolPerson\(9\.6,7\.12/);
+ assert.match(district,/blockers\.push\(\[-12\.65,-11\.72,3\.20,8\.15\]\)/);
+});
