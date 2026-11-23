@@ -32,3 +32,35 @@ dialog[data-surface="phone"] .title{font:730 1.35rem/1.2 var(--sans);letter-spac
  .walk-hints{right:10px}.walk-hints>kbd,.walk-hints>span{display:none}
  dialog[data-surface="phone"]{inset:auto 8px 8px auto;width:min(386px,calc(100vw - 16px));max-height:calc(100dvh - 16px)}
 }
+
+
+/* Cohesive phone information architecture — thumb-friendly, clear focus and safe areas. */
+.phone-context-head{display:grid;gap:.2rem;margin:.2rem 0 .72rem}
+.phone-context-head b{font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:#37604d}
+.phone-context-head small{color:#607768;font-size:.78rem;line-height:1.45}
+.phone-categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.3rem;margin:0 0 .9rem;border-bottom:1px solid #d7e2d4;padding-bottom:.56rem}
+.phone-categories button{font:700 .8rem var(--sans);background:#edf2e9;color:#486555;border:1px solid #d3dfd0;border-radius:10px;min-height:40px;padding:.5rem .2rem}
+.phone-categories button[aria-pressed="true"]{background:#2c5945;color:#fff9e8;border-color:#2c5945}
+.phone-categories button:hover{background:#d4e6d7;color:#264e39}
+.phone-categories button[aria-pressed="true"]:hover{background:#224835;color:#fff}
+.phone-categories button:focus-visible,.phone-apps button:focus-visible{outline:3px solid #ac7229;outline-offset:2px}
+.phone-learning-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.36rem}
+.phone-learning-overview div{display:grid;align-content:start;gap:.12rem;min-width:0;padding:.55rem .35rem;background:#fffdfa;border:1px solid #d5e2d3;border-radius:10px;text-align:center}
+.phone-learning-overview b{font-size:1.13rem;color:#2c5c47;font-variant-numeric:tabular-nums}
+.phone-learning-overview small{font-size:.68rem;color:#597468;line-height:1.3}
+.phone-next-task{display:grid;gap:.1rem;border-left:3px solid #80a688;background:#e8f1e5;padding:.55rem .72rem;border-radius:0 9px 9px 0;margin:.62rem 0 .9rem;line-height:1.35}
+.phone-next-task>span{font-size:.65rem;font-weight:800;letter-spacing:.12em;color:#50765e}
+.phone-next-task strong{font-size:.82rem;color:#274d3b}
+.phone-next-task small{font-size:.72rem;color:#607869}
+.phone-apps button{min-height:75px;align-content:center;gap:.31rem;padding:.55rem .18rem .45rem;border:1px solid transparent;line-height:1.3;overflow-wrap:anywhere}
+.phone-apps button:hover{border-color:#c4d9c9}
+.phone-apps button>span:last-child{max-width:100%;font-size:.74rem}
+.phone-app-icon{height:38px;width:42px;border-radius:12px}
+.phone-backup-actions{display:grid;gap:1rem;margin:1rem 0}
+.phone-backup-actions label{display:grid;gap:.45rem;font-size:.82rem;font-weight:750;color:#2c5641}
+.phone-backup-actions input{max-width:100%;padding:.63rem;background:#fff;border:1px solid #c6d7c8;border-radius:9px}
+.phone-backup-warning{border-left:3px solid #ad8a52;background:#f8f1e4;padding:.75rem;font-size:.82rem;line-height:1.5}
+@media(max-width:500px){
+ dialog[data-surface="phone"]{bottom:max(8px,env(safe-area-inset-bottom));right:max(8px,env(safe-area-inset-right))}
+ .phone-learning-overview small{font-size:.63rem}
+}
