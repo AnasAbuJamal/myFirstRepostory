@@ -1,5 +1,8 @@
 /* LumenVale City Systems: mail, expenses, orders, technology and citizens. */
 const LV_SYSTEMS_KEY='lumenvale-city-systems-v1';
+const LV_PERSONNEL=['Amina · Operator','Leo · Mechanic','Noor · Engineer','Sam · Driver','Mira · Quality Inspector','Omar · Shift Lead'];
+const LV_TREASURES=[{id:'river',x:35,z:-14,reward:50,unlock:2,clue:'Follow the road east, then search the riverside rocks.'},{id:'forest',x:-38,z:29,reward:90,unlock:3,clue:'Look by the old trees on the far western edge.'},{id:'garden',x:8,z:32,reward:140,unlock:4,clue:'Look beyond the homes and gardens at the south edge of the town.'}];
+var systemsDriving=false;
 const LV_PRODUCTS={workshop:{name:'Furniture',icon:'🪑'},lumber:{name:'Lumber',icon:'🪵'},
  textile:{name:'Fabric',icon:'🧵'},greenhouse:{name:'Produce',icon:'🌿'},assembly:{name:'Tools',icon:'🛠️'}};
 const LV_CONTRACTS=[
@@ -26,7 +29,7 @@ const LV_TECH=[
  {id:'automation',title:'Modern Automation',cost:620,books:5,desc:'Automate routine work. +25% output.',boost:.25}
 ];
 function systemsBlank(){return {version:1,inventory:{},upgrades:{},tech:{},contracts:{},
-  paid:0,earned:0,rep:0,lastTick:Date.now(),mailRead:[],ledger:[],achievements:[],training:{}};}
+  paid:0,earned:0,rep:0,lastTick:Date.now(),mailRead:[],ledger:[],achievements:[],training:{},treasures:[]};}
 function systemsClean(raw){
  const s=systemsBlank();
  if(!raw||raw.version!==1)return s;
@@ -40,6 +43,7 @@ function systemsClean(raw){
  s.mailRead=Array.isArray(raw.mailRead)?raw.mailRead.filter(x=>typeof x==='string').slice(0,100):[];
  s.ledger=Array.isArray(raw.ledger)?raw.ledger.filter(x=>x&&typeof x.note==='string').slice(0,100):[];
  s.achievements=Array.isArray(raw.achievements)?raw.achievements.filter(x=>typeof x==='string').slice(0,100):[];
+ s.treasures=Array.isArray(raw.treasures)?raw.treasures.filter(x=>LV_TREASURES.some(t=>t.id===x)):[];
  for(const id of Object.keys(LV_PRODUCTS))s.training[id]=count(raw.training?.[id],5);
  return s;
 }
@@ -149,7 +153,8 @@ function systemsAchievements(){
   ['builder',cityBuildingsBuilt()>=2,'Growing Town',60],
   ['employer',cityPopulation()>=3,'Hiring Manager',45],
   ['trader',Object.values(systemsState.contracts).some(x=>x==='done'),'First Shipment',35],
-  ['mayor',systemsState.rep>=40,'City Leader',110]
+  ['mayor',systemsState.rep>=40,'City Leader',110],
+  ['explorer',systemsState.treasures.length>=1,'Curious Explorer',35]
  ];
  let changed=false;
  for(const [id,ready,title,reward] of milestones){
@@ -171,6 +176,8 @@ function systemsMail(){
   body:'We need five finished pieces of furniture. Open Contracts to accept the order and arrange delivery.',button:'Open contracts',tab:'contracts'},
  {id:'training',from:'Engineering Society',subject:'Improve your machines',unlock:cityCompleted()>=2,
   body:'Research new machinery technologies at City Hall. Reading more books unlocks deeper knowledge.',button:'Open research',tab:'research'},
+ {id:'treasure',from:'Explorer Guild',subject:'A hidden reward awaits',unlock:cityCompleted()>=2,
+  body:'Reading unlocks discoveries. Look for a small treasure chest near the river on the eastern side of town. More clues appear under City Hall > Exploration.'},
  {id:'council',from:'LumenVale Council',subject:'Community development',unlock:cityLandOwned()>=2,
   body:'Your city is growing. Invest in streetlights, gardens, housing, and public services to improve its reputation.',button:'City upgrades',tab:'upgrades'}
  ];
@@ -193,7 +200,7 @@ function systemsReadLetter(id){
  '<button class="button" type="button" data-systems="mail">Back to mailbox</button></div></article>');
 }
 function systemsPanel(tab='overview'){
- const buttons=[['overview','Overview'],['contracts','Contracts'],['warehouse','Warehouse'],['workers','Workers'],['research','Research'],['upgrades','City Upgrades'],['newspaper','Newspaper'],['achievements','Achievements']];
+ const buttons=[['overview','Overview'],['contracts','Contracts'],['warehouse','Warehouse'],['workers','Workers'],['research','Research'],['upgrades','City Upgrades'],['newspaper','Newspaper'],['explore','Explore'],['achievements','Achievements']];
  const nav='<div class="lv-city-nav">'+buttons.map(([id,title])=>'<button class="'+(id===tab?'active':'')+'" data-systems="tab" data-tab="'+id+'">'+title+'</button>').join('')+'</div>';
  let html='';
  if(tab==='overview'){
@@ -223,11 +230,12 @@ function systemsPanel(tab='overview'){
    '<div class="lv-warehouse">'+Object.entries(LV_PRODUCTS).map(([id,p])=>'<div><b>'+p.icon+' '+p.name+'</b>'+
    '<strong>'+ (systemsState.inventory[id]||0)+' units</strong><button class="button" data-systems="restock" data-id="'+id+'" '+(cityState.coins<25?'disabled':'')+'>Buy 5 · 25 coins</button></div>').join('')+'</div>';
  }else if(tab==='workers'){
-  html='<p>Employees produce goods and earn income automatically. Training costs coins but improves staff expertise.</p>'+
+  html='<p>Employees produce goods and earn income automatically. Every worker has a professional role. Training costs coins and improves productivity.</p>'+
    CITY_SITES.filter(x=>x.kind==='factory'&&cityState.sites[x.id]?.built).map(x=>{
     const unit=cityState.sites[x.id],level=systemsState.training[x.id]||0;
     return '<article class="lv-contract"><h3>'+esc(x.title)+'</h3><p>Workers: '+unit.staff+
     ' · Machinery level '+unit.level+' · Training level '+level+'/5</p>'+
+    '<div class="lv-roster">'+LV_PERSONNEL.slice(0,unit.staff).map((who,i)=>'<span>👷 '+esc(who)+' · Skill '+(1+level+(i%2))+'</span>').join('')+'</div>'+ 
     '<button class="button" data-systems="train" data-id="'+x.id+'" '+(!unit.staff||level===5||cityState.coins<40*(level+1)?'disabled':'')+
     '>Train staff · '+(40*(level+1))+' coins</button></article>';
    }).join('')||'<p>Build a factory and hire your first employee to begin training.</p>';
@@ -253,6 +261,9 @@ function systemsPanel(tab='overview'){
   ' coins every five seconds before expenses. Salaries and utilities cost '+systemsExpenseRate()+' coins per cycle.</p>'+
   '<h3>Opportunities</h3><p>'+LV_CONTRACTS.filter(x=>!systemsState.contracts[x.id]&&cityCompleted()>=x.needs).length+
   ' unclaimed delivery contracts are available. The local library welcomes new readers.</p></article>';
+ }else if(tab==='explore'){
+  html='<p>Read a book to learn clues, explore the city in first person, and collect hidden treasure chests. New caches unlock as you learn.</p>'+LV_TREASURES.map(t=>
+   '<article class="lv-contract"><h3>'+ (systemsState.treasures.includes(t.id)?'✓ Found':'Hidden cache')+'</h3><p>'+esc(t.clue)+'</p><small>Requires '+t.unlock+' completed books · Reward '+t.reward+' coins</small></article>').join('');
  }else if(tab==='achievements'){
   const list=[['reader','First Reader'],['bookworm','Knowledge Seeker'],['landowner','Landowner'],['builder','Growing Town'],
    ['employer','Hiring Manager'],['trader','First Shipment'],['mayor','City Leader']];
@@ -262,14 +273,35 @@ function systemsPanel(tab='overview'){
  }
  cityPanel('LumenVale / City Hall','City Management',nav+'<div class="lv-city-content">'+html+'</div>');
 }
+function systemsTreasure(id){
+ const t=LV_TREASURES.find(x=>x.id===id);if(!t||systemsState.treasures.includes(id))return;
+ if(cityCompleted()<t.unlock){notice('Read '+t.unlock+' books to unlock this treasure.');return;}
+ systemsState.treasures.push(id);systemsState.earned+=t.reward;
+ cityEarn(t.reward,10);systemsLedger('Found hidden chest: '+id,t.reward);systemsSave();systemsAchievements();
+ notice('Hidden treasure discovered! +'+t.reward+' coins.');
+}
+function systemsVehicle(){
+ if(!systemsState.upgrades.delivery){notice('Buy the delivery van from City Hall first.');return;}
+ if(!systemsDriving&&Math.hypot(player.x-23.5,player.z-9)>5){notice('Visit the delivery van at the warehouse to drive.');return;}
+ systemsDriving=!systemsDriving;
+ notice(systemsDriving?'Driving delivery van · WASD steer · V or E to exit':'Exited the delivery van.');
+}
 function systemsNearby(player){
+ if(systemsDriving)return {id:'vehicle',system:true,label:'Exit delivery van'};
+ if(systemsState.upgrades.delivery&&Math.hypot(player.x-23.5,player.z-9)<3)return {id:'vehicle',system:true,label:'Drive your delivery van'};
+ for(const t of LV_TREASURES){
+  if(cityCompleted()>=t.unlock&&!systemsState.treasures.includes(t.id)&&Math.hypot(player.x-t.x,player.z-t.z)<2.8)
+    return {id:'treasure-'+t.id,system:true,label:'Discover hidden treasure'};
+ }
  if(Math.hypot(player.x-6.15,player.z+7.0)<2.5)return {id:'mailbox',system:true,label:'Check your mailbox'};
  if(Math.hypot(player.x+7.0,player.z-13.5)<2.9)return {id:'cityhall',system:true,label:'Visit City Hall'};
  if(Math.hypot(player.x-23.5,player.z-6.0)<2.8)return {id:'depot',system:true,label:'Visit delivery warehouse'};
  return null;
 }
 function systemsInteract(target){
- if(target?.id==='mailbox')systemsMailBox();
+ if(target?.id==='vehicle')systemsVehicle();
+ else if(target?.id?.startsWith('treasure-'))systemsTreasure(target.id.slice(9));
+ else if(target?.id==='mailbox')systemsMailBox();
  else if(target?.id==='depot')systemsPanel('warehouse');
  else systemsPanel('overview');
 }
@@ -298,6 +330,7 @@ function systemsInit(){
   const key=event.key.toLowerCase();
   if(key==='b'){event.preventDefault();systemsPanel('overview');}
   if(key==='n'){event.preventDefault();systemsMailBox();}
+  if(key==='v'){event.preventDefault();systemsVehicle();}
  });
  systemsTick();systemsAchievements();
  setInterval(()=>{systemsTick();citySync();},1000);
