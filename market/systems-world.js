@@ -112,6 +112,14 @@ function createLumenWorld({T,exterior,box,renderer}){
  })
  ]);
  // More animated residents and simple market signage.
+ const hiddenChests=LV_TREASURES.map(cache=>{
+  const chest=new T.Group();chest.position.set(cache.x,0,cache.z);
+  b(chest,0,.25,0,.75,.46,.50,'#80624a');
+  b(chest,0,.53,0,.83,.15,.59,'#d0b269');
+  b(chest,0,.34,-.28,.13,.30,.04,'#ebd286');
+  for(const x of [-.30,.30])b(chest,x,.49,-.29,.07,.20,.02,'#cdb274');
+  root.add(chest);return {cache,chest};
+ });
  const pedestrians=[];
  function figure(x,z,coat){
   const rig=new T.Group();rig.position.set(x,0,z);root.add(rig);
@@ -123,7 +131,7 @@ function createLumenWorld({T,exterior,box,renderer}){
   return {rig,legs,x,z};
  }
  pedestrians.push(figure(9,15,'#8ba2b8'),figure(-18,24,'#b68f78'),figure(17,28,'#b28a9f'));
- function update(now){
+ function update(now,view){
   const phase=now*.001;
   for(let i=0;i<traffic.length;i++){
    const car=traffic[i],distance=(phase*(i+1)*1.15+i*23)%78;
@@ -131,10 +139,19 @@ function createLumenWorld({T,exterior,box,renderer}){
    car.rotation.y=i===1?Math.PI:0;
   }
   for(const [id,group] of upgrades)group.visible=Boolean(systemsState.upgrades[id]);
+  for(const item of hiddenChests){
+   item.chest.visible=cityCompleted()>=item.cache.unlock&&!systemsState.treasures.includes(item.cache.id);
+   if(item.chest.visible)item.chest.rotation.y=Math.sin(phase*.55)*.09;
+  }
   if(upgrades.get('delivery').visible){
-   const truck=upgrades.get('delivery');
-   truck.position.x=23+Math.sin(phase*.33)*4;
-   truck.rotation.y=Math.sin(phase*.33)>0?0:Math.PI;
+   const van=upgrades.get('delivery');
+   if(systemsDriving&&view?.player){
+    van.position.set(view.player.x,0,view.player.z);
+    van.rotation.y=view.player.yaw+Math.PI/2;
+   }else{
+    van.position.set(23,0,9);
+    van.rotation.y=0;
+   }
   }
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   pedestrians.forEach((p,i)=>{
