@@ -42,3 +42,17 @@ The game uses scripted story feedback and stores progress in this browser. It ne
 
 Three.js is distributed under its MIT license in `vendor/THREE-LICENSE.txt`.
 
+
+## City Builder expansion (playable)
+
+This branch now adds a connected 3D town around the original office. Walk east to the **Reading Library**, approach its open shelves, and press **E**. Six short *sample* books demonstrate the page-turning, reading timer, comprehension question, and coin reward flow; their lesson text is deliberately minimal and can be replaced later.
+
+At an empty construction plot, press **E** to pay the construction cost. New plot types unlock as you complete unique books. Return to a completed factory and press **E** to hire employees, upgrade machinery, or manually help the production line. Workers appear as animated 3D characters, generate coins every five seconds, and can produce for up to one hour while the browser is closed. The city also has a worker housing block, plaza, roads, gardens, benches, and signs.
+
+The **City coins** HUD is a separate expansion economy from the original shop's chapter wallet, so the scripted opening story remains playable without rebalancing. Progress is stored in localStorage under jungle-miner-city-v1. On a private browser or blocked storage, the play session still works but may not persist.
+
+**Controls:** WASD to walk; hover/move mouse to look in regular mode; E to interact; **F** or the fullscreen button to request fullscreen + pointer lock. The cursor is hidden during fullscreen exploration. Press **Esc** to release pointer lock, and approach objects or use the City Guide for help. Touch and arrow controls from the office remain available.
+
+**Implementation:** Built with the existing bundled Three.js r180 renderer, with a lightweight procedural world and character rigs rather than large model downloads. Modules: city.js (reading, persistence, economy), city-world.js (3D geometry and animation), and city.css (HUD and library panels). No new runtime packages or network access are required. This is a gameplay expansion, not a completed collection of textbook lessons.
+
+The default build command still produces a fully offline page with the expansion included. Run node --test test-market.cjs test-city.cjs to check both existing office progression and city logic.
