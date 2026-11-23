@@ -218,3 +218,11 @@ LumenVale School now has a distinctive facade, clock, landscaped entry, sheltere
 The **Knowledge Quest** uses `school-activities.json` and includes original English, Math, Biology and road safety questions. Each awards a one-time game reward and stores progress locally. This is practice only: teacher-verified Qur’an recitation and teacher-controlled grades cannot be replaced or granted by mini quests.
 
 Road surfaces have offline procedural asphalt textures with tiny aggregate, repairs and cracks. Textured intersections sit beneath the painted pedestrian crossings, while the software fallback keeps its low-cost road surfaces. Rebuild the standalone game with `python3 market/build.py --output dist/index.html`. School unit tests are in `market/test-school.cjs`.
+
+## Procedural sky and fully textured school surfaces
+
+The outdoor WebGL scene now uses `sky-textures.js`: a 1024×512 generated atmosphere map on a camera-following dome, layered soft clouds, golden sunlight haze, a blue-to-horizon gradient, and slowly changing colors. It is cached and redrawn sparingly; no external texture downloads are required.
+
+School rooms now use `school-materials.js` for tile, terrazzo, wood, plaster, carpet, metal, cork, ceiling panel, board and stone surface maps. The school includes 117 added material overlays on floors, hallways, room walls, ceilings, desks, boards, shelving, seating, reception counters and entrance steps. The textured planes do not change physical collision shapes or academic records. Reduced-motion preferences are respected by the existing school animations.
+
+Both systems use the exact subset of Three.js included with the game (`PineboundThree`), not unbundled geometries. The 3D WebGL mode displays full procedural textures. The lightweight software fallback continues to draw simplified colors when hardware WebGL is unavailable. The gameplay CI runs a real Chromium WebGL test for the sky, all eight material types, school navigation and the existing School LMS.
