@@ -7,14 +7,14 @@ function createOfficeView() {
   try {
     if (!T?.PerspectiveCamera) throw new Error('3D engine not loaded');
     renderer = new T.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.4));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, cityMouseSettings?.graphics==='balanced'?1:1.4));
     renderer.outputColorSpace = T.SRGBColorSpace;
   } catch {
     const replacement = canvas.cloneNode();
     canvas.replaceWith(replacement);
     canvas = replacement;
     renderer = createSoftwareRenderer(T,canvas);
-    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1));
     viewport.dataset.renderer = 'software';
   }
 
@@ -29,7 +29,8 @@ function createOfficeView() {
   officeFill.position.set(2,3,-5);
   officeFill.visible=false;
   scene.add(officeFill);
-  const shadows = !renderer.isSoftware && renderer.shadowMap;
+  renderer.lvBalanced=cityMouseSettings?.graphics==='balanced';
+  const shadows = !renderer.isSoftware && !renderer.lvBalanced && renderer.shadowMap;
   if (shadows) {
     shadows.enabled=true;
     shadows.autoUpdate=false;
