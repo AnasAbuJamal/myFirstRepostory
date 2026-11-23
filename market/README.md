@@ -189,3 +189,16 @@ Each model includes shaped front and rear body sections, separate windshield and
 The school bus appears as city traffic but is not for sale in the current player garage. The vehicles are procedural stylized game assets and not high-polygon automotive CAD models. Traffic currently uses bounded straight road segments and reappears at the opposite end; realistic traffic rules, turning intersections, suspension physics, and detailed car collisions remain future improvements.
 
 The vehicle model tests are at `market/test-vehicles.cjs` (run `node --test market/test-vehicles.cjs`). The game source stays in `market/`, and `market/build.py` still compiles one offline HTML file.
+
+
+## Study-to-Work Jobs & Teacher Research
+
+**Seven paid jobs:** Library Assistant, Delivery Courier, Factory Technician, Junior Architect, Community Planner, Industrial Engineer, and Research Scientist. Open the **Jobs** app on the City Phone, or visit the Careers desk at school. Every position checks the actual school examination grades stored in the student game. The Research Scientist also requires Science ≥67%, English ≥67%, and GPA ≥2.5. A successful application does not pay anything; students must read a work brief and correctly complete its questions before they earn coins. Ordinary shifts have a three-minute rest period and alternate between different tasks.
+
+**Research scientist:** Once hired, choose a research investigation from the Research Library. Students read the full article, answer two or more comprehension questions, and earn a **one-time** research wage. The game ships with example Biology and Engineering research. Research completion, hired jobs and earned wages are saved locally under `lumenvale-jobs-v1`. Paid tasks do not replace the existing school, GPA, or business systems.
+
+**Teacher-created research:** Approved teachers author evidence-based reading passages and reviewed MCQs in the separate Next.js **Teacher Studio > Research Studio**. Teacher projects are published with an individual public sharing code; this serves only the lesson content, with no teacher login credentials or student records. Students paste the code into the game's Research Library to import the study, or import a teacher-exported JSON file. The JSON schema is demonstrated in `market/example-research-pack.json`. Publishing requires the teacher server's securely configured `DATABASE_URL`, Neon Auth login, and an approved `teacher_memberships` role. If that backend is not configured, students can still complete included sample research and import exported local JSON files.
+
+**Road changes:** Streets now range from 9.0 to 10.6 city units wide, compared with the old ~7–8. Decorative parked cars and their collision obstacles have been removed. The parking-bay scenery has been removed too. Wide streets share the collision/map layout, and obstructing street furniture is filtered from the rendered sidewalks. The player's usable garage car can still be found at the warehouse after buying the garage unlock.
+
+Real-world job accreditation and paid employment are **not** granted by the game. The game simulates qualifications and work as a learning activity. Student scores are local browser progress, not secure school records.
