@@ -24,7 +24,7 @@ function createOfficeView() {
   const sun = new T.DirectionalLight('#ffe3ae', 2.05);
   sun.position.set(-9, 12, -8);
   scene.add(sun);
-  const camera = new T.PerspectiveCamera(56, 1, .07, 145);
+  const camera = new T.PerspectiveCamera(70, 1, .07, 145);
   const office = new T.Group();
   const exterior = new T.Group();
   scene.add(office, exterior);
@@ -308,12 +308,16 @@ function createOfficeView() {
     door.rotation.y=-travel*1.46;
     kits.forEach((kit,i)=>{kit.visible=i<stock;});
     cityRenderer.update(current.city,now);
-    camera.position.set(player.x,player===SEAT_POSITION?1.46:1.7,player.z);
+    // Subtle first-person locomotion feedback; disabled for reduced-motion preferences.
+    const moving=current.moving && player!==SEAT_POSITION;
+    const sway=moving && !reduceMotion.matches ? Math.sin(now*(current.sprinting?.016:.011))*(current.sprinting?.048:.025) : 0;
+    camera.position.set(player.x,player===SEAT_POSITION?1.46:1.7+sway,player.z);
     camera.rotation.set(player.pitch,player.yaw,0,'YXZ');
     updateCameraFeed(now);
     renderer.render(scene,camera);
     if (elapsed===1) animation=null;
     if (animation) schedule();
+    else if (current.city && document.pointerLockElement===canvas && !reduceMotion.matches) schedule();
     else if (current.camera || current.city) wake=setTimeout(schedule,current.camera?88:40);
   }
   function schedule() {
