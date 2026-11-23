@@ -248,7 +248,7 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
 .touch-move button{height:2.55rem;touch-action:none;background:#294839e8;border:1px solid #b5c29eaf;border-radius:6px;color:#fff4d5;font-size:1.18rem}
 
 /* Incremental city-building layer, added to the original office HUD. */
-.city-hud{position:absolute;right:clamp(.75rem,3.25vw,3rem);top:85px;z-index:3;width:min(300px,calc(100vw - 32px));display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.42rem;pointer-events:none}
+.city-hud{position:absolute;right:clamp(.75rem,3.25vw,3rem);top:85px;z-index:3;width:min(380px,calc(100vw - 32px));display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.42rem;pointer-events:none}
 .city-chip{min-width:0;border:1px solid #b7c9ad85;border-radius:9px;padding:.58rem .53rem;background:#263f34e8;color:#fff7df;box-shadow:0 6px 24px #0d20175c}
 .city-chip small{display:block;font-size:.65rem;color:#d3ddc2;letter-spacing:.012em;white-space:nowrap}
 .city-chip strong{display:block;margin-top:.13rem;color:#ffe3a2;font-size:clamp(1rem,1.6vw,1.3rem);line-height:1.2;overflow:hidden;text-overflow:ellipsis}
@@ -285,7 +285,7 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
 .city-factory-grid>div{border:1px solid #cad8c7;border-radius:8px;background:#eff3e9;padding:.75rem}
 .city-factory-grid small{display:block;color:#647869;font-size:.77rem}
 .city-factory-grid b{display:block;margin-top:.15rem;color:#284a38;font-size:1.15rem}
-:fullscreen #landscape,:fullscreen .walk-world{cursor:none}
+/* Cursor state is controlled by native pointer lock, not fullscreen alone. */
 :fullscreen .walk-world button{cursor:pointer}
 :fullscreen dialog,:fullscreen dialog *{cursor:auto}
 @media(max-width:720px){
@@ -300,6 +300,46 @@ dialog.terminal::backdrop{background:#1d332aac;backdrop-filter:blur(3px)}
  .city-book-open{min-height:220px}
 }
 @media(prefers-reduced-motion:reduce){.city-book-card,.city-reading-fill{transition:none}}
+
+
+/* Pointer-locked FPS mouse: the native browser owns the mouse while exploring. */
+.walk-world.is-locked,.walk-world.is-locked #landscape{cursor:none}
+.walk-world:not(.is-locked) #landscape{cursor:crosshair}
+.walk-world.is-locked .city-hud-actions{pointer-events:none;opacity:.64}
+.city-mouse-state{grid-column:1/-1;text-align:right;display:inline-block;margin:0;padding:.23rem .52rem;border-radius:6px;background:#132f26b5;color:#dfebcf;font-size:.72rem;letter-spacing:.01em}
+.city-mouse-prompt{position:absolute;inset:0;z-index:5;pointer-events:none;display:grid;place-items:center;background:linear-gradient(180deg,#071b1092,#09190cc2 53%,#091b1188);padding:1.2rem}
+.city-mouse-prompt[hidden]{display:none!important}
+.city-resume-card{pointer-events:auto;width:min(410px,96vw);text-align:center;border:1px solid #b8cfb39c;border-radius:18px;background:linear-gradient(155deg,#1d3d31f7,#102c25f8);color:#f6eed7;padding:2rem 1.35rem;box-shadow:0 24px 85px #0008}
+.city-crosshair-symbol{font-size:2.9rem;color:#e6c983;line-height:1}
+.city-resume-card h2{font:700 2.2rem/1.2 Georgia,serif;margin:.9rem 0 .4rem;letter-spacing:-.03em}
+.city-resume-card p{font-size:1rem;line-height:1.5;color:#d2e4d2;margin:.5rem 0 1.3rem}
+.city-resume-card button{display:block;width:100%;border:1px solid #eed290;border-radius:10px;padding:.85rem 1rem;background:#e2c17d;color:#183c29;font-weight:800;font-size:1.05rem;cursor:pointer;box-shadow:0 6px 22px #050c0966}
+.city-resume-card button:hover,.city-resume-card button:focus-visible{background:#f4d69b;outline:3px solid #fff8df;outline-offset:3px}
+.city-resume-card small{display:block;font-size:.73rem;color:#b9d3bb;margin-top:1.1rem}
+.city-property-heading{display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;padding:.7rem .8rem;border-radius:8px;background:#edf2e8;color:#3b6146;font-size:.78rem;letter-spacing:.02em;font-weight:700}
+.city-property-heading b{color:#6c6538}
+.city-portfolio-list{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.8rem}
+.city-portfolio-item{display:flex;justify-content:space-between;align-items:center;gap:.55rem;text-align:left;background:#fdfdf4;border:1px solid #c2d0bd;border-radius:10px;padding:.9rem .75rem;min-height:75px}
+.city-portfolio-item:hover{background:#eaf0e6;border-color:#749f7b}
+.city-portfolio-item b{display:block;color:#284e37;font-size:.94rem}
+.city-portfolio-item small{display:block;color:#687d6b;font-size:.74rem;margin-top:.25rem}
+.city-portfolio-item strong{flex:none;color:#59794d;font-size:.78rem}
+@media(max-width:720px){
+ .city-hud{width:min(272px,calc(100vw - 15px))}
+ .city-chip strong{font-size:.77rem}
+ .city-chip small{font-size:.53rem}
+ .city-portfolio-list{grid-template-columns:1fr}
+ .city-mouse-prompt{display:none}
+}
+@media(prefers-reduced-motion:reduce){.city-mouse-prompt,.city-resume-card{transition:none}}
+
+.city-mouse-settings{margin:1.25rem 0;padding:1rem;border:1px solid #cad8c6;border-radius:10px;background:#f0f3ec}
+.city-mouse-settings h3{font-size:1.05rem;margin:0 0 .7rem;color:#305b40}
+.city-mouse-settings label{display:block;font-size:.88rem;color:#3a5943}
+.city-mouse-settings strong{font-variant-numeric:tabular-nums}
+.city-mouse-settings input[type=range]{width:100%;margin:.85rem 0;accent-color:#48785a;cursor:pointer}
+.city-mouse-settings label.city-toggle{display:flex;align-items:center;gap:.55rem}
+.city-mouse-settings input[type=checkbox]{height:16px;width:16px;accent-color:#437552}
 </style>
 </head>
 <body>
@@ -4531,7 +4571,7 @@ function canWalk(x,z,{doorOpen,stand}) {
     x > left-radius && x < right+radius && z > north-radius && z < south+radius);
 }
 function walkStep(player, forward, sideways, seconds, settings) {
-  const speed = inOffice(player.x,player.z) ? 2.8 : 4.15;
+  const speed = inOffice(player.x,player.z) ? 2.8 : settings.sprint ? 7.3 : 4.15;
   const magnitude = Math.max(1,Math.hypot(forward,sideways));
   const scale = Math.max(0,Math.min(seconds,.045))*speed/magnitude;
   const dx = (Math.cos(player.yaw)*sideways-Math.sin(player.yaw)*forward)*scale;
@@ -4554,6 +4594,18 @@ function nearbyInteraction({x,z}, doorOpen, pending, stand) {
 
 /* City Builder: persistent reading-to-production gameplay. No external services. */
 const CITY_SAVE_KEY='jungle-miner-city-v1';
+const CITY_MOUSE_PREFS_KEY='jungle-miner-mouse-v1';
+function cityLoadMouseSettings(){
+ try{
+  const info=JSON.parse(localStorage.getItem(CITY_MOUSE_PREFS_KEY)||'null');
+  return {sensitivity:Math.max(.002,Math.min(.01,Number(info?.sensitivity)||.005)),
+    invertY:Boolean(info?.invertY)};
+ }catch{return {sensitivity:.005,invertY:false};}
+}
+var cityMouseSettings=cityLoadMouseSettings();
+function citySaveMouseSettings(){
+ try{localStorage.setItem(CITY_MOUSE_PREFS_KEY,JSON.stringify(cityMouseSettings));}catch{}
+}
 const CITY_TICK_MS=5000;
 const CITY_BOOKS=[
  {id:'forest',title:'Forest Field Notes',shelf:'Nature',reward:48,xp:20,pages:[
@@ -4582,12 +4634,12 @@ const CITY_BOOKS=[
  ],question:'What is part of a good long-term plan?',answers:['Ignoring workers','Improving safety and learning','Buying everything at once'],correct:1}
 ];
 const CITY_SITES=[
- {id:'workshop',title:'Wood Workshop',kind:'factory',x:-13,z:10,build:40,hire:20,rate:3,unlock:1,color:'#a47a51'},
- {id:'lumber',title:'Lumber Mill',kind:'factory',x:-27,z:10,build:125,hire:50,rate:8,unlock:2,color:'#8d7255'},
- {id:'homes',title:'Worker Homes',kind:'house',x:0,z:25,build:160,hire:0,rate:0,unlock:2,color:'#b88d6a'},
- {id:'textile',title:'Textile Factory',kind:'factory',x:-27,z:27,build:280,hire:95,rate:15,unlock:3,color:'#8196ab'},
- {id:'greenhouse',title:'Greenhouse',kind:'factory',x:16,z:27,build:460,hire:140,rate:25,unlock:4,color:'#67a28b'},
- {id:'assembly',title:'Assembly Plant',kind:'factory',x:31,z:16,build:820,hire:240,rate:43,unlock:5,color:'#879eaf'}
+ {id:'workshop',title:'Wood Workshop',kind:'factory',x:-13,z:10,land:20,build:40,hire:20,rate:3,unlock:1,color:'#a47a51'},
+ {id:'lumber',title:'Lumber Mill',kind:'factory',x:-27,z:10,land:65,build:125,hire:50,rate:8,unlock:2,color:'#8d7255'},
+ {id:'homes',title:'Worker Homes',kind:'house',x:0,z:25,land:75,build:160,hire:0,rate:0,unlock:2,color:'#b88d6a'},
+ {id:'textile',title:'Textile Factory',kind:'factory',x:-27,z:27,land:130,build:280,hire:95,rate:15,unlock:3,color:'#8196ab'},
+ {id:'greenhouse',title:'Greenhouse',kind:'factory',x:16,z:27,land:210,build:460,hire:140,rate:25,unlock:4,color:'#67a28b'},
+ {id:'assembly',title:'Assembly Plant',kind:'factory',x:31,z:16,land:350,build:820,hire:240,rate:43,unlock:5,color:'#879eaf'}
 ];
 const CITY_LIBRARY={x:14,z:8};
 function cityBlank(){return {version:1,coins:0,xp:0,lifetime:0,books:{},sites:{},lastTick:Date.now(),manual:{}};}
@@ -4597,7 +4649,16 @@ function cityClean(input){
  const number=(n,max)=>Number.isFinite(n)?Math.max(0,Math.min(max,Math.floor(n))):0;
  v.coins=number(input.coins,1e12);v.xp=number(input.xp,1e9);v.lifetime=number(input.lifetime,1e12);
  for(const book of CITY_BOOKS){const info=input.books?.[book.id];if(info)v.books[book.id]={count:number(info.count,1e5),last:number(info.last,1e15)};}
- for(const site of CITY_SITES){const info=input.sites?.[site.id];if(info?.built)v.sites[site.id]={built:true,staff:number(info.staff,6),level:Math.max(1,number(info.level,10))};}
+ for(const site of CITY_SITES){
+  const info=input.sites?.[site.id];
+  // Preserve existing city saves: previously constructed buildings already own their land.
+  if(info?.owned||info?.built)v.sites[site.id]={
+   owned:true,built:Boolean(info.built),
+   staff:info.built&&site.kind==='factory'?number(info.staff,6):0,
+   level:info.built?Math.max(1,number(info.level,10)):1,
+   landLevel:Math.max(1,Math.min(4,number(info.landLevel,4)||1))
+  };
+ }
  v.lastTick=number(input.lastTick,1e15)||Date.now();
  for(const site of CITY_SITES)v.manual[site.id]=number(input.manual?.[site.id],1e15);
  return v;
@@ -4611,12 +4672,18 @@ function citySave(){
 }
 function cityCompleted(){return CITY_BOOKS.filter(book=>cityState.books[book.id]?.count>0).length;}
 function cityPopulation(){return Object.values(cityState.sites).filter(s=>s?.built).reduce((n,s)=>n+s.staff,0);}
-function cityIncome(){
- return CITY_SITES.reduce((total,site)=>{
-  const built=cityState.sites[site.id];
-  return total+(built?.built && site.kind==='factory' ? site.rate*built.staff*built.level : 0);
- },0);
+function cityLandCost(site){return site.land;}
+function cityLandImproveCost(site,landLevel){return site.land*(landLevel+1)*2;}
+function cityProduction(site,record){
+ if(!record?.built || site.kind!=='factory')return 0;
+ const landLevel=Math.max(1,Math.min(4,record.landLevel||1));
+ return Math.floor(site.rate*record.staff*record.level*(1+.25*(landLevel-1)));
 }
+function cityIncome(){
+ return CITY_SITES.reduce((total,site)=>total+cityProduction(site,cityState.sites[site.id]),0);
+}
+function cityLandOwned(){return CITY_SITES.filter(site=>cityState.sites[site.id]?.owned).length;}
+function cityBuildingsBuilt(){return CITY_SITES.filter(site=>cityState.sites[site.id]?.built).length;}
 function cityEarn(coins,xp){
  cityState.coins+=coins;cityState.lifetime+=coins;cityState.xp+=xp;
  citySave();citySync();
@@ -4642,7 +4709,8 @@ function cityNearby(p){
  if(Math.hypot(p.x-CITY_LIBRARY.x,p.z-CITY_LIBRARY.z)<4.3)return {id:'library',city:true,label:'Browse the library books'};
  for(const site of CITY_SITES){
   if(Math.hypot(p.x-site.x,p.z-(site.z-3.6))<3.1){
-   const status=cityState.sites[site.id]?.built?'Manage '+site.title:'Build '+site.title;
+   const unit=cityState.sites[site.id];
+   const status=unit?.built?'Manage '+site.title:unit?.owned?'Build on your land':'Buy '+site.title+' land';
    return {id:site.id,city:true,label:status};
   }
  }
@@ -4728,40 +4796,75 @@ function cityAnswer(index){
 }
 function cityOpenSite(id){
  const site=CITY_SITES.find(s=>s.id===id);if(!site)return;
- const record=cityState.sites[id];
- const built=record?.built;
+ const unit=cityState.sites[id];
+ const owned=Boolean(unit?.owned),built=Boolean(unit?.built);
  const unlocked=cityCompleted()>=site.unlock;
- const bookLine='Requires '+site.unlock+' different '+(site.unlock===1?'book':'books')+' completed · '+cityCompleted()+' read';
+ const reading='Read '+site.unlock+' different '+(site.unlock===1?'book':'books')+' to unlock · '+cityCompleted()+' completed';
+ const landLevel=unit?.landLevel||1;
+ const landUpgrade=cityLandImproveCost(site,landLevel);
+ const landButton=owned && landLevel<4?
+  '<button class="button" type="button" data-city-action="improve-land" data-id="'+id+'" '+(cityState.coins<landUpgrade?'disabled':'')+'>Improve land to level '+(landLevel+1)+' · '+landUpgrade+' coins</button>':'';
+ const overview='<div class="city-property-heading"><span>'+(built?'OPERATING PROPERTY':owned?'YOUR LAND':'LAND FOR SALE')+'</span><b>'+cityState.coins.toLocaleString()+' coins available</b></div>';
  let body='';
- if(!built){
-  body='<p>Build this '+(site.kind==='house'?'housing block':'production building')+' on your city plot.</p>'+
-   '<div class="city-factory-grid"><div><small>Construction</small><b>'+site.build+' coins</b></div>'+
-   '<div><small>Reading unlock</small><b>'+site.unlock+' books</b></div></div>'+
-   '<p class="city-sub">'+bookLine+'</p>'+
-   '<button class="button primary" type="button" data-city-action="build" data-id="'+id+'" '+(!unlocked||cityState.coins<site.build?'disabled':'')+'>Build '+site.title+'</button>';
+ if(!owned){
+  body='<p>Buy this plot to own the property. You must purchase the land before construction begins.</p>'+
+   '<div class="city-factory-grid"><div><small>Land price</small><b>'+site.land+' coins</b></div>'+
+   '<div><small>Construction afterward</small><b>'+site.build+' coins</b></div>'+
+   '<div><small>Reading requirement</small><b>'+site.unlock+' books</b></div><div><small>Current books</small><b>'+cityCompleted()+'</b></div></div>'+
+   '<p class="city-sub">'+reading+'</p>'+
+   '<button class="button primary" type="button" data-city-action="buy-land" data-id="'+id+'" '+(!unlocked||cityState.coins<site.land?'disabled':'')+'>Purchase land · '+site.land+' coins</button>';
+ }else if(!built){
+  body='<p><b>Land purchased.</b> This property is now yours. Develop the land, then construct your '+(site.kind==='house'?'homes':'factory')+'.</p>'+
+   '<div class="city-factory-grid"><div><small>Land development</small><b>Level '+landLevel+' / 4</b></div>'+
+   '<div><small>Building cost</small><b>'+site.build+' coins</b></div></div>'+
+   '<div class="city-actions"><button class="button primary" type="button" data-city-action="build" data-id="'+id+'" '+(cityState.coins<site.build?'disabled':'')+'>Construct '+site.title+' · '+site.build+' coins</button>'+landButton+'</div>';
  }else if(site.kind==='house'){
-  body='<p>Your new homes bring workers and life to the growing settlement.</p><p><b>Built</b> · Decorative neighborhood unlocked.</p>';
+  body='<p>Your homes make the settlement feel alive. Improving the property adds landscaped grounds and paths.</p>'+
+   '<div class="city-factory-grid"><div><small>Land development</small><b>Level '+landLevel+' / 4</b></div>'+
+   '<div><small>Buildings</small><b>3 homes</b></div></div><div class="city-actions">'+landButton+'</div>';
  }else{
-  const staff=record.staff;const upgrade=site.build*(record.level+1);
-  const hire=site.hire*(staff+1);
-  body='<p>Manage your machinery and workers. Hired employees generate coins automatically, including for up to one hour while away.</p>'+
+  const staff=unit.staff,upgrade=site.build*(unit.level+1),hire=site.hire*(staff+1);
+  body='<p>Hire employees, upgrade machines, and invest in your land. Each land improvement increases factory output by 25% of its base rate.</p>'+
    '<div class="city-factory-grid"><div><small>Employees</small><b>'+staff+' / 6</b></div>'+
-   '<div><small>Production / 5 sec</small><b>'+(site.rate*staff*record.level)+' coins</b></div>'+
-   '<div><small>Factory level</small><b>'+record.level+'</b></div><div><small>Upgrade cost</small><b>'+upgrade+' coins</b></div></div>'+
+   '<div><small>Coins / 5 seconds</small><b>'+cityProduction(site,unit)+'</b></div>'+
+   '<div><small>Factory level</small><b>'+unit.level+' / 10</b></div>'+
+   '<div><small>Land development</small><b>'+landLevel+' / 4</b></div></div>'+
    '<div class="city-actions">'+
-   '<button class="button primary" type="button" data-city-action="hire" data-id="'+id+'" '+(staff>=6||cityState.coins<hire?'disabled':'')+'>Hire employee · '+hire+'</button>'+
-   '<button class="button" type="button" data-city-action="upgrade" data-id="'+id+'" '+(record.level>=10||cityState.coins<upgrade?'disabled':'')+'>Upgrade machines · '+upgrade+'</button>'+
-   '<button class="button" type="button" data-city-action="manual" data-id="'+id+'">Help produce · +'+Math.max(2,site.rate)+' coins</button></div>';
+   '<button class="button primary" type="button" data-city-action="hire" data-id="'+id+'" '+(staff>=6||cityState.coins<hire?'disabled':'')+'>Hire worker · '+hire+' coins</button>'+
+   '<button class="button" type="button" data-city-action="upgrade" data-id="'+id+'" '+(unit.level>=10||cityState.coins<upgrade?'disabled':'')+'>Upgrade machinery · '+upgrade+' coins</button>'+
+   landButton+
+   '<button class="button" type="button" data-city-action="manual" data-id="'+id+'">Help production · +'+Math.max(2,site.rate)*unit.level+' coins</button></div>';
  }
- cityPanel('City Development',site.title,body);
+ cityPanel('City Real Estate',site.title,overview+body);
+}
+function cityBuyLand(id){
+ const site=CITY_SITES.find(s=>s.id===id);
+ if(!site||cityState.sites[id]?.owned)return false;
+ if(cityCompleted()<site.unlock){notice('Read more books to unlock this property.');return false;}
+ if(!citySpend(cityLandCost(site))){notice('Not enough coins to buy land.');return false;}
+ cityState.sites[id]={owned:true,built:false,staff:0,level:1,landLevel:1};
+ citySave();citySync();cityOpenSite(id);
+ notice('Land purchased! Develop it, then build.');
+ return true;
+}
+function cityImproveLand(id){
+ const site=CITY_SITES.find(s=>s.id===id),unit=cityState.sites[id];
+ if(!site||!unit?.owned||unit.landLevel>=4)return false;
+ const cost=cityLandImproveCost(site,unit.landLevel);
+ if(!citySpend(cost)){notice('Not enough coins to improve land.');return false;}
+ unit.landLevel++;citySave();citySync();cityOpenSite(id);
+ notice('Land upgraded to level '+unit.landLevel+'.');
+ return true;
 }
 function cityBuild(id){
- const site=CITY_SITES.find(s=>s.id===id);
- if(!site||cityState.sites[id]?.built)return;
- if(cityCompleted()<site.unlock){notice('Read more unique books to unlock this plot.');return;}
- if(!citySpend(site.build)){notice('Earn more coins at the library.');return;}
- cityState.sites[id]={built:true,staff:0,level:1};
- citySave();citySync();cityOpenSite(id);notice(site.title+' constructed! Explore it in 3D.');
+ const site=CITY_SITES.find(s=>s.id===id),unit=cityState.sites[id];
+ if(!site||!unit?.owned||unit.built)return false;
+ if(cityCompleted()<site.unlock)return false;
+ if(!citySpend(site.build)){notice('Earn more coins before construction.');return false;}
+ unit.built=true;unit.level=1;unit.staff=0;
+ citySave();citySync();cityOpenSite(id);
+ notice(site.title+' constructed! Hire staff to begin production.');
+ return true;
 }
 function cityHire(id){
  const site=CITY_SITES.find(s=>s.id===id),unit=cityState.sites[id];
@@ -4791,55 +4894,122 @@ function cityInteract(target){
  if(target?.id==='library')cityBookList();
  else if(target?.id)cityOpenSite(target.id);
 }
+function cityPortfolio(){
+ const cards=CITY_SITES.map(site=>{
+  const unit=cityState.sites[site.id];const status=unit?.built?'Operating · level '+unit.level:unit?.owned?'Owned · ready to build':'Available · '+site.land+' coins';
+  return '<button class="city-portfolio-item" type="button" data-city-action="site" data-id="'+site.id+'"><span><b>'+site.title+'</b><small>'+status+'</small></span><strong>'+cityProduction(site,unit)+' / 5s</strong></button>';
+ }).join('');
+ cityPanel('Property Portfolio','Your city properties','<p>Buy land first, build on it, and improve each plot. Owned land is outlined in gold in the 3D world.</p>'+ 
+ '<div class="city-factory-grid"><div><small>Owned plots</small><b>'+cityLandOwned()+' / '+CITY_SITES.length+'</b></div><div><small>Buildings</small><b>'+cityBuildingsBuilt()+'</b></div><div><small>Production</small><b>'+cityIncome()+' / 5s</b></div><div><small>Employees</small><b>'+cityPopulation()+'</b></div></div><div class="city-portfolio-list">'+cards+'</div>');
+}
 function cityGuide(){
  const next=CITY_SITES.filter(s=>!cityState.sites[s.id]?.built).slice(0,3);
  cityPanel('Your City · Guide','Read. Build. Hire.',
  '<p>Walk to the library pavilion on the east side of the office. Read a book, turn its pages, and answer the question to collect coins.</p>'+
- '<p>Then explore the marked construction plots. Press <kbd>E</kbd> near a plot to build a factory. Visit the building again to hire people, upgrade machines, or help produce goods yourself.</p>'+
+ '<p>Then explore the marked construction plots. Press <kbd>E</kbd> near a plot to buy land first, then construct a factory. Return to hire people and upgrade both your land and machinery.</p>'+
  '<div class="city-factory-grid"><div><small>City wallet</small><b>'+cityState.coins+' coins</b></div>'+
  '<div><small>Passive production</small><b>'+cityIncome()+' / 5 sec</b></div>'+
  '<div><small>Unique books</small><b>'+cityCompleted()+' / '+CITY_BOOKS.length+'</b></div>'+
  '<div><small>Workers</small><b>'+cityPopulation()+'</b></div></div>'+
- '<h3>Next buildings</h3><p>'+next.map(s=>s.title+' ('+s.build+' coins)').join(' · ')+'</p>'+
- '<p class="city-sub">WASD to walk · E to interact · F for fullscreen · Escape unlocks mouse. Your city saves on this device.</p>');
+ '<h3>Next properties</h3><p>'+next.map(s=>s.title+' (land '+s.land+' · building '+s.build+' coins)').join(' · ')+'</p>'+
+ '<div class="city-mouse-settings"><h3>First-person mouse settings</h3>'+
+ '<label for="city-mouse-sensitivity">Mouse sensitivity: <strong id="city-sensitivity-value">'+Math.round(cityMouseSettings.sensitivity*1000)+'</strong></label>'+
+ '<input id="city-mouse-sensitivity" type="range" min="2" max="10" step="1" value="'+Math.round(cityMouseSettings.sensitivity*1000)+'">'+
+ '<label class="city-toggle"><input id="city-invert-y" type="checkbox" '+(cityMouseSettings.invertY?'checked':'')+'> Invert vertical look</label></div>'+
+ '<p class="city-sub">Click Play once to capture the mouse · Esc releases cursor · Click to resume · Shift sprint · E interact · F fullscreen · G guide · M properties. Menus release the mouse for their buttons. Saves stay on this device.</p>');
 }
 function citySync(){
- const balance=byId('city-coins'),learning=byId('city-learning'),income=byId('city-income'),objective=byId('city-objective');
+ const balance=byId('city-coins'),learning=byId('city-learning'),income=byId('city-income'),lands=byId('city-lands'),objective=byId('city-objective');
  if(balance)balance.textContent=cityState.coins.toLocaleString();
  if(learning)learning.textContent=cityCompleted()+'/'+CITY_BOOKS.length;
  if(income)income.textContent=cityIncome()+'/5s';
+ if(lands)lands.textContent=cityLandOwned()+'/'+CITY_SITES.length;
  if(objective){
   objective.textContent=!cityCompleted()?'Visit the library and finish your first book':
+   !cityState.sites.workshop?.owned?'Buy workshop land (20 coins)':
    !cityState.sites.workshop?.built?'Build your first workshop (40 coins)':
    !cityState.sites.workshop.staff?'Hire a worker at the workshop':
    cityCompleted()<CITY_BOOKS.length?'Read more books and expand your city':'Keep growing your production city';
  }
 }
+// Browser pointer lock captures all mouse motion until Esc or a focused UI opens.
+// Browser security requires a user click for the initial capture and every recapture.
+function cityRequestMouseLock(){
+ if(!isWalking()||document.pointerLockElement===byId('landscape'))return;
+ const canvas=byId('landscape');
+ if(!canvas?.requestPointerLock){notice('Use a desktop browser with Pointer Lock support.');return;}
+ try{
+  const request=canvas.requestPointerLock();
+  request?.catch?.(()=>notice('Mouse lock was blocked. Click Play again.'));
+ }catch{notice('Mouse lock needs another click.');}
+}
 function cityEnterFullscreen(){
  const root=document.documentElement;
  if(!document.fullscreenElement){
-  const result=root.requestFullscreen?.();
-  if(result?.catch)result.catch(()=>notice('Fullscreen is not available in this browser.'));
-  try{const lock=byId('landscape').requestPointerLock?.();lock?.catch?.(()=>{});}catch{}
+  const request=root.requestFullscreen?.();
+  request?.catch?.(()=>notice('Fullscreen unavailable. Mouse look still works in windowed mode.'));
+  cityRequestMouseLock();
  }else document.exitFullscreen?.();
+}
+function cityMousePrompt(){
+ const locked=document.pointerLockElement===byId('landscape');
+ const prompt=byId('city-mouse-prompt'),paused=Boolean(dialog.open||terminal.open);
+ byId('view').classList.toggle('is-locked',locked);
+ if(prompt)prompt.hidden=locked||paused;
+ const status=byId('city-mouse-state');
+ if(status)status.textContent=locked?'Mouse locked · Esc to release':'Mouse unlocked · Click to resume';
+ if(!locked)stopMovement();
 }
 function cityInit(){
  const hud=document.createElement('div');
  hud.className='city-hud';hud.innerHTML=
  '<div class="city-chip"><small>City coins</small><strong id="city-coins">0</strong></div>'+
- '<div class="city-chip"><small>Books read</small><strong id="city-learning">0/6</strong></div>'+
+ '<div class="city-chip"><small>Books read</small><strong id="city-learning">0/6</strong></div>'+ 
+ '<div class="city-chip"><small>Land owned</small><strong id="city-lands">0/6</strong></div>'+
  '<div class="city-chip"><small>Production</small><strong id="city-income">0/5s</strong></div>'+
- '<div class="city-hud-actions"><button type="button" id="city-help" title="City guide">City guide</button>'+
+ '<div class="city-hud-actions"><button type="button" id="city-help" title="City guide">Guide</button>'+ 
+  '<button type="button" id="city-portfolio" title="Land and buildings">Properties</button>'+
  '<button type="button" id="city-full" title="Fullscreen and mouse capture">⛶ Fullscreen</button></div>'+
- '<p class="city-goal" id="city-objective"></p>';
+ '<p class="city-goal" id="city-objective"></p>'+ 
+ '<p class="city-mouse-state" id="city-mouse-state">Mouse unlocked · Click to resume</p>';
  byId('view').append(hud);
+ const prompt=document.createElement('div');
+ prompt.id='city-mouse-prompt';
+ prompt.className='city-mouse-prompt';
+ prompt.innerHTML='<div class="city-resume-card"><div class="city-crosshair-symbol" aria-hidden="true">✛</div>'+
+  '<h2>Jungle Miner</h2><p>Move the mouse to look around. No holding or dragging needed.</p>'+
+  '<button type="button" id="city-resume-button">▶ Click to Play</button>'+
+  '<small>WASD move · E interact · Esc releases mouse · F fullscreen</small></div>';
+ byId('view').append(prompt);
+ byId('city-resume-button').addEventListener('click',cityRequestMouseLock);
+ byId('landscape').addEventListener('click',cityRequestMouseLock);
+ document.addEventListener('pointerlockchange',cityMousePrompt);
+ document.addEventListener('pointerlockerror',()=>notice('Mouse capture failed. Click Play again.'));
+ dialog.addEventListener('close',()=>requestAnimationFrame(cityMousePrompt));
+ terminal.addEventListener('close',()=>requestAnimationFrame(cityMousePrompt));
  byId('city-help').addEventListener('click',cityGuide);
+ byId('city-portfolio').addEventListener('click',cityPortfolio);
  byId('city-full').addEventListener('click',cityEnterFullscreen);
+ document.addEventListener('input',event=>{
+  if(event.target.id==='city-mouse-sensitivity'){
+   cityMouseSettings.sensitivity=Number(event.target.value)/1000;
+   citySaveMouseSettings();
+   const label=byId('city-sensitivity-value');if(label)label.textContent=event.target.value;
+  }
+ });
+ document.addEventListener('change',event=>{
+  if(event.target.id==='city-invert-y'){
+   cityMouseSettings.invertY=event.target.checked;citySaveMouseSettings();
+  }
+ });
  document.addEventListener('click',event=>{
   const b=event.target.closest('[data-city-action]');if(!b)return;
   const id=b.dataset.id;
   const action=b.dataset.cityAction;
   if(action==='library')cityBookList();
+  else if(action==='site')cityOpenSite(id);
+  else if(action==='buy-land')cityBuyLand(id);
+  else if(action==='improve-land')cityImproveLand(id);
   else if(action==='book')cityOpenBook(id);
   else if(action==='page')cityNextPage();
   else if(action==='answer')cityAnswer(b.dataset.index);
@@ -4850,7 +5020,11 @@ function cityInit(){
   else if(action==='close')dialog.close();
  });
  window.addEventListener('keydown',event=>{
-  if(event.key.toLowerCase()==='f' && !event.repeat && !event.target.matches?.('input,textarea,select') && !dialog.open && !terminal.open)cityEnterFullscreen();
+  if(event.repeat||event.target.matches?.('input,textarea,select')||dialog.open||terminal.open)return;
+  const key=event.key.toLowerCase();
+  if(key==='f'){event.preventDefault();cityEnterFullscreen();}
+  if(key==='m'){event.preventDefault();cityPortfolio();}
+  if(key==='g'){event.preventDefault();cityGuide();}
  });
  document.addEventListener('mousemove',event=>{
   if(document.pointerLockElement===byId('landscape') && !dialog.open && !terminal.open){
@@ -4860,11 +5034,7 @@ function cityInit(){
  document.addEventListener('fullscreenchange',()=>{
   byId('city-full').textContent=document.fullscreenElement?'⤡ Windowed':'⛶ Fullscreen';
  });
- byId('landscape').addEventListener('click',()=>{
-  if(document.fullscreenElement && !document.pointerLockElement && isWalking()){
-   try{byId('landscape').requestPointerLock?.();}catch{}
-  }
- });
+
  setInterval(()=>{
   cityTick();citySync();
   if(cityBookSession){
@@ -4874,6 +5044,7 @@ function cityInit(){
   if(typeof drawScene==='function')drawScene();
  },1000);
  cityTick();citySync();drawScene();
+ cityMousePrompt();
 }
 
 
@@ -5030,6 +5201,41 @@ function createCityWorld({T,exterior,box,piece,renderer}){
   const signboard=new T.Group();signboard.position.set(0,0,-4.5);lot.add(signboard);
   for(const x of [-1.8,1.8])b(signboard,x,.68,0,.18,1.35,.22,'#81634b');
   sign(signboard,site.title,0,1.22,-.10,4.7,.64,site.color);
+  // A purchased parcel visibly changes from a vacant lot to the player's property.
+  const ownedLand=new T.Group();
+  lot.add(ownedLand);
+  for(const z of [-3.90,3.90]){
+   b(ownedLand,0,.09,z,9.0,.17,.12,'#d4b265');
+   for(const x of [-4.40,4.40])b(ownedLand,x,.48,z,.14,.88,.14,'#c1a059');
+  }
+  for(const x of [-4.40,4.40])b(ownedLand,x,.09,0,.12,.17,7.7,'#d4b265');
+  b(ownedLand,0,.015,-2.95,2.1,.05,1.65,'#d6c293');
+  b(ownedLand,-3.2,.035,2.85,1.35,.10,.9,'#66966c');
+  b(ownedLand,3.2,.035,2.85,1.35,.10,.9,'#66966c');
+  const ownedFlag=b(ownedLand,3.95,2.18,-3.6,.64,.31,.06,'#ebc87c');
+  cylinder(ownedLand,3.95,1.22,-3.6,.045,2.42,'#646a56');
+  ownedLand.visible=false;
+  const landTiers=[];
+  const paving=new T.Group();lot.add(paving);
+  b(paving,0,.035,-2.4,3.9,.08,1.35,'#b9c6bb');
+  for(const x of [-3.6,3.6])for(const z of [-2.95,2.50])cylinder(paving,x,.45,z,.30,.86,'#9cae9e');
+  landTiers.push(paving);
+  const garden=new T.Group();lot.add(garden);
+  for(const x of [-3.6,3.6]){
+   for(const z of [-1.5,1.65])plant(garden,x,z,.65);
+   cylinder(garden,x,1.55,2.65,.075,3,'#5f715d');
+   sphere(garden,x,3.15,2.65,.25,'#f0d49a');
+  }
+  landTiers.push(garden);
+  const modern=new T.Group();lot.add(modern);
+  for(const x of [-3.2,3.2]){
+   b(modern,x,3.25,2.7,1.9,.12,1.0,'#567e82');
+   b(modern,x,3.33,2.7,1.7,.025,.81,'#85b2bb');
+   b(modern,x,1.55,2.7,.12,3.1,.12,'#9da99c');
+  }
+  landTiers.push(modern);
+  landTiers.forEach(tier=>tier.visible=false);
+
   const active=new T.Group();lot.add(active);
   const workers=[];
   const motion=[];
@@ -5076,7 +5282,7 @@ function createCityWorld({T,exterior,box,piece,renderer}){
    }
   }
   active.visible=false;
-  buildings.set(site.id,{active,workers,motion,site,lot});
+  buildings.set(site.id,{active,ownedLand,landTiers,workers,motion,site,lot});
  }
  // A few town residents make the settlement feel alive before construction.
  const townspeople=[
@@ -5090,6 +5296,8 @@ function createCityWorld({T,exterior,box,piece,renderer}){
   const pause=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   for(const [id,entry] of buildings){
    const info=saved?.sites?.[id];
+   entry.ownedLand.visible=Boolean(info?.owned||info?.built);
+   entry.landTiers.forEach((tier,i)=>tier.visible=Boolean(info?.owned && (info.landLevel||1)>=i+2));
    entry.active.visible=Boolean(info?.built);
    if(!entry.active.visible)continue;
    const present=entry.site.kind==='house'?entry.workers.length:Math.min(entry.workers.length,info.staff);
@@ -5313,7 +5521,7 @@ function createOfficeView() {
   const sun = new T.DirectionalLight('#ffe3ae', 2.05);
   sun.position.set(-9, 12, -8);
   scene.add(sun);
-  const camera = new T.PerspectiveCamera(56, 1, .07, 145);
+  const camera = new T.PerspectiveCamera(70, 1, .07, 145);
   const office = new T.Group();
   const exterior = new T.Group();
   scene.add(office, exterior);
@@ -5597,12 +5805,16 @@ function createOfficeView() {
     door.rotation.y=-travel*1.46;
     kits.forEach((kit,i)=>{kit.visible=i<stock;});
     cityRenderer.update(current.city,now);
-    camera.position.set(player.x,player===SEAT_POSITION?1.46:1.7,player.z);
+    // Subtle first-person locomotion feedback; disabled for reduced-motion preferences.
+    const moving=current.moving && player!==SEAT_POSITION;
+    const sway=moving && !reduceMotion.matches ? Math.sin(now*(current.sprinting?.016:.011))*(current.sprinting?.048:.025) : 0;
+    camera.position.set(player.x,player===SEAT_POSITION?1.46:1.7+sway,player.z);
     camera.rotation.set(player.pitch,player.yaw,0,'YXZ');
     updateCameraFeed(now);
     renderer.render(scene,camera);
     if (elapsed===1) animation=null;
     if (animation) schedule();
+    else if (current.city && document.pointerLockElement===canvas && !reduceMotion.matches) schedule();
     else if (current.camera || current.city) wake=setTimeout(schedule,current.camera?88:40);
   }
   function schedule() {
@@ -5873,7 +6085,7 @@ function drawScene(animate = '') {
     player: terminal.open ? SEAT_POSITION : player,
     camera: terminal.open && tab === 'cameras' ? securityChannel : null,
     built: state.stand, visitor: activeVisitor, waiting: VISITORS[state.step]?.style,
-    doorOpen, stock: shopTotals(state).onShelf, city:cityState, animate,
+    doorOpen, stock: shopTotals(state).onShelf, city:cityState, moving:moveKeys.has('w')||moveKeys.has('s')||moveKeys.has('a')||moveKeys.has('d'), sprinting:moveKeys.has('Shift'), animate,
   });
 }
 let lastInteraction = '';
@@ -6276,7 +6488,7 @@ document.addEventListener('submit', event => {
 });
 
 const moveKeys = new Set();
-const movementKeys = ['w','a','s','d','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
+const movementKeys = ['w','a','s','d','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Shift'];
 let moveFrame = 0;
 let lastMove = 0;
 let mousePosition = null;
@@ -6305,7 +6517,7 @@ function stepMovement(time) {
   const forward=pressed('w')-pressed('s'), side=pressed('d')-pressed('a');
   if (forward||side) {
     const intervals=Math.max(1,Math.ceil(elapsed/.04));
-    for(let i=0;i<intervals;i++)player=walkStep(player,forward,side,elapsed/intervals,{doorOpen,stand:state.stand});
+    for(let i=0;i<intervals;i++)player=walkStep(player,forward,side,elapsed/intervals,{doorOpen,stand:state.stand,sprint:moveKeys.has('Shift')});
   }
   refreshPosition();
   drawScene();
@@ -6356,8 +6568,10 @@ for (const control of document.querySelectorAll('[data-move]')) {
 
 function turnCamera(dx,dy) {
   if (!dx && !dy) return;
-  player.yaw -= dx*.005;
-  player.pitch = Math.max(-1.12,Math.min(.96,player.pitch-dy*.0046));
+  const sensitivity=cityMouseSettings?.sensitivity||.005;
+  player.yaw -= dx*sensitivity;
+  const vertical=cityMouseSettings?.invertY?-1:1;
+  player.pitch = Math.max(-1.12,Math.min(.96,player.pitch-vertical*dy*sensitivity*.92));
   drawScene();
 }
 world.addEventListener('pointerdown',event => {
@@ -6367,15 +6581,8 @@ world.addEventListener('pointerdown',event => {
 });
 world.addEventListener('pointermove',event => {
   if (event.pointerType==='mouse') {
-    if (document.pointerLockElement || !isWalking() || event.target.id!=='landscape') {
-      mousePosition = null;
-      return;
-    }
-    const previous=mousePosition;
-    mousePosition={x:event.clientX,y:event.clientY};
-    const dx=previous ? event.clientX-previous.x : (event.movementX || 0);
-    const dy=previous ? event.clientY-previous.y : (event.movementY || 0);
-    turnCamera(dx,dy);
+    // Native Pointer Lock owns mouse-look. No cursor-follow rotation or double input.
+    mousePosition=null;
     return;
   }
   if (!isWalking() || touchLook?.id!==event.pointerId) return;
