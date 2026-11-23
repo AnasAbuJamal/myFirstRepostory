@@ -602,3 +602,4 @@ academyInstall();
 systemsInit();
 campusInit();
 phoneInit();
+jobInit();
