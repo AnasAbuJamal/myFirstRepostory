@@ -1,5 +1,21 @@
 /* LumenVale City Systems: mail, expenses, orders, technology and citizens. */
 const LV_SYSTEMS_KEY='lumenvale-city-systems-v1';
+const LV_CHARACTERS=[
+ {id:'lena',name:'Lena',title:'Civil Engineer',x:9,z:15,
+  story:'Our city needs a safe road before the next shipment. Workers must inspect the route, repair broken pavement, and keep the crossing clear for pedestrians.',
+  question:'What should workers do before the shipment?',choices:['Inspect and repair the road','Remove every crossing','Ignore the pavement'],answer:0,reward:36},
+ {id:'omar',name:'Omar',title:'Workshop Foreman',x:-18,z:24,
+  story:'A delivery truck arrived with five boxes of wood. Four boxes are needed for the current orders. One box can stay in the storeroom for future customers.',
+  question:'How many boxes should remain in storage?',choices:['Four','One','Five'],answer:1,reward:44},
+ {id:'maya',name:'Maya',title:'City Planner',x:17,z:28,
+  story:'The new neighborhood has homes, a school, and a park. The council recommends saving electricity by using efficient lights and maintaining public spaces.',
+  question:'Which choice would help this neighborhood?',choices:['Use efficient lights','Waste electricity','Close the park'],answer:0,reward:52}
+];
+const LV_HOME_DECOR=[
+ {id:'flowers',name:'Garden Flowers',cost:70,desc:'Add colorful flower planters to your home.'},
+ {id:'patio',name:'Front Patio',cost:110,desc:'Build an outdoor seating area.'},
+ {id:'solar',name:'Solar Roof',cost:170,desc:'Modernize your rooftop and improve city reputation.'}
+];
 const LV_PERSONNEL=['Amina · Operator','Leo · Mechanic','Noor · Engineer','Sam · Driver','Mira · Quality Inspector','Omar · Shift Lead'];
 const LV_TREASURES=[{id:'river',x:35,z:-14,reward:50,unlock:2,clue:'Follow the road east, then search the riverside rocks.'},{id:'forest',x:-38,z:29,reward:90,unlock:3,clue:'Look by the old trees on the far western edge.'},{id:'garden',x:8,z:32,reward:140,unlock:4,clue:'Look beyond the homes and gardens at the south edge of the town.'}];
 var systemsDriving=false;
@@ -29,7 +45,7 @@ const LV_TECH=[
  {id:'automation',title:'Modern Automation',cost:620,books:5,desc:'Automate routine work. +25% output.',boost:.25}
 ];
 function systemsBlank(){return {version:1,inventory:{},upgrades:{},tech:{},contracts:{},
-  paid:0,earned:0,rep:0,lastTick:Date.now(),mailRead:[],ledger:[],achievements:[],training:{},treasures:[]};}
+  paid:0,earned:0,rep:0,lastTick:Date.now(),mailRead:[],ledger:[],achievements:[],training:{},treasures:[],npcDone:[],homeDecor:{},chainMade:0};}
 function systemsClean(raw){
  const s=systemsBlank();
  if(!raw||raw.version!==1)return s;
@@ -44,6 +60,9 @@ function systemsClean(raw){
  s.ledger=Array.isArray(raw.ledger)?raw.ledger.filter(x=>x&&typeof x.note==='string').slice(0,100):[];
  s.achievements=Array.isArray(raw.achievements)?raw.achievements.filter(x=>typeof x==='string').slice(0,100):[];
  s.treasures=Array.isArray(raw.treasures)?raw.treasures.filter(x=>LV_TREASURES.some(t=>t.id===x)):[];
+ s.npcDone=Array.isArray(raw.npcDone)?raw.npcDone.filter(x=>LV_CHARACTERS.some(n=>n.id===x)):[];
+ for(const d of LV_HOME_DECOR)s.homeDecor[d.id]=Boolean(raw.homeDecor?.[d.id]);
+ s.chainMade=count(raw.chainMade,1e9);
  for(const id of Object.keys(LV_PRODUCTS))s.training[id]=count(raw.training?.[id],5);
  return s;
 }
@@ -84,6 +103,16 @@ function systemsTick(now=Date.now()){
   if(unit?.built&&unit.staff>0){
    const count=Math.max(1,Math.floor(ticks*unit.staff*Math.max(1,unit.level)*Math.max(1,unit.landLevel||1)/2));
    systemsState.inventory[id]=Math.min(1e7,(systemsState.inventory[id]||0)+count);
+  }
+ }
+ // Two connected factories create additional finished goods from raw lumber.
+ const workshop=cityState.sites.workshop,lumber=cityState.sites.lumber;
+ if(workshop?.staff>0&&lumber?.staff>0){
+  const batches=Math.min(Math.floor((systemsState.inventory.lumber||0)/2),ticks*workshop.staff);
+  if(batches>0){
+   systemsState.inventory.lumber-=batches*2;
+   systemsState.inventory.workshop=(systemsState.inventory.workshop||0)+batches;
+   systemsState.chainMade+=batches;
   }
  }
  if(charge)systemsLedger('Factory wages, power and maintenance',-charge);
@@ -200,7 +229,7 @@ function systemsReadLetter(id){
  '<button class="button" type="button" data-systems="mail">Back to mailbox</button></div></article>');
 }
 function systemsPanel(tab='overview'){
- const buttons=[['overview','Overview'],['contracts','Contracts'],['warehouse','Warehouse'],['workers','Workers'],['research','Research'],['upgrades','City Upgrades'],['newspaper','Newspaper'],['explore','Explore'],['achievements','Achievements']];
+ const buttons=[['overview','Overview'],['contracts','Contracts'],['warehouse','Warehouse'],['workers','Workers'],['home','Home'],['research','Research'],['upgrades','City Upgrades'],['newspaper','Newspaper'],['explore','Explore'],['achievements','Achievements']];
  const nav='<div class="lv-city-nav">'+buttons.map(([id,title])=>'<button class="'+(id===tab?'active':'')+'" data-systems="tab" data-tab="'+id+'">'+title+'</button>').join('')+'</div>';
  let html='';
  if(tab==='overview'){
@@ -211,7 +240,8 @@ function systemsPanel(tab='overview'){
    '<div><small>Expenses / 5 sec</small><strong>'+systemsExpenseRate()+'</strong></div>'+
    '<div><small>Est. net / 5 sec</small><strong>'+net+'</strong></div>'+
    '<div><small>Reputation</small><strong>'+systemsState.rep+'</strong></div>'+
-   '<div><small>Employees</small><strong>'+cityPopulation()+'</strong></div></div>'+
+   '<div><small>Employees</small><strong>'+cityPopulation()+'</strong></div></div>'+ 
+   '<p><b>Connected supply chain:</b> '+systemsState.chainMade+' furniture units manufactured using lumber from your own mill.</p>'+
    '<h3>Recent financial activity</h3>'+systemsState.ledger.slice(0,10).map(t=>'<p class="lv-ledger">'+esc(t.note)+
    '<b class="'+(t.coins>=0?'positive':'negative')+'">'+(t.coins>0?'+':'')+t.coins+' coins</b></p>').join('');
  }else if(tab==='contracts'){
@@ -229,6 +259,11 @@ function systemsPanel(tab='overview'){
   html='<p>Factories create products over time. You can also purchase emergency stock when a customer needs a faster delivery.</p>'+
    '<div class="lv-warehouse">'+Object.entries(LV_PRODUCTS).map(([id,p])=>'<div><b>'+p.icon+' '+p.name+'</b>'+
    '<strong>'+ (systemsState.inventory[id]||0)+' units</strong><button class="button" data-systems="restock" data-id="'+id+'" '+(cityState.coins<25?'disabled':'')+'>Buy 5 · 25 coins</button></div>').join('')+'</div>';
+ }else if(tab==='home'){
+  html='<p>Purchase your first home in City Upgrades, then personalize it with additions that consume coins and visibly change the neighborhood.</p>'+LV_HOME_DECOR.map(x=>
+   '<article class="lv-contract"><h3>'+esc(x.name)+'</h3><p>'+esc(x.desc)+'</p><small>Cost: '+x.cost+' coins</small> '+
+   (systemsState.homeDecor[x.id]?'<b>✓ Installed</b>':'<button class="button primary" data-systems="decor" data-id="'+x.id+'" '+
+   (!systemsState.upgrades.home||cityState.coins<x.cost?'disabled':'')+'>Purchase</button>')+'</article>').join('');
  }else if(tab==='workers'){
   html='<p>Employees produce goods and earn income automatically. Every worker has a professional role. Training costs coins and improves productivity.</p>'+
    CITY_SITES.filter(x=>x.kind==='factory'&&cityState.sites[x.id]?.built).map(x=>{
@@ -273,6 +308,31 @@ function systemsPanel(tab='overview'){
  }
  cityPanel('LumenVale / City Hall','City Management',nav+'<div class="lv-city-content">'+html+'</div>');
 }
+function systemsTalk(id){
+ const c=LV_CHARACTERS.find(x=>x.id===id);if(!c)return;
+ const done=systemsState.npcDone.includes(id);
+ cityPanel('Citizens / '+esc(c.title),esc(c.name),
+  '<article class="lv-letter"><p>'+esc(c.story)+'</p>'+
+  (done?'<p><b>✓ Conversation mission complete</b></p>':
+   '<h3>'+esc(c.question)+'</h3><div class="lv-dialogue-answers">'+c.choices.map((choice,i)=>
+    '<button class="button" data-systems="npc-answer" data-id="'+c.id+'" data-answer="'+i+'">'+esc(choice)+'</button>').join('')+'</div>')+
+  '<p class="city-sub">Reading missions improve your reputation and earn one-time coin rewards.</p></article>');
+}
+function systemsAnswerNpc(id,answer){
+ const c=LV_CHARACTERS.find(x=>x.id===id);
+ if(!c||systemsState.npcDone.includes(id))return;
+ if(Number(answer)!==c.answer){notice('That answer does not match the conversation. Read it again.');return;}
+ systemsState.npcDone.push(id);systemsState.rep+=3;
+ cityEarn(c.reward,10);systemsLedger('Helped '+c.name,c.reward);systemsSave();
+ systemsTalk(id);notice('Great reading! +'+c.reward+' coins.');
+}
+function systemsDecor(id){
+ const d=LV_HOME_DECOR.find(x=>x.id===id);
+ if(!d||!systemsState.upgrades.home||systemsState.homeDecor[id])return;
+ if(!systemsSpend(d.cost,'Home decoration: '+d.name)){notice('Not enough coins for this home upgrade.');return;}
+ systemsState.homeDecor[id]=true;systemsState.rep+=2;systemsSave();
+ systemsPanel('home');notice(d.name+' added to your home.');
+}
 function systemsTreasure(id){
  const t=LV_TREASURES.find(x=>x.id===id);if(!t||systemsState.treasures.includes(id))return;
  if(cityCompleted()<t.unlock){notice('Read '+t.unlock+' books to unlock this treasure.');return;}
@@ -293,6 +353,7 @@ function systemsNearby(player){
   if(cityCompleted()>=t.unlock&&!systemsState.treasures.includes(t.id)&&Math.hypot(player.x-t.x,player.z-t.z)<2.8)
     return {id:'treasure-'+t.id,system:true,label:'Discover hidden treasure'};
  }
+ for(const c of LV_CHARACTERS){if(Math.hypot(player.x-c.x,player.z-c.z)<2.1)return {id:'citizen-'+c.id,system:true,label:'Talk to '+c.name};}
  if(Math.hypot(player.x-6.15,player.z+7.0)<2.5)return {id:'mailbox',system:true,label:'Check your mailbox'};
  if(Math.hypot(player.x+7.0,player.z-13.5)<2.9)return {id:'cityhall',system:true,label:'Visit City Hall'};
  if(Math.hypot(player.x-23.5,player.z-6.0)<2.8)return {id:'depot',system:true,label:'Visit delivery warehouse'};
@@ -300,6 +361,7 @@ function systemsNearby(player){
 }
 function systemsInteract(target){
  if(target?.id==='vehicle')systemsVehicle();
+ else if(target?.id?.startsWith('citizen-'))systemsTalk(target.id.slice(8));
  else if(target?.id?.startsWith('treasure-'))systemsTreasure(target.id.slice(9));
  else if(target?.id==='mailbox')systemsMailBox();
  else if(target?.id==='depot')systemsPanel('warehouse');
@@ -323,6 +385,8 @@ function systemsInit(){
   if(action==='research')systemsResearch(id);
   if(action==='restock')systemsRestock(id);
   if(action==='train')systemsTraining(id);
+  if(action==='decor')systemsDecor(id);
+  if(action==='npc-answer')systemsAnswerNpc(id,b.dataset.answer);
   if(action==='contract')systemsContract(id);
  });
  window.addEventListener('keydown',event=>{
