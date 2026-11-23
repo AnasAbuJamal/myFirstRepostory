@@ -36,7 +36,7 @@
 .city-factory-grid>div{border:1px solid #cad8c7;border-radius:8px;background:#eff3e9;padding:.75rem}
 .city-factory-grid small{display:block;color:#647869;font-size:.77rem}
 .city-factory-grid b{display:block;margin-top:.15rem;color:#284a38;font-size:1.15rem}
-:fullscreen #landscape,:fullscreen .walk-world{cursor:none}
+/* Cursor state is controlled by native pointer lock, not fullscreen alone. */
 :fullscreen .walk-world button{cursor:pointer}
 :fullscreen dialog,:fullscreen dialog *{cursor:auto}
 @media(max-width:720px){
@@ -83,3 +83,11 @@
  .city-mouse-prompt{display:none}
 }
 @media(prefers-reduced-motion:reduce){.city-mouse-prompt,.city-resume-card{transition:none}}
+
+.city-mouse-settings{margin:1.25rem 0;padding:1rem;border:1px solid #cad8c6;border-radius:10px;background:#f0f3ec}
+.city-mouse-settings h3{font-size:1.05rem;margin:0 0 .7rem;color:#305b40}
+.city-mouse-settings label{display:block;font-size:.88rem;color:#3a5943}
+.city-mouse-settings strong{font-variant-numeric:tabular-nums}
+.city-mouse-settings input[type=range]{width:100%;margin:.85rem 0;accent-color:#48785a;cursor:pointer}
+.city-mouse-settings label.city-toggle{display:flex;align-items:center;gap:.55rem}
+.city-mouse-settings input[type=checkbox]{height:16px;width:16px;accent-color:#437552}
