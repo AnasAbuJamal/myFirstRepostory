@@ -50,7 +50,28 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
   const model=createLumenVehicle(T,def.type,{paint:def.paint,low});
   root.add(model.group);return {...def,model};
  });
- const personalVehicle=createLumenVehicle(T,'van',{paint:'cream',low});
+ const garageDisplay=new T.Group();
+ let personalVehicle=createLumenVehicle(T,'van',{paint:'cream',low});
+ let garageAppearance='van:cream';
+ garageDisplay.add(personalVehicle.group);
+ function synchronizeGarage(){
+  const garage=systemsState.garage||{selected:'van',paint:'cream'};
+  const style=LV_VEHICLE_TYPES[garage.selected]?garage.selected:'van';
+  const paint=LV_VEHICLE_PAINTS[garage.paint]?garage.paint:'cream';
+  const signature=style+':'+paint;
+  if(signature===garageAppearance)return;
+  garageDisplay.remove(personalVehicle.group);
+  personalVehicle.group.traverse(node=>{
+   if(node.geometry?.dispose)node.geometry.dispose();
+   if(node.material){
+    const mats=Array.isArray(node.material)?node.material:[node.material];
+    mats.forEach(m=>{m.map?.dispose?.();m.dispose?.();});
+   }
+  });
+  personalVehicle=createLumenVehicle(T,style,{paint,low});
+  garageDisplay.add(personalVehicle.group);
+  garageAppearance=signature;
+ }
  const addUpgrade=(id,build)=>{
   const {x,z}=CITY_UPGRADE_LOTS[id]||{x:0,z:0};
   const obj=new T.Group();obj.position.set(x,0,z);root.add(obj);obj.visible=false;
@@ -73,7 +94,7 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
   house(g,0,0,6.1,3.2,4.8,'#d1aa83');
   sign(g,'MY HOME',0,2.85,-2.49,2.8,.37);
  }),
- addUpgrade('delivery',g=>g.add(personalVehicle.group)),
+ addUpgrade('delivery',g=>g.add(garageDisplay)),
  addUpgrade('power',g=>{
   for(const x of [-2,0,2])for(const z of [-2,0,2]){
    column(g,x,.65,z,.12,1.28,'#84908b');
@@ -162,6 +183,7 @@ function createLumenWorld({T,exterior,box,piece,renderer}){
    item.chest.visible=cityCompleted()>=item.cache.unlock&&!systemsState.treasures.includes(item.cache.id);
    if(item.chest.visible)item.chest.rotation.y=Math.sin(phase*.55)*.09;
   }
+  synchronizeGarage();
   if(upgrades.get('delivery').visible){
    const van=upgrades.get('delivery');
    if(systemsDriving&&view?.player){
