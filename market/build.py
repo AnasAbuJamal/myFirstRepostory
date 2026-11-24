@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 import re
 import json
+import shutil
 
 HERE = Path(__file__).resolve().parent
 
@@ -17,7 +18,7 @@ def build():
         '/* GAME STYLES */': source('style.css') + '\n' + source('walking.css') + '\n' + source('city.css') + '\n' + source('academy.css') + '\n' + source('systems.css') + '\n' + source('campus.css') + '\n' + source('phone.css') + '\n' + source('jobs.css') + '\n' + source('pathways.css') + '\n' + source('lms.css'),
         '/* GAME ENGINE */': inside_script('/*\n' + source('vendor/THREE-LICENSE.txt') + '*/\n' + source('vendor/three.js')),
         '/* GAME CODE */': inside_script(
-            'const LV_DEFAULT_ACADEMICS='+json.dumps(json.loads(source('academic-catalog.json')),ensure_ascii=False)+';\nconst LV_LMS_DEMO='+json.dumps(json.loads(source('lms-demo.json')),ensure_ascii=False)+';\nconst LV_SCHOOL_ACTIVITIES='+json.dumps(json.loads(source('school-activities.json')),ensure_ascii=False)+';\n\n' + '\n\n'.join(source(name) for name in ('story.js', 'rules.js', 'walk.js', 'districts.js', 'citizens.js', 'vehicles.js', 'city.js', 'academy.js', 'systems.js', 'campus.js', 'jobs.js', 'pathways.js', 'school-activities.js', 'lms.js', 'sky-textures.js', 'school-materials.js', 'school-tables.js', 'school-world.js', 'road-textures.js', 'city-world.js', 'systems-world.js', 'campus-world.js', 'district-world.js', 'software.js', 'view.js', 'reports.js', 'save-manager.js', 'phone.js', 'app.js'))
+            'const LV_DEFAULT_ACADEMICS='+json.dumps(json.loads(source('academic-catalog.json')),ensure_ascii=False)+';\nconst LV_LMS_DEMO='+json.dumps(json.loads(source('lms-demo.json')),ensure_ascii=False)+';\nconst LV_SCHOOL_ACTIVITIES='+json.dumps(json.loads(source('school-activities.json')),ensure_ascii=False)+';\n\n' + '\n\n'.join(source(name) for name in ('story.js', 'rules.js', 'walk.js', 'districts.js', 'citizens.js', 'vehicles.js', 'city.js', 'academy.js', 'systems.js', 'campus.js', 'jobs.js', 'pathways.js', 'school-activities.js', 'lms.js', 'audio.js', 'glb-loader.js', 'sky-textures.js', 'school-materials.js', 'school-tables.js', 'school-world.js', 'road-textures.js', 'city-world.js', 'systems-world.js', 'campus-world.js', 'district-world.js', 'software.js', 'view.js', 'reports.js', 'save-manager.js', 'phone.js', 'app.js'))
         ),
     }
     page = source('template.html')
@@ -32,5 +33,8 @@ if __name__ == '__main__':
     destination = parser.parse_args().output
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(build(), encoding='utf-8')
+    blender_src = HERE / 'assets' / 'blender'
+    if blender_src.is_dir():
+        blender_dst = destination.parent / 'assets' / 'blender'
+        shutil.copytree(blender_src, blender_dst, dirs_exist_ok=True)
     print(f'Built {destination}')
-
