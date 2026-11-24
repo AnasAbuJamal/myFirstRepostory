@@ -15,7 +15,7 @@ test('fresh city starts without coins or automated factories',()=>{
  assert.equal(vm.runInContext('cityState.coins',world),0);
  assert.equal(vm.runInContext('cityCompleted()',world),0);
  assert.equal(vm.runInContext('cityIncome()',world),0);
- assert.equal(vm.runInContext('cityNearby({x:14,z:8}).id',world),'library');
+ assert.equal(vm.runInContext('cityNearby({x:14,z:8})',world),null);
 });
 test('reading unlocks plots and charges the correct amounts',()=>{
  const world=run();
