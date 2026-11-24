@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><circle cx=%228%22 cy=%228%22 r=%227%22 fill=%22%233b82f6%22/></svg>"><title>LumenVale: City of Knowledge</title>
+  <link rel="stylesheet" href="./src/styles.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./vendor/three/build/three.module.js",
+      "three/addons/": "./vendor/three/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="loading-screen">
+    <div class="load-box">
+      <h1>LumenVale</h1>
+      <p id="load-status">Loading baked Frankfurt city…</p>
+      <div class="load-bar"><div id="load-fill"></div></div>
+    </div>
+  </div>
+
+  <canvas id="game-canvas" tabindex="0"></canvas>
+
+  <div id="hud">
+    <div id="location-pill"><span class="dot"></span><span id="location-name">Main Street</span></div>
+    <div id="crosshair" aria-hidden="true"></div>
+    <div id="interact-prompt" class="hidden"><kbd>E</kbd> <span id="interact-label">Interact</span></div>
+    <div id="hud-hints">
+      <button id="btn-look" type="button">Click to Explore</button>
+      <button id="btn-phone" type="button"><kbd>P</kbd> City Phone</button>
+    </div>
+  </div>
+
+  <div id="phone-overlay" class="overlay hidden" role="dialog" aria-label="City Phone">
+    <div class="phone-shell">
+      <div class="phone-notch"></div>
+      <div class="phone-statusbar">
+        <span id="phone-clock">09:41</span>
+        <span class="phone-net">LumenVale 5G · <strong id="phone-coins">150</strong> ◈</span>
+      </div>
+      <div class="phone-header">
+        <button id="phone-back" class="icon-btn hidden" type="button">‹ Home</button>
+        <h2 id="phone-title">City Phone</h2>
+        <button id="phone-close" class="icon-btn" type="button">✕</button>
+      </div>
+      <div id="phone-screen" class="phone-screen"></div>
+      <div class="phone-homebar"></div>
+    </div>
+  </div>
+
+  <div id="computer-overlay" class="overlay hidden" role="dialog" aria-label="Terminal">
+    <div class="pc-shell">
+      <header class="pc-bar">
+        <div class="pc-title"><span class="pc-dot"></span><h2 id="pc-heading">Market Office Workstation</h2></div>
+        <div class="pc-meta"><span id="pc-wallet">150 ◈</span><button id="pc-close" type="button">Stand Up (Esc)</button></div>
+      </header>
+      <div class="pc-layout">
+        <nav id="pc-nav" class="pc-nav"></nav>
+        <main id="pc-body" class="pc-body"></main>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
